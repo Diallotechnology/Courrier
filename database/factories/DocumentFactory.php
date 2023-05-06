@@ -17,7 +17,10 @@ class DocumentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'documentable_type' => "App\Models\Courrier",
+            'documentable_id' => rand(1,15),
+            'chemin' => $this->faker->imageUrl(),
+            'libelle' => $this->faker->name(),
         ];
     }
 }

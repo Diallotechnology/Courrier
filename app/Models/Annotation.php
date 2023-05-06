@@ -7,9 +7,36 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Models\Annotation
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $nom
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\AnnotationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereNom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Annotation extends Model
 {
     use HasFactory, DateFormat;
+
+    protected $fillable = ['nom','user_id'];
 
     /**
      * Get the user that owns the Annotation

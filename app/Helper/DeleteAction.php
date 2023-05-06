@@ -20,8 +20,8 @@ trait DeleteAction
 
     public function file_delete(Model $model): bool {
         $fileDeleted = false;
-        if (File::exists(public_path($model->imageLink()))) {
-            $fileDeleted = File::delete(public_path($model->imageLink()));
+        if (File::exists(public_path($model->DocLink()))) {
+            $fileDeleted = File::delete(public_path($model->DocLink()));
         }
         return $fileDeleted;
     }
@@ -41,7 +41,7 @@ trait DeleteAction
 
     public function Delete()
     {
-        
+
     }
 
     public function All_delete()

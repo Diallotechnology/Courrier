@@ -3,48 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nature;
+use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
 
+
+/**
+ *
+ */
 class NatureController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    use DeleteAction;
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+
+        $data = $request->validate(['nom'=>'required|string|max:100']);
+        Nature::create($data);
+        toastr()->success('Nature ajouter avec success!');
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Nature $nature)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Nature $nature)
     {
-        //
+        return view('nature.update', compact('nature'));
     }
 
     /**
@@ -52,14 +40,20 @@ class NatureController extends Controller
      */
     public function update(Request $request, Nature $nature)
     {
-        //
+
+        $data = $request->validate(['nom'=>'required|string|max:100']);
+        $nature->update($data);
+        toastr()->success('Nature mise à jour avec success!');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Nature $nature)
+    public function destroy(int $nature)
     {
-        //
+
+        $delete = Nature::findOrFail($nature);
+        return  $this->supp($delete);
     }
 }

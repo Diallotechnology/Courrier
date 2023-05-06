@@ -10,16 +10,22 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- CSS files -->
-    {{-- <link rel="preconnect" href="https://fonts.googleapis.com"> --}}
-    {{-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> --}}
-    {{-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"> --}}
+    {{--
+    <link rel="preconnect" href="https://fonts.googleapis.com"> --}}
+    {{--
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> --}}
+    {{--
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"> --}}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.17.0/tabler-icons.min.css" />
 
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
-    
+    {{--
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet"> --}}
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.base.min.js" defer></script>
+    @livewireStyles
 
     <style>
         /* :root {
@@ -27,38 +33,21 @@
         } */
 
         @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
+
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
     </style>
+
 </head>
 
-<body >
-   
-    <script>
-        !(function (e) {
-    "function" == typeof define && define.amd ? define(e) : e();
-})(function () {
-    "use strict";
-    var e,
-        t = "tablerTheme",
-        n = new Proxy(new URLSearchParams(window.location.search), {
-            get: function (e, t) {
-                return e.get(t);
-            },
-        });
-    if (n.theme) localStorage.setItem(t, n.theme), (e = n.theme);
-    else {
-        var o = localStorage.getItem(t);
-        e = o || "light";
-    }
-    document.body.classList.remove("theme-dark", "theme-light"),
-        document.body.classList.add("theme-".concat(e));
-});
-    </script>
+<body>
+
+
     <div class="page">
         <!-- Sidebar -->
         <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
@@ -74,43 +63,40 @@
                     </a>
                 </h1>
                 <div class="navbar-nav flex-row d-lg-none">
-                  
+
                     <div class="d-none d-lg-flex">
-                        <x-notification/>
+                        <x-notification />
                     </div>
-                    <x-profile/>
+                    <x-profile />
                 </div>
                 @include('layouts.nav')
             </div>
         </aside>
-              <!-- Navbar -->
-      <header class="navbar navbar-expand-md navbar-light d-none d-lg-flex d-print-none">
-        <div class="container-xl">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="navbar-nav flex-row order-md-last">
-            <div class="d-none d-md-flex">
-              <x-notification/>
+        <!-- Navbar -->
+        <header class="navbar navbar-expand-md navbar-light d-none d-lg-flex d-print-none">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
+                    aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="d-none d-md-flex">
+                        <x-notification />
+                    </div>
+                    <x-profile />
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <div>
+
+                    </div>
+                </div>
             </div>
-            <x-profile/>
-          </div>
-          <div class="collapse navbar-collapse" id="navbar-menu">
-            <div>
-        
-            </div>
-          </div>
-        </div>
-      </header>
+        </header>
         <div class="page-wrapper">
             <div class="page-header d-print-none">
                 <div class="container-xl">
                     <div class="row g-2 align-items-center">
-                        <div class="col">
-                            <h2 class="page-title">
-                                Vertical layout
-                            </h2>
-                        </div>
+                        @yield('header')
                     </div>
                 </div>
             </div>
@@ -137,5 +123,14 @@
         </div>
     </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
+    <x-toaster-hub />
+    <script src="{{ asset('/js/main.js') }}"></script>
+    @livewireScripts
+
 </body>
+
 </html>

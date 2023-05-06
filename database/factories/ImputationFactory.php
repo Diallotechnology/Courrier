@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\ImputationEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class ImputationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'reference' => uniqid(),
+            'departement_id' => rand(1,5),
+            'courrier_id' => rand(1,5),
+            'user_id' => rand(1,5),
+            'etat' => $this->faker->randomElement(ImputationEnum::cases()),
         ];
     }
 }

@@ -1,22 +1,31 @@
-@props(['disabled' => false, 'name' => '','type' => '', 'place' => '', 'label' => '', 'value' => '','messages'])
+@props(['disabled' => false,'required'=>true, 'name' => '','type' => '', 'place' => '', 'label' => '', 'value' =>
+false,'messages'])
 
-<label {{ $attributes->merge(['class' => 'form-label required text-uppercase']) }}>  
+<label {{ $attributes->merge(['class' => 'form-label required text-uppercase']) }}>
     @empty($label)
     {{ $name }}
     @else
     {{ $label }}
     @endempty
 </label>
-<input {!! $attributes->merge(['class' => 'form-control mb-2']) !!} type="{{ $type }}"  value="{{ $value }}" 
-placeholder="Entrer {{ $place }}" name="{{ $name }}" id="{{ $name }}" {{ $disabled ? 'disabled' : '' }} >
+<input {{ $attributes->merge(['class' => 'form-control mb-2']) }} type="{{ $type }}" value="{{ $value }}"
+placeholder="Entrer {{ $place }}" name="{{ $name }}" id="{{ $name }}" value="{{ $value ? $value : @old($name) }}" {{
+$disabled ? 'disabled' : '' }}
+@required($required)
+>
 <div {{ $attributes->merge(['class' => 'valid-feedback']) }} ></div>
 <div {{ $attributes->merge(['class' => 'invalid-feedback']) }}>Ce champ est obligatoire.</div>
+<ul {{ $attributes->merge(['class' => 'text-sm text-danger space-y-1']) }}>
+    @error($name)
+    <li>{{ $message }}</li>
+    @enderror
+</ul>
 {{ $slot }}
 
-@if ($messages)
-    <ul {{ $attributes->merge(['class' => 'text-sm text-danger space-y-1']) }}>
-        @foreach ((array) $messages as $message)
-            <li>{{ $message }}</li>
-        @endforeach
-    </ul>
-@endif
+{{-- @if ($messages)
+<ul {{ $attributes->merge(['class' => 'text-sm text-danger space-y-1']) }}>
+    @foreach ((array) $messages as $message)
+    <li>{{ $message }}</li>
+    @endforeach
+</ul>
+@endif --}}

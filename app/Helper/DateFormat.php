@@ -15,10 +15,10 @@ trait DateFormat
         return Carbon::parse($date)->format('d/m/Y');
     }
 
-    protected function getDeletedAtAttribute(string $date): string
-    {
-        return Carbon::parse($date)->format('d/m/Y H:m:s');
-    }
+    // protected function getDeletedAtAttribute(string $date): string
+    // {
+    //     return Carbon::parse($date)->format('d/m/Y');
+    // }
 
     public function generateCourrierId()
     {

@@ -17,7 +17,8 @@ class AnnotationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nom' => $this->faker->sentence(1),
+            'user_id' => rand(1,5)
         ];
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\ImputationEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->string('reference')->unique();
             $table->date('fin_traitement')->nullable();
             $table->string('observation')->nullable();
-            $table->enum('etat', ['foo', 'bar'])->nullable()->default('foo');
+            $table->string('etat')->nullable()->default(EN_ATTENTE::class);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -17,7 +17,11 @@ class StructureFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nom' => $this->faker->company(),
+            'logo' => $this->faker->imageUrl(),
+            'email' => $this->faker->companyEmail(),
+            'contact' => $this->faker->phoneNumber(),
+            'description' => $this->faker->sentence(2),
         ];
     }
 }

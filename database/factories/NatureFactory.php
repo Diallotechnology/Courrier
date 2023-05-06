@@ -17,7 +17,7 @@ class NatureFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nom' => $this->faker->sentence(1),
         ];
     }
 }

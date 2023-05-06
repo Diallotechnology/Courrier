@@ -11,7 +11,7 @@ class StoreStructureRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreStructureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nom'=>'required|string|max:100',
+            'description'=>'required|nullable|string|max:200',
+            'contact'=>'required|string|min:8',
+            'email'=>'required|email|max:255',
+            'logo'=>'nullable',
         ];
     }
 }

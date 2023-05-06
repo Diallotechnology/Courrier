@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('priorite');
             $table->string('confidentiel');
             $table->string('observation')->nullable();
-            $table->enum('etat', ['foo', 'bar'])->nullable()->default('foo');
+            $table->string('etat')->nullable();
             $table->date('date');
             $table->timestamps();
             $table->softDeletes();

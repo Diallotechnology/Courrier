@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDepartementRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreDepartementRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,14 @@ class StoreDepartementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'structure_id' => 'required|exists:structures,id',
+            'nom'=>'required|string|max:100',
+            'code'=>'required|string|max:15'
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        // $this->merge(['structure_id' => $this->input('structure_id') ? : Auth::user()->departement->structure->id ]);
     }
 }

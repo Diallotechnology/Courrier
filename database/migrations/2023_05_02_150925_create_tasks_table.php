@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('nom');
             $table->string('description');
             $table->string('type');
-            $table->enum('etat', ['foo', 'bar'])->nullable()->default('foo');
-            $table->dateTime('debut');
-            $table->dateTime('fin');
+            $table->string('etat')->nullable();
+            $table->dateTime('debut')->nullable();
+            $table->dateTime('fin')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('priorite');
             $table->string('confidentiel');
             $table->longText('contenu')->nullable();
-            $table->enum('etat', ['foo', 'bar'])->nullable()->default('foo');
+            $table->string('etat')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

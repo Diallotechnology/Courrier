@@ -1,29 +1,37 @@
+@props(['header'])
+
 <div class="col-12">
     <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Invoices</h3>
-      </div>
-      <div class="card-body border-bottom py-3">
-        <div class="d-flex">
-          <div class="text-muted">
-            Show
-            <div class="mx-2 d-inline-block">
-              <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
-            </div>
-            entries
-          </div>
-          <div class="ms-auto text-muted">
-            Recherche:
-            <div class="ms-2 d-inline-block">
-              <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-            </div>
-          </div>
+        {{ $header }}
+        <div {{ $attributes->merge(['class' => 'table-responsive']) }}>
+            <table id="datatable" {{ $attributes->merge(['class' => 'table card-table table-vcenter text-nowrap
+                datatable']) }}>
+                {{ $slot }}
+            </table>
         </div>
-      </div>
-      <div {{ $attributes->merge(['class' => 'table-responsive']) }}>
-        <table {{ $attributes->merge(['class' => 'table card-table table-vcenter text-nowrap datatable']) }}>
-            {{ $slot }}
-        </table>
-      </div>
     </div>
-  </div>
+</div>
+
+<script>
+    function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("datatable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>

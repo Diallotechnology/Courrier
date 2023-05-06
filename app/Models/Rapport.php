@@ -9,6 +9,40 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * App\Models\Rapport
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $courrier_id
+ * @property string $nom
+ * @property string $type
+ * @property string|null $contenu
+ * @property string|null $file
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read Courrier $courrier
+ * @property-read User $user
+ * @method static \Database\Factories\RapportFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereContenu($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereCourrierId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereFile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereNom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Rapport extends Model
 {
     use HasFactory, DateFormat;

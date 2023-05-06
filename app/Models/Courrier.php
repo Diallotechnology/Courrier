@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\CourrierEnum;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Depart;
@@ -20,9 +21,85 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * App\Models\Courrier
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $nature_id
+ * @property int $correspondant_id
+ * @property string $reference
+ * @property string $numero
+ * @property string $objet
+ * @property string $priorite
+ * @property string $confidentiel
+ * @property string|null $observation
+ * @property CourrierEnum|null $etat
+ * @property string $date
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Correspondant $correspondant
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read int|null $departs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, History> $histories
+ * @property-read int|null $histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $imputations
+ * @property-read int|null $imputations_count
+ * @property-read Nature $nature
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read int|null $rapports_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @property-read int|null $tasks_count
+ * @property-read User $user
+ * @method static \Database\Factories\CourrierFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereConfidentiel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereCorrespondantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereEtat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereNatureId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereNumero($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereObjet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereObservation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier wherePriorite($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereReference($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Courrier extends Model
 {
     use HasFactory, DateFormat;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'nature_id'
+        ,'correspondant_id',
+        'reference',
+        'numero',
+        'objet',
+        'priorite',
+        'confidentiel',
+        'observation',
+        'etat',
+        'date'
+    ];
 
     protected function getCreatedAtAttribute(string $date): string
     {
@@ -33,6 +110,15 @@ class Courrier extends Model
     {
         return Carbon::parse($date)->format('d/m/Y H:m:s');
     }
+
+        /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'etat' => CourrierEnum::class,
+    ];
 
     // public function getExpirationFormatAttribute(): string
     // {

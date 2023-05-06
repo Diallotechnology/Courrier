@@ -2,34 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Structure;
 use App\Models\Departement;
+use App\Helper\DeleteAction;
 use App\Http\Requests\StoreDepartementRequest;
-use App\Http\Requests\UpdateDepartementRequest;
 
 class DepartementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    use DeleteAction;
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreDepartementRequest $request)
     {
-        //
+        Departement::create($request->validated());
+        toastr()->success('Departement ajouter avec success!');
+        return back();
     }
 
     /**
@@ -37,7 +26,7 @@ class DepartementController extends Controller
      */
     public function show(Departement $departement)
     {
-        //
+        return view('departement.show', compact('departement'));
     }
 
     /**
@@ -45,22 +34,27 @@ class DepartementController extends Controller
      */
     public function edit(Departement $departement)
     {
-        //
+        $structure = Structure::all(['id','nom']);
+
+        return view('departement.update', compact('departement','structure'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDepartementRequest $request, Departement $departement)
+    public function update(StoreDepartementRequest $request, Departement $departement)
     {
-        //
+        $departement->update($request->validated());
+        toastr()->success('Departement mise à jour avec success!');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Departement $departement)
+    public function destroy(int $departement)
     {
-        //
+        $delete = Departement::findOrFail($departement);
+        return  $this->supp($delete);
     }
 }
