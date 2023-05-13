@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<x-table>
+<x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-header">
             <h3 class="card-title">Lites des departements
@@ -8,25 +8,15 @@
             </h3>
 
         </div>
-        <div class="card-body border-bottom py-3">
-            <div class="d-flex">
-                <x-button-modal />
-
-                <div class="ms-auto text-muted">
-                    Recherche:
-                    <div class="ms-2 d-inline-block">
-                        <input type="text" onkeyup="myFunction()" id="myInput" class="form-control form-control-sm"
-                            aria-label="Search invoice">
-                    </div>
-                </div>
-            </div>
+        <div class="card-body">
+            <x-filter url="departement" />
         </div>
     </x-slot>
     <thead>
         <tr>
             <th>ID</th>
             <th>Structure</th>
-            <th>Nom du department</th>
+            <th>Nom du departement</th>
             <th>Code</th>
             <th>Utilisateurs</th>
             <th>Date</th>
@@ -34,10 +24,10 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($rows as $row)
+        @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>{{ $row->structure->nom }}</td>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->nom }}</td>
             <td>{{ $row->code }}</td>
             <td>{{ $row->users_count }}</td>
@@ -48,7 +38,13 @@
                 <x-button-delete url="{{ url('departement/'.$row->id) }}" />
             </td>
         </tr>
-        @endforeach
+        @empty
+        <tr>
+            <td colspan="8">
+                <h2 class="text-center">Aucun element</h2>
+            </td>
+        </tr>
+        @endforelse
     </tbody>
 </x-table>
 <x-modal title="nouveaux departement">

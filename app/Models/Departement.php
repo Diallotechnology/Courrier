@@ -43,6 +43,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static \Illuminate\Database\Eloquent\Builder|Departement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Departement withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Departement withoutTrashed()
+ * @property int $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Departement whereStructureId($value)
  * @mixin \Eloquent
  */
 class Departement extends Model
@@ -63,7 +68,7 @@ class Departement extends Model
      */
     public function imputations(): BelongsToMany
     {
-        return $this->belongsToMany(Courrier::class, 'imputations')->withPivot('description');
+        return $this->belongsToMany(Courrier::class, 'imputations')->withPivot('delai','reference','fin_traitement','observation','etat','priorite');
     }
 
 

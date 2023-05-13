@@ -57,4 +57,33 @@ class DepartementController extends Controller
         $delete = Departement::findOrFail($departement);
         return  $this->supp($delete);
     }
+
+    public function trash()
+    {
+        $rows = Departement::with('structure')->onlyTrashed()->latest()->paginate(15);
+        return view('departement.trash', compact('rows'));
+    }
+
+    public function recover(int $id) {
+
+        $row = Departement::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Restore($row);
+    }
+
+    public function force_delete(int $id) {
+
+        $row = Departement::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Remove($row);
+    }
+
+
+    public function all_recover() {
+
+        return $this->All_restore(Departement::onlyTrashed());
+    }
+
+    public function all_delete() {
+
+        return $this->All_remove(Departement::onlyTrashed());
+    }
 }

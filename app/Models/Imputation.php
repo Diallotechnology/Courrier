@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Enum\ImputationEnum;
 use App\Models\Task;
+use App\Models\User;
 use App\Helper\DateFormat;
 use App\Models\Departement;
+use App\Enum\ImputationEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,7 +53,7 @@ class Imputation extends Model
     use HasFactory, DateFormat;
 
     protected $table = 'imputations';
-    public $incrementing = false;
+    // public $incrementing = false;
 
     protected $casts = [
         'etat' => ImputationEnum::class,
@@ -81,6 +82,16 @@ class Imputation extends Model
     }
 
     /**
+     * Get the user that owns the Imputation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Get all of the tasks for the Imputation
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -89,4 +100,19 @@ class Imputation extends Model
     // {
     //     return $this->hasMany(Task::class);
     // }
+
+    public function Complet(): bool
+    {
+        return $this->etat == ImputationEnum::TERMINE;
+    }
+
+    public function Pending(): bool
+    {
+        return $this->etat == ImputationEnum::EN_ATTENTE;
+    }
+
+    public function Progress(): bool
+    {
+        return $this->etat == ImputationEnum::EN_COURS;
+    }
 }

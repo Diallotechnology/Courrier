@@ -15,10 +15,25 @@ trait DateFormat
         return Carbon::parse($date)->format('d/m/Y');
     }
 
-    // protected function getDeletedAtAttribute(string $date): string
-    // {
-    //     return Carbon::parse($date)->format('d/m/Y');
-    // }
+    protected function getDeletedAtAttribute(string $date): string
+    {
+        return Carbon::parse($date)->format('d/m/Y H:i:s');
+    }
+
+    public function Normal(): bool
+    {
+        return $this->priorite === "Normal";
+    }
+
+    public function Urgent(): bool
+    {
+        return $this->priorite === "Urgent";
+    }
+
+    public function Privacy(): bool
+    {
+        return $this->confidentiel === "OUI" ? true : false;
+    }
 
     public function generateCourrierId()
     {

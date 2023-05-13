@@ -49,4 +49,33 @@ class AnnotationController extends Controller
         $delete = Annotation::findOrFail($annotation);
         return  $this->supp($delete);
     }
+
+    public function trash()
+    {
+        $rows = Annotation::onlyTrashed()->latest()->paginate(15);
+        return view('annotation.trash', compact('rows'));
+    }
+
+    public function recover(int $id) {
+
+        $row = Annotation::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Restore($row);
+    }
+
+    public function force_delete(int $id) {
+
+        $row = Annotation::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Remove($row);
+    }
+
+
+    public function all_recover() {
+
+        return $this->All_restore(Annotation::onlyTrashed());
+    }
+
+    public function all_delete() {
+
+        return $this->All_remove(Annotation::onlyTrashed());
+    }
 }

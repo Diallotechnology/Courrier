@@ -40,6 +40,47 @@ function deleteConfirmation(url, title, message, confirmText, cancelText) {
                     success: function (results) {
                         if (results.success === true) {
                             swal.fire("Done!", results.message, "success");
+                            // refresh page after 2 seco nds
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            swal.fire("Error!", results.message, "error");
+                        }
+                    },
+                });
+            } else {
+                e.dismiss;
+            }
+        },
+        function (dismiss) {
+            return false;
+        }
+    );
+}
+
+function restore(url, title, message, confirmText, cancelText) {
+    swal.fire({
+        title: title,
+        icon: "question",
+        text: message,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: confirmText,
+        cancelButtonText: cancelText,
+        reverseButtons: true,
+    }).then(
+        function (e) {
+            if (e.value === true) {
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: { _token: CSRF_TOKEN },
+                    dataType: "JSON",
+                    success: function (results) {
+                        if (results.success === true) {
+                            swal.fire("Done!", results.message, "success");
                             // refresh page after 2 seconds
                             setTimeout(function () {
                                 location.reload();
@@ -83,38 +124,81 @@ function deleteConfirmation(url, title, message, confirmText, cancelText) {
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
-    var el = document.querySelector(".select-tags");
-    window.TomSelect &&
-        new TomSelect(el, {
-            copyClassesToDropdown: false,
-            dropdownClass: "dropdown-menu ts-dropdown",
-            optionClass: "dropdown-item",
-            controlInput: "<input>",
-            render: {
-                item: function (data, escape) {
-                    if (data.customProperties) {
-                        return (
-                            '<div><span class="dropdown-item-indicator">' +
-                            data.customProperties +
-                            "</span>" +
-                            escape(data.text) +
-                            "</div>"
-                        );
-                    }
-                    return "<div>" + escape(data.text) + "</div>";
+    var el = document.querySelectorAll(".select-tags").forEach((el) => {
+        window.TomSelect &&
+            new TomSelect(el, {
+                copyClassesToDropdown: false,
+                dropdownClass: "dropdown-menu ts-dropdown",
+                optionClass: "dropdown-item",
+                controlInput: "<input>",
+                render: {
+                    item: function (data, escape) {
+                        if (data.customProperties) {
+                            return (
+                                '<div><span class="dropdown-item-indicator">' +
+                                data.customProperties +
+                                "</span>" +
+                                escape(data.text) +
+                                "</div>"
+                            );
+                        }
+                        return "<div>" + escape(data.text) + "</div>";
+                    },
+                    option: function (data, escape) {
+                        if (data.customProperties) {
+                            return (
+                                '<div><span class="dropdown-item-indicator">' +
+                                data.customProperties +
+                                "</span>" +
+                                escape(data.text) +
+                                "</div>"
+                            );
+                        }
+                        return "<div>" + escape(data.text) + "</div>";
+                    },
                 },
-                option: function (data, escape) {
-                    if (data.customProperties) {
-                        return (
-                            '<div><span class="dropdown-item-indicator">' +
-                            data.customProperties +
-                            "</span>" +
-                            escape(data.text) +
-                            "</div>"
-                        );
-                    }
-                    return "<div>" + escape(data.text) + "</div>";
-                },
-            },
+            });
+    });
+});
+
+$(document).ready(function () {
+    $("#search-input").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        var matchedRows = $("#datatable tbody tr").filter(function () {
+            return $(this).text().toLowerCase().indexOf(value) > -1;
         });
+        $("#datatable tbody tr").not(matchedRows).hide();
+        matchedRows.show();
+        if (matchedRows.length == 0) {
+            $("#no-results").show();
+        } else {
+            $("#no-results").hide();
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    let options = {
+        selector: "#tinymce-default",
+        height: 300,
+        menubar: false,
+        statusbar: false,
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table paste code help wordcount",
+        ],
+        toolbar:
+            "undo redo | formatselect | " +
+            "bold italic backcolor | alignleft aligncenter " +
+            "alignright alignjustify | bullist numlist outdent indent | " +
+            "removeformat",
+        content_style:
+            "body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }",
+    };
+    if (localStorage.getItem("tablerTheme") === "dark") {
+        options.skin = "oxide-dark";
+        options.content_css = "dark";
+    }
+    tinyMCE.init(options);
 });

@@ -11,7 +11,7 @@ class UpdateCourrierRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class UpdateCourrierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'objet'=>'required|string|max:255',
+            'confidentiel'=>'required|string|max:3',
+            'priorite'=>'required|string|max:6',
+            'observation'=>'string|nullable|max:255',
+            'date'=>'required|date',
+            'files'=> 'nullable',
+            // 'files.*'=> 'mimes:pdf',
+            'nature_id'=>'required|exists:natures,id',
+            'correspondant_id'=>'required|exists:correspondants,id',
         ];
     }
 }

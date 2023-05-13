@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enum\CourrierInterneEnum;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -19,12 +20,11 @@ return new class extends Migration
             $table->foreignId('destinataire_id')->constrained('users');
             $table->dateTime('delai')->nullable();
             $table->string('reference')->unique();
-            $table->string('numero')->unique();
             $table->string('objet');
             $table->string('priorite');
             $table->string('confidentiel');
             $table->longText('contenu')->nullable();
-            $table->string('etat')->nullable();
+            $table->string('etat')->default(CourrierInterneEnum::RECU->value);
             $table->timestamps();
             $table->softDeletes();
         });

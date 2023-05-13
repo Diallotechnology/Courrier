@@ -113,8 +113,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant withoutTrashed()
+ * @property string|null $contact
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @method static \Illuminate\Database\Eloquent\Builder|Correspondant whereContact($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read int|null $departs_count
  */
 	class Correspondant extends \Eloquent {}
 }
@@ -175,6 +180,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
@@ -233,8 +245,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Depart whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @mixin \Eloquent
+ * @property-read \App\Models\Correspondant $correspondant
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read string $date_format
+ * @property-read \App\Models\Nature $nature
  */
 	class Depart extends \Eloquent {}
 }
@@ -269,12 +285,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Departement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Departement withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Departement withoutTrashed()
- * @mixin \Eloquent
  * @property int $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Departement whereStructureId($value)
+ * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
- * @method static \Illuminate\Database\Eloquent\Builder|Departement whereStructureId($value)
  */
 	class Departement extends \Eloquent {}
 }
@@ -376,6 +395,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation withoutTrashed()
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $priorite
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation wherePriorite($value)
  */
 	class Imputation extends \Eloquent {}
 }
@@ -428,8 +452,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Interne whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read string $date_format
+ * @property-read \App\Models\Nature $nature
  */
 	class Interne extends \Eloquent {}
 }
@@ -486,8 +513,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Nature whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read int|null $departs_count
  */
 	class Nature extends \Eloquent {}
 }
@@ -563,6 +593,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Structure withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Structure withoutTrashed()
+ * @property string $adresse
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
+ * @method static \Illuminate\Database\Eloquent\Builder|Structure whereAdresse($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
@@ -605,6 +639,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Task withoutTrashed()
+ * @property-read string $debut_format
+ * @property-read string $fin_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  */
@@ -669,10 +706,22 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
+ * @property-read int|null $imputations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Interne> $internes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Journal> $journals
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $internes
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('email')->nullable();
             $table->string('contact');
+            $table->string('adresse');
             $table->string('description')->nullable();
             $table->softDeletes();
             $table->timestamps();

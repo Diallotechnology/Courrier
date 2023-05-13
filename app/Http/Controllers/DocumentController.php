@@ -7,21 +7,6 @@ use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -61,5 +46,34 @@ class DocumentController extends Controller
     public function destroy(Document $document)
     {
         //
+    }
+
+    public function trash()
+    {
+        $rows = Document::with('documentable')->onlyTrashed()->latest()->paginate(15);
+        return view('document.trash', compact('rows'));
+    }
+
+    public function recover(int $id) {
+
+        $row = Document::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Restore($row);
+    }
+
+    public function force_delete(int $id) {
+
+        $row = Document::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Remove($row);
+    }
+
+
+    public function all_recover() {
+
+        return $this->All_restore(Document::onlyTrashed());
+    }
+
+    public function all_delete() {
+
+        return $this->All_remove(Document::onlyTrashed());
     }
 }

@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Nature;
 use App\Models\Interne;
-use Illuminate\Http\Request;
+use App\Models\Document;
+use App\Helper\DeleteAction;
+use App\Http\Requests\StoreInterneRequest;
+use App\Http\Requests\UpdateInterneRequest;
+use Illuminate\Support\Facades\Auth;
 
 class InterneController extends Controller
 {
+    use DeleteAction;
     /**
      * Display a listing of the resource.
      */
@@ -20,15 +27,31 @@ class InterneController extends Controller
      */
     public function create()
     {
-        //
+        $user = User::with('departement')->where('departement_id',Auth::user()->departement_id)->get()->groupBy('departement.nom');
+        $type = Nature::orderBy('nom')->get();
+        return view('interne.create', compact('user','type'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreInterneRequest $request)
     {
-        //
+        $item = Interne::create($request->validated());
+        if ($request->hasFile('files')):
+            foreach ($request->file('files') as $key => $row):
+                // renome le document
+                $filename =  $row->hashName();
+                $chemin = $row->storeAs('courrier/interne', $filename, 'public');
+                $data = new Document([
+                    'libelle' => $row->getClientOriginalName(),
+                    'chemin' => $chemin,
+                ]);
+                $item->documents()->save($data);
+            endforeach;
+        endif;
+        toastr()->success('Courrier envoyé avec success!');
+        return back();
     }
 
     /**
@@ -36,7 +59,7 @@ class InterneController extends Controller
      */
     public function show(Interne $interne)
     {
-        //
+        return view('interne.show', compact('interne'));
     }
 
     /**
@@ -44,22 +67,68 @@ class InterneController extends Controller
      */
     public function edit(Interne $interne)
     {
-        //
+        $user = User::with('departement')->where('departement_id',Auth::user()->departement_id)->get()->groupBy('departement.nom');
+        $type = Nature::orderBy('nom')->get();
+        return view('interne.update', compact('interne','user','type'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Interne $interne)
+    public function update(UpdateInterneRequest $request, Interne $interne)
     {
-        //
+        $interne->update($request->validated());
+        if ($request->hasFile('files')):
+            foreach ($request->file('files') as $key => $row):
+                // renome le document
+                $filename =  $row->hashName();
+                $chemin = $row->storeAs('courrier/interne', $filename, 'public');
+                $data = new Document([
+                    'libelle' => $row->getClientOriginalName(),
+                    'chemin' => $chemin,
+                ]);
+                $interne->documents()->save($data);
+            endforeach;
+        endif;
+        toastr()->success('Courrier mise à jour avec success!');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Interne $interne)
+    public function destroy(int $interne)
     {
-        //
+        $delete = Interne::findOrFail($interne);
+        return  $this->supp($delete);
+    }
+
+    public function trash()
+    {
+        $rows = Interne::with('user','nature','destinataire','expediteur')->onlyTrashed()->latest()->paginate(15);
+        return view('interne.trash', compact('rows'));
+    }
+
+    public function recover(int $id) {
+
+        $row = Interne::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Restore($row);
+    }
+
+    public function force_delete(int $id) {
+
+        $row = Interne::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Remove($row);
+    }
+
+
+    public function all_recover() {
+
+        return $this->All_restore(Interne::onlyTrashed());
+    }
+
+    public function all_delete() {
+
+        return $this->All_remove(Interne::onlyTrashed());
     }
 }

@@ -1,8 +1,8 @@
-@props(['name','label'=>''])
+@props(['name'=>'','label'=>'','required' =>true, 'id' => ''])
 <div {{ $attributes->merge(['class' => 'mb-3']) }}>
     <label {{ $attributes->merge(['class' => 'form-label text-uppercase']) }} >{{ $label }}</label>
-    <select name="{{ $name }}" type="text" {{ $attributes->merge(['class' => 'form-select select-tags']) }} id=""
-        value="">
+    <select name="{{ $name }}" type="text" {{ $attributes->merge(['class' => 'form-select select-tags']) }}
+        value="" @required($required) id="{{ $id }}" >
         <option selected disabled value="">Selectionner</option>
         {{ $slot }}
     </select>

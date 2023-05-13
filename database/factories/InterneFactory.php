@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\CourrierInterneEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,10 +24,9 @@ class InterneFactory extends Factory
             'user_id' => rand(1,5),
             'expediteur_id' => rand(1,5),
             'destinataire_id' => rand(1,5),
-            'numero' => uniqid(),
             'priorite' => $this->faker->randomElement(['Normal','Urgent']),
             'confidentiel' => $this->faker->randomElement(['OUI','NON']),
-            'etat' => $this->faker->randomElement(['foo','bar']),
+            'etat' => $this->faker->randomElement(CourrierInterneEnum::cases()),
         ];
     }
 }

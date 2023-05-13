@@ -13,6 +13,7 @@ use App\Models\Rapport;
 use App\Models\Courrier;
 use App\Helper\DateFormat;
 use App\Models\Annotation;
+use App\Models\Imputation;
 use App\Models\Departement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
@@ -80,6 +81,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
+ * @property-read int|null $imputations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Interne> $internes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Journal> $journals
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -124,6 +136,16 @@ class User extends Authenticatable
     public function DocLink(): string {
 
         return Storage::url($this->photo);
+    }
+
+    /**
+     * Get all of the imputations for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function imputations(): HasMany
+    {
+        return $this->hasMany(Imputation::class);
     }
 
     /**

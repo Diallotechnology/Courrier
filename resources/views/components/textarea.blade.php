@@ -9,5 +9,5 @@
         @endempty
     </label>
     <textarea @required($required) name="{{ $name }}" id="{{ $name }}" {{
-        $attributes->merge(['class' => 'form-control']) }} rows="6" placeholder="{{ $place }}">{{ $value }}</textarea>
+        $attributes->merge(['class' => 'form-control']) }} rows="4" placeholder="{{ $place }}">{{ $value }}</textarea>
 </div>

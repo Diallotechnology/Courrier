@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Nature;
 use App\Models\Courrier;
 use App\Models\Document;
 use App\Helper\DateFormat;
+use App\Models\Correspondant;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,6 +61,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Depart whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @mixin \Eloquent
  */
 class Depart extends Model
@@ -84,6 +88,11 @@ class Depart extends Model
         'etat',
         'date'
     ];
+
+    public function getDateFormatAttribute(): string
+    {
+        return Carbon::parse($this->date)->format('d/m/Y');
+    }
 
     /**
      * Get the user that owns the Depart
@@ -112,6 +121,27 @@ class Depart extends Model
     {
         return $this->belongsTo(Courrier::class);
     }
+
+    /**
+     * Get the nature that owns the Depart
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function nature(): BelongsTo
+    {
+        return $this->belongsTo(Nature::class);
+    }
+
+    /**
+     * Get the correspondant that owns the Depart
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function correspondant(): BelongsTo
+    {
+        return $this->belongsTo(Correspondant::class);
+    }
+
 
 
 }

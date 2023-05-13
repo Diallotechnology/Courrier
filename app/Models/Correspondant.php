@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Depart;
 use App\Models\Courrier;
 use App\Models\Structure;
 use App\Helper\DateFormat;
@@ -44,6 +45,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant withoutTrashed()
+ * @property string|null $contact
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @method static \Illuminate\Database\Eloquent\Builder|Correspondant whereContact($value)
  * @mixin \Eloquent
  */
 class Correspondant extends Model
@@ -75,5 +79,15 @@ class Correspondant extends Model
     public function courriers(): HasMany
     {
         return $this->hasMany(Courrier::class);
+    }
+
+    /**
+     * Get all of the depart for the Correspondant
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function departs(): HasMany
+    {
+        return $this->hasMany(Depart::class);
     }
 }

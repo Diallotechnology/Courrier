@@ -13,15 +13,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('imputations', function (Blueprint $table) {
-            // $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('departement_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('courrier_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->date('delai')->nullable();
-            $table->string('reference')->unique();
             $table->date('fin_traitement')->nullable();
+            $table->string('reference')->unique();
+            $table->string('priorite');
             $table->string('observation')->nullable();
-            $table->string('etat')->nullable()->default(EN_ATTENTE::class);
+            $table->string('etat')->default(ImputationEnum::EN_ATTENTE->value);
             $table->timestamps();
             $table->softDeletes();
         });

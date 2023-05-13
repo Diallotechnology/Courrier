@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\Depart;
+use App\Models\Nature;
+use Livewire\Component;
+use App\Models\Courrier;
+use Livewire\WithPagination;
+use App\Models\Correspondant;
+
+class CourrierDepart extends Component
+{
+
+    use WithPagination;
+
+    protected string $paginationTheme = 'bootstrap';
+
+    public function ResetFilter(): void
+    {
+        $this->reset('privacy','priority','nature','date', 'expediteur','etat');
+        $this->resetPage();
+    }
+
+    public string $privacy = '';
+    public string $priority = '';
+    public string $nature = '';
+    public string $date = '';
+    public string $expediteur = '';
+    public string $etat = '';
+    public array $selectedRows = [];
+
+    public function render()
+    {
+        if ($this->privacy || $this->priority  || $this->nature || $this->date || $this->etat || $this->expediteur) {
+            $rows = Depart::with('user','nature','correspondant')
+            ->when($this->privacy && !empty($this->privacy), function ($query) {
+                $query->where('confidentiel', $this->privacy);
+            })
+            ->when($this->priority && !empty($this->priority), function ($query) {
+                $query->where('priorite', $this->priority);
+            })
+            ->when($this->nature && !empty($this->nature), function ($query) {
+                $query->where('nature_id', $this->nature);
+            })
+            ->when($this->expediteur && !empty($this->expediteur), function ($query) {
+                $query->where('correspondant_id', $this->expediteur);
+            })
+            ->when($this->date && !empty($this->date), function ($query) {
+                $query->where('date', $this->date);
+            })
+            ->when($this->etat && !empty($this->etat), function ($query) {
+                $query->where('etat', $this->etat);
+            })->latest()->paginate(15);
+        } else {
+            $rows = Depart::with('user','nature','correspondant')->latest()->paginate(15);
+        }
+
+        $correspondant = Correspondant::orderBy('nom')->get();
+        $type = Nature::orderBy('nom')->get();
+        $courrier = Courrier::with('nature','correspondant')->latest()->get(['id','numero','reference','date']);
+
+        return view('livewire.courrier-depart', compact('rows','correspondant','type','courrier'));
+    }
+}

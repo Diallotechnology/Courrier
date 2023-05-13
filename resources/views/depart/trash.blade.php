@@ -1,0 +1,88 @@
+@extends('layouts.app')
+@section('content')
+<x-table :rows="$rows">
+    <x-slot name="header">
+        <div class="card-header">
+            <h3 class="card-title">Corbeille des courriers depart</h3>
+        </div>
+        <div class="card-body">
+
+            <x-filter trash="depart" :create="false" />
+        </div>
+    </x-slot>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Utilisateur</th>
+            <th>Nature</th>
+            <th>Correspondant</th>
+            <th>Reference</th>
+            <th>En Reponse</th>
+            <th>Priorite</th>
+            <th>Confidential</th>
+            <th>Numero/Date depart</th>
+            <th>Etat</th>
+            <th>Objet</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($rows as $row)
+        <tr>
+            <td>{{ $row->id }}</td>
+            <td>
+                <div class="d-flex py-1 align-items-center">
+                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)"></span>
+                    <div class="flex-fill">
+                        <div class="font-weight-medium">{{ $row->user->name }}</div>
+                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->user->email }}</a></div>
+                    </div>
+                </div>
+            </td>
+            <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+            <td>
+                {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
+            </td>
+            <td>{{ $row->reference }}</td>
+            <td>{{ $row->courrier ? 'Courrier arriver N°'. $row->courrier->numero : 'pas de response' }}</td>
+
+            <td>
+                <x-statut type="prio" :courrier="$row" />
+            </td>
+            <td>
+                <x-statut type="privacy" :courrier="$row" />
+            </td>
+            <td>
+                <div class="d-flex py-1 align-items-center">
+                    <div class="flex-fill">
+                        <div class="font-weight-medium">N° {{ $row->numero }}</div>
+                        <div class="text-muted">Date {{ $row->date_format }}</div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <span @class(['status status-success'])>
+                    {{ $row->etat }}
+                </span>
+            </td>
+            <td>
+                <p class="text-muted">{{ $row->objet }}</p>
+            </td>
+            <td>{{ $row->deleted_at }}</td>
+            <td>
+
+                <x-button-restore url="{{ url('depart/restore/'.$row->id) }}" />
+                <x-button-delete url="{{ url('depart/delete/'.$row->id) }}" />
+            </td>
+        </tr>
+        @empty
+        <tr>
+            <td colspan="8">
+                <h2 class="text-center">Aucun element</h2>
+            </td>
+        </tr>
+        @endforelse
+    </tbody>
+</x-table>
+@endsection

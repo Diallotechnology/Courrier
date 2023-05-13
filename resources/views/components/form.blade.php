@@ -2,9 +2,12 @@
 @if($type === "update")
 <h2 class="mb-3 text-center">Formulaire de mise à jour</h2>
 @endif
-<form novalidate action="{{ $route }}" {{ $attributes->merge(['class' => 'needs-validation']) }} method="post">
+<form novalidate action="{{ $route }}" {{ $attributes->merge(['class' => 'needs-validation']) }} method="post"
+    >
     @csrf
-    {{ $slot }}
+    <div class="row">
+        {{ $slot }}
+    </div>
     @if($type === "update")
     @method('PATCH')
     @endif

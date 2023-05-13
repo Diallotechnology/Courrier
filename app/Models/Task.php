@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Enum\TaskEnum;
 use App\Models\User;
+use App\Enum\TaskEnum;
 use App\Helper\DateFormat;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -43,6 +44,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Task withoutTrashed()
+ * @property-read string $debut_format
+ * @property-read string $fin_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @mixin \Eloquent
  */
 class Task extends Model
@@ -74,6 +78,16 @@ class Task extends Model
         'etat' => TaskEnum::class,
     ];
 
+    public function getDebutFormatAttribute(): string
+    {
+        return Carbon::parse($this->debut)->format('d/m/Y H:i:s');
+    }
+
+    public function getFinFormatAttribute(): string
+    {
+        return Carbon::parse($this->debut)->format('d/m/Y H:i:s');
+    }
+
     public function assignTo(User $user)
     {
         $this->users()->attach($user);
@@ -92,5 +106,24 @@ class Task extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function Complet()
+    {
+        return $this->etat == TaskEnum::TERMINE;
+    }
+    public function No_complet()
+    {
+        return $this->etat == TaskEnum::NON_TERMINE;
+    }
+
+    public function Pending()
+    {
+        return $this->etat == TaskEnum::EN_ATTENTE;
+    }
+
+    public function Progress()
+    {
+        return $this->etat == TaskEnum::EN_COURS;
     }
 }

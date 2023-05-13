@@ -76,6 +76,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @mixin \Eloquent
  */
 class Courrier extends Model
@@ -101,15 +108,6 @@ class Courrier extends Model
         'date'
     ];
 
-    protected function getCreatedAtAttribute(string $date): string
-    {
-        return Carbon::parse($date)->format('d/m/Y');
-    }
-
-    protected function getDeletedAtAttribute(string $date): string
-    {
-        return Carbon::parse($date)->format('d/m/Y H:m:s');
-    }
 
         /**
      * The attributes that should be cast.
@@ -120,10 +118,10 @@ class Courrier extends Model
         'etat' => CourrierEnum::class,
     ];
 
-    // public function getExpirationFormatAttribute(): string
-    // {
-    //     return Carbon::parse($this->expiration)->format('d/m/Y');
-    // }
+    public function getDateFormatAttribute(): string
+    {
+        return Carbon::parse($this->date)->format('d/m/Y');
+    }
 
 
         /**
@@ -171,7 +169,7 @@ class Courrier extends Model
      */
     public function imputations(): BelongsToMany
     {
-        return $this->belongsToMany(Departement::class, 'imputations')->withPivot('description');
+        return $this->belongsToMany(Departement::class, 'imputations')->withPivot('delai','reference','fin_traitement','observation','etat','priorite');
     }
 
     /**
@@ -216,5 +214,29 @@ class Courrier extends Model
     }
 
 
+    public function Complet(): bool
+    {
+        return $this->etat == CourrierEnum::TERMINE;
+    }
+
+    public function Impute(): bool
+    {
+        return $this->etat == CourrierEnum::IMPUTE;
+    }
+
+    public function Progress(): bool
+    {
+        return $this->etat == CourrierEnum::PROCESS;
+    }
+
+    public function Register(): bool
+    {
+        return $this->etat == CourrierEnum::SAVE;
+    }
+
+    public function Archive(): bool
+    {
+        return $this->etat == CourrierEnum::ARCHIVE;
+    }
 
 }

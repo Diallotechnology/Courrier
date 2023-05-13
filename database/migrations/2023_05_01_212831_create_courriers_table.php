@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\CourrierEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->string('priorite');
             $table->string('confidentiel');
             $table->string('observation')->nullable();
-            $table->string('etat')->nullable();
+            $table->string('etat')->default(CourrierEnum::SAVE->value);
             $table->date('date');
             $table->timestamps();
             $table->softDeletes();

@@ -3,12 +3,17 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Nature;
 use App\Models\Document;
 use App\Helper\DateFormat;
+use Illuminate\Support\Carbon;
+use App\Enum\CourrierInterneEnum;
+use App\Http\Livewire\CourrierInterne;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Interne
@@ -57,6 +62,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Interne whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @mixin \Eloquent
  */
 class Interne extends Model
@@ -84,6 +90,25 @@ class Interne extends Model
         'delai',
         'contenu'
     ];
+
+    protected function getCreatedAtAttribute(string $date): string
+    {
+        return Carbon::parse($date)->format('d/m/Y H:i:s');
+    }
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'etat' => CourrierInterneEnum::class,
+    ];
+
+    public function getDateFormatAttribute(): string
+    {
+        return Carbon::parse($this->delai)->format('d/m/Y');
+    }
 
     /**
      * Get the expediteur that owns the Interne
@@ -121,6 +146,27 @@ class Interne extends Model
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');
+    }
+
+    /**
+     * Get the nature that owns the Interne
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function nature(): BelongsTo
+    {
+        return $this->belongsTo(Nature::class);
+    }
+
+
+    public function Send(): bool
+    {
+        return $this->etat == CourrierInterneEnum::SEND;
+    }
+
+    public function Recu(): bool
+    {
+        return $this->etat == CourrierInterneEnum::RECU;
     }
 
 }

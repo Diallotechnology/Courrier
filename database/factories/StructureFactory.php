@@ -20,6 +20,7 @@ class StructureFactory extends Factory
             'nom' => $this->faker->company(),
             'logo' => $this->faker->imageUrl(),
             'email' => $this->faker->companyEmail(),
+            'adresse' => $this->faker->address(),
             'contact' => $this->faker->phoneNumber(),
             'description' => $this->faker->sentence(2),
         ];

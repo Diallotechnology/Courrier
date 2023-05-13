@@ -42,6 +42,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Structure withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Structure withoutTrashed()
+ * @property string $adresse
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
+ * @method static \Illuminate\Database\Eloquent\Builder|Structure whereAdresse($value)
  * @mixin \Eloquent
  */
 class Structure extends Model
@@ -53,7 +57,7 @@ class Structure extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom','email','logo','contact','description'];
+    protected $fillable = ['nom','email','logo','contact','description','adresse'];
 
     /**
      * Get all of the correspondants for the Structure

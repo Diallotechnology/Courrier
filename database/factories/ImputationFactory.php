@@ -22,6 +22,7 @@ class ImputationFactory extends Factory
             'departement_id' => rand(1,5),
             'courrier_id' => rand(1,5),
             'user_id' => rand(1,5),
+            'priorite' => $this->faker->randomElement(['Normal','Urgent']),
             'etat' => $this->faker->randomElement(ImputationEnum::cases()),
         ];
     }

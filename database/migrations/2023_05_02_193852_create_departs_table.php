@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('priorite');
             $table->string('confidentiel');
             $table->string('observation')->nullable();
-            $table->string('etat')->nullable();
+            $table->string('etat')->default('Enregistré');
             $table->date('date');
             $table->timestamps();
             $table->softDeletes();

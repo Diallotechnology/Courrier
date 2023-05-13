@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Depart;
 use App\Models\Courrier;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Nature whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @mixin \Eloquent
  */
 class Nature extends Model
@@ -46,5 +48,15 @@ class Nature extends Model
     public function courriers(): HasMany
     {
         return $this->hasMany(Courrier::class);
+    }
+
+    /**
+     * Get all of the departs for the Nature
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function departs(): HasMany
+    {
+        return $this->hasMany(Depart::class);
     }
 }
