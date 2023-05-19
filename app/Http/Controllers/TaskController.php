@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\DeleteAction;
 use App\Models\Task;
+use App\Models\User;
+use Illuminate\Support\Arr;
+use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
@@ -13,9 +18,15 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        //
+        $data = Arr::except($request->validated(),['user_id']);
+        // create task
+        $task = Task::create($data);
+        // create task user pivot data
+        $task->users()->attach($request->user_id);
+        toastr()->success('Taches ajouter avec success!');
+        return back();
     }
 
     /**
@@ -23,7 +34,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return view('task.show', compact('task'));
     }
 
     /**
@@ -31,15 +42,21 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $user = User::with('departement')->where('id','!=',Auth::user()->id)->get()->groupBy('departement.nom');
+        return view('task.update', compact('task','user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        $data = Arr::except($request->validated(),['user_id']);
+        $task->update($data);
+        $task->users()->sync($request->user_id);
+        // \dd($request->validated());
+        toastr()->success('Taches mise à jour avec success!');
+        return back();
     }
 
     /**

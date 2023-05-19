@@ -37,6 +37,43 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+
+        .file,
+        .file-list {
+            position: relative;
+        }
+
+        .file .file-info,
+        .file .file-action,
+        .file-list .file-info,
+        .file-list .file-action {
+            position: absolute;
+            display: none;
+        }
+
+        .file .file-info,
+        .file-list .file-info {
+            bottom: 0.5rem;
+            left: 0;
+            right: 0;
+            display: inline;
+        }
+
+        .file .file-action,
+        .file-list .file-action {
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+
+        .file:hover,
+        .file-list:hover {
+            cursor: pointer;
+        }
+
+        .file:hover .file-action,
+        .file-list:hover .file-action {
+            display: inline;
+        }
     </style>
 
 </head>

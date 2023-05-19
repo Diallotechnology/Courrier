@@ -14,7 +14,7 @@
             <th>ID</th>
             <th>Libelle</th>
             <th>Courrier reference</th>
-            <th>Courrier type</th>
+            <th>type courrier</th>
             <th>Chemin</th>
             <th>Action</th>
         </tr>
@@ -25,17 +25,17 @@
             <td>{{ $row->id }}</td>
             <td>{{ $row->libelle }}</td>
             <td>{{ $row->documentable ? $row->documentable->reference : 'inexistant' }}</td>
-            <td>{{ class_basename($row->documentable) }}</td>
+            <td>{{ $row->type }}</td>
+            <td>{{ $row->chemin }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
                 <x-button-edit href="{{ route('document.edit', ['document' => $row]) }}" />
-                <x-button-show href="{{ route('document.show', ['document' => $row]) }}" />
+                <x-button-show href="{{ route('document.show', ['document' => $row]) }}" target="_blank" />
                 <x-button-delete url="{{ url('document/'.$row->id) }}" />
             </td>
         </tr>
         @endforeach
     </tbody>
-
 </x-table>
 
 <x-modal title="nouveaux document">
@@ -44,13 +44,18 @@
             <x-input type="text" name="libelle" place="libelle du document" />
         </div>
         <div class="col-md-6">
-            <x-input type="file" multiple name="document" label='Piece jointes ou fichiers' />
+            <x-input type="file" multiple name="document" label='Piece jointes ou fichiers PDF' />
         </div>
-        <x-select name='structure_id'>
-            {{-- @foreach ($structure as $row)
-            <option value="{{ $row->id }}">{{ $row->nom }}</option>
-            @endforeach --}}
+        <x-select name='type'>
+            <option value="Arrivé">Arrivé</option>
+            <option value="Depart">Depart</option>
+            <option value="Interne">Interne</option>
         </x-select>
+        {{-- <x-select name='structure_id'>
+            @foreach ($courrier as $row)
+            <option value="{{ $row->id }}">Courrier N°{{ $row->reference }}</option>
+            @endforeach
+        </x-select> --}}
     </x-form>
 </x-modal>
 @endsection

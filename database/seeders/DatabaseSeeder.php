@@ -30,18 +30,20 @@ class DatabaseSeeder extends Seeder
         Structure::factory(5)->create();
         Departement::factory(5)->create();
         User::factory(60)->create();
-        User::factory()->create(['email' => 'admin@gmail.com']);
         Nature::factory(5)->create();
         Correspondant::factory(35)->create();
-        Annotation::factory(5)->create();
+        Annotation::factory(75)->hasUser(20);
+        $test = User::factory()->create(['email' => 'admin@gmail.com']);
+        Annotation::factory(6)->hasUser($test)->create();
         Courrier::factory(60)->create();
         Depart::factory(60)->create();
         Interne::factory(60)->create();
         Document::factory(15)->create();
-        Imputation::factory(15)->create();
+        Imputation::factory(15)->hasAnnotations(6)->create();
         Task::factory(15)->create();
         // Agenda::factory(15)->create();
         // Journal::factory(10)->create();
+
 
         $departement = Departement::factory()
         ->has(User::factory()->count(10), 'users')

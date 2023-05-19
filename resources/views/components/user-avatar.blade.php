@@ -1,5 +1,5 @@
 @props(['row'])
-@if($row)
+@if($row and $row->user)
 <div class="d-flex py-1 align-items-center">
     <span class="avatar me-2"
         style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->user->name }}')"></span>
@@ -8,4 +8,6 @@
         <div class="text-muted"><a href="#" class="text-reset">{{ $row->user->email }}</a></div>
     </div>
 </div>
+@else
+inexistant
 @endif

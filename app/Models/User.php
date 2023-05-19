@@ -7,10 +7,12 @@ namespace App\Models;
 use App\Models\Task;
 use App\Enum\RoleEnum;
 use App\Models\Depart;
+use App\Models\History;
 use App\Models\Interne;
 use App\Models\Journal;
 use App\Models\Rapport;
 use App\Models\Courrier;
+use App\Models\Document;
 use App\Helper\DateFormat;
 use App\Models\Annotation;
 use App\Models\Imputation;
@@ -209,6 +211,17 @@ class User extends Authenticatable
         return $this->hasMany(Courrier::class);
     }
 
+
+    /**
+     * Get all of the histories for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function histories(): HasMany
+    {
+        return $this->hasMany(History::class);
+    }
+
     /**
      * Get the departement that owns the User
      *
@@ -228,5 +241,15 @@ class User extends Authenticatable
     public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class);
+    }
+
+    /**
+     * Get all of the documents for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(Document::class);
     }
 }

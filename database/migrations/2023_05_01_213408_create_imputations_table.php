@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('courrier_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->date('delai')->nullable();
             $table->date('fin_traitement')->nullable();
-            $table->string('reference')->unique();
+            $table->string('reference');
             $table->string('priorite');
             $table->string('observation')->nullable();
             $table->string('etat')->default(ImputationEnum::EN_ATTENTE->value);

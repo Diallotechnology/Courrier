@@ -1,4 +1,5 @@
 @props(['courrier'])
+@if($courrier)
 <div class="row row-cards">
     <div class="col-lg-12">
         <div class="card">
@@ -13,3 +14,4 @@
         </div>
     </div>
 </div>
+@endif

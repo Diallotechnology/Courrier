@@ -11,6 +11,7 @@ use App\Models\Correspondant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
+use App\Models\Imputation;
 
 class CourrierController extends Controller
 {
@@ -37,6 +38,7 @@ class CourrierController extends Controller
     public function store(StoreCourrierRequest $request)
     {
         $item = Courrier::create($request->validated());
+        $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé le N° $item->numero");
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
@@ -44,6 +46,8 @@ class CourrierController extends Controller
                 $chemin = $row->storeAs('courrier/arriver', $filename, 'public');
                 $data = new Document([
                     'libelle' => $row->getClientOriginalName(),
+                    'user_id' => Auth::user()->id,
+                    'type' => 'Arrivé',
                     'chemin' => $chemin,
                 ]);
                 $item->documents()->save($data);
@@ -58,7 +62,10 @@ class CourrierController extends Controller
      */
     public function show(Courrier $arriver)
     {
-        return view('arriver.show', compact('arriver'));
+        // \dd($arriver->load('tasks'));
+        $imp = Imputation::with('departement')->whereCourrierId($arriver->id)->get()->groupBy('reference');
+        // \dd($imp);
+        return view('arriver.show', compact('arriver','imp'));
     }
 
     /**
@@ -76,6 +83,7 @@ class CourrierController extends Controller
      */
     public function update(UpdateCourrierRequest $request, Courrier $arriver)
     {
+
         $arriver->update($request->validated());
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
@@ -84,10 +92,13 @@ class CourrierController extends Controller
                 $chemin = $row->storeAs('courrier/arriver', $filename, 'public');
                 $data = new Document([
                     'libelle' => $row->getClientOriginalName(),
+                    'user_id' => Auth::user()->id,
+                    'type' => 'Arrivé',
                     'chemin' => $chemin,
                 ]);
                 $arriver->documents()->save($data);
             endforeach;
+            $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé le N° $arriver->numero");
         endif;
         toastr()->success('Courrier mise à jour avec success!');
         return back();
@@ -118,6 +129,11 @@ class CourrierController extends Controller
     public function force_delete(int $id) {
 
         $row = Courrier::onlyTrashed()->whereId($id)->firstOrFail();
+        if($row->documents) {
+            foreach($row->documents as $item) {
+                $this->file_delete($item);
+            }
+        }
         return $this->Remove($row);
     }
 

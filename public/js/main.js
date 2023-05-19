@@ -100,6 +100,7 @@ function restore(url, title, message, confirmText, cancelText) {
     );
 }
 
+// boostrap validation js function
 (() => {
     "use strict";
 
@@ -123,6 +124,7 @@ function restore(url, title, message, confirmText, cancelText) {
     });
 })();
 
+// tom select function
 document.addEventListener("DOMContentLoaded", function () {
     var el = document.querySelectorAll(".select-tags").forEach((el) => {
         window.TomSelect &&
@@ -161,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// datatable search function
 $(document).ready(function () {
     $("#search-input").on("keyup", function () {
         var value = $(this).val().toLowerCase();

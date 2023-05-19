@@ -54,6 +54,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read int|null $imputations_count
  */
 	class Annotation extends \Eloquent {}
 }
@@ -327,6 +329,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Document withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Document withoutTrashed()
  * @mixin \Eloquent
+ * @property string $type
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
  */
 	class Document extends \Eloquent {}
 }
@@ -355,6 +360,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|History whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|History whereUserId($value)
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|History onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|History whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|History withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|History withoutTrashed()
  */
 	class History extends \Eloquent {}
 }
@@ -397,6 +408,10 @@ namespace App\Models{
  * @mixin \Eloquent
  * @property int $id
  * @property string $priorite
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read int|null $annotations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read int|null $tasks_count
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation wherePriorite($value)
@@ -643,7 +658,14 @@ namespace App\Models{
  * @property-read string $fin_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @mixin \Eloquent
+ * @property int|null $imputation_id
+ * @property int $createur_id
+ * @property-read \App\Models\Courrier|null $courrier
+ * @property-read \App\Models\User $createur
+ * @property-read \App\Models\Imputation|null $imputation
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreateurId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereImputationId($value)
  */
 	class Task extends \Eloquent {}
 }
@@ -721,6 +743,10 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
+ * @property-read int|null $histories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $internes
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals

@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\DeleteAction;
+use App\Models\Courrier;
+use App\Models\Depart;
 use App\Models\Document;
+use App\Models\Interne;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
 
+    use DeleteAction;
     /**
      * Store a newly created resource in storage.
      */
@@ -21,7 +27,9 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        //
+        $filePath = public_path($document->DocLink());
+        header('Content-Type: application/pdf');
+        return response()->file($filePath);
     }
 
     /**
@@ -29,7 +37,16 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        //
+        if($document->type === "Arrivé") {
+            $courrier = Courrier::all(['id','reference','numero']);
+        }
+        if($document->type === "Depart") {
+            $courrier = Depart::all(['id','reference','numero']);
+        }
+        if($document->type === "Interne") {
+            $courrier = Interne::all(['id','reference','numero']);
+        }
+        return view('document.update', compact('document','courrier'));
     }
 
     /**
@@ -37,15 +54,50 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
-        //
+        $request->validate([
+            'courrier'=> 'required',
+            'libelle'=> 'required',
+            'file'=> 'nullable|mimes:png,jpg,pdf',
+        ]);
+        if ($request->hasFile('file')):
+
+        $this->file_delete($document);
+        // renome le document
+        $filename =  $request->file->hashName();
+
+        if($document->type === "Arrivé") {
+            $chemin = $request->file->storeAs('courrier/arriver', $filename, 'public');
+        }
+        if($document->type === "Depart") {
+            $chemin = $request->file->storeAs('courrier/depart', $filename, 'public');
+        }
+        if($document->type === "Interne") {
+            $chemin = $request->file->storeAs('courrier/interne', $filename, 'public');
+        }
+        $document->update([
+            'libelle' => $request->libelle,
+            'documentable_id' => $request->courrier,
+            'chemin' => $chemin,
+        ]);
+        endif;
+        $document->update([
+            'libelle' => $request->libelle,
+            'documentable_id' => $request->courrier,
+
+        ]);
+        toastr()->success('Document mise à jour avec success!');
+        return \back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Document $document)
+    public function destroy(int $document)
     {
-        //
+        $delete = Document::findOrFail($document);
+        // delete document file
+        $this->file_delete($delete);
+        return  $this->supp($delete);
     }
 
     public function trash()

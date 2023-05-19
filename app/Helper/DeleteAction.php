@@ -2,13 +2,25 @@
 
 namespace App\Helper;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\History;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 trait DeleteAction
 {
+
+    public function history(int $id, string $action, string $description): void
+    {
+        History::create([
+            'user_id' => Auth::user()->id,
+            'courrier_id' => $id,
+            'action' => $action,
+            'description' => $description,
+        ]);
+    }
 
     function supp(Model $delete): JsonResponse {
 

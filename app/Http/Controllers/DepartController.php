@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
 use App\Models\Correspondant;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreDepartRequest;
 use App\Http\Requests\UpdateDepartRequest;
 
@@ -44,6 +45,8 @@ class DepartController extends Controller
                 $chemin = $row->storeAs('courrier/depart', $filename, 'public');
                 $data = new Document([
                     'libelle' => $row->getClientOriginalName(),
+                    'user_id' => Auth::user()->id,
+                    'type' => 'Depart',
                     'chemin' => $chemin,
                 ]);
                 $item->documents()->save($data);
@@ -85,6 +88,8 @@ class DepartController extends Controller
                 $chemin = $row->storeAs('courrier/depart', $filename, 'public');
                 $data = new Document([
                     'libelle' => $row->getClientOriginalName(),
+                    'user_id' => Auth::user()->id,
+                    'type' => 'Depart',
                     'chemin' => $chemin,
                 ]);
                 $depart->documents()->save($data);
@@ -118,6 +123,11 @@ class DepartController extends Controller
     public function force_delete(int $id) {
 
         $row = Depart::onlyTrashed()->whereId($id)->firstOrFail();
+        if($row->documents) {
+            foreach($row->documents as $item) {
+                $this->file_delete($item);
+            }
+        }
         return $this->Remove($row);
     }
 

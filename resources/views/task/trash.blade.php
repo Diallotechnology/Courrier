@@ -28,15 +28,19 @@
         <tr>
             <td>{{ $row->id }}</td>
             <td>
+                @if($row->createur)
                 <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)"></span>
+                    <span class="avatar me-2"
+                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->createur->name }}')"></span>
                     <div class="flex-fill">
-                        {{-- <div class="font-weight-medium">{{ $row->name }}</div> --}}
-                        {{-- <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}</a></div> --}}
-                        {{-- <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
-                            true])></span> {{ $row->etat == true ? 'En ligne' : 'Pas ligne' }} --}}
+                        <div class="font-weight-medium">{{ $row->createur->name }}</div>
+                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->createur->email }}</a></div>
                     </div>
                 </div>
+                @else
+                inexistant
+                @endif
+
             </td>
             <td>{{ $row->type }}</td>
             <td>
@@ -46,13 +50,7 @@
             <td>{{ $row->debut_format }}</td>
             <td>{{ $row->fin_format }}</td>
             <td>
-                <span @class(['status', 'status-green'=> $row->Complet(),
-                    'status-red'=> $row->No_complet(),
-                    'status-orange'=> $row->Pending(),
-                    'status-indigo' => $row->Progress(),
-                    ])>
-                    {{ $row->etat }}
-                </span>
+                <x-statut-task :task="$row" />
             </td>
             <td>{{ $row->deleted_at }}</td>
             <td>

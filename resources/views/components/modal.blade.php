@@ -12,15 +12,6 @@
             </div>
             <div {{ $attributes->merge(['class' => 'modal-body']) }} >
                 {{ $slot }}
-
-                {{-- <div class="text-center mt-4">
-                    <button {{ $attributes->merge(['class' => 'btn btn-danger me-auto']) }} {{
-                        $attributes->merge(['type' =>
-                        'button'])
-                        }} data-bs-dismiss="modal">Fermer</button>
-                    <button {{ $attributes->merge(['class' => 'btn btn-primary']) }} {{ $attributes->merge(['type' =>
-                        'submit']) }}>Valider</button>
-                </div> --}}
             </div>
         </div>
     </div>

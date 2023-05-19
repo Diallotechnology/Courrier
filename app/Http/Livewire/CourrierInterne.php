@@ -26,7 +26,6 @@ class CourrierInterne extends Component
     public string $nature = '';
     public string $destinataire = '';
     public string $etat = '';
-    public array $selectedRows = [];
 
     public function render()
     {

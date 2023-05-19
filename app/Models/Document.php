@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -48,9 +49,11 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'documentable_type',
         'documentable_id',
         'libelle',
+        'type',
         'chemin',
     ];
 
@@ -66,6 +69,16 @@ class Document extends Model
     public function DocLink(): string {
 
         return Storage::url($this->chemin);
+    }
+
+    /**
+     * Get the user that owns the Document
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

@@ -86,8 +86,8 @@ class AdminController extends Controller
 
     public function task(): View
     {
-        $rows = Task::with('users')->latest()->paginate(15);
-        return view('task.index', compact('rows'));
+
+        return view('task.index');
     }
 
     public function journal(): View
@@ -98,10 +98,6 @@ class AdminController extends Controller
 
     public function imputation(): View
     {
-        $rows = Imputation::with('user','departement','courrier')->latest()->paginate(15);
-        $courrier = Courrier::with('nature')->latest()->get(['id','numero','reference','date']);
-        $departement = Departement::all();
-        // \dd($rows);
-        return view('imputation.index', compact('rows','courrier','departement'));
+        return view('imputation.index');
     }
 }

@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Enum\TaskEnum;
+use App\Models\Courrier;
 use App\Helper\DateFormat;
+use App\Models\Imputation;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -60,6 +63,8 @@ class Task extends Model
      */
     protected $fillable = [
         'courrier_id',
+        'createur_id',
+        'imputation_id',
         'description',
         'nom',
         'type',
@@ -76,28 +81,39 @@ class Task extends Model
      */
     protected $casts = [
         'etat' => TaskEnum::class,
+        'debut' => 'datetime',
+        'fin' => 'datetime',
     ];
 
     public function getDebutFormatAttribute(): string
     {
-        return Carbon::parse($this->debut)->format('d/m/Y H:i:s');
+        return Carbon::parse($this->debut)->format('d/m/Y H:i');
     }
 
     public function getFinFormatAttribute(): string
     {
-        return Carbon::parse($this->debut)->format('d/m/Y H:i:s');
+        return Carbon::parse($this->fin)->format('d/m/Y H:i');
     }
 
-    public function assignTo(User $user)
+    /**
+     * Get the user that owns the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function imputation(): BelongsTo
     {
-        $this->users()->attach($user);
+        return $this->belongsTo(Imputation::class);
     }
 
-    public function assignedUsers()
+    /**
+     * Get the courrier that owns the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function courrier(): BelongsTo
     {
-        return $this->users;
+        return $this->belongsTo(Courrier::class);
     }
-
     /**
      * The users that belong to the Task
      *
@@ -106,6 +122,16 @@ class Task extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Get the user that owns the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createur(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'createur_id');
     }
 
     public function Complet()

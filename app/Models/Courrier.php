@@ -116,6 +116,7 @@ class Courrier extends Model
      */
     protected $casts = [
         'etat' => CourrierEnum::class,
+        'date' => 'date',
     ];
 
     public function getDateFormatAttribute(): string
@@ -169,7 +170,7 @@ class Courrier extends Model
      */
     public function imputations(): BelongsToMany
     {
-        return $this->belongsToMany(Departement::class, 'imputations')->withPivot('delai','reference','fin_traitement','observation','etat','priorite');
+        return $this->belongsToMany(Departement::class, 'imputations')->withPivot('delai','reference','fin_traitement','observation','etat','priorite')->withTimestamps();
     }
 
     /**

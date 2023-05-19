@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helper\DateFormat;
+use App\Models\User;
 use App\Models\Courrier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,7 +35,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class History extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormat;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['user_id','courrier_id','action','description'];
 
     /**
      * Get the courrier that owns the History
@@ -43,5 +52,15 @@ class History extends Model
     public function courrier(): BelongsTo
     {
         return $this->belongsTo(Courrier::class);
+    }
+
+    /**
+     * Get the user that owns the History
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

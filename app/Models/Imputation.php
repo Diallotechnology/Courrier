@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Models\Task;
 use App\Models\User;
 use App\Helper\DateFormat;
+use App\Models\Annotation;
 use App\Models\Departement;
 use App\Enum\ImputationEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Imputation
@@ -53,13 +55,12 @@ class Imputation extends Model
     use HasFactory, DateFormat;
 
     protected $table = 'imputations';
-    // public $incrementing = false;
 
     protected $casts = [
         'etat' => ImputationEnum::class,
     ];
 
-    // protected $fillable = ['courrier_id', 'departement_id', 'description'];
+    protected $fillable = ['courrier_id', 'departement_id','user_id', 'reference','fin_traitement','observation','delai','etat'];
 
     /**
      * Get the courrier that owns the Imputation
@@ -92,14 +93,24 @@ class Imputation extends Model
     }
 
     /**
-     * Get all of the tasks for the Imputation
+     * Get all of the annotations for the Imputation
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    // public function tasks(): HasMany
-    // {
-    //     return $this->hasMany(Task::class);
-    // }
+    public function annotations(): BelongsToMany
+    {
+        return $this->belongsToMany(Annotation::class);
+    }
+
+    /**
+     * Get all of the task for the Imputation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
 
     public function Complet(): bool
     {

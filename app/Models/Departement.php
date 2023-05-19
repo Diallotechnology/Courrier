@@ -68,7 +68,7 @@ class Departement extends Model
      */
     public function imputations(): BelongsToMany
     {
-        return $this->belongsToMany(Courrier::class, 'imputations')->withPivot('delai','reference','fin_traitement','observation','etat','priorite');
+        return $this->belongsToMany(Courrier::class, 'imputations')->withPivot('delai','reference','fin_traitement','observation','etat','priorite')->withTimestamps();
     }
 
 

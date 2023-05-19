@@ -59,4 +59,11 @@
         </div>
     </div>
 </div>
+<div class="row">
+    @foreach ($interne->documents as $row)
+    <div class="col-md-3">
+        <x-card-document :row="$row" />
+    </div>
+    @endforeach
+</div>
 @endsection

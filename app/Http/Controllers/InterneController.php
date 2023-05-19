@@ -45,6 +45,8 @@ class InterneController extends Controller
                 $chemin = $row->storeAs('courrier/interne', $filename, 'public');
                 $data = new Document([
                     'libelle' => $row->getClientOriginalName(),
+                    'type' => 'Interne',
+                    'user_id' => Auth::user()->id,
                     'chemin' => $chemin,
                 ]);
                 $item->documents()->save($data);
@@ -85,6 +87,8 @@ class InterneController extends Controller
                 $chemin = $row->storeAs('courrier/interne', $filename, 'public');
                 $data = new Document([
                     'libelle' => $row->getClientOriginalName(),
+                    'user_id' => Auth::user()->id,
+                    'type' => 'Interne',
                     'chemin' => $chemin,
                 ]);
                 $interne->documents()->save($data);
@@ -118,6 +122,11 @@ class InterneController extends Controller
     public function force_delete(int $id) {
 
         $row = Interne::onlyTrashed()->whereId($id)->firstOrFail();
+        if($row->documents) {
+            foreach($row->documents as $item) {
+                $this->file_delete($item);
+            }
+        }
         return $this->Remove($row);
     }
 

@@ -70,63 +70,12 @@
         </div>
     </div>
 </div>
-<div class="col-md-3">
-    <div class="card text-center mb-2 shadow">
-        <div class="card-body file">
-            <div class="file-action">
-                <a target="_blank" href="" role="button" class="btn btn-sm btn-green-1"><i class="ti ti-eye"></i></a>
-                <a href="" role="button" class="btn btn-sm btn-primary"><i class="ti ti-edit"></i></a>
-            </div>
-            <div class="circle circle-lg bg-light my-4">
-                <span class="ti ti-file text-success"></span>
-            </div>
-            <div class="file-info">
-                <span class="badge bg-blue badge-pill text-muted">PDF</span>
-            </div>
-        </div> <!-- .card-body -->
-        <div class="card-footer bg-transparent border-0 fname">
-            <strong>kddkk</strong> <br>
-            <strong>crée: jdddj</strong>
-        </div> <!-- .card-footer -->
-    </div> <!-- .card -->
+<div class="row">
+    @foreach ($depart->documents as $row)
+    <div class="col-md-3">
+        <x-card-document :row="$row" />
+    </div>
+    @endforeach
 </div>
 
-<style>
-    .file,
-    .file-list {
-        position: relative;
-    }
-
-    .file .file-info,
-    .file .file-action,
-    .file-list .file-info,
-    .file-list .file-action {
-        position: absolute;
-        display: none;
-    }
-
-    .file .file-info,
-    .file-list .file-info {
-        bottom: 0.5rem;
-        left: 0;
-        right: 0;
-        display: inline;
-    }
-
-    .file .file-action,
-    .file-list .file-action {
-        top: 0.5rem;
-        right: 0.5rem;
-    }
-
-    .file:hover,
-    .file-list:hover {
-        cursor: pointer;
-    }
-
-    .file:hover .file-action,
-    .file-list:hover .file-action {
-        display: inline;
-    }
-</style>
 @endsection

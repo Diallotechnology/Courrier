@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\DeleteAction;
+use App\Enum\CourrierEnum;
+use App\Models\Courrier;
 use App\Models\Imputation;
+use App\Models\Departement;
+use Illuminate\Support\Arr;
+use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreImputationRequest;
+use App\Http\Requests\UpdateImputationRequest;
+use App\Models\Annotation;
+use App\Models\Task;
+use Auth;
 
 class ImputationController extends Controller
 {
@@ -13,9 +22,40 @@ class ImputationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreImputationRequest $request)
     {
-        //
+        $courrier = Courrier::findOrFail($request->courrier_id);
+        // remove departement and annotation array
+        $pivot_value = Arr::except($request->validated(),['departement_id','annotation_id']);
+
+        // save imputation pivot value
+        $courrier->imputations()->attach($request->departement_id,$pivot_value);
+        // update courrier statut
+        $courrier->update(['etat' => CourrierEnum::IMPUTE]);
+         // get imputation
+        $imp_id = Imputation::whereReference($request->reference)->firstOrFail(['id']);
+
+        // save annotations pivot value
+        $imp_id->annotations()->attach($request->annotation_id);
+        // create task to Imputation
+        if(!empty($request->annotation_id)) {
+            $tache = Annotation::whereIn('id', $request->annotation_id)->get();
+            foreach ($tache as $row) {
+                Task::create([
+                     'courrier_id' => $courrier->id,
+                     'createur_id' => Auth::user()->id,
+                     'imputation_id' => $imp_id->id,
+                     'nom' => $row->nom,
+                     'type' => 'imputation',
+                     'description' => $row->nom,
+                     'debut' => now()->today(),
+                     'fin' => $request->delai,
+                 ]);
+             }
+        }
+        $this->history($courrier->id, "Impuatation","Imputé le courrier arrivé le N° $courrier->numero");
+        toastr()->success('Imputation ajouter avec success!');
+        return back();
     }
 
     /**
@@ -31,15 +71,20 @@ class ImputationController extends Controller
      */
     public function edit(Imputation $imputation)
     {
-        return view('imputation.update', compact('imputation'));
+        $courrier = Courrier::with('nature')->latest()->get(['id','numero','reference','date']);
+        $departement = Departement::all();
+        return view('imputation.update', compact('imputation','courrier','departement'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Imputation $imputation)
+    public function update(UpdateImputationRequest $request, Imputation $imputation)
     {
-        //
+        $imputation->update($request->validated());
+        $imputation->annotations()->sync($request->annotation_id);
+        toastr()->success('Imputation mise à jour avec success!');
+        return back();
     }
 
     /**
