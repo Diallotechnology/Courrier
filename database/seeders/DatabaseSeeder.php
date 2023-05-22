@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         User::factory(60)->create();
         Nature::factory(5)->create();
         Correspondant::factory(35)->create();
-        Annotation::factory(75)->hasUser(20);
+        Annotation::factory(275)->hasUser(25);
         $test = User::factory()->create(['email' => 'admin@gmail.com']);
         Annotation::factory(6)->hasUser($test)->create();
         Courrier::factory(60)->create();
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         Interne::factory(60)->create();
         Document::factory(15)->create();
         Imputation::factory(15)->hasAnnotations(6)->create();
-        Task::factory(15)->create();
+        // Task::factory(15)->create();
         // Agenda::factory(15)->create();
         // Journal::factory(10)->create();
 
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
         $user = User::factory()
         ->has(Courrier::factory()->count(10), 'courriers')
         // ->has(Imputation::factory()->count(10), 'imputations')
-        ->has(Task::factory()->count(10), 'tasks')
+        // ->has(Task::factory()->count(10), 'tasks')
         // ->has(Journal::factory()->count(5), 'journals')
         // ->has(Notification::factory()->count(5), 'journals')
         ->create();

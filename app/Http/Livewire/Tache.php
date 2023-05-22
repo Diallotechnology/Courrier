@@ -2,16 +2,18 @@
 
 namespace App\Http\Livewire;
 
-use App\Enum\CourrierEnum;
-use App\Enum\TaskEnum;
-use App\Helper\DeleteAction;
-use App\Models\Courrier;
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
+use App\Enum\TaskEnum;
 use Livewire\Component;
+use App\Models\Courrier;
+use App\Enum\CourrierEnum;
+use App\Helper\DeleteAction;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\TaskNotification;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Notification;
 
 class Tache extends Component
 {
@@ -22,7 +24,9 @@ class Tache extends Component
     public string $debut = '';
     public string $fin = '';
     public string $etat = '';
-    public $task;
+    public string $selectbox = '';
+    public string $type_select = '';
+    public bool $show = false;
 
     public function ResetFilter(): void
     {
@@ -36,33 +40,45 @@ class Tache extends Component
        $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
         // create action history
         if($task->type === "imputation") {
-
             // update courrier etat if is impute
-            if($task->courrier->Impute()) {
+            if($task->courrier and $task->courrier->Impute()) {
                 $task->courrier->update(['etat' => CourrierEnum::PROCESS]);
             }
+            if($task->courrier) {
 
-            $id = $task->courrier_id;
-            $num = $task->courrier->numero;
-            $this->history($id,"validation de tache","Une tache du courrier N°$num validé");
-
-            // verify if all task to courrier is complet
-            $get_courrier_task = Task::whereCourrierId($task->courrier_id)->whereEtat(!TaskEnum::TERMINE)->get();
-
-            if($get_courrier_task->isEmpty()) {
-                $task->courrier->update(['etat' => CourrierEnum::TERMINE]);
                 $id = $task->courrier_id;
                 $num = $task->courrier->numero;
-                $this->history($id,"tache accompli","Toute les tache du courrier N°$num effectué");
+                // Send notification
+                $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
+                $task->createur->notify($notification);
+
+                $this->history($id,"validation de tache","Une tache du courrier N°$num validé");
+
+                // verify if all task to courrier is complet
+                $get_courrier_task = Task::whereCourrierId($task->courrier_id)->whereEtat(!TaskEnum::TERMINE)->get();
+
+                if($get_courrier_task->isEmpty()) {
+                    $task->courrier->update(['etat' => CourrierEnum::TERMINE]);
+                    $id = $task->courrier_id;
+                    $num = $task->courrier->numero;
+                    $this->history($id,"tache accompli","Toute les tache du courrier N°$num effectué");
+                }
             }
+
+        } else {
+            // Send notification
+            $notification = new TaskNotification($task, "Une tache que vous avez assigné a été effectuer");
+            $task->createur->notify($notification);
         }
+
         toastr()->success('Tache validé avec success!');
     }
 
     public function render()
     {
+    
         if ($this->type || $this->debut  || $this->fin || $this->etat) {
-            $rows = Task::with('user')
+            $rows = Task::with('createur')
             ->when($this->type && !empty($this->type), function ($query) {
                 $query->where('type', $this->type);
             })

@@ -4,7 +4,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Informations de la tacte N° {{ $task->id }}</h3>
+        <h3 class="card-title">Informations de la tache N° {{ $task->reference }}</h3>
     </div>
     <div class="card-body">
         <div class="datagrid">
@@ -15,12 +15,17 @@
                         <span class="avatar me-2"
                             style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $task->createur->name }}')"></span>
                         <div class="flex-fill">
+
                             <div class="font-weight-medium">{{ $task->createur->name }}</div>
-                            <div class="text-muted"><a href="#" class="text-reset">{{ $task->createur->email }}</a>
+                            <div class="text-muted text-reset">{{ $task->createur->email }}
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">reference de la tache</div>
+                <div class="datagrid-content">{{ $task->reference }}</div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Nom de la tache</div>
@@ -34,7 +39,14 @@
                 <div class="datagrid-title">Utilisateur concerné</div>
                 <div class="datagrid-content">
                     @forelse ($task->users as $row)
-                    <x-user-avatar :row="$task" />
+                    <div class="d-flex py-1 align-items-center">
+                        <span class="avatar me-2"
+                            style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')"></span>
+                        <div class="flex-fill">
+                            <div class="font-weight-medium">{{ $row->name }}</div>
+                            <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}</a></div>
+                        </div>
+                    </div>
                     @empty
                     Aucun
                     @endforelse

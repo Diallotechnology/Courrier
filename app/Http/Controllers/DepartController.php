@@ -38,6 +38,7 @@ class DepartController extends Controller
     public function store(StoreDepartRequest $request)
     {
         $item = Depart::create($request->validated());
+        $item->generateId('CD');
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document

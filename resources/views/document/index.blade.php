@@ -6,7 +6,7 @@
             <h3 class="card-title">Liste des documents</h3>
         </div>
         <div class="card-body">
-            <x-filter url="document" />
+            <x-filter url="document" :create="false" />
         </div>
     </x-slot>
     <thead>

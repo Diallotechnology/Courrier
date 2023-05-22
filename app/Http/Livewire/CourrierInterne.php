@@ -30,7 +30,7 @@ class CourrierInterne extends Component
     public function render()
     {
         if ($this->privacy || $this->priority  || $this->nature || $this->etat || $this->destinataire) {
-            $rows = Interne::with('user','nature','destinataire','expediteur')
+            $rows = Interne::with('user','nature','destinataire','expediteur','reponse')
             ->when($this->privacy && !empty($this->privacy), function ($query) {
                 $query->where('confidentiel', $this->privacy);
             })
@@ -47,7 +47,7 @@ class CourrierInterne extends Component
                 $query->where('etat', $this->etat);
             })->latest()->paginate(15);
         } else {
-            $rows = Interne::with('user','nature','destinataire','expediteur')->latest()->paginate(15);
+            $rows = Interne::with('user','nature','destinataire','expediteur','reponses')->latest()->paginate(15);
         }
         $type = Nature::orderBy('nom')->get();
 

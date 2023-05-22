@@ -18,12 +18,12 @@ class CourrierFactory extends Factory
     public function definition(): array
     {
         return [
-            'reference' => uniqid(),
+            // 'reference' => uniqid(),
             'objet' => $this->faker->sentence(2),
             'correspondant_id' => rand(1,5),
             'nature_id' => rand(1,5),
             'user_id' => rand(1,5),
-            'numero' => uniqid(),
+            // 'numero' => uniqid(),
             'priorite' => $this->faker->randomElement(['Normal','Urgent']),
             'confidentiel' => $this->faker->randomElement(['OUI','NON']),
             'date' => $this->faker->date(),

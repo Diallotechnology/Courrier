@@ -43,29 +43,56 @@ trait DateFormat
         return $this->confidentiel === "OUI" ? true : false;
     }
 
-    public function generateCourrierId()
-    {
 
-        $prefix = 'CO'.Carbon::today()->format('Y').'-';
+    public function generateId(string $prefix_type)
+    {
+        $prefix = $prefix_type . Carbon::today()->format('Y') . '-';
 
         return DB::transaction(function () use ($prefix) {
-            // Verrouille le dernier identifiant de facture enregistré dans la base de données pour la mise à jour
-            $lastInvoice = self::where('numero', 'like', $prefix.'%')
-                ->orderBy('numero', 'desc')
-                ->lockForUpdate()
-                ->first();
-
-            // Si aucun identifiant de facture n'a été enregistré, définit le numéro de séquence à 0
+            // Verrouille le dernier identifiant de courrier enregistré dans la base de données pour la mise à jour
+            // $lastCourrier = self::where('reference', 'like', $prefix .'%')
+            $lastCourrier = self::where('reference', 'like', $prefix .'%')->whereNotNull('reference')
+            ->latest('id')
+            ->lockForUpdate()
+            ->first(['reference']);
+            // Si aucun identifiant de courrier n'a été enregistré, définit le numéro de séquence à 0
             $sequence = 0;
-            if ($lastInvoice) {
-                // Récupère le numéro de séquence de l'identifiant de facture précédent
-                $sequence = (int) substr($lastInvoice->numero, strlen($prefix));
+            if ($lastCourrier) {
+                // Récupère le numéro de séquence de l'identifiant de courrier précédent
+                $sequence = (int)substr($lastCourrier->reference, strlen($prefix));
             }
 
-            // Incrémente le numéro de séquence et génère le nouvel identifiant de facture
+            // Incrémente le numéro de séquence et génère le nouvel identifiant de courrier
             $sequence++;
-            $this->numero = $prefix.$sequence;
+            $newCourrierNumber = $prefix . $sequence;
+            // \dd($newCourrierNumber);
+            // Met à jour le numéro de courrier de l'instance courante
+            $this->reference = $newCourrierNumber;
+            $this->save();
+            return $this;
+        });
+    }
 
+    public function generateNum()
+    {
+        return DB::transaction(function () {
+            $lastCourrier = self::latest()->lockForUpdate()->first();
+            \dd($lastCourrier);
+            // Si aucun identifiant de courrier n'a été enregistré, définit le numéro de séquence à 0
+            $sequence = 0;
+            if ($lastCourrier) {
+                // Récupère le numéro de séquence de l'identifiant de courrier précédent
+                $lastCourrier->increment('numero');
+                $newCourrierNumber = $lastCourrier->numero;
+            //    dd($lastCourrier->numero);
+            }
+            // Incrémente le numéro de séquence et génère le nouvel identifiant de courrier
+            // $sequence+1;
+            // $newCourrierNumber = $sequence;
+
+            // Met à jour le numéro de courrier de l'instance courante
+            $this->numero = $newCourrierNumber;
+            $this->save();
             return $this;
         });
     }

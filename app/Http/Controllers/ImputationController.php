@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enum\CourrierEnum;
+use App\Enum\RoleEnum;
+use App\Enum\TaskEnum;
 use App\Models\Courrier;
 use App\Models\Imputation;
 use App\Models\Departement;
@@ -13,7 +15,10 @@ use App\Http\Requests\StoreImputationRequest;
 use App\Http\Requests\UpdateImputationRequest;
 use App\Models\Annotation;
 use App\Models\Task;
+use App\Models\User;
+use App\Notifications\ImputationNotification;
 use Auth;
+use Illuminate\Support\Facades\Notification;
 
 class ImputationController extends Controller
 {
@@ -25,38 +30,65 @@ class ImputationController extends Controller
     public function store(StoreImputationRequest $request)
     {
         $courrier = Courrier::findOrFail($request->courrier_id);
-        // remove departement and annotation array
-        $pivot_value = Arr::except($request->validated(),['departement_id','annotation_id']);
 
-        // save imputation pivot value
-        $courrier->imputations()->attach($request->departement_id,$pivot_value);
-        // update courrier statut
-        $courrier->update(['etat' => CourrierEnum::IMPUTE]);
-         // get imputation
-        $imp_id = Imputation::whereReference($request->reference)->firstOrFail(['id']);
+        // Save imputation pivot value
+        $pivot_value = Arr::except($request->validated(), ['departement_id', 'annotation_id', 'notif']);
+        $courrier->imputations()->attach($request->departement_id, $pivot_value);
 
-        // save annotations pivot value
-        $imp_id->annotations()->attach($request->annotation_id);
-        // create task to Imputation
-        if(!empty($request->annotation_id)) {
-            $tache = Annotation::whereIn('id', $request->annotation_id)->get();
-            foreach ($tache as $row) {
-                Task::create([
-                     'courrier_id' => $courrier->id,
-                     'createur_id' => Auth::user()->id,
-                     'imputation_id' => $imp_id->id,
-                     'nom' => $row->nom,
-                     'type' => 'imputation',
-                     'description' => $row->nom,
-                     'debut' => now()->today(),
-                     'fin' => $request->delai,
-                 ]);
-             }
+        // Update courrier status
+        if($courrier->Register()) {
+            $courrier->update(['etat' => CourrierEnum::IMPUTE]);
         }
-        $this->history($courrier->id, "Impuatation","Imputé le courrier arrivé le N° $courrier->numero");
-        toastr()->success('Imputation ajouter avec success!');
+
+        // Get imputation
+        $imp_id = Imputation::whereReference($request->reference)->firstOrFail(['id', 'reference']);
+
+        // Save annotations pivot value
+        $imp_id->annotations()->attach($request->annotation_id);
+
+        // Create tasks for imputation
+        if (!empty($request->annotation_id)) {
+            $tache = Annotation::whereIn('id', $request->annotation_id)->get();
+
+            $tache->map(function ($row) use ($courrier, $imp_id, $request) {
+              $task = Task::create([
+                        'courrier_id' => $courrier->id,
+                        'createur_id' => Auth::user()->id,
+                        'imputation_id' => $imp_id->id,
+                        'nom' => $row->nom,
+                        'type' => 'imputation',
+                        'description' => $row->nom,
+                        'debut' => now()->today(),
+                        'fin' => $request->delai,
+                        'etat' => TaskEnum::EN_COURS,
+                    ]);
+                    $task->generateId('TA');
+                    return $task;
+            });
+        }
+
+        // Get notifiable users' emails
+        $users = User::whereIn('departement_id', $request->departement_id)
+            ->whereRole(RoleEnum::SUPERUSER)
+            ->get(['email','id']);
+        $emails = $users->pluck('email')->toArray();
+
+        // Send notification
+        $notification = new ImputationNotification($imp_id, "Vous avez été imputé d'un nouveau courrier");
+        if ($request->notif == 1) {
+            Notification::route('mail', $emails)->notify($notification);
+        } else {
+
+            Notification::send($users, $notification);
+        }
+
+        $this->history($courrier->id, "Impuatation", "Imputé le courrier arrivé le N° $courrier->numero");
+        toastr()->success('Imputation ajoutée avec succès!');
         return back();
     }
+
+
+
 
     /**
      * Display the specified resource.

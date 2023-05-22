@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('nature_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('correspondant_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('reference')->unique();
-            $table->string('numero')->unique();
+            $table->string('reference')->nullable()->unique();
+            $table->integer('numero')->nullable()->unique();
             $table->string('objet');
             $table->string('priorite');
             $table->string('confidentiel');

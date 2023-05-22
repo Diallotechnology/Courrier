@@ -65,6 +65,7 @@ class Task extends Model
         'courrier_id',
         'createur_id',
         'imputation_id',
+        'reference',
         'description',
         'nom',
         'type',

@@ -15,7 +15,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <x-select name="destinataire_id" label="Destinataire (Correspondant)">
+                    <x-select name="destinataire_id[]" multiple
+                        label="Destinataires (Vous pouvez choisir pluisieurs destinataires)">
                         @foreach ($user as $key => $row)
                         <optgroup label="Departement {{ $key }}">
                             @foreach ($row as $item)

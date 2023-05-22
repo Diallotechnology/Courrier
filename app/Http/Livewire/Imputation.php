@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enum\CourrierEnum;
 use Livewire\Component;
 use App\Models\Courrier;
 use App\Models\Departement;
@@ -56,7 +57,7 @@ class Imputation extends Component
             // \dd($rows);
         }
 
-        $arriver = Courrier::with('nature')->latest()->get(['id','numero','reference','date']);
+        $arriver = Courrier::where('etat','!=',CourrierEnum::ARCHIVE)->latest()->get(['id','numero','reference','date']);
         $division = Departement::all();
         return view('livewire.imputation', compact('rows','arriver','division'));
     }

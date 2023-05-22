@@ -86,8 +86,12 @@ class AdminController extends Controller
 
     public function task(): View
     {
-
         return view('task.index');
+    }
+
+    public function suivie(): View
+    {
+        return view('suivie');
     }
 
     public function journal(): View

@@ -30,8 +30,8 @@ class StoreCourrierRequest extends FormRequest
             'priorite'=>'required|string|max:6',
             'observation'=>'string|nullable|max:255',
             'date'=>'required|date',
-            'reference'=> 'required',
-            'numero'=> 'required',
+            // 'reference'=> 'required',
+            // 'numero'=> 'required',
             'files'=> 'nullable',
             // 'files.*'=> 'mimes:png,jpg',
             'nature_id'=>'required|exists:natures,id',
@@ -44,10 +44,8 @@ class StoreCourrierRequest extends FormRequest
     {
         $this->merge([
             'user_id' => Auth::user()->id,
-            'reference' => uniqid(),
-            'numero' => uniqid(),
+            // 'reference' => uniqid(),
+            // 'numero' => uniqid(),
          ]);
     }
-
-      // 'email'=> ['required','email','max:255', Rule::unique('correspondants')->ignore($this->courrier->id)],
 }

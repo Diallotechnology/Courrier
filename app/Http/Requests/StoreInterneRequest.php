@@ -29,13 +29,12 @@ class StoreInterneRequest extends FormRequest
             'priorite'=>'required|string|max:6',
             'contenu'=>'string|nullable',
             'delai'=>'nullable|date',
-            'reference'=> 'required',
             'etat'=> 'required',
             'files'=> 'nullable',
             // 'files.*'=> 'mimes:pdf',
             'nature_id'=>'required|exists:natures,id',
             'user_id'=>'required|exists:users,id',
-            'destinataire_id'=>'required|exists:users,id',
+            'destinataire_id'=>'required|array|exists:users,id',
             'expediteur_id'=>'required|exists:users,id',
         ];
     }
@@ -45,7 +44,6 @@ class StoreInterneRequest extends FormRequest
         $this->merge([
             'user_id' => Auth::user()->id,
             'expediteur_id' => Auth::user()->id,
-            'reference' => uniqid(),
             'etat' => CourrierInterneEnum::SEND->value,
          ]);
     }

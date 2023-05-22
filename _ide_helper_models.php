@@ -329,9 +329,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Document withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Document withoutTrashed()
  * @mixin \Eloquent
+ * @property string $user_id
  * @property string $type
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
  */
 	class Document extends \Eloquent {}
 }
@@ -472,6 +474,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read string $date_format
  * @property-read \App\Models\Nature $nature
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
+ * @property-read int|null $reponses_count
  */
 	class Interne extends \Eloquent {}
 }
@@ -577,6 +581,32 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Reponse
+ *
+ * @property int $id
+ * @property int $interne_id
+ * @property int $user_id
+ * @property string $message
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Interne $interne
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\ReponseFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereInterneId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereUserId($value)
+ */
+	class Reponse extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Structure
  *
  * @property int $id
@@ -660,12 +690,14 @@ namespace App\Models{
  * @mixin \Eloquent
  * @property int|null $imputation_id
  * @property int $createur_id
+ * @property string|null $reference
  * @property-read \App\Models\Courrier|null $courrier
  * @property-read \App\Models\User $createur
  * @property-read \App\Models\Imputation|null $imputation
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreateurId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereImputationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereReference($value)
  */
 	class Task extends \Eloquent {}
 }
@@ -752,6 +784,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
+ * @property-read int|null $reponses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  */

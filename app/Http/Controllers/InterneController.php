@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\CourrierInterneEnum;
 use App\Models\User;
 use App\Models\Nature;
 use App\Models\Interne;
 use App\Models\Document;
 use App\Helper\DeleteAction;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreInterneRequest;
 use App\Http\Requests\UpdateInterneRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Notifications\CourrierNotification;
+use Illuminate\Support\Facades\Notification;
 
 class InterneController extends Controller
 {
@@ -35,32 +38,59 @@ class InterneController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInterneRequest $request)
-    {
-        $item = Interne::create($request->validated());
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('courrier/interne', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $row->getClientOriginalName(),
-                    'type' => 'Interne',
-                    'user_id' => Auth::user()->id,
-                    'chemin' => $chemin,
-                ]);
-                $item->documents()->save($data);
-            endforeach;
-        endif;
-        toastr()->success('Courrier envoyé avec success!');
-        return back();
+
+    public function store(StoreInterneRequest $request) {
+    foreach ($request->destinataire_id as $value) {
+        $itemData = [
+            "objet" => $request->objet,
+            "confidentiel" => $request->confidentiel,
+            "priorite" => $request->priorite,
+            "contenu" => $request->contenu,
+            "etat" => $request->etat,
+            "nature_id" => $request->nature_id,
+            "user_id" => $request->user_id,
+            "destinataire_id" => $value,
+            "expediteur_id" => $request->expediteur_id,
+        ];
+
+        $item = Interne::create($itemData);
+        $item->generateId('CI');
+
+        $user = User::whereId($value)->first(['email','id']);
+
+        $notification = new CourrierNotification($item, "Vous avez reçu un nouveau courrier interne");
+        // Notification::route('mail', $emails)->notify($notification);
+        $user->notify($notification);
     }
+
+    if ($request->hasFile('files')) {
+        foreach ($request->file('files') as $key => $row) {
+            $filename = $row->hashName();
+            $chemin = $row->storeAs('courrier/interne', $filename, 'public');
+            $data = new Document([
+                'libelle' => $row->getClientOriginalName(),
+                'type' => 'Interne',
+                'user_id' => Auth::user()->id,
+                'chemin' => $chemin,
+            ]);
+            $item->documents()->save($data);
+        }
+    }
+
+    toastr()->success('Courrier envoyé avec succès!');
+    return back();
+    }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Interne $interne)
     {
+        if($interne->Recu()) {
+
+            $interne->update(['etat' => CourrierInterneEnum::READ]);
+        }
         return view('interne.show', compact('interne'));
     }
 

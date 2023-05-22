@@ -1,5 +1,5 @@
 <div>
-    <x-table>
+    <x-table :rows="$rows">
         <x-slot name="header">
             <div class="card-header">
                 <h3 class="card-title">Lites des taches
@@ -45,6 +45,7 @@
             <tr>
                 <th>ID</th>
                 <th>Utilisateur</th>
+                <th>reference</th>
                 <th>Type de tache</th>
                 <th>nom de la tache</th>
                 <th>Debut de la tache</th>
@@ -72,6 +73,7 @@
                     inexistant
                     @endif
                 </td>
+                <td>{{ $row->reference }}</td>
                 <td>{{ $row->type }}</td>
                 <td>
                     {{ $row->nom }}
@@ -108,9 +110,12 @@
                 <x-input type="text" name="nom" place="le nom de la tache" />
             </div>
             <div class="col-md-6">
-                <x-select name="type" label="type de tache">
-                    <option value="utilisateur">Utilisateur</option>
-                </x-select>
+                <div wire:ignore>
+                    <x-select name="type" id="type" label="type de tache">
+                        <option value="utilisateur">Utilisateur</option>
+                        <option value="imputation">Imputation</option>
+                    </x-select>
+                </div>
             </div>
             <div class="col-md-12">
                 <div wire:ignore>
@@ -145,9 +150,11 @@
                     onChange: function(value) {
                         var modelName = $(this.input).attr('wire:model');
                         @this.set(modelName, value);
+
                     }
                 });
             });
-        });
+
+            });
 </script>
 @endpush

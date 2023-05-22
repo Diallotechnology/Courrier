@@ -2,20 +2,20 @@
 
 namespace App\Notifications;
 
-use App\Models\Imputation;
+use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ImputationNotification extends Notification
+class TaskNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private Imputation $imputation, private string $message)
+    public function __construct(private Task $task, private string $message)
     {
         //
     }
@@ -37,7 +37,7 @@ class ImputationNotification extends Notification
     {
         return (new MailMessage)
                     ->line($this->message)
-                    ->action("Voir l'imputation", route('imputation.show',$this->imputation))
+                    ->action("Voir la tache", route('task.show',$this->task))
                     ->line('Merci!');
     }
 
@@ -48,10 +48,12 @@ class ImputationNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $ref = $this->imputation->reference;
+
+        $etat = $this->task->etat->value;
         return [
-            'message' =>  $this->message.' REF '.$this->imputation->reference,
-            'type' =>  "imputation REF $ref",
+            'message' =>   $this->message.'REF'.$this->task->reference,
+            'type' =>  "Tache $etat",
+
         ];
     }
 }

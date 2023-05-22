@@ -140,8 +140,8 @@
         </div>
         <div class="col-md-6">
             <x-select name="notif" label="Notification par email">
-                <option value="OUI">OUI</option>
-                <option value="NON">NON</option>
+                <option value="1">OUI</option>
+                <option value="0">NON</option>
             </x-select>
         </div>
 

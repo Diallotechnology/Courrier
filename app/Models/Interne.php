@@ -4,16 +4,18 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Nature;
+use App\Models\Reponse;
 use App\Models\Document;
 use App\Helper\DateFormat;
 use Illuminate\Support\Carbon;
 use App\Enum\CourrierInterneEnum;
 use App\Http\Livewire\CourrierInterne;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Interne
@@ -140,6 +142,16 @@ class Interne extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get all of the reponses for the Interne
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reponses(): HasMany
+    {
+        return $this->hasMany(Reponse::class);
+    }
+
             /**
      * Get all of the document's Interne.
      */
@@ -167,6 +179,11 @@ class Interne extends Model
     public function Recu(): bool
     {
         return $this->etat == CourrierInterneEnum::RECU;
+    }
+
+    public function Read(): bool
+    {
+        return $this->etat == CourrierInterneEnum::READ;
     }
 
 }

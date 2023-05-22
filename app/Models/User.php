@@ -11,6 +11,7 @@ use App\Models\History;
 use App\Models\Interne;
 use App\Models\Journal;
 use App\Models\Rapport;
+use App\Models\Reponse;
 use App\Models\Courrier;
 use App\Models\Document;
 use App\Helper\DateFormat;
@@ -251,5 +252,15 @@ class User extends Authenticatable
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Get all of the reponses for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reponses(): HasMany
+    {
+        return $this->hasMany(Reponse::class);
     }
 }

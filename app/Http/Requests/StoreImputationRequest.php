@@ -27,6 +27,7 @@ class StoreImputationRequest extends FormRequest
             'observation'=>'string|nullable|max:255',
             'delai'=>'nullable|date',
             'reference'=> 'required',
+            'notif'=> 'required|boolean',
             'courrier_id'=>'required|exists:courriers,id',
             'departement_id'=>'required|array|exists:departements,id',
             'annotation_id'=>'required|array|exists:annotations,id',

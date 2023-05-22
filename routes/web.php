@@ -14,6 +14,7 @@ use App\Http\Controllers\InterneController;
 use App\Http\Controllers\NatureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportController;
+use App\Http\Controllers\ReponseController;
 use App\Http\Controllers\StructureController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -34,6 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::get('courrier/arriver','arriver')->name('arriver');
         Route::get('courrier/depart','depart')->name('depart');
         Route::get('courrier/interne','interne')->name('interne');
+        Route::get('courrier/suivie','suivie')->name('suivie');
         Route::get('nature','nature')->name('nature');
         Route::get('correspondant','correspondant')->name('correspondant');
         Route::get('document', 'document')->name('document');
@@ -151,7 +153,6 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-
 Route::resource('annotation',AnnotationController::class)->except('index','show','create');
 Route::resource('user',UserController::class)->except('index','edit','create','store');
 Route::resource('archive',ArchiveController::class)->except('index');
@@ -165,6 +166,7 @@ Route::resource('document',DocumentController::class)->except('index','create');
 Route::resource('history',HistoryController::class)->except('index');
 Route::resource('imputation',ImputationController::class)->except('index');
 Route::resource('nature',NatureController::class)->except('index','show','create');
+Route::resource('reponse',ReponseController::class)->except('index','show','create');
 Route::resource('rapport',RapportController::class)->except('index');
 Route::resource('task',TaskController::class)->except('index');
 

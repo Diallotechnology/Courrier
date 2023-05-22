@@ -55,39 +55,35 @@ class DocumentController extends Controller
     public function update(Request $request, Document $document)
     {
         $request->validate([
-            'courrier'=> 'required',
-            'libelle'=> 'required',
-            'file'=> 'nullable|mimes:png,jpg,pdf',
+            'courrier' => 'required',
+            'libelle' => 'required',
+            'file' => 'nullable|mimes:png,jpg,pdf',
         ]);
-        if ($request->hasFile('file')):
 
-        $this->file_delete($document);
-        // renome le document
-        $filename =  $request->file->hashName();
+        if ($request->hasFile('file')) {
+            $this->file_delete($document);
+            $filename = $request->file->hashName();
 
-        if($document->type === "Arrivé") {
-            $chemin = $request->file->storeAs('courrier/arriver', $filename, 'public');
-        }
-        if($document->type === "Depart") {
-            $chemin = $request->file->storeAs('courrier/depart', $filename, 'public');
-        }
-        if($document->type === "Interne") {
-            $chemin = $request->file->storeAs('courrier/interne', $filename, 'public');
-        }
-        $document->update([
+            $directory = 'courrier/' . strtolower($document->type);
+            $chemin = $request->file->storeAs($directory, $filename, 'public');
+            $documentData = [
+                'libelle' => $request->libelle,
+                'documentable_id' => $request->courrier,
+                'chemin' => $chemin,
+            ];
+
+        } else {
+           $documentData = [
             'libelle' => $request->libelle,
             'documentable_id' => $request->courrier,
-            'chemin' => $chemin,
-        ]);
-        endif;
-        $document->update([
-            'libelle' => $request->libelle,
-            'documentable_id' => $request->courrier,
+        ];
 
-        ]);
-        toastr()->success('Document mise à jour avec success!');
-        return \back();
+        }
+        $document->update($documentData);
+        toastr()->success('Document mise à jour avec succès!');
+        return redirect()->back();
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -2,20 +2,20 @@
 
 namespace App\Notifications;
 
-use App\Models\Imputation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ImputationNotification extends Notification
+class CourrierNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private Imputation $imputation, private string $message)
+    public function __construct(private Model $courrier, private string $message)
     {
         //
     }
@@ -35,10 +35,19 @@ class ImputationNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-                    ->line($this->message)
-                    ->action("Voir l'imputation", route('imputation.show',$this->imputation))
-                    ->line('Merci!');
+        if (class_basename($this->courrier) === "Interne") {
+            return (new MailMessage)
+            ->line($this->message)
+            ->action("Voir le courrier", route('interne.show',$this->courrier))
+            ->line('Merci!');
+        }
+        if (class_basename($this->courrier) === "Courrier") {
+            return (new MailMessage)
+            ->line($this->message)
+            ->action("Voir le courrier", route('courrier.show',$this->courrier))
+            ->line('Merci!');
+        }
+
     }
 
     /**
@@ -48,10 +57,10 @@ class ImputationNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $ref = $this->imputation->reference;
+        $ref = $this->courrier->reference;
         return [
-            'message' =>  $this->message.' REF '.$this->imputation->reference,
-            'type' =>  "imputation REF $ref",
+            'message' =>   $this->message.'REF'.$this->courrier->reference,
+            'type' =>  "courrier $ref",
         ];
     }
 }
