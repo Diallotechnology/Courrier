@@ -78,6 +78,14 @@
         </div>
     </div>
 </div>
+@empty(!$interne->contenu)
+<div class="card card-lg">
+    <div class="card-body markdown">
+        <h2 class="text-center m-3">Contenu du courrier</h2>
+        {!! $interne->contenu !!}
+    </div>
+</div>
+@endempty
 <div class="row mt-2">
     @foreach ($interne->documents as $row)
     <div class="col-md-3">

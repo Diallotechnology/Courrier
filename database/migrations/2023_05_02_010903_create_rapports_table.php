@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('rapports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('courrier_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('nom');
+            $table->foreignId('courrier_id')->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('reference')->nullable();
+            $table->string('objet');
             $table->string('type');
             $table->longText('contenu')->nullable();
-            $table->string('file')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

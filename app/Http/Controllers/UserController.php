@@ -48,7 +48,6 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'poste' => $request->poste,
-            'photo' => $request->poste,
             'role' => $request->role,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -64,7 +63,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.update', compact('user'));
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -72,7 +71,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('user.update', compact('user'));
     }
 
     /**

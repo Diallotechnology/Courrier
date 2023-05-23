@@ -15,9 +15,11 @@ $disabled ? 'disabled' : '' }}
 >
 <div {{ $attributes->merge(['class' => 'valid-feedback']) }} ></div>
 <div {{ $attributes->merge(['class' => 'invalid-feedback']) }}>Ce champ est obligatoire.</div>
+@if ($errors->get($name))
 <ul {{ $attributes->merge(['class' => 'text-sm text-danger space-y-1']) }}>
-    @error($name)
+    @foreach ((array) $errors->get($name) as $message)
     <li>{{ $message }}</li>
-    @enderror
+    @endforeach
 </ul>
+@endif
 {{ $slot }}

@@ -19,7 +19,6 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'photo' => $this->faker->imageUrl(100,100),
             'departement_id' => rand(1,5),
             'poste' => $this->faker->jobTitle(),
             'role' =>  $this->faker->randomElement(['admin','superuser','agent','secretaire']),

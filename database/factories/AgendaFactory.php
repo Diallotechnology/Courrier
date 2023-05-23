@@ -17,7 +17,9 @@ class AgendaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nom' => $this->faker->jobTitle(),
+            'debut' => $this->faker->dateTime('now'),
+            'fin' => $this->faker->dateTime('now'),
         ];
     }
 }

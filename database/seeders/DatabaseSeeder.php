@@ -17,6 +17,7 @@ use App\Models\Correspondant;
 use App\Models\Depart;
 use App\Models\Document;
 use App\Models\Interne;
+use App\Models\Rapport;
 use App\Models\Task;
 use Illuminate\Database\Seeder;
 
@@ -40,8 +41,8 @@ class DatabaseSeeder extends Seeder
         Interne::factory(60)->create();
         Document::factory(15)->create();
         Imputation::factory(15)->hasAnnotations(6)->create();
-        // Task::factory(15)->create();
-        // Agenda::factory(15)->create();
+        Rapport::factory(15)->create();
+        Agenda::factory(150)->create();
         // Journal::factory(10)->create();
 
 

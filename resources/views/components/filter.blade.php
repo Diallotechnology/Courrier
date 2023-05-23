@@ -1,4 +1,4 @@
-@props(['btn'=>'', 'url' => '', 'trash'=>'', 'create' => true])
+@props(['btn'=>'','btn_filter'=> true, 'url' => '', 'trash'=>'', 'create' => true])
 <div {{ $attributes->merge(['class' => 'd-flex']) }} >
     <div {{ $attributes->merge(['class' => 'text-muted']) }} >
         <div {{ $attributes->merge(['class' => 'ms-2 d-inline-block']) }} >
@@ -20,12 +20,14 @@
             </div>
         </div>
         @empty(!$btn)
+        @if($btn_filter)
         <button {{ $attributes->merge(['class' => 'btn btn-indigo mx-2']) }} {{ $attributes->merge(['type' => 'button'])
             }} data-bs-toggle="collapse" data-bs-target="#collapse-1"
             aria-expanded="true">
             <i class="ti ti-filter"></i>
             Filtre Avancer
         </button>
+        @endif
         @endempty
 
     </div>

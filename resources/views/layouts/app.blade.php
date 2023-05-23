@@ -165,6 +165,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
     <script src="{{ asset('/js/main.js') }}"></script>
+    @stack('scripts')
     @livewireScripts
 
 </body>

@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
         Route::get('user','user')->name('user');
         Route::get('tache','task')->name('task');
         Route::get('journal','journal')->name('journal');
+        Route::get('agenda','agenda')->name('agenda');
+        Route::get('rapport','rapport')->name('rapport');
     });
 
     Route::controller(CorrespondantController::class)->group(function () {
@@ -150,6 +152,14 @@ Route::middleware('auth')->group(function () {
         Route::get('imputation/delete/all','all_delete')->name('imputation.delete');
         Route::get('imputation/restore/{id}','recover')->whereNumber('id');
         Route::delete('imputation/delete/{id}','force_delete')->whereNumber('id');
+    });
+
+    Route::controller(RapportController::class)->group(function () {
+        Route::get('rapport/trash','trash')->name('rapport.trash');
+        Route::get('rapport/restore/all','all_recover')->name('rapport.restore');
+        Route::get('rapport/delete/all','all_delete')->name('rapport.delete');
+        Route::get('rapport/restore/{id}','recover')->whereNumber('id');
+        Route::delete('rapport/delete/{id}','force_delete')->whereNumber('id');
     });
 });
 

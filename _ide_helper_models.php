@@ -25,6 +25,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Agenda whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Agenda whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $nom
+ * @property string $debut
+ * @property string $fin
+ * @method static \Illuminate\Database\Eloquent\Builder|Agenda whereDebut($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Agenda whereFin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Agenda whereNom($value)
  */
 	class Agenda extends \Eloquent {}
 }
@@ -575,6 +581,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withoutTrashed()
  * @mixin \Eloquent
+ * @property string $objet
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read int|null $documents_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereObjet($value)
  */
 	class Rapport extends \Eloquent {}
 }

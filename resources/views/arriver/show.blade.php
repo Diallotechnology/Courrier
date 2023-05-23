@@ -141,7 +141,7 @@
 <x-table>
     <x-slot name="header">
         <div class="card-header">
-            <h3 class="card-title">Lites des taches
+            <h3 class="card-title">Liste des taches
             </h3>
         </div>
     </x-slot>
@@ -199,7 +199,7 @@
 <x-table>
     <x-slot name="header">
         <div class="card-header">
-            <h3 class="card-title">Lites des intervenants
+            <h3 class="card-title">Liste des intervenants
             </h3>
         </div>
     </x-slot>

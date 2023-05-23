@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('content')
-@extends('layouts.app')
-@section('content')
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Informations de la tache N° {{ $task->reference }}</h3>
@@ -85,5 +83,4 @@
         </div>
     </div>
 </div>
-@endsection
 @endsection

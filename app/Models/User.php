@@ -111,7 +111,6 @@ class User extends Authenticatable
         'email',
         'password',
         'poste',
-        'photo',
         'etat',
         'role',
     ];

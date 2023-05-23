@@ -14,7 +14,7 @@
             <th>ID</th>
             <th>Libelle</th>
             <th>Courrier reference</th>
-            <th>type courrier</th>
+            <th>type</th>
             <th>Chemin</th>
             <th>Action</th>
         </tr>

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Courrier;
+use App\Models\Document;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -47,6 +49,36 @@ class Rapport extends Model
 {
     use HasFactory, DateFormat;
 
+    const TYPE = [
+        "Rapport d'activité",
+        "Rapport financier",
+        "Rapport de vente",
+        "Rapport de mission",
+        "Rapport de marketing",
+        "Rapport de gestion des ressources humaines",
+        "Rapport de recherche et développement",
+        "Rapport de gestion de projet",
+        "Rapport de qualité",
+        "Rapport de gestion environnementale",
+        "Rapport annuel",
+        "Rapport de performance",
+        "Rapport de conformité",
+        "Rapport d'audit",
+        "Rapport de transparence",
+        "Rapport de gestion des risques",
+        "Rapport d'évaluation des politiques publiques",
+        "Rapport de gestion des actifs publics",
+        "Rapport de conformité financière",
+        "Autres",
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['objet','user_id','type','contenu','courrier_id'];
+
     /**
      * Get the user that owns the Rapport
      *
@@ -65,5 +97,13 @@ class Rapport extends Model
     public function courrier(): BelongsTo
     {
         return $this->belongsTo(Courrier::class);
+    }
+
+    /**
+     * Get all of the document's Rapport.
+     */
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'documentable');
     }
 }

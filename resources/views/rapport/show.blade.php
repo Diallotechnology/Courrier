@@ -1,0 +1,51 @@
+@extends('layouts.app')
+@section('content')
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Informations du rapport N° {{ $rapport->reference }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="datagrid">
+            <div class="datagrid-item">
+                <div class="datagrid-title">Utilisateur Initiateur</div>
+                <div class="datagrid-content">
+                    <x-user-avatar :row="$rapport" />
+                </div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">reference du rapport</div>
+                <div class="datagrid-content">{{ $rapport->reference }}</div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Type de rapport</div>
+                <div class="datagrid-content">{{ $rapport->type }}</div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Objet du rapport</div>
+                <div class="datagrid-content">{{ $rapport->objet }}</div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Date de creation</div>
+                <div class="datagrid-content">{{ $rapport->created_at }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    @foreach ($rapport->documents as $row)
+    <div class="col-md-3">
+        <x-card-document :row="$row" />
+    </div>
+    @endforeach
+</div>
+
+@empty(!$rapport->contenu)
+<div class="card card-lg">
+    <div class="card-body markdown">
+        <h2 class="text-center m-3">Contenu du rapport</h2>
+        {!! $rapport->contenu !!}
+    </div>
+</div>
+@endempty
+@endsection

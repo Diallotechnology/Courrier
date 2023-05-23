@@ -10,7 +10,8 @@
         </div>
     </a>
     <div {{ $attributes->merge(['class' => 'dropdown-menu dropdown-menu-end dropdown-menu-arrow']) }} >
-        <a href="" {{ $attributes->merge(['class' => 'dropdown-item']) }} >Profile</a>
+        <a href="{{ route('user.show',Auth::user()) }}" {{ $attributes->merge(['class' => 'dropdown-item']) }}
+            >Profile</a>
         <div {{ $attributes->merge(['class' => 'dropdown-divider']) }} ></div>
         <a class="dropdown-item" href="{{ route('logout') }}"
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Deconnexion</a>

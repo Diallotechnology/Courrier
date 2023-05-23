@@ -3,32 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rapport;
+use App\Models\Courrier;
+use App\Models\Document;
+use Illuminate\Support\Arr;
+use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreRapportRequest;
+use App\Http\Requests\UpdateRapportRequest;
 
 class RapportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    use DeleteAction;
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $courrier = Courrier::all();
+        $type = Rapport::TYPE;
+        return view('rapport.create', \compact('courrier','type'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRapportRequest $request)
     {
-        //
+        $data = Arr::except($request->validated(), ['files']);
+        $rapport = Rapport::create($data);
+        $rapport->generateId('RA');
+        if ($request->hasFile('files')):
+            foreach ($request->file('files') as $key => $row):
+                // renome le document
+                $filename =  $row->hashName();
+                $chemin = $row->storeAs('rapport', $filename, 'public');
+                $data = new Document([
+                    'libelle' => $request->type,
+                    'user_id' => Auth::user()->id,
+                    'type' => 'Rapport',
+                    'chemin' => $chemin,
+                ]);
+                $rapport->documents()->save($data);
+            endforeach;
+        endif;
+        toastr()->success('Rapport ajouter avec success!');
+        return back();
     }
 
     /**
@@ -36,7 +57,7 @@ class RapportController extends Controller
      */
     public function show(Rapport $rapport)
     {
-        //
+        return view('rapport.show', compact('rapport'));
     }
 
     /**
@@ -44,22 +65,70 @@ class RapportController extends Controller
      */
     public function edit(Rapport $rapport)
     {
-        //
+        $courrier = Courrier::all();
+        $type = Rapport::TYPE;
+        return view('rapport.update', compact('rapport','courrier','type'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rapport $rapport)
+    public function update(UpdateRapportRequest $request, Rapport $rapport)
     {
-        //
+        $rapport->update($request->validated());
+        if ($request->hasFile('files')):
+            foreach ($request->file('files') as $key => $row):
+                // renome le document
+                $filename =  $row->hashName();
+                $chemin = $row->storeAs('rapport', $filename, 'public');
+                $data = new Document([
+                    'libelle' => $request->type,
+                    'user_id' => Auth::user()->id,
+                    'type' => 'Rapport',
+                    'chemin' => $chemin,
+                ]);
+                $rapport->documents()->save($data);
+            endforeach;
+        endif;
+        toastr()->success('Rapport mise à jour avec success!');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rapport $rapport)
+    public function destroy(int $rapport)
     {
-        //
+        $delete = Rapport::findOrFail($rapport);
+        return  $this->supp($delete);
+    }
+
+    public function trash()
+    {
+        $rows = Rapport::onlyTrashed()->latest()->paginate(15);
+        return view('rapport.trash', compact('rows'));
+    }
+
+    public function recover(int $id) {
+
+        $row = Rapport::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Restore($row);
+    }
+
+    public function force_delete(int $id) {
+
+        $row = Rapport::onlyTrashed()->whereId($id)->firstOrFail();
+        return $this->Remove($row);
+    }
+
+
+    public function all_recover() {
+
+        return $this->All_restore(Rapport::onlyTrashed());
+    }
+
+    public function all_delete() {
+
+        return $this->All_remove(Rapport::onlyTrashed());
     }
 }

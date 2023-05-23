@@ -39,7 +39,7 @@ class CourrierController extends Controller
     {
 
         $item = Courrier::create($request->validated());
-        $item->generateId('CA');
+        $ref = $item->generateId('CA');
         $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé le N° $item->numero");
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
@@ -47,7 +47,7 @@ class CourrierController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('courrier/arriver', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $row->getClientOriginalName(),
+                    'libelle' => $ref,
                     'user_id' => Auth::user()->id,
                     'type' => 'Arrivé',
                     'chemin' => $chemin,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agenda;
 use App\Models\Annotation;
 use App\Models\Correspondant;
 use App\Models\Courrier;
@@ -12,6 +13,7 @@ use App\Models\Imputation;
 use App\Models\Interne;
 use App\Models\Journal;
 use App\Models\Nature;
+use App\Models\Rapport;
 use App\Models\Structure;
 use App\Models\Task;
 use App\Models\User;
@@ -92,6 +94,27 @@ class AdminController extends Controller
     public function suivie(): View
     {
         return view('suivie');
+    }
+
+    public function rapport(): View
+    {
+        $rows = Rapport::latest()->paginate(15);
+        return view('rapport.index', compact('rows'));
+    }
+
+    public function agenda(): View
+    {
+        $events = [];
+        $agenda = Agenda::all();
+
+        foreach ($agenda as $row) {
+            $events[] = [
+                'title' => $row->nom,
+                'start' => $row->debut,
+                'end' => $row->fin,
+            ];
+        }
+        return view('agenda', \compact('events'));
     }
 
     public function journal(): View
