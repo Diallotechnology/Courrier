@@ -16,7 +16,8 @@ class CorrespondantController extends Controller
      */
     public function store(FormeCorrespondantRequest $request)
     {
-        Correspondant::create($request->validated());
+       $item =  Correspondant::create($request->validated());
+        $this->journal("Ajout du correspondant N°$item->id");
         toastr()->success('Correspondant ajouter avec success!');
         return back();
     }
@@ -54,6 +55,7 @@ class CorrespondantController extends Controller
     public function destroy(int $correspondant)
     {
         $delete = Correspondant::findOrFail($correspondant);
+        $this->journal("Suppression du correspondant N°$delete->id");
         return  $this->supp($delete);
     }
 
@@ -66,23 +68,25 @@ class CorrespondantController extends Controller
     public function recover(int $id) {
 
         $row = Correspondant::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("restauré le correspondant N°$row->id");
         return $this->Restore($row);
     }
 
     public function force_delete(int $id) {
 
         $row = Correspondant::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("Suppression definitive du correspondant N°$row->id");
         return $this->Remove($row);
     }
 
 
     public function all_recover() {
-
+        $this->journal("Restauré tous les correspondant");
         return $this->All_restore(Correspondant::onlyTrashed());
     }
 
     public function all_delete() {
-
+        $this->journal("Vider la corbeille  des correspondants");
         return $this->All_remove(Correspondant::onlyTrashed());
     }
 }

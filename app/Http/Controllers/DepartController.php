@@ -38,14 +38,14 @@ class DepartController extends Controller
     public function store(StoreDepartRequest $request)
     {
         $item = Depart::create($request->validated());
-        $item->generateId('CD');
+        $ref = $item->generateId('CA');
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('courrier/depart', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $row->getClientOriginalName(),
+                    'libelle' => $ref,
                     'user_id' => Auth::user()->id,
                     'type' => 'Depart',
                     'chemin' => $chemin,
@@ -53,6 +53,7 @@ class DepartController extends Controller
                 $item->documents()->save($data);
             endforeach;
         endif;
+        $this->journal("Ajout du courrier depart REF N°$ref");
         toastr()->success('Courrier ajouter avec success!');
         return back();
     }
@@ -106,6 +107,7 @@ class DepartController extends Controller
     public function destroy(int $depart)
     {
         $delete = Depart::findOrFail($depart);
+        $this->journal("Suppression du courrier depart REF N°$delete->reference");
         return  $this->supp($delete);
     }
 
@@ -118,6 +120,7 @@ class DepartController extends Controller
     public function recover(int $id) {
 
         $row = Depart::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("restauré le courrier depart REF N°$row->reference");
         return $this->Restore($row);
     }
 
@@ -129,17 +132,19 @@ class DepartController extends Controller
                 $this->file_delete($item);
             }
         }
+        $this->journal("Suppression definitive du courrier depart REF N°$row->reference");
         return $this->Remove($row);
     }
 
 
     public function all_recover() {
 
+        $this->journal("Restauré de tous les courriers depart");
         return $this->All_restore(Depart::onlyTrashed());
     }
 
     public function all_delete() {
-
+        $this->journal("Vidé la corbeille du courrier depart");
         return $this->All_remove(Depart::onlyTrashed());
     }
 }

@@ -9,8 +9,6 @@ use App\Models\Courrier;
 use App\Models\Depart;
 use App\Models\Departement;
 use App\Models\Document;
-use App\Models\Imputation;
-use App\Models\Interne;
 use App\Models\Journal;
 use App\Models\Nature;
 use App\Models\Rapport;
@@ -46,30 +44,26 @@ class AdminController extends Controller
         return view('correspondant.index', compact('rows','structure'));
     }
 
-    public function arriver(): View
+    public function dashboard(): View
     {
-        return view('arriver.index');
-    }
+        $arriver = Courrier::selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')->orderBy('day')
+        ->groupBy('day')->pluck('total_arrriver', 'day');
 
-    public function depart(): View
-    {
-        $rows = Depart::with('user','nature','correspondant','courrier')->latest()->paginate(15);
-        $courrier = Courrier::with('nature','correspondant')->latest()->get(['id','numero','reference','date']);
-        $correspondant = Correspondant::orderBy('nom')->get();
-        $nature = Nature::orderBy('nom')->get();
-        return view('depart.index', compact('rows','correspondant','nature','courrier'));
-    }
+        $depart = Courrier::selectRaw('COUNT(id) as total_depart, DATE(created_at) as day')->orderBy('day')
+        ->groupBy('day')->pluck('total_depart', 'day');
 
-    public function interne(): View
-    {
+        $interne = Courrier::selectRaw('COUNT(id) as total_interne, DATE(created_at) as day')->orderBy('day')
+        ->groupBy('day')->pluck('total_interne', 'day');
 
-        return view('interne.index');
+        $tasks = task::latest()->take(6)->get();
+        // \dd($arriver->values());
+        return view('dashboard', compact('arriver','tasks','interne','depart'));
     }
 
     public function structure(): View
     {
         $rows = Structure::withCount('departements')->latest()->paginate(15);
-        return view('structure.index', compact('rows'));
+        return view('structure.index', compact('rows','tasks'));
     }
 
     public function user(): View
@@ -84,16 +78,6 @@ class AdminController extends Controller
         $rows = Departement::withCount('users')->with('structure')->latest()->paginate(15);
         $structure = Structure::all(['id','nom']);
         return view('departement.index', compact('rows','structure'));
-    }
-
-    public function task(): View
-    {
-        return view('task.index');
-    }
-
-    public function suivie(): View
-    {
-        return view('suivie');
     }
 
     public function rapport(): View
@@ -121,10 +105,5 @@ class AdminController extends Controller
     {
         $rows = Journal::with('users')->latest()->paginate(15);
         return view('journal.index', compact('rows'));
-    }
-
-    public function imputation(): View
-    {
-        return view('imputation.index');
     }
 }

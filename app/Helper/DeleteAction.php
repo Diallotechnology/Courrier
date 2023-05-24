@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use App\Models\History;
+use App\Models\Journal;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -19,6 +20,14 @@ trait DeleteAction
             'courrier_id' => $id,
             'action' => $action,
             'description' => $description,
+        ]);
+    }
+
+    public function journal(string $action): void
+    {
+        Journal::create([
+            'user_id' => Auth::user()->id,
+            'libelle' => $action,
         ]);
     }
 

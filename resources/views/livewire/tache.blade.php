@@ -2,7 +2,7 @@
     <x-table :rows="$rows">
         <x-slot name="header">
             <div class="card-header">
-                <h3 class="card-title">Lites des taches
+                <h3 class="card-title">Liste des taches
                     <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
                 </h3>
 

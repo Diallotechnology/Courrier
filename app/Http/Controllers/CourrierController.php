@@ -40,7 +40,7 @@ class CourrierController extends Controller
 
         $item = Courrier::create($request->validated());
         $ref = $item->generateId('CA');
-        $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé le N° $item->numero");
+        $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé REF N° $item->reference");
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
@@ -55,6 +55,7 @@ class CourrierController extends Controller
                 $item->documents()->save($data);
             endforeach;
         endif;
+        $this->journal("Ajout du courrier REF N°$ref");
         toastr()->success('Courrier ajouter avec success!');
         return back();
     }
@@ -64,9 +65,9 @@ class CourrierController extends Controller
      */
     public function show(Courrier $arriver)
     {
-        // \dd($arriver->load('tasks'));
+
         $imp = Imputation::with('departement')->whereCourrierId($arriver->id)->get()->groupBy('reference');
-        // \dd($imp);
+
         return view('arriver.show', compact('arriver','imp'));
     }
 
@@ -100,7 +101,7 @@ class CourrierController extends Controller
                 ]);
                 $arriver->documents()->save($data);
             endforeach;
-            $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé le N° $arriver->numero");
+            $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé le N° $arriver->reference");
         endif;
         toastr()->success('Courrier mise à jour avec success!');
         return back();
@@ -112,6 +113,7 @@ class CourrierController extends Controller
     public function destroy(int $arriver)
     {
         $delete = Courrier::findOrFail($arriver);
+        $this->journal("Suppression du courrier REF N°$delete->reference");
         return  $this->supp($delete);
     }
 
@@ -125,6 +127,7 @@ class CourrierController extends Controller
     public function recover(int $id) {
 
         $row = Courrier::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("restauré le courrier REF N°$row->reference");
         return $this->Restore($row);
     }
 
@@ -136,17 +139,18 @@ class CourrierController extends Controller
                 $this->file_delete($item);
             }
         }
+        $this->journal("Suppression definitive du courrier REF N°$row->reference");
         return $this->Remove($row);
     }
 
 
     public function all_recover() {
-
+        $this->journal("Restauré de tous les courriers");
         return $this->All_restore(Courrier::onlyTrashed());
     }
 
     public function all_delete() {
-
+        $this->journal("Vidé la corbeille du courrier");
         return $this->All_remove(Courrier::onlyTrashed());
     }
 }

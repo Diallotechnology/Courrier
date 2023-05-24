@@ -82,7 +82,8 @@ class ImputationController extends Controller
             Notification::send($users, $notification);
         }
 
-        $this->history($courrier->id, "Impuatation", "Imputé le courrier arrivé le N° $courrier->numero");
+        $this->history($courrier->id, "Impuatation", "Imputé le courrier arrivé le N° $courrier->reference");
+        // $this->journal("Ajout du correspondant N°$item->id");
         toastr()->success('Imputation ajoutée avec succès!');
         return back();
     }
@@ -125,6 +126,7 @@ class ImputationController extends Controller
     public function destroy(int $imputation)
     {
         $delete = Imputation::findOrFail($imputation);
+        $this->journal("Suppression du l'imputation N°$delete->id");
         return  $this->supp($delete);
     }
 
@@ -137,23 +139,25 @@ class ImputationController extends Controller
     public function recover(int $id) {
 
         $row = Imputation::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("restauré l'imputation N°$row->id");
         return $this->Restore($row);
     }
 
     public function force_delete(int $id) {
 
         $row = Imputation::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("Suppression definitive de l'imputation N°$row->id");
         return $this->Remove($row);
     }
 
 
     public function all_recover() {
-
+        $this->journal("Restauré tous les imputations");
         return $this->All_restore(Imputation::onlyTrashed());
     }
 
     public function all_delete() {
-
+        $this->journal("Vider la corbeille  des imputations");
         return $this->All_remove(Imputation::onlyTrashed());
     }
 }

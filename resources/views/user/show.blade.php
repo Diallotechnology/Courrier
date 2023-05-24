@@ -37,7 +37,7 @@
                     </div>
                     <div class="col">
                         <div class="font-weight-medium">
-                            Total Courrier arrivés
+                            Total Courrier arrivé
                         </div>
                         <div class="text-muted">
                             {{ count($user->courriers) }}
@@ -156,7 +156,7 @@
                     </div>
                     <div class="col">
                         <div class="font-weight-medium">
-                            Total Annotations
+                            Totale annotation
                         </div>
                         <div class="text-muted">
                             {{ count($user->annotations) }}
@@ -190,7 +190,7 @@
                     </div>
                     <div class="col">
                         <div class="font-weight-medium">
-                            Total Rapports
+                            Total Rapport
                         </div>
                         <div class="text-muted">
                             {{ count($user->rapports) }}

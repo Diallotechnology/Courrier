@@ -19,6 +19,7 @@ class TaskFactory extends Factory
     {
         return [
             'createur_id' => rand(1,10),
+            'courrier_id' => rand(1,10),
             'nom' => $this->faker->company(),
             'description' => $this->faker->sentence(2),
             'etat' => $this->faker->randomElement(TaskEnum::cases()),

@@ -33,14 +33,14 @@ class RapportController extends Controller
     {
         $data = Arr::except($request->validated(), ['files']);
         $rapport = Rapport::create($data);
-        $rapport->generateId('RA');
+        $ref = $rapport->generateId('RA');
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('rapport', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $request->type,
+                    'libelle' => $ref,
                     'user_id' => Auth::user()->id,
                     'type' => 'Rapport',
                     'chemin' => $chemin,
@@ -48,6 +48,7 @@ class RapportController extends Controller
                 $rapport->documents()->save($data);
             endforeach;
         endif;
+        $this->journal("Ajout du rapport REF N°$ref");
         toastr()->success('Rapport ajouter avec success!');
         return back();
     }
@@ -100,6 +101,7 @@ class RapportController extends Controller
     public function destroy(int $rapport)
     {
         $delete = Rapport::findOrFail($rapport);
+        $this->journal("Suppression du rapport REF N°$delete->reference");
         return  $this->supp($delete);
     }
 
@@ -112,23 +114,30 @@ class RapportController extends Controller
     public function recover(int $id) {
 
         $row = Rapport::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("restauré le rapport REF N°$row->reference");
         return $this->Restore($row);
     }
 
     public function force_delete(int $id) {
 
         $row = Rapport::onlyTrashed()->whereId($id)->firstOrFail();
+        if($row->documents) {
+            foreach($row->documents as $item) {
+                $this->file_delete($item);
+            }
+        }
+        $this->journal("Suppression definitive du rapport REF N°$row->reference");
         return $this->Remove($row);
     }
 
 
     public function all_recover() {
-
+        $this->journal("Restauré tous les rapport");
         return $this->All_restore(Rapport::onlyTrashed());
     }
 
     public function all_delete() {
-
+        $this->journal("Vider la corbeille  des rapport");
         return $this->All_remove(Rapport::onlyTrashed());
     }
 }

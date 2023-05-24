@@ -20,8 +20,9 @@ class NatureController extends Controller
     public function store(Request $request)
     {
 
-        $data = $request->validate(['nom'=>'required|string|max:100']);
-        Nature::create($data);
+        $data = $request->validate(['nom'=>'required|string|max:50']);
+        $item = Nature::create($data);
+        $this->journal("Ajout de la nature de courrier N°$item->id");
         toastr()->success('Nature ajouter avec success!');
         return back();
     }
@@ -52,8 +53,8 @@ class NatureController extends Controller
      */
     public function destroy(int $nature)
     {
-
         $delete = Nature::findOrFail($nature);
+        $this->journal("Suppression de la nature de courrier N°$delete->id");
         return  $this->supp($delete);
     }
 
@@ -66,23 +67,25 @@ class NatureController extends Controller
     public function recover(int $id) {
 
         $row = Nature::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("restauré de la nature de courrier N°$row->id");
         return $this->Restore($row);
     }
 
     public function force_delete(int $id) {
 
         $row = Nature::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("Suppression definitive de la nature de courrier N°$row->id");
         return $this->Remove($row);
     }
 
 
     public function all_recover() {
-
+        $this->journal("Restauré tous les natures de courrier");
         return $this->All_restore(Nature::onlyTrashed());
     }
 
     public function all_delete() {
-
+        $this->journal("Vider la corbeille  des natures de courrier");
         return $this->All_remove(Nature::onlyTrashed());
     }
 }

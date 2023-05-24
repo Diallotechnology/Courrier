@@ -78,7 +78,7 @@
 
 </head>
 
-<body>
+<body class=" layout-fluid">
 
 
     <div class="page">
@@ -164,10 +164,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
-    <script src="{{ asset('/js/main.js') }}"></script>
-    @stack('scripts')
+    <script src="{{ asset('/js/main.js') }}">
+    </script>
+    @yield('scripts')
     @livewireScripts
-
 </body>
 
 </html>

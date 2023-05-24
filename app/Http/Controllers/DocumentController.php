@@ -29,6 +29,7 @@ class DocumentController extends Controller
     {
         $filePath = public_path($document->DocLink());
         header('Content-Type: application/pdf');
+        $this->journal("Consulté le document N°$document->id");
         return response()->file($filePath);
     }
 
@@ -63,7 +64,6 @@ class DocumentController extends Controller
         if ($request->hasFile('file')) {
             $this->file_delete($document);
             $filename = $request->file->hashName();
-
             $directory = 'courrier/' . strtolower($document->type);
             $chemin = $request->file->storeAs($directory, $filename, 'public');
             $documentData = [
@@ -71,7 +71,7 @@ class DocumentController extends Controller
                 'documentable_id' => $request->courrier,
                 'chemin' => $chemin,
             ];
-
+            $this->journal("Mise a jour le fichier du document N°$document->id");
         } else {
            $documentData = [
             'libelle' => $request->libelle,
@@ -91,8 +91,7 @@ class DocumentController extends Controller
     public function destroy(int $document)
     {
         $delete = Document::findOrFail($document);
-        // delete document file
-        $this->file_delete($delete);
+        $this->journal("Suppression du document N°$delete->id");
         return  $this->supp($delete);
     }
 
@@ -105,23 +104,27 @@ class DocumentController extends Controller
     public function recover(int $id) {
 
         $row = Document::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->journal("restauré le document N°$row->id");
         return $this->Restore($row);
     }
 
     public function force_delete(int $id) {
 
         $row = Document::onlyTrashed()->whereId($id)->firstOrFail();
+        $this->file_delete($row);
+        $this->journal("Suppression definitive du document N°$row->id");
+
         return $this->Remove($row);
     }
 
 
     public function all_recover() {
-
+        $this->journal("Restauré tous les documents");
         return $this->All_restore(Document::onlyTrashed());
     }
 
     public function all_delete() {
-
+        $this->journal("Vider la corbeille  des documents");
         return $this->All_remove(Document::onlyTrashed());
     }
 }

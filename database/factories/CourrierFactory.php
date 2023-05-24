@@ -27,6 +27,7 @@ class CourrierFactory extends Factory
             'priorite' => $this->faker->randomElement(['Normal','Urgent']),
             'confidentiel' => $this->faker->randomElement(['OUI','NON']),
             'date' => $this->faker->date(),
+            'created_at' => $this->faker->dateTimeInInterval('0 years','+8 days'),
             'etat' => $this->faker->randomElement(CourrierEnum::cases()),
         ];
     }

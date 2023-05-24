@@ -12,7 +12,7 @@
                     <div wire:ignore>
                         <x-select label="Courrier arrivé" :required='false' wire:model='courrier'>
                             @foreach ($arriver as $row)
-                            <option value="{{ $row->id }}">{{ $row->numero }}</option>
+                            <option value="{{ $row->id }}">{{ $row->reference }}</option>
                             @endforeach
                         </x-select>
                     </div>

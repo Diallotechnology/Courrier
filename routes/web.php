@@ -22,33 +22,36 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::controller(AdminController::class)->group(function () {
-        Route::get('courrier/arriver','arriver')->name('arriver');
-        Route::get('courrier/depart','depart')->name('depart');
-        Route::get('courrier/interne','interne')->name('interne');
-        Route::get('courrier/suivie','suivie')->name('suivie');
+        // Route::get('courrier/arriver','arriver')->name('arriver');
+        // Route::get('courrier/depart','depart')->name('depart');
+        // Route::get('courrier/interne','interne')->name('interne');
+        // Route::get('courrier/suivie','suivie')->name('suivie');
         Route::get('nature','nature')->name('nature');
         Route::get('correspondant','correspondant')->name('correspondant');
         Route::get('document', 'document')->name('document');
         Route::get('annotation','annotation')->name('annotation');
         Route::get('departement','departement')->name('departement');
         Route::get('structure','structure')->name('structure');
-        Route::get('imputation','imputation')->name('imputation');
         Route::get('user','user')->name('user');
-        Route::get('tache','task')->name('task');
         Route::get('journal','journal')->name('journal');
         Route::get('agenda','agenda')->name('agenda');
         Route::get('rapport','rapport')->name('rapport');
+        Route::get('dashboard','dashboard')->name('dashboard');
     });
+
+    Route::view('courrier/arriver','arriver.index')->name('arriver');
+    Route::view('courrier/depart','depart.index')->name('depart');
+    Route::view('courrier/interne','interne.index')->name('interne');
+    Route::view('courrier/suivie','suivie')->name('suivie');
+    Route::view('imputation','imputation.index')->name('imputation');
+    Route::view('tache','task.index')->name('task');
+    Route::view('search','search')->name('search');
 
     Route::controller(CorrespondantController::class)->group(function () {
         Route::get('correspondant/trash','trash')->name('correspondant.trash');

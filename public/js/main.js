@@ -125,8 +125,9 @@ function restore(url, title, message, confirmText, cancelText) {
 })();
 
 // tom select function
+const test = document.querySelectorAll(".select-tags");
 document.addEventListener("DOMContentLoaded", function () {
-    var el = document.querySelectorAll(".select-tags").forEach((el) => {
+    var el = test.forEach((el) => {
         window.TomSelect &&
             new TomSelect(el, {
                 copyClassesToDropdown: false,
