@@ -1,12 +1,24 @@
 @extends('layouts.app')
+@section('header')
+<div class="col">
+    <div class="mb-1">
+        <ol class="breadcrumb" aria-label="breadcrumbs">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Utilisateur</a></li>
+        </ol>
+    </div>
+    <h2 class="page-title">
+        <span class="text-truncate">Liste des utilisateurs</span>
+    </h2>
+</div>
+@endsection
 @section('content')
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-header">
-            <h3 class="card-title">Lites des utilisateurs
+            <h3 class="card-title">
                 <br> NB: La suppression d'un utilisateur entrainera la suppression de ses courriers et imputations
             </h3>
-
         </div>
         <div class="card-body border-bottom py-3">
             <x-filter url="user" />
@@ -29,15 +41,14 @@
             <td>{{ $row->id }}</td>
             <td>
                 <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)">
+                    <span class="avatar me-2"
+                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')">
                         <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
                             true])></span>
                     </span>
                     <div class="flex-fill">
                         <div class="font-weight-medium">{{ $row->name }}</div>
                         <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}</a></div>
-                        {{-- <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
-                            true]) ></span> {{ $row->etat == true ? 'En ligne' : 'Pas ligne' }} --}}
                     </div>
                 </div>
             </td>
@@ -49,8 +60,7 @@
             <td>{{ $row->role }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                {{--
-                <x-button-edit href="{{ route('user.edit', ['user' => $row]) }}" /> --}}
+                <x-button-edit href="{{ route('user.edit', ['user' => $row]) }}" />
                 <x-button-show href="{{ route('user.show', ['user' => $row]) }}" />
                 <x-button-delete url="{{ url('user/'.$row->id) }}" />
             </td>
@@ -65,27 +75,36 @@
     </tbody>
 </x-table>
 
-<x-modal title="nouvelle structure">
-    <x-form route="{{ route('structure.store') }}">
-        <div class="row">
-            <div class="col-md-6">
-                <x-input type="text" name="nom" place="le nom de la structure" />
-            </div>
-            <div class="col-md-6">
-                <x-input type="text" name="contact" place="le contact de la structure" />
-            </div>
+<x-modal title="nouveaux utilisateur">
+
+    <x-form route="{{ route('user.store') }}">
+        <div class="col-md-6">
+            <x-input type="text" name="name" label="Nom complet" place="le nom et prenom de l'utilisateur" />
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <x-input type="email" name="email" place="email de la structure" />
-            </div>
-            <div class="col-md-6">
-                <x-input type="file" name="logo" label="Logo Faculatif" :required='false' />
-            </div>
+
+        <div class="col-md-6">
+            <x-input type="text" name="poste" place="le poste de l'utilisateur" />
         </div>
-        <x-input type="text" name="adresse" place="l'adresse de la structure" />
-        <x-textarea :required='false' place="Fait une description de l'organisation ou de la structure"
-            name="description" label="description de la structure Faculatif" />
+
+        <div class="col-md-12">
+            <x-input type="email" name="email" place="email de l'utilisateur" />
+        </div>
+
+        <div class="col-md-12">
+            <x-select name="departement_id" label="Departement">
+                @foreach ($departement as $row)
+                <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                @endforeach
+            </x-select>
+        </div>
+
+        <div class="col-md-12">
+            <x-select name="role" label="Role/Droit d'access">
+                @foreach (App\Enum\RoleEnum::cases() as $row)
+                <option value="{{ $row }}">{{ $row }}</option>
+                @endforeach
+            </x-select>
+        </div>
     </x-form>
 </x-modal>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Enum\CourrierInterneEnum;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreInterneRequest extends FormRequest
 {
@@ -46,5 +47,10 @@ class StoreInterneRequest extends FormRequest
             'expediteur_id' => Auth::user()->id,
             'etat' => CourrierInterneEnum::SEND->value,
          ]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

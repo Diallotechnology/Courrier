@@ -1,10 +1,20 @@
 @extends('layouts.app')
+@section('header')
+<div class="col">
+    <div class="mb-1">
+        <ol class="breadcrumb" aria-label="breadcrumbs">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Document</a></li>
+        </ol>
+    </div>
+    <h2 class="page-title">
+        <span class="text-truncate">Liste des documents de courrier</span>
+    </h2>
+</div>
+@endsection
 @section('content')
 <x-table :rows="$rows">
     <x-slot name="header">
-        <div class="card-header">
-            <h3 class="card-title">Liste des documents</h3>
-        </div>
         <div class="card-body">
             <x-filter url="document" :create="false" />
         </div>
@@ -13,9 +23,9 @@
         <tr>
             <th>ID</th>
             <th>Libelle</th>
-            <th>Courrier reference</th>
             <th>type</th>
             <th>Chemin</th>
+            <th>Date de creation</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -24,7 +34,6 @@
         <tr>
             <td>{{ $row->id }}</td>
             <td>{{ $row->libelle }}</td>
-            <td>{{ $row->documentable ? $row->documentable->reference : 'inexistant' }}</td>
             <td>{{ $row->type }}</td>
             <td>{{ $row->chemin }}</td>
             <td>{{ $row->created_at }}</td>

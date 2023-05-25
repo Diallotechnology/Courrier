@@ -1,12 +1,6 @@
 <div>
     <x-table :rows="$rows">
         <x-slot name="header">
-            <div class="card-header">
-                <h3 class="card-title">Liste des taches
-                    <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
-                </h3>
-
-            </div>
             <div class="card-body">
                 <x-filter url="task">
                     <div class="mb-3 col-sm-4 col-md-3">

@@ -1,4 +1,18 @@
 @extends('layouts.app')
+@section('header')
+<div class="col">
+    <div class="mb-1">
+        <ol class="breadcrumb" aria-label="breadcrumbs">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="#">Annotation</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Corbeille</a></li>
+        </ol>
+    </div>
+    <h2 class="page-title">
+        <span class="text-truncate">Corbeille des annotations ou instructions de courrier</span>
+    </h2>
+</div>
+@endsection
 @section('content')
 <x-table :rows="$rows">
     <x-slot name="header">

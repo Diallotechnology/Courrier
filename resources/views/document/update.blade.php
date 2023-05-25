@@ -17,14 +17,6 @@
                             }}</option>
                     </x-select>
                 </div>
-                <div class="col-md-6">
-                    <x-select name='courrier' label="Liste des courriers {{ $document->type }}">
-                        @foreach ($courrier as $row)
-                        <option @selected($document->documentable_id == $row->id) value="{{ $row->id }}">Courrier N°{{
-                            $row->reference }}</option>
-                        @endforeach
-                    </x-select>
-                </div>
             </x-form>
         </div>
     </div>

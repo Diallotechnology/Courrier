@@ -167,7 +167,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('annotation',AnnotationController::class)->except('index','show','create');
-Route::resource('user',UserController::class)->except('index','edit','create','store');
+Route::resource('user',UserController::class)->except('index','create');
 Route::resource('archive',ArchiveController::class)->except('index');
 Route::resource('correspondant',CorrespondantController::class)->except('index','create');
 Route::resource('courrier/arriver',CourrierController::class)->except('index');

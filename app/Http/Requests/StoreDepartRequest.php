@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreDepartRequest extends FormRequest
 {
@@ -48,6 +49,11 @@ class StoreDepartRequest extends FormRequest
             'reference' => uniqid(),
             'numero' => uniqid(),
          ]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }
 

@@ -1,7 +1,7 @@
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-header">
-            <h3 class="card-title">Lites des imputations
+            <h3 class="card-title">
                 <br> NB: La suppression d'une imputation entrainera la suppression de tous les elements lié
             </h3>
 

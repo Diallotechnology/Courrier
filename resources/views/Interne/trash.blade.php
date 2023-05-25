@@ -12,10 +12,7 @@
     </x-slot>
     <thead>
         <tr>
-            {{-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox"
-                    aria-label="Select all invoices"></th> --}}
             <th>ID</th>
-            {{-- <th>Utilisateur</th> --}}
             <th>Reference</th>
             <th>Nature</th>
             <th>Expéditeur</th>
@@ -24,7 +21,6 @@
             <th>Confidential</th>
             <th>Etat</th>
             <th>Delai de traitement</th>
-            <th>Date d'envoi</th>
             <th>Date de suppression</th>
             <th>Action</th>
         </tr>
@@ -32,22 +28,9 @@
     <tbody>
         @forelse ($rows as $row)
         <tr>
-
-            {{-- <td><input class="form-check-input m-0 align-middle" id="{{ $row->id }}" wire:model="selectedRows"
-                    value="{{ $row->id }}" type="checkbox" aria-label="Select item"></td> --}}
             <td>{{ $row->id }}</td>
-            {{-- <td>
-                <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)"></span>
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $row->user->name }}</div>
-                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->user->email }}</a></div>
-                    </div>
-                </div>
-            </td> --}}
             <td>{{ $row->reference }}</td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
-
             <td>
                 @if($row->expediteur)
                 <div class="d-flex py-1 align-items-center">
@@ -81,8 +64,6 @@
                 inexistant
                 @endif
             </td>
-
-
             <td>
                 <x-statut type="prio" :courrier="$row" />
             </td>
@@ -91,7 +72,8 @@
             </td>
 
             <td>
-                <span @class(['status', 'status-success'=> $row->Send(), 'status-red' => $row->Recu()])>
+                <span @class(['status', 'status-success'=> $row->Send(), 'status-red' => $row->Recu(), 'status-indigo'
+                    => $row->Read()])>
                     <span class="status-dot status-dot-animated"></span>
                     {{ $row->etat }}
                 </span>
@@ -99,11 +81,6 @@
             <td>
                 {{ $row->delai_format }}
             </td>
-            {{-- <td>
-                <p class="text-muted">{{ $row->objet }}</p>
-            </td> --}}
-
-            <td>{{ $row->created_at }}</td>
             <td>{{ $row->deleted_at }}</td>
             <td>
 

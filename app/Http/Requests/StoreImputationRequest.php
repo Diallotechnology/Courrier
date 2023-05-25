@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreImputationRequest extends FormRequest
 {
@@ -41,5 +42,10 @@ class StoreImputationRequest extends FormRequest
             'user_id' => Auth::user()->id,
             'reference' => uniqid(),
          ]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

@@ -581,10 +581,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withoutTrashed()
  * @mixin \Eloquent
+ * @property string|null $reference
  * @property string $objet
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read int|null $documents_count
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereObjet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereReference($value)
  */
 	class Rapport extends \Eloquent {}
 }

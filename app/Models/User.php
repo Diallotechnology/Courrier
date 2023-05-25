@@ -113,6 +113,7 @@ class User extends Authenticatable
         'poste',
         'etat',
         'role',
+        'departement_id',
     ];
 
     /**
@@ -134,11 +135,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'role' => RoleEnum::class,
     ];
-
-    public function DocLink(): string {
-
-        return Storage::url($this->photo);
-    }
 
     /**
      * Get all of the imputations for the User

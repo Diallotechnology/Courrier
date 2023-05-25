@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
-class UpdateInterneRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +26,11 @@ class UpdateInterneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'objet'=>'required|string|max:255',
-            'confidentiel'=>'required|string|max:3',
-            'priorite'=>'required|string|max:6',
-            'contenu'=>'string|nullable',
-            'delai'=>'nullable|date',
-            'files'=> 'nullable',
-            // 'files.*'=> 'mimes:pdf',
-            'nature_id'=>'required|exists:natures,id',
-            'destinataire_id'=>'required|exists:users,id',
+            'name' => ['required', 'string', 'max:255'],
+            'poste' => ['required', 'string', 'max:150'],
+            'role' => ['required', new Enum(RoleEnum::class)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'departement_id' => ['required','exists:departements,id'],
         ];
     }
 

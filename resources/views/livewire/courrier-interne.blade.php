@@ -1,7 +1,7 @@
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-header">
-            <h3 class="card-title">Lites des courriers interne
+            <h3 class="card-title">
                 <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
             </h3>
 
@@ -62,10 +62,7 @@
     </x-slot>
     <thead>
         <tr>
-            {{-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox"
-                    aria-label="Select all invoices"></th> --}}
             <th>ID</th>
-            {{-- <th>Utilisateur</th> --}}
             <th>Reference</th>
             <th>Nature</th>
             <th>Expéditeur</th>
@@ -74,7 +71,6 @@
             <th>Confidential</th>
             <th>Etat</th>
             <th>Delai de traitement</th>
-            {{-- <th>Objet</th> --}}
             <th>Date d'envoi</th>
             <th>Action</th>
         </tr>
@@ -83,7 +79,6 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-
             <td>{{ $row->reference }}</td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
@@ -136,10 +131,6 @@
             <td>
                 {{ $row->delai_format }}
             </td>
-            {{-- <td>
-                <p class="text-muted">{{ $row->objet }}</p>
-            </td> --}}
-
             <td>{{ $row->created_at }}</td>
             <td>
                 @if($row->Recu() || $row->Read())

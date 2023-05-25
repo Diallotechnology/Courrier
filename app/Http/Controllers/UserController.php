@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Enum\RoleEnum;
 use App\Helper\DeleteAction;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Validation\Rules\Enum;
-use Illuminate\Auth\Events\Registered;
-use App\Providers\RouteServiceProvider;
+use App\Http\Requests\StoreUserRequest;
+use App\Mail\RegisterMail;
+use App\Models\Departement;
 
 class UserController extends Controller
 {
@@ -35,27 +32,12 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreUserRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'poste' => ['required', 'string', 'max:150'],
-            'role' => ['required', new Enum(RoleEnum::class)],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'poste' => $request->poste,
-            'role' => $request->role,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        return redirect(RouteServiceProvider::HOME);
+        $user = User::create($request->validated());
+        Mail::to($user->email)->send(new RegisterMail($user));
+        toastr()->success('Utilisateur ajouter avec success!');
+        return back();
     }
 
     /**
@@ -71,15 +53,18 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.update', compact('user'));
+        $departement = Departement::all();
+        return view('user.update', compact('user','departement'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(StoreUserRequest $request, User $user)
     {
-        //
+        $user->update($request->validated());
+        toastr()->success('Utilisateur mise à jour avec success!');
+        return back();
     }
 
     /**

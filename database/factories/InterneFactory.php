@@ -21,7 +21,6 @@ class InterneFactory extends Factory
             'reference' => uniqid(),
             'objet' => $this->faker->sentence(2),
             'nature_id' => rand(1,5),
-            'user_id' => rand(1,5),
             'expediteur_id' => rand(1,5),
             'destinataire_id' => rand(1,5),
             'priorite' => $this->faker->randomElement(['Normal','Urgent']),

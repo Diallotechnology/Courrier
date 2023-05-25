@@ -1,10 +1,20 @@
 @extends('layouts.app')
+@section('header')
+<div class="col">
+    <div class="mb-1">
+        <ol class="breadcrumb" aria-label="breadcrumbs">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Journal</a></li>
+        </ol>
+    </div>
+    <h2 class="page-title">
+        <span class="text-truncate">Liste des actions des utilisateurs</span>
+    </h2>
+</div>
+@endsection
 @section('content')
 <x-table :rows="$rows">
     <x-slot name="header">
-        <div class="card-header">
-            <h3 class="card-title">Lites de la journalisation des utilisateurs</h3>
-        </div>
         <div class="card-body">
             <x-filter :create="false" />
         </div>

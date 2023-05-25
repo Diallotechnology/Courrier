@@ -6,7 +6,6 @@ use App\Models\Agenda;
 use App\Models\Annotation;
 use App\Models\Correspondant;
 use App\Models\Courrier;
-use App\Models\Depart;
 use App\Models\Departement;
 use App\Models\Document;
 use App\Models\Journal;
@@ -69,7 +68,8 @@ class AdminController extends Controller
     public function user(): View
     {
         $rows = User::with('departement')->withCount('imputations')->latest()->paginate(15);
-        return view('user.index', compact('rows'));
+        $departement = Departement::all();
+        return view('user.index', compact('rows','departement'));
     }
 
 

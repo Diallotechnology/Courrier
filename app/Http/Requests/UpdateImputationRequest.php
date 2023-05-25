@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class UpdateImputationRequest extends FormRequest
 {
@@ -29,5 +30,10 @@ class UpdateImputationRequest extends FormRequest
             'departement_id'=>'required|exists:departements,id',
             'annotation_id'=>'required|array|exists:annotations,id',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

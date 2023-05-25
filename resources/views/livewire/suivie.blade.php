@@ -1,11 +1,6 @@
 <div>
     <x-table :rows="$rows">
         <x-slot name="header">
-            <div class="card-header">
-                <h3 class="card-title">Lites des courriers arriver
-                </h3>
-
-            </div>
             <div class="card-body">
                 <x-filter url="arriver" :create="false">
                     <div class="mb-3 col-sm-4 col-md-2">

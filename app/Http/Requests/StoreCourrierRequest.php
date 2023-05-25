@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreCourrierRequest extends FormRequest
 {
@@ -30,8 +31,6 @@ class StoreCourrierRequest extends FormRequest
             'priorite'=>'required|string|max:6',
             'observation'=>'string|nullable|max:255',
             'date'=>'required|date',
-            // 'reference'=> 'required',
-            // 'numero'=> 'required',
             'files'=> 'nullable',
             // 'files.*'=> 'mimes:png,jpg',
             'nature_id'=>'required|exists:natures,id',
@@ -44,8 +43,11 @@ class StoreCourrierRequest extends FormRequest
     {
         $this->merge([
             'user_id' => Auth::user()->id,
-            // 'reference' => uniqid(),
-            // 'numero' => uniqid(),
          ]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

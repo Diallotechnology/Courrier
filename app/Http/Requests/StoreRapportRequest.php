@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreRapportRequest extends FormRequest
 {
@@ -37,5 +38,10 @@ class StoreRapportRequest extends FormRequest
         $this->merge([
             'user_id' => Auth::user()->id,
          ]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

@@ -1,5 +1,18 @@
 @extends('layouts.app')
+@section('header')
+<div class="col">
+    <div class="mb-1">
+        <ol class="breadcrumb" aria-label="breadcrumbs">
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Dashbord</a></li>
+        </ol>
+    </div>
+    <h2 class="page-title">
+        <span class="text-truncate">Tableau de bord</span>
+    </h2>
+</div>
+@endsection
 @section('content')
+
 <div class="row row-deck row-cards">
     <div class="col-12">
         <div class="row row-cards">
@@ -56,7 +69,7 @@
                                     Total Courrier internes
                                 </div>
                                 <div class="text-muted">
-                                    {{ count(Auth::user()->internes) }}
+                                    {{-- {{ count(Auth::user()->internes) }} --}}
                                 </div>
                             </div>
                         </div>

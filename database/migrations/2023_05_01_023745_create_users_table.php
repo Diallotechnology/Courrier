@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('poste');
+            $table->string('poste')->default("$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi");
             $table->string('role');
+            $table->boolean('change_password')->default(0);
             $table->boolean('etat')->default(0);
             $table->rememberToken();
             $table->timestamps();

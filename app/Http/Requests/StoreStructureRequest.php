@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreStructureRequest extends FormRequest
 {
@@ -28,5 +29,10 @@ class StoreStructureRequest extends FormRequest
             'email'=>'required|email|max:255',
             'logo'=>'nullable',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('internes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('nature_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('expediteur_id')->constrained('users');
             $table->foreignId('destinataire_id')->constrained('users');

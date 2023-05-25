@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -29,5 +30,10 @@ class UpdateTaskRequest extends FormRequest
             'fin'=>'required|date_format:Y-m-d\TH:i',
             'user_id'=>'required|array',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

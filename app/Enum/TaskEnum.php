@@ -8,5 +8,4 @@ enum TaskEnum: string
     case EN_COURS = 'En cours';
     case TERMINE = 'Terminé';
     case NON_TERMINE = 'Non terminé';
-    case EXPIRE = 'Expiré';
 }

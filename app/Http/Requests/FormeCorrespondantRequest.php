@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class FormeCorrespondantRequest extends FormRequest
 {
@@ -32,5 +33,8 @@ class FormeCorrespondantRequest extends FormRequest
         ];
     }
 
-    // Rule::unique('correspondants')->ignore($this->correspondant->id)
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
+    }
 }

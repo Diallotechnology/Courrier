@@ -77,7 +77,6 @@ class Interne extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
         'nature_id',
         'expediteur_id',
         'destinataire_id',

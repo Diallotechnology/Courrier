@@ -1,12 +1,24 @@
 @extends('layouts.app')
+@section('header')
+<div class="col">
+    <div class="mb-1">
+        <ol class="breadcrumb" aria-label="breadcrumbs">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Departement</a></li>
+        </ol>
+    </div>
+    <h2 class="page-title">
+        <span class="text-truncate">Liste des departements</span>
+    </h2>
+</div>
+@endsection
 @section('content')
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-header">
-            <h3 class="card-title">Lites des departements
+            <h3 class="card-title">
                 <br> NB: La suppression d'un departement entrainera la suppression de ses utlisateurs
             </h3>
-
         </div>
         <div class="card-body">
             <x-filter url="departement" />
