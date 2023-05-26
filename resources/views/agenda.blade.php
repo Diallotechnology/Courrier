@@ -11,11 +11,31 @@
         <span class="text-truncate">Liste des agandas</span>
     </h2>
 </div>
+<div class="col-auto">
+    <div class="btn-list">
+        <x-button-modal />
+    </div>
+</div>
 @endsection
 @section('content')
 <div id="calendar"></div>
+<x-modal title="nouveau évènement">
+    <x-form route="{{ route('task.store') }}">
+        <input type="hidden" name="type" value="event">
+        <div class="col-md-12">
+            <x-input type="text" name="nom" place="le nom de l'évènement" />
+        </div>
+        <div class="col-md-6">
+            <x-input type="datetime-local" name="debut" label="Debut de l'évènement" />
+        </div>
+        <div class="col-md-6">
+            <x-input type="datetime-local" name="fin" label="Fin de l'évènement" />
+        </div>
+        <x-textarea place="Fait une description de l'évènement" name="description" label="description de l'évènement" />
+    </x-form>
+</x-modal>
 @endsection
-@push('scripts')
+@section('scripts')
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -39,4 +59,4 @@
         calendar.render();
     });
 </script>
-@endpush
+@endsection

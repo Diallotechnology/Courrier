@@ -31,8 +31,10 @@ Route::middleware('guest')->group(function () {
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
                 ->name('password.reset');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.store');
+    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+    Route::get('dfa', [AuthenticatedSessionController::class, 'form_2fa'])->name('2fa_verify.form');
+    Route::post('2fa/verify', [AuthenticatedSessionController::class, 'verifyTwoFactor'])->name('2fa_verify');
+    Route::get('2fa/verify/send', [AuthenticatedSessionController::class, 'SendVerificationCode'])->name('2fa_verify_code');
 });
 
 Route::middleware('auth')->group(function () {
@@ -56,4 +58,5 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
 });

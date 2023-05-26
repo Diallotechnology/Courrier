@@ -62,7 +62,7 @@ class AdminController extends Controller
     public function structure(): View
     {
         $rows = Structure::withCount('departements')->latest()->paginate(15);
-        return view('structure.index', compact('rows','tasks'));
+        return view('structure.index', compact('rows'));
     }
 
     public function user(): View
@@ -89,7 +89,7 @@ class AdminController extends Controller
     public function agenda(): View
     {
         $events = [];
-        $agenda = Agenda::all();
+        $agenda = Task::all();
 
         foreach ($agenda as $row) {
             $events[] = [

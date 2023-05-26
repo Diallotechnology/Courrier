@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="mb-3 col-md-4">
-                        <div wire:ignore>
+                        <div wire:DOMContentLoaded="initializeSelectTags">
                             <x-select label="Confidentialité" :required="false" wire:model="privacy">
                                 <option value="OUI">OUI</option>
                                 <option value="NON">NON</option>
@@ -69,7 +69,6 @@
                     @endisset
 
                     @if($show)
-
                     <div class="mb-3 col-md-4 col-md-4">
                         <div wire:ignore>
                             <x-select label="Courrier arrivé" :required="false" wire:model="courrier">
@@ -79,6 +78,7 @@
                             </x-select>
                         </div>
                     </div>
+
                     <div class="mb-3 col-md-4 col-md-4">
                         <div wire:ignore>
                             <x-select label="Departement" :required="false" wire:model="departement">
@@ -211,16 +211,6 @@
                         }
                     });
                 });
-                window.Litepicker && new Litepicker({
-        element: document.getElementById("datepicker"),
-        singleMode: true,
-        onSelect: function(date) {
-            var modelName = $(this.input).attr('wire:model');
-            @this.set(modelName, date);
-            // Livewire.emit('updated:selectedDate', date.toDateString());
-        },
-    });
-
         });
     </script>
     @endpush

@@ -1,2 +1,1 @@
-
-<img src="./static/logo.svg" height="36" alt="">
+<h1>Courribox</h1>

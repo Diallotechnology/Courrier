@@ -27,6 +27,7 @@
             <th>Fonction</th>
             <th>Email</th>
             <th>Contact</th>
+            <th>Date de creation</th>
             <th>Action</th>
         </tr>
     </thead>

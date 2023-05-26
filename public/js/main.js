@@ -125,10 +125,47 @@ function restore(url, title, message, confirmText, cancelText) {
 })();
 
 // tom select function
-const test = document.querySelectorAll(".select-tags");
-document.addEventListener("DOMContentLoaded", function () {
-    var el = test.forEach((el) => {
-        window.TomSelect &&
+// document.addEventListener("DOMContentLoaded", function () {
+//     var el = document.querySelectorAll(".select-tags").forEach((el) => {
+//         window.TomSelect &&
+//             new TomSelect(el, {
+//                 copyClassesToDropdown: false,
+//                 dropdownClass: "dropdown-menu ts-dropdown",
+//                 optionClass: "dropdown-item",
+//                 controlInput: "<input>",
+//                 render: {
+//                     item: function (data, escape) {
+//                         if (data.customProperties) {
+//                             return (
+//                                 '<div><span class="dropdown-item-indicator">' +
+//                                 data.customProperties +
+//                                 "</span>" +
+//                                 escape(data.text) +
+//                                 "</div>"
+//                             );
+//                         }
+//                         return "<div>" + escape(data.text) + "</div>";
+//                     },
+//                     option: function (data, escape) {
+//                         if (data.customProperties) {
+//                             return (
+//                                 '<div><span class="dropdown-item-indicator">' +
+//                                 data.customProperties +
+//                                 "</span>" +
+//                                 escape(data.text) +
+//                                 "</div>"
+//                             );
+//                         }
+//                         return "<div>" + escape(data.text) + "</div>";
+//                     },
+//                 },
+//             });
+//     });
+// });
+
+function initializeSelectTags() {
+    $(".select-tags").each(function (index, el) {
+        if (window.TomSelect) {
             new TomSelect(el, {
                 copyClassesToDropdown: false,
                 dropdownClass: "dropdown-menu ts-dropdown",
@@ -161,7 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                 },
             });
+        }
     });
+}
+document.addEventListener("DOMContentLoaded", function () {
+    initializeSelectTags();
 });
 
 // datatable search function

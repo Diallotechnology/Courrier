@@ -26,15 +26,17 @@ class TaskController extends Controller
         // create task
         $task = Task::create($data);
         $ref = $task->generateId('TA');
+         // Send notification
+         $notification = new TaskNotification($task, "Une tache vous avez été assigner");
+        if(!empty($request->user_id)) {
         // create task user pivot data
         $task->users()->attach($request->user_id);
         // Get notifiable users' emails
         $users = User::whereIn('id', $request->user_id)->get(['email']);
         // $emails = $users->pluck('email')->toArray();
-
-        // Send notification
-        $notification = new TaskNotification($task, "Une tache vous avez été assigner");
         Notification::send($users, $notification);
+        }
+
         $this->journal("Ajout de la tache REF N°$ref");
         toastr()->success('Taches ajouter avec success!');
         return back();

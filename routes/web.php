@@ -176,7 +176,7 @@ Route::resource('courrier/interne',InterneController::class)->except('index');
 Route::resource('departement',DepartementController::class)->except('index','create');
 Route::resource('structure',StructureController::class)->except('index','create');
 Route::resource('document',DocumentController::class)->except('index','create');
-Route::resource('history',HistoryController::class)->except('index');
+// Route::resource('history',HistoryController::class)->except('index');
 Route::resource('imputation',ImputationController::class)->except('index');
 Route::resource('nature',NatureController::class)->except('index','show','create');
 Route::resource('reponse',ReponseController::class)->except('index','show','create');

@@ -38,6 +38,12 @@ class Journal extends Model
     use HasFactory, DateFormat;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['user_id','libelle'];
+    /**
      * Get the user that owns the Journal
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -114,6 +114,8 @@ class User extends Authenticatable
         'etat',
         'role',
         'departement_id',
+        'two_factor_enabled',
+        'two_factor_code',
     ];
 
     /**
@@ -186,6 +188,26 @@ class User extends Authenticatable
         return $this->hasMany(Interne::class);
     }
 
+    /**
+     * Get all of the comments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function destinataires(): HasMany
+    {
+        return $this->hasMany(Interne::class, 'destinataire_id');
+    }
+
+    /**
+     * Get all of the expediteurs for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function expediteurs(): HasMany
+    {
+        return $this->hasMany(Interne::class, 'expediteur_id');
+    }
+
 
     /**
      * Get all of the departs for the User
@@ -205,6 +227,16 @@ class User extends Authenticatable
     public function courriers(): HasMany
     {
         return $this->hasMany(Courrier::class);
+    }
+
+    /**
+     * Get all of the createurs for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function createurs(): HasMany
+    {
+        return $this->hasMany(Task::class, 'createur_id');
     }
 
 

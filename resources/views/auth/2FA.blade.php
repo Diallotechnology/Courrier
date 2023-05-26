@@ -1,12 +1,11 @@
 <x-guest-layout>
-    <div class="container container-tight">
+    <div class="container container-tight py-2">
         <div class="text-center mb-4">
             <x-logo />
         </div>
-        <form class="card card-md needs-validation" action="{{ route('password.email') }}" method="post"
-            autocomplete="off" novalidate>
-
-            @error('email')
+        <form class="card card-md needs-validation" action="{{ route('2fa_verify') }}" method="post" autocomplete="off"
+            novalidate>
+            @error('code')
             <div class="alert alert-important alert-danger alert-dismissible" role="alert">
                 <div class="d-flex">
                     <div>
@@ -28,19 +27,15 @@
             @enderror
             @csrf
             <div class="card-body">
-                <!-- Session Status -->
-                <x-auth-session-status class="mb-4" :status="session('status')" />
                 <div class="col-12">
                     <div class="card-body">
-                        <h2 class=" text-center mb-4"> Mot de passe oublié</h2>
-                        <p class="text-muted mb-4">Entrez votre adresse e-mail et nous vous enverrons
-                            par e-mail un lien de réinitialisation de mot de passe qui vous permettra d'en choisir un
-                            nouveau.
+                        <h2 class="card-title text-center mb-4">L’authentification à deux facteurs (2FA)</h2>
+                        <p class="text-muted mb-4">Entrez le code que vous avez reçu par email pour valider votre
+                            identité
                         </p>
                         <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" required class="form-control"
-                                placeholder="Entrez votre email">
+                            <label class="form-label">Code</label>
+                            <input type="number" name="code" required class="form-control" placeholder="Entrez le code">
                         </div>
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">Ce champ est obligatoire.</div>
@@ -56,5 +51,4 @@
                 @endif
             </div>
         </form>
-    </div>
 </x-guest-layout>

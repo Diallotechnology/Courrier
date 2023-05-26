@@ -784,11 +784,18 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @mixin \Eloquent
+ * @property int $change_password
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $createurs
+ * @property-read int|null $createurs_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $destinataires
+ * @property-read int|null $destinataires_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $expediteurs
+ * @property-read int|null $expediteurs_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
  * @property-read int|null $histories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
@@ -800,6 +807,7 @@ namespace App\Models{
  * @property-read int|null $reponses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereChangePassword($value)
  */
 	class User extends \Eloquent {}
 }

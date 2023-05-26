@@ -71,7 +71,8 @@
                             Total Courrier internes
                         </div>
                         <div class="text-muted">
-                            {{ count($user->internes) }}
+                            Envoyé {{ count(Auth::user()->expediteurs) }}
+                            Reçu {{ count(Auth::user()->destinataires) }}
                         </div>
                     </div>
                 </div>
