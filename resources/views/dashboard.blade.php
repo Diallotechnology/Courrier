@@ -319,7 +319,7 @@
                                 <path d="M14.97 16.25l1.3 .75"></path>
                                 <path d="M19.733 19l1.3 .75"></path>
                             </svg>
-                            Departement: {{ Auth::user()->departement->nom }}
+                            Departement: {{ Auth::user()->userable->nom }}
                         </div>
                         <div class="h4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices-pc"

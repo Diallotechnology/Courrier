@@ -6,11 +6,11 @@ use App\Models\User;
 use App\Models\Nature;
 use App\Models\Courrier;
 use App\Models\Document;
+use App\Models\Structure;
 use App\Helper\DateFormat;
 use App\Models\Correspondant;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -82,6 +82,7 @@ class Depart extends Model
         'user_id',
         'nature_id',
         'courrier_id',
+        'structure_id',
         'correspondant_id',
         'reference',
         'numero',
@@ -92,11 +93,6 @@ class Depart extends Model
         'etat',
         'date'
     ];
-
-    public function getDateFormatAttribute(): string
-    {
-        return Carbon::parse($this->date)->format('d/m/Y');
-    }
 
     /**
      * Get the user that owns the Depart
@@ -147,5 +143,14 @@ class Depart extends Model
     }
 
 
+    /**
+     * Get the structure that owns the Depart
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
+    }
 
 }

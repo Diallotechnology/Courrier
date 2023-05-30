@@ -31,7 +31,7 @@
                                 <path d="M14.97 16.25l1.3 .75"></path>
                                 <path d="M19.733 19l1.3 .75"></path>
                             </svg>
-                            Departement: {{ $user->departement->nom }}
+                            Departement: {{ $user->userable->nom }}
                         </div>
                         <div class="h4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices-pc"
@@ -102,8 +102,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
 <div class="row mx-1 my-3">

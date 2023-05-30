@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\Depart;
 use App\Models\Courrier;
+use App\Models\Structure;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -41,7 +43,7 @@ class Nature extends Model
 {
     use HasFactory, DateFormat;
 
-    protected $fillable = ['nom'];
+    protected $fillable = ['nom','structure_id'];
 
     /**
      * Get all of the courriers for the Nature
@@ -61,5 +63,15 @@ class Nature extends Model
     public function departs(): HasMany
     {
         return $this->hasMany(Depart::class);
+    }
+
+    /**
+     * Get the structure that owns the Nature
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
     }
 }

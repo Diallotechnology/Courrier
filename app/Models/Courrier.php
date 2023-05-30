@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enum\CourrierEnum;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Depart;
@@ -10,6 +9,8 @@ use App\Models\Nature;
 use App\Models\History;
 use App\Models\Rapport;
 use App\Models\Document;
+use App\Models\Structure;
+use App\Enum\CourrierEnum;
 use App\Helper\DateFormat;
 use App\Models\Departement;
 use App\Models\Correspondant;
@@ -102,8 +103,9 @@ class Courrier extends Model
      */
     protected $fillable = [
         'user_id',
-        'nature_id'
-        ,'correspondant_id',
+        'nature_id',
+        'structure_id',
+        'correspondant_id',
         'reference',
         'numero',
         'objet',
@@ -124,11 +126,6 @@ class Courrier extends Model
         'etat' => CourrierEnum::class,
         'date' => 'date',
     ];
-
-    public function getDateFormatAttribute(): string
-    {
-        return Carbon::parse($this->date)->format('d/m/Y');
-    }
 
 
         /**
@@ -187,6 +184,16 @@ class Courrier extends Model
     public function correspondant(): BelongsTo
     {
         return $this->belongsTo(Correspondant::class);
+    }
+
+    /**
+     * Get the structure that owns the Courrier
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
     }
 
     /**

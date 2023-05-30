@@ -118,7 +118,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="8">
+            <td colspan="10">
                 <h2 class="text-center">Aucun element</h2>
             </td>
         </tr>
@@ -127,56 +127,59 @@
 
 </x-table>
 <x-modal title="nouveaux courrier depart" size="modal-lg">
-    <x-form route="{{ route('depart.store') }}" enctype="multipart/form-data">
-        <div class="col-md-6">
-            <x-select name="nature_id" label="Nature de courrier">
-                @foreach ($type as $row)
-                <option value="{{ $row->id }}">{{ $row->nom }}
-                </option>
-                @endforeach
-            </x-select>
-        </div>
+    <div wire:ignore>
+        <x-form route="{{ route('depart.store') }}" enctype="multipart/form-data">
+            <div class="col-md-6">
+                <x-select name="nature_id" label="Nature de courrier">
+                    @foreach ($type as $row)
+                    <option value="{{ $row->id }}">{{ $row->nom }}
+                    </option>
+                    @endforeach
+                </x-select>
+            </div>
 
-        <div class="col-md-6">
-            <x-select name="correspondant_id" label="Correspondant(Destinateur)">
-                @foreach ($correspondant as $row)
-                <option value="{{ $row->id }}">{{ $row->prenom.' '.$row->nom }}</option>
-                @endforeach
-            </x-select>
-        </div>
+            <div class="col-md-6">
+                <x-select name="correspondant_id" label="Correspondant(Destinateur)">
+                    @foreach ($correspondant as $row)
+                    <option value="{{ $row->id }}">{{ $row->prenom.' '.$row->nom }}</option>
+                    @endforeach
+                </x-select>
+            </div>
 
-        <div class="col-md-6">
-            <x-select name="priorite" label="Priorité">
-                <option value="Normal">Normal</option>
-                <option value="Urgent">Urgent</option>
-            </x-select>
-        </div>
-        <div class="col-md-6">
-            <x-select name="confidentiel" label="confidentiel">
-                <option value="OUI">OUI</option>
-                <option value="NON">NON</option>
-            </x-select>
-        </div>
-        <div class="col-md-6">
-            <x-input type="date" name="date" label="Date de depart" />
-        </div>
-        <div class="col-md-6">
-            <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif" :required='false' />
-        </div>
-        <div class="col-md-12">
-            <x-select name="courrier_id" :required='false'
-                label="Ce courrier depart est la reponse d'un courrier arriver? facultatif">
-                @foreach ($courrier as $row)
-                <option value="{{ $row->id }}">Reference {{ $row->reference }}, N° {{ $row->numero }}, Date d'arriver {{
-                    $row->date_format }}
-                </option>
-                @endforeach
-            </x-select>
-        </div>
-        <x-input place="objet du courrier" name="objet" label="Objet/Origine du courrier" />
-        <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false'
-            label="observation ou commentaire Facultatif" />
-    </x-form>
+            <div class="col-md-6">
+                <x-select name="priorite" label="Priorité">
+                    <option value="Normal">Normal</option>
+                    <option value="Urgent">Urgent</option>
+                </x-select>
+            </div>
+            <div class="col-md-6">
+                <x-select name="confidentiel" label="confidentiel">
+                    <option value="OUI">OUI</option>
+                    <option value="NON">NON</option>
+                </x-select>
+            </div>
+            <div class="col-md-6">
+                <x-input type="date" name="date" label="Date de depart" />
+            </div>
+            <div class="col-md-6">
+                <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif" :required='false' />
+            </div>
+            <div class="col-md-12">
+                <x-select name="courrier_id" :required='false'
+                    label="Ce courrier depart est la reponse d'un courrier arriver? facultatif">
+                    @foreach ($courrier as $row)
+                    <option value="{{ $row->id }}">Reference {{ $row->reference }}, N° {{ $row->numero }}, Date
+                        d'arriver {{
+                        $row->date_format }}
+                    </option>
+                    @endforeach
+                </x-select>
+            </div>
+            <x-input place="objet du courrier" name="objet" label="Objet/Origine du courrier" />
+            <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false'
+                label="observation ou commentaire Facultatif" />
+        </x-form>
+    </div>
 </x-modal>
 @push('scripts')
 <script>

@@ -36,13 +36,16 @@ class StoreCourrierRequest extends FormRequest
             'nature_id'=>'required|exists:natures,id',
             'correspondant_id'=>'required|exists:correspondants,id',
             'user_id'=>'required|exists:users,id',
+            'structure_id'=>'required|exists:structures,id',
         ];
     }
 
     protected function prepareForValidation()
     {
+        $structureId = Auth::user()->userable->structure_id ?: Auth::user()->userable->departement->structure_id;
         $this->merge([
             'user_id' => Auth::user()->id,
+            'structure_id' => $structureId,
          ]);
     }
 

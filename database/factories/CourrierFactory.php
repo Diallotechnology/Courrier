@@ -22,6 +22,7 @@ class CourrierFactory extends Factory
             'objet' => $this->faker->sentence(2),
             'correspondant_id' => rand(1,5),
             'nature_id' => rand(1,5),
+            'structure_id' => rand(1,5),
             'user_id' => rand(1,5),
             // 'numero' => uniqid(),
             'priorite' => $this->faker->randomElement(['Normal','Urgent']),

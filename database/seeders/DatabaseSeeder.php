@@ -32,7 +32,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Structure::factory(5)->create();
-        SubStructure::factory(5)->create();
         Departement::factory(5)->create();
         SubDepartement::factory(5)->create();
         $test = User::factory()->create(['email' => 'admin@gmail.com']);

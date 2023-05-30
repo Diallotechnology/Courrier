@@ -110,64 +110,67 @@
     </tbody>
 </x-table>
 <x-modal title="nouvelle imputation" size="modal-lg">
-    <x-form route="{{ route('imputation.store') }}">
-        <div class="col-md-12">
-            <x-select label="Courrier arrivé" name="courrier_id">
-                @foreach ($arriver as $row)
-                <option value="{{ $row->id }}">Reférence {{ $row->reference }}, Numero d'arriver {{ $row->numero }},Date
-                    d'arriver {{
-                    $row->date_format }}
-                </option>
-                @endforeach
-            </x-select>
-        </div>
-        <div class="col-md-6">
-            <x-select label="Departement" name="departement_id[]" multiple>
-                @foreach ($division as $row)
-                <option value="{{ $row->id }}"> {{ $row->nom }}</option>
-                @endforeach
-            </x-select>
-        </div>
+    <div wire:ignore>
+        <x-form route="{{ route('imputation.store') }}">
+            <div class="col-md-12">
+                <x-select label="Courrier arrivé" name="courrier_id">
+                    @foreach ($arriver as $row)
+                    <option value="{{ $row->id }}">Reférence {{ $row->reference }}, Numero d'arriver {{ $row->numero
+                        }},Date
+                        d'arriver {{
+                        $row->date_format }}
+                    </option>
+                    @endforeach
+                </x-select>
+            </div>
+            <div class="col-md-6">
+                <x-select label="Departement" name="departement_id[]" multiple>
+                    @foreach ($division as $row)
+                    <option value="{{ $row->id }}"> {{ $row->nom }}</option>
+                    @endforeach
+                </x-select>
+            </div>
 
-        <div class="col-md-6">
-            <x-input type="date" label="Delai" name='delai' :required='false' />
-        </div>
-        <div class="col-md-6">
-            <x-select name="priorite" label="Priorité">
-                <option value="Normal">Normal</option>
-                <option value="Urgent">Urgent</option>
-            </x-select>
-        </div>
-        <div class="col-md-6">
-            <x-select name="notif" label="Notification par email">
-                <option value="1">OUI</option>
-                <option value="0">NON</option>
-            </x-select>
-        </div>
+            <div class="col-md-6">
+                <x-input type="date" label="Delai" name='delai' :required='false' />
+            </div>
+            <div class="col-md-6">
+                <x-select name="priorite" label="Priorité">
+                    <option value="Normal">Normal</option>
+                    <option value="Urgent">Urgent</option>
+                </x-select>
+            </div>
+            <div class="col-md-6">
+                <x-select name="notif" label="Notification par email">
+                    <option value="1">OUI</option>
+                    <option value="0">NON</option>
+                </x-select>
+            </div>
 
-        <h2 class="text-center">Annotations et instructions</h2>
-        <div class="divide-y">
-            <div class="mb-3">
-                <div class="row">
-                    @forelse (Auth::user()->annotations as $row)
-                    <div class="col-md-4">
-                        <label class="form-check">
-                            <input class="form-check-input" value="{{ $row->id }}" name="annotation_id[]"
-                                type="checkbox">
-                            <span class="form-check-label">{{ $row->nom }}</span>
-                        </label>
+            <h2 class="text-center">Annotations et instructions</h2>
+            <div class="divide-y">
+                <div class="mb-3">
+                    <div class="row">
+                        @forelse (Auth::user()->annotations as $row)
+                        <div class="col-md-4">
+                            <label class="form-check">
+                                <input class="form-check-input" value="{{ $row->id }}" name="annotation_id[]"
+                                    type="checkbox">
+                                <span class="form-check-label">{{ $row->nom }}</span>
+                            </label>
+                        </div>
+                        @empty
+                        <label class="form-label text-center">Aucune annotation</label>
+                        @endforelse
                     </div>
-                    @empty
-                    <label class="form-label text-center">Aucune annotation</label>
-                    @endforelse
                 </div>
             </div>
-        </div>
-        <div class="col-md-12">
-            <x-textarea place="observation ou commentaire sur l'imputation" name="observation" :required='false'
-                label="observation ou commentaire Facultatif" />
-        </div>
-    </x-form>
+            <div class="col-md-12">
+                <x-textarea place="observation ou commentaire sur l'imputation" name="observation" :required='false'
+                    label="observation ou commentaire Facultatif" />
+            </div>
+        </x-form>
+    </div>
 </x-modal>
 @push('scripts')
 <script>

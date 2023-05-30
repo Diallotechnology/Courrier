@@ -230,41 +230,44 @@
         </tbody>
     </x-table>
     <x-modal title="nouvelle tache">
-        <x-form route="{{ route('task.store') }}">
-            <div class="col-md-6">
-                <x-input type="text" name="nom" place="le nom de la tache" />
-            </div>
-            <div class="col-md-6">
-                <div wire:ignore>
-                    <x-select name="type" id="type" label="type de tache">
-                        <option value="utilisateur">Utilisateur</option>
-                        <option value="imputation">Imputation</option>
-                    </x-select>
+        <div wire:ignore>
+            <x-form route="{{ route('task.store') }}">
+                <div class="col-md-6">
+                    <x-input type="text" name="nom" place="le nom de la tache" />
                 </div>
-            </div>
-            <div class="col-md-12">
-                <div wire:ignore>
-                    <x-select name="user_id[]" multiple label="liste des Utilisateurs">
-                        @foreach ($user as $key => $row)
-                        <optgroup label="Departement {{ $key }}">
-                            @foreach ($row as $item)
-                            <option
-                                data-custom-properties="&lt;span class=&quot;avatar avatar-xs&quot;  style=&quot;background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $item->name }}')&quot;&gt;&lt;/span&gt;"
-                                value="{{ $item->id }}">{{ $item->email }}</option>
+                <div class="col-md-6">
+                    <div wire:ignore>
+                        <x-select name="type" id="type" label="type de tache">
+                            <option value="utilisateur">Utilisateur</option>
+                            <option value="imputation">Imputation</option>
+                        </x-select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div wire:ignore>
+                        <x-select name="user_id[]" multiple label="liste des Utilisateurs">
+                            @foreach ($user as $key => $row)
+                            <optgroup label="Departement {{ $key }}">
+                                @foreach ($row as $item)
+                                <option
+                                    data-custom-properties="&lt;span class=&quot;avatar avatar-xs&quot;  style=&quot;background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $item->name }}')&quot;&gt;&lt;/span&gt;"
+                                    value="{{ $item->id }}">{{ $item->email }}</option>
+                                @endforeach
+                            </optgroup>
                             @endforeach
-                        </optgroup>
-                        @endforeach
-                    </x-select>
+                        </x-select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <x-input type="datetime-local" name="debut" label="Debut de la tache" />
-            </div>
-            <div class="col-md-6">
-                <x-input type="datetime-local" name="fin" label="Fin de la tache" />
-            </div>
-            <x-textarea place="Fait une description de la tache" name="description" label="description de la taches" />
-        </x-form>
+                <div class="col-md-6">
+                    <x-input type="datetime-local" name="debut" label="Debut de la tache" />
+                </div>
+                <div class="col-md-6">
+                    <x-input type="datetime-local" name="fin" label="Fin de la tache" />
+                </div>
+                <x-textarea place="Fait une description de la tache" name="description"
+                    label="description de la taches" />
+            </x-form>
+        </div>
     </x-modal>
 </div>
 @push('scripts')

@@ -23,10 +23,10 @@ trait DateFormat
         return Carbon::parse($date)->format('d/m/Y H:i:s');;
     }
 
-    // protected function getDeletedAtAttribute(string $date): string
-    // {
-    //     return Carbon::parse($date)->format('d/m/Y H:i:s');
-    // }
+    public function getDateFormatAttribute(): string
+    {
+        return Carbon::parse($this->date)->format('d/m/Y');
+    }
 
     public function Normal(): bool
     {

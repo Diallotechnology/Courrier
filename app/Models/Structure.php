@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Depart;
+use App\Models\Nature;
 use App\Models\Rapport;
+use App\Models\Courrier;
 use App\Helper\DateFormat;
 use App\Models\Departement;
 use App\Models\SubStructure;
@@ -111,6 +114,36 @@ class Structure extends Model
         return $this->hasMany(Rapport::class);
     }
 
+    /**
+     * Get all of the courriers for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function courriers(): HasMany
+    {
+        return $this->hasMany(Courrier::class);
+    }
+
+
+    /**
+     * Get all of the natures for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function natures(): HasMany
+    {
+        return $this->hasMany(Nature::class);
+    }
+
+    /**
+     * Get all of the departs for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function departs(): HasMany
+    {
+        return $this->hasMany(Depart::class);
+    }
 
 
     public function DocLink(): string {

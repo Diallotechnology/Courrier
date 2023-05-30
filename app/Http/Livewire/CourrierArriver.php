@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Enum\CourrierEnum;
 use App\Models\Nature;
 use Livewire\Component;
 use App\Models\Courrier;
+use App\Enum\CourrierEnum;
 use Livewire\WithPagination;
 use App\Models\Correspondant;
+use Illuminate\Support\Facades\Auth;
 
 class CourrierArriver extends Component
 {
@@ -20,45 +21,59 @@ class CourrierArriver extends Component
     public string $date = '';
     public string $expediteur = '';
     public string $etat = '';
-    public array $selectedRows = [];
 
     public function ResetFilter(): void
     {
         $this->reset('privacy','priority','nature','date', 'expediteur','etat');
         $this->resetPage();
+
     }
 
     public function render()
     {
-        if ($this->privacy || $this->priority  || $this->nature || $this->date || $this->etat || $this->expediteur) {
-            $rows = Courrier::with('user','nature','correspondant')
-            ->whereNot('etat',CourrierEnum::ARCHIVE)
-            ->when($this->privacy && !empty($this->privacy), function ($query) {
-                $query->where('confidentiel', $this->privacy);
-            })
-            ->when($this->priority && !empty($this->priority), function ($query) {
-                $query->where('priorite', $this->priority);
-            })
-            ->when($this->nature && !empty($this->nature), function ($query) {
-                $query->where('nature_id', $this->nature);
-            })
-            ->when($this->expediteur && !empty($this->expediteur), function ($query) {
-                $query->where('correspondant_id', $this->expediteur);
-            })
-            ->when($this->date && !empty($this->date), function ($query) {
-                $query->where('date', $this->date);
-            })
-            ->when($this->etat && !empty($this->etat), function ($query) {
-                $query->where('etat', $this->etat);
-            })->latest()->paginate(15);
-        } else {
-            $rows = Courrier::with('user','nature','correspondant')->whereNot('etat',CourrierEnum::ARCHIVE)->latest()->paginate(15);
+        $structureId = Auth::user()->userable->structure_id ?: Auth::user()->userable->departement->structure_id;
+        $isSuperadmin = Auth::user()->isSuperadmin();
+        $query = Courrier::with('user', 'nature', 'correspondant')
+            ->whereNot('etat', CourrierEnum::ARCHIVE)
+            ->when($isSuperadmin, function ($query) use ($structureId) {
+                $query->where('structure_id', $structureId);
+            });
+
+        if ($this->privacy) {
+            $query->where('confidentiel', $this->privacy);
         }
 
-        
-        $correspondant = Correspondant::orderBy('nom')->get();
-        $type = Nature::orderBy('nom')->get();
+        if ($this->priority) {
+            $query->where('priorite', $this->priority);
+        }
 
+        if ($this->nature) {
+            $query->where('nature_id', $this->nature);
+        }
+
+        if ($this->expediteur) {
+            $query->where('correspondant_id', $this->expediteur);
+        }
+
+        if ($this->date) {
+            $query->where('date', $this->date);
+        }
+
+        if ($this->etat) {
+            $query->where('etat', $this->etat);
+        }
+
+        $rows = $query->latest()->paginate(15);
+
+        $correspondantQuery = Correspondant::orderBy('nom');
+        $typeQuery = Nature::orderBy('nom');
+        if (!$isSuperadmin) {
+            $correspondantQuery->where('structure_id', $structureId);
+            $typeQuery->where('structure_id', $structureId);
+        }
+
+        $correspondant = $correspondantQuery->get();
+        $type = $typeQuery->get();
         return view('livewire.courrier-arriver', compact('rows','correspondant','type'));
     }
 }

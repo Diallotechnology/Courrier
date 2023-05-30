@@ -29,14 +29,13 @@ class StoreDepartRequest extends FormRequest
             'priorite'=>'required|string|max:6',
             'observation'=>'string|nullable|max:255',
             'date'=>'required|date',
-            'reference'=> 'required',
-            'numero'=> 'required',
             'files'=> 'nullable',
             // 'files.*'=> 'mimes:pdf',
             'courrier_id'=>'nullable|exists:courriers,id',
             'nature_id'=>'required|exists:natures,id',
             'correspondant_id'=>'required|exists:correspondants,id',
             'user_id'=>'required|exists:users,id',
+            'structure_id'=>'required|exists:structures,id',
         ];
 
 
@@ -44,10 +43,10 @@ class StoreDepartRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        $structureId = Auth::user()->userable->structure_id ?: Auth::user()->userable->departement->structure_id;
         $this->merge([
             'user_id' => Auth::user()->id,
-            'reference' => uniqid(),
-            'numero' => uniqid(),
+            'structure_id' => $structureId,
          ]);
     }
 

@@ -1,124 +1,126 @@
-<div class="row row-deck row-cards mb-3">
-    <div class="col-12">
-        <div class="row row-cards">
-            <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="bg-primary text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-list-check" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M3.5 5.5l1.5 1.5l2.5 -2.5"></path>
-                                        <path d="M3.5 11.5l1.5 1.5l2.5 -2.5"></path>
-                                        <path d="M3.5 17.5l1.5 1.5l2.5 -2.5"></path>
-                                        <path d="M11 6l9 0"></path>
-                                        <path d="M11 12l9 0"></path>
-                                        <path d="M11 18l9 0"></path>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="col">
-                                <div class="font-weight-medium">
-                                    Total courrier arrivé
+<div>
+    <div class="row row-deck row-cards mb-3">
+        <div class="col-12">
+            <div class="row row-cards">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card card-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-primary text-white avatar">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-list-check" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3.5 5.5l1.5 1.5l2.5 -2.5"></path>
+                                            <path d="M3.5 11.5l1.5 1.5l2.5 -2.5"></path>
+                                            <path d="M3.5 17.5l1.5 1.5l2.5 -2.5"></path>
+                                            <path d="M11 6l9 0"></path>
+                                            <path d="M11 12l9 0"></path>
+                                            <path d="M11 18l9 0"></path>
+                                        </svg>
+                                    </span>
                                 </div>
-                                <div class="text-muted">
-                                    {{ $rows->count() }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="bg-primary text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checks"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M7 12l5 5l10 -10"></path>
-                                        <path d="M2 12l5 5m5 -5l5 -5"></path>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="col">
-                                <div class="font-weight-medium">
-                                    Total Courrier Traité
-                                </div>
-                                <div class="text-muted">
-                                    {{ count($rows->where('etat',App\Enum\CourrierEnum::TERMINE)) }}
+                                <div class="col">
+                                    <div class="font-weight-medium">
+                                        Total courrier arrivé
+                                    </div>
+                                    <div class="text-muted">
+                                        {{ $rows->count() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="bg-primary text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-share"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                        <path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                        <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                        <path d="M8.7 10.7l6.6 -3.4"></path>
-                                        <path d="M8.7 13.3l6.6 3.4"></path>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="col">
-                                <div class="font-weight-medium">
-                                    Total Courrier Imputé
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card card-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-primary text-white avatar">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-checks" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M7 12l5 5l10 -10"></path>
+                                            <path d="M2 12l5 5m5 -5l5 -5"></path>
+                                        </svg>
+                                    </span>
                                 </div>
-                                <div class="text-muted">
-                                    {{ count(Auth::user()->createurs->where('etat',App\Enum\CourrierEnum::IMPUTE))
-                                    }}
+                                <div class="col">
+                                    <div class="font-weight-medium">
+                                        Total Courrier Traité
+                                    </div>
+                                    <div class="text-muted">
+                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::TERMINE)) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="bg-primary text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-file-check" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                        <path
-                                            d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z">
-                                        </path>
-                                        <path d="M9 15l2 2l4 -4"></path>
-                                    </svg>
-                                </span>
-                            </div>
-                            <div class="col">
-                                <div class="font-weight-medium">
-                                    Total courrier Archivé
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card card-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-primary text-white avatar">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-share" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                            <path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                            <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                            <path d="M8.7 10.7l6.6 -3.4"></path>
+                                            <path d="M8.7 13.3l6.6 3.4"></path>
+                                        </svg>
+                                    </span>
                                 </div>
-                                <div class="text-muted">
-                                    {{ count($rows->where('etat',App\Enum\CourrierEnum::ARCHIVE))
-                                    }}
+                                <div class="col">
+                                    <div class="font-weight-medium">
+                                        Total Courrier Imputé
+                                    </div>
+                                    <div class="text-muted">
+                                        {{ count(Auth::user()->createurs->where('etat',App\Enum\CourrierEnum::IMPUTE))
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card card-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-primary text-white avatar">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-file-check" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path
+                                                d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z">
+                                            </path>
+                                            <path d="M9 15l2 2l4 -4"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <div class="font-weight-medium">
+                                        Total courrier Archivé
+                                    </div>
+                                    <div class="text-muted">
+                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::ARCHIVE))
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -127,191 +129,188 @@
             </div>
         </div>
     </div>
-</div>
-<x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-header">
-            <h3 class="card-title">
-                <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
-            </h3>
-        </div>
-        <div class="card-body">
-            <x-filter url="arriver">
-                <div class="mb-3 col-sm-4 col-md-2">
-                    <div wire:ignore>
-                        <x-select label="Nature de courrier" :required='false' wire:model='nature'>
-                            @foreach ($type as $row)
-                            <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                            @endforeach
-                        </x-select>
+    <x-table :rows="$rows">
+        <x-slot name="header">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
+                </h3>
+            </div>
+            <div class="card-body">
+                <x-filter url="arriver">
+                    <div class="mb-3 col-sm-4 col-md-2">
+                        <div wire:ignore>
+                            <x-select label="Nature de courrier" :required='false' wire:model='nature'>
+                                @foreach ($type as $row)
+                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                                @endforeach
+                            </x-select>
 
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 col-sm-4 col-md-2">
-                    <div wire:ignore>
-                        <x-select label="Correspondant" :required='false' wire:model='expediteur'>
-                            @foreach ($correspondant as $row)
-                            <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
-                            @endforeach
-                        </x-select>
+                    <div class="mb-3 col-sm-4 col-md-2">
+                        <div wire:ignore>
+                            <x-select label="Correspondant" :required='false' wire:model='expediteur'>
+                                @foreach ($correspondant as $row)
+                                <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
+                                @endforeach
+                            </x-select>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 col-sm-4 col-md-2">
-                    <div wire:ignore>
-                        <x-select label="Priorite" :required='false' wire:model='priority'>
-                            <option value="Urgent">Urgent</option>
-                            <option value="Normal">Normal</option>
-                        </x-select>
+                    <div class="mb-3 col-sm-4 col-md-2">
+                        <div wire:ignore>
+                            <x-select label="Priorite" :required='false' wire:model='priority'>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Normal">Normal</option>
+                            </x-select>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 col-sm-4 col-md-2">
-                    <div wire:ignore>
-                        <x-select label="Confidentialité" :required='false' wire:model='privacy'>
-                            <option value="OUI">OUI</option>
-                            <option value="NON">NON</option>
-                        </x-select>
+                    <div class="mb-3 col-sm-4 col-md-2">
+                        <div wire:ignore>
+                            <x-select label="Confidentialité" :required='false' wire:model='privacy'>
+                                <option value="OUI">OUI</option>
+                                <option value="NON">NON</option>
+                            </x-select>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 col-sm-4 col-md-2">
-                    <div wire:ignore>
-                        <x-select label="Etat" :required='false' wire:model='etat'>
-                            @foreach (App\Enum\CourrierEnum::cases() as $row)
-                            <option value="{{ $row }}">{{ $row }}</option>
-                            @endforeach
-                        </x-select>
+                    <div class="mb-3 col-sm-4 col-md-2">
+                        <div wire:ignore>
+                            <x-select label="Etat" :required='false' wire:model='etat'>
+                                @foreach (App\Enum\CourrierEnum::cases() as $row)
+                                <option value="{{ $row }}">{{ $row }}</option>
+                                @endforeach
+                            </x-select>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 col-sm-4 col-md-2">
-                    <x-input type="date" label="Date d'arriver" wire:model='date' :required='false' />
-                </div>
-
-                <x-slot name="btn">
-                    <button class="btn btn-info mx-2" type="button">
-                        <i class="ti ti-file-export"></i>
-                        Export
-                    </button>
-                </x-slot>
-            </x-filter>
-        </div>
-    </x-slot>
-    <thead>
-        <tr>
-            {{-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox"
-                    aria-label="Select all invoices"></th> --}}
-            <th>ID</th>
-            <th>Utilisateur</th>
-            <th>Nature</th>
-            <th>Correspondant</th>
-            <th>Reference</th>
-            <th>Priorite</th>
-            <th>Confidential</th>
-            <th>Numero/Date arriver</th>
-            <th>Etat</th>
-            <th>Objet</th>
-            <th>Date</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($rows as $row)
-        <tr>
-
-            {{-- <td><input class="form-check-input m-0 align-middle" id="{{ $row->id }}" wire:model="selectedRows"
-                    value="{{ $row->id }}" type="checkbox" aria-label="Select item"></td> --}}
-            <td>{{ $row->id }}</td>
-            <td>
-                <x-user-avatar :row="$row" />
-            </td>
-            <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
-            <td>
-                {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
-            </td>
-            <td>{{ $row->reference }}</td>
-
-            <td>
-                <x-statut type="prio" :courrier="$row" />
-            </td>
-            <td>
-                <x-statut type="privacy" :courrier="$row" />
-            </td>
-            <td>
-                <div class="d-flex py-1 align-items-center">
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">N° {{ $row->numero }}</div>
-                        <div class="text-muted">Date {{ $row->date_format }}</div>
+                    <div class="mb-3 col-sm-4 col-md-2">
+                        <x-input type="date" label="Date d'arriver" wire:model='date' :required='false' />
                     </div>
+
+                    <x-slot name="btn">
+                        <button class="btn btn-info mx-2" type="button">
+                            <i class="ti ti-file-export"></i>
+                            Export
+                        </button>
+                    </x-slot>
+                </x-filter>
+            </div>
+        </x-slot>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Utilisateur</th>
+                <th>Nature</th>
+                <th>Correspondant</th>
+                <th>Reference</th>
+                <th>Priorite</th>
+                <th>Confidential</th>
+                <th>Numero/Date arriver</th>
+                <th>Etat</th>
+                <th>Objet</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($rows as $row)
+            <tr>
+                <td>{{ $row->id }}</td>
+                <td>
+                    <x-user-avatar :row="$row" />
+                </td>
+                <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+                <td>
+                    {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
+                </td>
+                <td>{{ $row->reference }}</td>
+
+                <td>
+                    <x-statut type="prio" :courrier="$row" />
+                </td>
+                <td>
+                    <x-statut type="privacy" :courrier="$row" />
+                </td>
+                <td>
+                    <div class="d-flex py-1 align-items-center">
+                        <div class="flex-fill">
+                            <div class="font-weight-medium">N° {{ $row->numero }}</div>
+                            <div class="text-muted">Date {{ $row->date_format }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <x-statut type="etat" :courrier="$row" />
+                </td>
+                <td>
+                    <p class="text-muted">{{ $row->objet }}</p>
+                </td>
+
+                <td>{{ $row->created_at }}</td>
+                <td>
+                    <x-button-edit href="{{ route('arriver.edit', ['arriver' => $row]) }}" />
+                    <x-button-show href="{{ route('arriver.show', ['arriver' => $row]) }}" />
+                    <x-button-delete url="{{ url('courrier/arriver/'.$row->id) }}" />
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="8">
+                    <h2 class="text-center">Aucun element</h2>
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+
+    </x-table>
+
+    <x-modal title="nouveaux courrier arriver" size="modal-lg">
+        <div wire:ignore>
+            <x-form route="{{ route('arriver.store') }}" enctype="multipart/form-data">
+                <div class="col-md-6">
+                    <x-select name="nature_id" label="Nature de courrier">
+                        @foreach ($type as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}
+                        </option>
+                        @endforeach
+                    </x-select>
                 </div>
-            </td>
-            <td>
-                <x-statut type="etat" :courrier="$row" />
-            </td>
-            <td>
-                <p class="text-muted">{{ $row->objet }}</p>
-            </td>
 
-            <td>{{ $row->created_at }}</td>
-            <td>
-                <x-button-edit href="{{ route('arriver.edit', ['arriver' => $row]) }}" />
-                <x-button-show href="{{ route('arriver.show', ['arriver' => $row]) }}" />
-                <x-button-delete url="{{ url('courrier/arriver/'.$row->id) }}" />
-            </td>
-        </tr>
-        @empty
-        <tr>
-            <td colspan="8">
-                <h2 class="text-center">Aucun element</h2>
-            </td>
-        </tr>
-        @endforelse
-    </tbody>
+                <div class="col-md-6">
+                    <x-select name="correspondant_id" label="Correspondant(Expediteur)">
+                        @foreach ($correspondant as $row)
+                        <option value="{{ $row->id }}">{{ $row->prenom.' '.$row->nom }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
 
-</x-table>
-
-<x-modal title="nouveaux courrier arriver" size="modal-lg">
-    <x-form route="{{ route('arriver.store') }}" enctype="multipart/form-data">
-        <div class="col-md-6">
-            <x-select name="nature_id" label="Nature de courrier">
-                @foreach ($type as $row)
-                <option value="{{ $row->id }}">{{ $row->nom }}
-                </option>
-                @endforeach
-            </x-select>
+                <div class="col-md-6">
+                    <x-select name="priorite" label="Priorité">
+                        <option value="Normal">Normal</option>
+                        <option value="Urgent">Urgent</option>
+                    </x-select>
+                </div>
+                <div class="col-md-6">
+                    <x-select name="confidentiel" label="confidentiel">
+                        <option value="OUI">OUI</option>
+                        <option value="NON">NON</option>
+                    </x-select>
+                </div>
+                <div class="col-md-6">
+                    <x-input type="date" name="date" label="Date d'arriver" />
+                </div>
+                <div class="col-md-6">
+                    <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif"
+                        :required='false' />
+                </div>
+                <x-textarea place="objet du courrier" name="objet" label="Objet/Origine du courrier" />
+                <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false'
+                    label="observation ou commentaire Facultatif" />
+            </x-form>
         </div>
-
-        <div class="col-md-6">
-            <x-select name="correspondant_id" label="Correspondant(Expediteur)">
-                @foreach ($correspondant as $row)
-                <option value="{{ $row->id }}">{{ $row->prenom.' '.$row->nom }}</option>
-                @endforeach
-            </x-select>
-        </div>
-
-        <div class="col-md-6">
-            <x-select name="priorite" label="Priorité">
-                <option value="Normal">Normal</option>
-                <option value="Urgent">Urgent</option>
-            </x-select>
-        </div>
-        <div class="col-md-6">
-            <x-select name="confidentiel" label="confidentiel">
-                <option value="OUI">OUI</option>
-                <option value="NON">NON</option>
-            </x-select>
-        </div>
-        <div class="col-md-6">
-            <x-input type="date" name="date" label="Date d'arriver" />
-        </div>
-        <div class="col-md-6">
-            <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif" :required='false' />
-        </div>
-        <x-textarea place="objet du courrier" name="objet" label="Objet/Origine du courrier" />
-        <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false'
-            label="observation ou commentaire Facultatif" />
-    </x-form>
-</x-modal>
-@push('scripts')
-<script>
-    $(document).on('livewire:load', function() {
+    </x-modal>
+    @push('scripts')
+    <script>
+        $(document).on('livewire:load', function() {
             $('.select-tags').each(function() {
                 var select = new TomSelect(this, {
                     onChange: function(value) {
@@ -321,5 +320,6 @@
                 });
             });
         });
-</script>
-@endpush
+    </script>
+    @endpush
+</div>

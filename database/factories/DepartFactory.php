@@ -19,6 +19,7 @@ class DepartFactory extends Factory
         return [
             'reference' => uniqid(),
             'objet' => $this->faker->sentence(2),
+            'structure_id' => rand(1,5),
             'correspondant_id' => rand(1,5),
             'nature_id' => rand(1,5),
             'user_id' => rand(1,5),
