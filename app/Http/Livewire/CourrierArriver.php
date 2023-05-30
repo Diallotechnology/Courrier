@@ -14,7 +14,6 @@ class CourrierArriver extends Component
     use WithPagination;
 
     protected string $paginationTheme = 'bootstrap';
-
     public string $privacy = '';
     public string $priority = '';
     public string $nature = '';
@@ -27,14 +26,6 @@ class CourrierArriver extends Component
     {
         $this->reset('privacy','priority','nature','date', 'expediteur','etat');
         $this->resetPage();
-    }
-
-    public function Export()
-    {
-        return response()->streamDownload(function ()
-        {
-
-        }, 'test.csv');
     }
 
     public function render()
@@ -64,6 +55,7 @@ class CourrierArriver extends Component
             $rows = Courrier::with('user','nature','correspondant')->whereNot('etat',CourrierEnum::ARCHIVE)->latest()->paginate(15);
         }
 
+        
         $correspondant = Correspondant::orderBy('nom')->get();
         $type = Nature::orderBy('nom')->get();
 

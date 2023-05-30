@@ -82,16 +82,6 @@ class Structure extends Model
     }
 
     /**
-     * Get all of the substructures for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function substructures(): HasMany
-    {
-        return $this->hasMany(SubStructure::class);
-    }
-
-    /**
      * Get all of the departements for the Structure
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

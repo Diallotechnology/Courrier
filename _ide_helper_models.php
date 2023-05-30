@@ -702,7 +702,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubStructure> $substructures
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  */
 	class Structure extends \Eloquent {}
@@ -740,48 +739,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  */
 	class SubDepartement extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\SubStructure
- *
- * @property int $id
- * @property int $structure_id
- * @property string $nom
- * @property string|null $logo
- * @property string|null $email
- * @property string $contact
- * @property string $adresse
- * @property string|null $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departments
- * @property-read int|null $departments_count
- * @property-read Structure $structure
- * @method static \Database\Factories\SubStructureFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure query()
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereAdresse($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereContact($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereLogo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereNom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereStructureId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|SubStructure withoutTrashed()
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departments
- */
-	class SubStructure extends \Eloquent {}
 }
 
 namespace App\Models{
