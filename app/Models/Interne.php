@@ -65,6 +65,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withoutTrashed()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read string $date_format
+ * @property-read Nature $nature
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
+ * @property-read int|null $reponses_count
  * @mixin \Eloquent
  */
 class Interne extends Model

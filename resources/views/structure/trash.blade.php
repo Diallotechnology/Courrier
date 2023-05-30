@@ -16,11 +16,7 @@
 @section('content')
 <x-table :rows="$rows">
     <x-slot name="header">
-        <div class="card-header">
-            <h3 class="card-title">Corbeille des structures</h3>
-        </div>
         <div class="card-body">
-
             <x-filter trash="structure" :create="false" />
         </div>
     </x-slot>

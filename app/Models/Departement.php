@@ -7,9 +7,12 @@ use App\Models\Courrier;
 use App\Models\Structure;
 use App\Helper\DateFormat;
 use App\Models\Imputation;
+use App\Models\SubDepartement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -48,6 +51,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Departement whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, SubDepartement> $subdepartement
+ * @property-read int|null $subdepartement_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @mixin \Eloquent
  */
 class Departement extends Model
@@ -61,6 +69,39 @@ class Departement extends Model
      */
     protected $fillable = ['nom','structure_id','code'];
 
+
+
+    /**
+     * Get all of the user for the Departement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users(): MorphMany
+    {
+        return $this->morphMany(User::class,'userable');
+    }
+
+
+    /**
+     * Get the structure that owns the Departement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
+    }
+
+    /**
+     * Get all of the subdepartement for the Departement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subdepartements(): HasMany
+    {
+        return $this->hasMany(SubDepartement::class);
+    }
+
     /**
      * The imputations that belong to the Departement
      *
@@ -72,25 +113,6 @@ class Departement extends Model
     }
 
 
-    /**
-     * Get all of the users for the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function users(): HasMany
-    {
-        return $this->hasMany(User::class);
-    }
-
-    /**
-     * Get the structure that owns the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function structure(): BelongsTo
-    {
-        return $this->belongsTo(Structure::class);
-    }
 
     /**
      * Get all of the tasks for the Departement

@@ -22,12 +22,16 @@
                         label="contact facultatif" place="le contact du correspondant" />
                 </div>
                 <x-input type="email" :value="$correspondant->email" name="email" place="l'email du correspondant" />
-                <x-select name='structure_id'>
+                @if(Auth::user()->isSuperadmin())
+                <x-select name='structure_id' label="structure">
                     @foreach ($structure as $row)
                     <option @selected($row->id == $correspondant->structure_id) value="{{ $row->id }}">{{ $row->nom }}
                     </option>
                     @endforeach
                 </x-select>
+                @else
+                <input type="hidden" value="{{ Auth::user()->structure_id }}" name="structure_id">
+                @endif
             </x-form>
         </div>
     </div>

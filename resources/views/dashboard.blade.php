@@ -374,19 +374,34 @@
         <div class="row row-cards">
             <div class="col-12">
                 <div class="card" style="height: 15rem">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path
+                                    d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+                                <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+                            </svg>
+                            {{ count(Auth::user()->unreadNotifications) }}
+                            Notifications
+                        </h3>
+                    </div>
                     <div class="card-body card-body-scrollable card-body-scrollable-shadow">
                         <div class="divide-y">
                             @forelse (Auth::user()->notifications as $row)
                             <div>
                                 <div class="row">
-                                    <div class="col-auto">
-                                        <span class="avatar">JL</span>
-                                    </div>
+
                                     <div class="col">
                                         <div class="text-truncate">
-                                            {{ $row->data['message'] }}
+                                            {{-- {{ $row->data['message'] }} --}}
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam accusamus alias
+                                            tempore animi
                                         </div>
-                                        <div class="text-muted">yesterday</div>
+                                        <div class="text-muted">{{ $row->created_at->locale('fr')->diffForHumans() }}
+                                        </div>
                                     </div>
                                     <div class="col-auto align-self-center">
                                         <div class="badge bg-primary"></div>
@@ -402,29 +417,20 @@
             </div>
         </div>
     </div>
-    <div class="col-12">
+    <div class="col-9">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex">
-                    <h3 class="card-title">Evolution du courrier</h3>
-                    <div class="ms-auto">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item active" href="#">Last 7 days</a>
-                                <a class="dropdown-item" href="#">Last 30 days</a>
-                                <a class="dropdown-item" href="#">Last 3 months</a>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="card-title">Evolution du courrier arrivé</h3>
                 </div>
-                <div id="chart-social-referrals"></div>
+                <div id="chart-courrier"></div>
             </div>
         </div>
     </div>
+    <div class="col-3">
+        <img src="{{ asset('/img/Mail-bro.svg') }}" height="300" alt="">
+    </div>
     <div class="col-md-12">
-
         <x-table>
             <x-slot name="header">
                 <div class="card-header">
@@ -497,21 +503,25 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-social-referrals'), {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-courrier'), {
       		chart: {
-      			type: "line",
+      			type: "area",
       			fontFamily: 'inherit',
-      			height: 288,
+      			height: 240,
       			parentHeightOffset: 0,
       			toolbar: {
       				show: false,
       			},
       			animations: {
-      				enabled: true
+      				enabled: false
       			},
       		},
+      		dataLabels: {
+      			enabled: false,
+      		},
       		fill: {
-      			opacity: 1,
+      			opacity: .16,
+      			type: 'solid'
       		},
       		stroke: {
       			width: 2,
@@ -521,12 +531,6 @@
       		series: [{
       			name: "Courrier arrivé",
       			data: @json($arriver->values())
-      		},{
-      			name: "Courrier interne",
-      			data: @json($interne->values())
-      		},{
-      			name: "Courrier depart",
-      			data: @json($depart->values())
       		}],
       		tooltip: {
       			theme: 'dark'
@@ -539,11 +543,6 @@
       				bottom: -4
       			},
       			strokeDashArray: 4,
-      			xaxis: {
-      				lines: {
-      					show: true
-      				}
-      			},
       		},
       		xaxis: {
       			labels: {
@@ -551,6 +550,9 @@
       			},
       			tooltip: {
       				enabled: false
+      			},
+      			axisBorder: {
+      				show: false,
       			},
       			type: 'datetime',
       		},
@@ -560,20 +562,9 @@
       			},
       		},
       		labels: @json($arriver->keys()),
-      		colors: [tabler.getColor("facebook"), tabler.getColor("twitter"), tabler.getColor("dribbble")],
+      		colors: [tabler.getColor("primary")],
       		legend: {
-      			show: true,
-      			position: 'bottom',
-      			offsetY: 12,
-      			markers: {
-      				width: 10,
-      				height: 10,
-      				radius: 100,
-      			},
-      			itemMargin: {
-      				horizontal: 8,
-      				vertical: 8
-      			},
+      			show: false,
       		},
       	})).render();
       });

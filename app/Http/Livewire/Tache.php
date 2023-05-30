@@ -76,7 +76,7 @@ class Tache extends Component
 
     public function render()
     {
-    
+
         if ($this->type || $this->debut  || $this->fin || $this->etat) {
             $rows = Task::with('createur')
             ->when($this->type && !empty($this->type), function ($query) {
@@ -92,9 +92,14 @@ class Tache extends Component
                 $query->where('etat', $this->etat);
             })->latest()->paginate(15);
         } else {
-            $rows = Task::with('createur')->latest()->paginate(15);
+
+            if (Auth::user()->isSuperadmin()) {
+                $user = Task::with('users','createur')->paginate(15);
+            } else {
+                $rows = Task::with('users','createur')->whereCreateurId(Auth::user()->id)->paginate(15);
+            }
         }
-        $user = User::with('departement')->where('id','!=',Auth::user()->id)->get()->groupBy('departement.nom');
+        $user = User::with('userable')->where('id','!=',Auth::user()->id)->get()->groupBy('userable.nom');
         return view('livewire.tache', compact('user','rows'));
     }
 }

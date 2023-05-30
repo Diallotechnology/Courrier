@@ -80,7 +80,7 @@
         </div>
         <x-input type="text" name="adresse" place="l'adresse de la structure" />
         <x-textarea :required='false' place="Fait une description de l'organisation ou de la structure"
-            name="description" label="description de la structure Faculatif" />
+            name="description" label="description de la structure " />
     </x-form>
 </x-modal>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Courrier;
 use App\Models\Document;
+use App\Models\Structure;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,6 +44,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withoutTrashed()
+ * @property int $structure_id
+ * @property string|null $reference
+ * @property string $objet
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read Structure $structure
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereObjet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereReference($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereStructureId($value)
  * @mixin \Eloquent
  */
 class Rapport extends Model
@@ -77,7 +87,7 @@ class Rapport extends Model
      *
      * @var array
      */
-    protected $fillable = ['objet','user_id','type','contenu','courrier_id'];
+    protected $fillable = ['objet','user_id','type','contenu','courrier_id','structure_id'];
 
     /**
      * Get the user that owns the Rapport
@@ -105,5 +115,15 @@ class Rapport extends Model
     public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');
+    }
+
+    /**
+     * Get the structure that owns the Rapport
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
     }
 }

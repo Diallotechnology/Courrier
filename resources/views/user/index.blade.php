@@ -54,7 +54,7 @@
             </td>
             <td>{{ $row->poste }}</td>
             <td data-label="Title">
-                <div>{{ $row->departement->nom }}</div>
+                <div> {{ $row->userable->nom }}</div>
                 <div class="text-muted">{{ $row->imputations_count }} Imputations</div>
             </td>
             <td>{{ $row->role }}</td>
@@ -90,14 +90,17 @@
             <x-input type="email" name="email" place="email de l'utilisateur" />
         </div>
 
+        @if(Auth::user()->isSuperadmin())
+        <input type="hidden" name="userable_id" value="{{ Auth::user()->userable_id }}">
+        @else
         <div class="col-md-12">
-            <x-select name="departement_id" label="Departement">
+            <x-select name="userable_id" label="Departement">
                 @foreach ($departement as $row)
                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                 @endforeach
             </x-select>
         </div>
-
+        @endif
         <div class="col-md-12">
             <x-select name="role" label="Role/Droit d'access">
                 @foreach (App\Enum\RoleEnum::cases() as $row)

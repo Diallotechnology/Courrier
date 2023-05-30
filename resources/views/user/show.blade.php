@@ -1,21 +1,108 @@
 @extends('layouts.app')
 @section('content')
-<div class="page-header">
-    <div class="container">
-        <div class="card">
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <span class="avatar avatar-xl rounded"
-                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $user->name }}')"></span>
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <span class="avatar avatar-lg rounded"
+                                style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $user->name }}')"></span>
+                        </div>
+                        <div class="card-title mb-1"> {{ $user->name }}</div>
+                        <div class="card-title mb-1"> {{ $user->email }}</div>
+                    </div>
                 </div>
-                <div class="col">
-                    <h2 class="fw-bold">{{ $user->name }}</h2>
-                    <h4 class="fw-bold">Email: {{ $user->email }}</h4>
-                    <h4 class="fw-bold">Departement: {{ $user->departement->nom }}</h4>
-                    <h4 class="fw-bold">Poste: {{ $user->poste }}</h4>
+                <div class="col-md-6">
+                    <div class="">
+                        <div class="h4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home-cog"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M9 21v-6a2 2 0 0 1 2 -2h1.6"></path>
+                                <path d="M20 11l-8 -8l-9 9h2v7a2 2 0 0 0 2 2h4.159"></path>
+                                <path d="M18 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M18 14.5v1.5"></path>
+                                <path d="M18 20v1.5"></path>
+                                <path d="M21.032 16.25l-1.299 .75"></path>
+                                <path d="M16.27 19l-1.3 .75"></path>
+                                <path d="M14.97 16.25l1.3 .75"></path>
+                                <path d="M19.733 19l1.3 .75"></path>
+                            </svg>
+                            Departement: {{ $user->departement->nom }}
+                        </div>
+                        <div class="h4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices-pc"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M3 5h6v14h-6z"></path>
+                                <path d="M12 9h10v7h-10z"></path>
+                                <path d="M14 19h6"></path>
+                                <path d="M17 16v3"></path>
+                                <path d="M6 13v.01"></path>
+                                <path d="M6 16v.01"></path>
+                            </svg>
+                            Poste: {{ $user->poste }}
+                        </div>
+                        <div class="h4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-lock"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3">
+                                </path>
+                                <path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                <path d="M12 12l0 2.5"></path>
+                            </svg>
+                            Role: {{ $user->role }}
+                        </div>
+                        <div class="h4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z">
+                                </path>
+                                <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+                                <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path>
+                            </svg>
+                            L’authentification à deux facteurs (2FA):
+                            <form action="" method="post" class="d-inline">
+                                @csrf
+                                <div class="form-switch d-inline">
+                                    <input class="form-check-input" name="two_factor_enabled"
+                                        @checked($user->two_factor_enabled == true)
+                                    type="checkbox">
+                                </div>
+                                <button class="btn mx-4 btn-sm btn-primary">Valider</button>
+                            </form>
+                        </div>
+                        <div class="h4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cell-signal-5"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M20 20h-15.269a.731 .731 0 0 1 -.517 -1.249l14.537 -14.537a.731 .731 0 0 1 1.249 .517v15.269z">
+                                </path>
+                                <path d="M16 7v13"></path>
+                                <path d="M12 20v-9"></path>
+                                <path d="M8 20v-5"></path>
+                            </svg>
+                            Etat: <span class="status status-green">
+                                <span class="status-dot status-dot-animated"></span>
+                            </span> En ligne
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
 
     </div>
 </div>
@@ -260,6 +347,7 @@
         </div>
     </div>
 </div>
+
 <div class="row mx-1 my-3">
     <div class="col-md-12">
         <div class="card">

@@ -47,6 +47,7 @@ class DocumentController extends Controller
         if($document->type === "Interne") {
             $courrier = Interne::all(['id','reference','numero']);
         }
+
         return view('document.update', compact('document','courrier'));
     }
 

@@ -62,6 +62,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withoutTrashed()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read Correspondant $correspondant
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read string $date_format
+ * @property-read Nature $nature
  * @mixin \Eloquent
  */
 class Depart extends Model

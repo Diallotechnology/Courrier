@@ -37,6 +37,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Document withoutTrashed()
+ * @property string $user_id
+ * @property string $type
+ * @property-read User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
  * @mixin \Eloquent
  */
 class Document extends Model

@@ -24,9 +24,10 @@ class StoreStructureRequest extends FormRequest
     {
         return [
             'nom'=>'required|string|max:100',
-            'description'=>'required|nullable|string|max:200',
+            'description'=>'required|nullable|string',
             'contact'=>'required|string|min:8',
             'email'=>'required|email|max:255',
+            'adresse'=>'required|string|max:255',
             'logo'=>'nullable',
         ];
     }

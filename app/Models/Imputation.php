@@ -48,6 +48,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation withoutTrashed()
+ * @property int $id
+ * @property string $priorite
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
+ * @property-read int|null $annotations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @property-read int|null $tasks_count
+ * @property-read User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation wherePriorite($value)
  * @mixin \Eloquent
  */
 class Imputation extends Model

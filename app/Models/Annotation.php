@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
+ * @property-read int|null $imputations_count
  * @mixin \Eloquent
  */
 class Annotation extends Model

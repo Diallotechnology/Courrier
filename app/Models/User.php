@@ -18,14 +18,23 @@ use App\Helper\DateFormat;
 use App\Models\Annotation;
 use App\Models\Imputation;
 use App\Models\Departement;
+use App\Models\SubDepartement;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
+use Creagia\LaravelSignPad\SignaturePosition;
+use Creagia\LaravelSignPad\Contracts\CanBeSigned;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Creagia\LaravelSignPad\SignatureDocumentTemplate;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Creagia\LaravelSignPad\Concerns\RequiresSignature;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Creagia\LaravelSignPad\Templates\BladeDocumentTemplate;
+use Creagia\LaravelSignPad\Contracts\ShouldGenerateSignatureDocument;
 
 /**
  * App\Models\User
@@ -95,11 +104,45 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property string $userable_type
+ * @property int $userable_id
+ * @property int $change_password
+ * @property int $two_factor_enabled
+ * @property int|null $two_factor_code
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $createurs
+ * @property-read int|null $createurs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Interne> $destinataires
+ * @property-read int|null $destinataires_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Interne> $expediteurs
+ * @property-read int|null $expediteurs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, History> $histories
+ * @property-read int|null $histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Interne> $internes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Journal> $journals
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
+ * @property-read int|null $reponses_count
+ * @property-read \Creagia\LaravelSignPad\Signature|null $signature
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $userable
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereChangePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUserableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUserableType($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatureDocument
 {
-    use HasApiTokens, HasFactory, Notifiable, DateFormat;
+    use HasApiTokens, HasFactory, Notifiable, DateFormat, RequiresSignature;
 
     /**
      * The attributes that are mass assignable.
@@ -113,9 +156,10 @@ class User extends Authenticatable
         'poste',
         'etat',
         'role',
-        'departement_id',
         'two_factor_enabled',
         'two_factor_code',
+        'userable_id',
+        'userable_type',
     ];
 
     /**
@@ -137,6 +181,67 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'role' => RoleEnum::class,
     ];
+
+
+    /**
+     * Get the parent documentable model (Departement or SubDepartement).
+     */
+    public function userable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function scopeUser_departement(Builder $query)
+    {
+      return  $query->whereUserableType(Departement::class);
+    }
+
+    public function scopeUser_subdepartement(Builder $query)
+    {
+      return  $query->whereUserableType(SubDepartement::class);
+    }
+
+
+    public function getSignatureDocumentTemplate(): SignatureDocumentTemplate
+    {
+        return new SignatureDocumentTemplate(
+            outputPdfPrefix: 'document',
+            template: new BladeDocumentTemplate('pdf/my-pdf-blade-template'),
+            signaturePositions: [
+                 new SignaturePosition(
+                     signaturePage: 1,
+                     signatureX: 20,
+                     signatureY: 25,
+                 ),
+                 new SignaturePosition(
+                     signaturePage: 2,
+                     signatureX: 25,
+                     signatureY: 50,
+                 ),
+            ]
+        );
+    }
+
+    // verification role
+    public function isSuperadmin(){
+        return $this->role == RoleEnum::SUPERADMIN;
+    }
+
+    public function isAdmin(){
+        return $this->role == RoleEnum::ADMIN;
+    }
+
+    public function isAgent(){
+        return $this->role == RoleEnum::AGENT;
+    }
+
+    public function isSuperuser(){
+        return $this->role == RoleEnum::SUPERUSER;
+    }
+
+    public function isSecretaire(){
+        return $this->role == RoleEnum::SECRETAIRE;
+    }
 
     /**
      * Get all of the imputations for the User
@@ -255,10 +360,12 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function departement(): BelongsTo
-    {
-        return $this->belongsTo(Departement::class);
-    }
+    // public function departement(): BelongsTo
+    // {
+    //     return $this->belongsTo(Departement::class);
+    // }
+
+
 
 
     /**

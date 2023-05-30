@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnnotationController;
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CorrespondantController;
 use App\Http\Controllers\CourrierController;
 use App\Http\Controllers\DepartController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\ReponseController;
 use App\Http\Controllers\StructureController;
+use App\Http\Controllers\SubDepartementController;
+use App\Http\Controllers\SubStructureController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -164,24 +167,41 @@ Route::middleware('auth')->group(function () {
         Route::get('rapport/restore/{id}','recover')->whereNumber('id');
         Route::delete('rapport/delete/{id}','force_delete')->whereNumber('id');
     });
+
+    Route::controller(SubStructureController::class)->group(function () {
+        Route::get('substructure/trash','trash')->name('substructure.trash');
+        Route::get('substructure/restore/all','all_recover')->name('substructure.restore');
+        Route::get('substructure/delete/all','all_delete')->name('substructure.delete');
+        Route::get('substructure/restore/{id}','recover')->whereNumber('id');
+        Route::delete('substructure/delete/{id}','force_delete')->whereNumber('id');
+    });
+
+    Route::controller(SubDepartementController::class)->group(function () {
+        Route::get('subdepartement/trash','trash')->name('subdepartement.trash');
+        Route::get('subdepartement/restore/all','all_recover')->name('subdepartement.restore');
+        Route::get('subdepartement/delete/all','all_delete')->name('subdepartement.delete');
+        Route::get('subdepartement/restore/{id}','recover')->whereNumber('id');
+        Route::delete('subdepartement/delete/{id}','force_delete')->whereNumber('id');
+    });
+
+    Route::resource('annotation',AnnotationController::class)->except('index','show','create');
+    Route::resource('user',UserController::class)->except('index','create');
+    Route::resource('archive',ArchiveController::class)->except('index');
+    Route::resource('correspondant',CorrespondantController::class)->except('index','create');
+    Route::resource('courrier/arriver',CourrierController::class)->except('index');
+    Route::resource('courrier/depart',DepartController::class)->except('index');
+    Route::resource('courrier/interne',InterneController::class)->except('index');
+    Route::resource('departement',DepartementController::class)->except('index','create');
+    Route::resource('structure',StructureController::class)->except('index','create');
+    Route::resource('document',DocumentController::class)->except('index','create');
+    Route::resource('imputation',ImputationController::class)->except('index');
+    Route::resource('nature',NatureController::class)->except('index','show','create');
+    Route::resource('reponse',ReponseController::class)->except('index','show','create');
+    Route::resource('rapport',RapportController::class)->except('index');
+    Route::resource('task',TaskController::class)->except('index');
+    Route::resource('backup',BackupController::class)->except('index');
+    Route::resource('subdepartement',SubDepartementController::class)->except('index','create');
+    Route::resource('substructure',SubStructureController::class)->except('index','create');
 });
-
-Route::resource('annotation',AnnotationController::class)->except('index','show','create');
-Route::resource('user',UserController::class)->except('index','create');
-Route::resource('archive',ArchiveController::class)->except('index');
-Route::resource('correspondant',CorrespondantController::class)->except('index','create');
-Route::resource('courrier/arriver',CourrierController::class)->except('index');
-Route::resource('courrier/depart',DepartController::class)->except('index');
-Route::resource('courrier/interne',InterneController::class)->except('index');
-Route::resource('departement',DepartementController::class)->except('index','create');
-Route::resource('structure',StructureController::class)->except('index','create');
-Route::resource('document',DocumentController::class)->except('index','create');
-// Route::resource('history',HistoryController::class)->except('index');
-Route::resource('imputation',ImputationController::class)->except('index');
-Route::resource('nature',NatureController::class)->except('index','show','create');
-Route::resource('reponse',ReponseController::class)->except('index','show','create');
-Route::resource('rapport',RapportController::class)->except('index');
-Route::resource('task',TaskController::class)->except('index');
-
 
 require __DIR__.'/auth.php';

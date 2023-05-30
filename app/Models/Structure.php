@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\Rapport;
 use App\Helper\DateFormat;
 use App\Models\Departement;
+use App\Models\SubStructure;
 use App\Models\Correspondant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\Structure
@@ -46,6 +50,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereAdresse($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read int|null $rapports_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, SubStructure> $substructures
+ * @property-read int|null $substructures_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property-read int|null $users_count
  * @mixin \Eloquent
  */
 class Structure extends Model
@@ -70,6 +82,16 @@ class Structure extends Model
     }
 
     /**
+     * Get all of the substructures for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function substructures(): HasMany
+    {
+        return $this->hasMany(SubStructure::class);
+    }
+
+    /**
      * Get all of the departements for the Structure
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -78,6 +100,28 @@ class Structure extends Model
     {
         return $this->hasMany(Departement::class);
     }
+
+    /**
+     * Get all of the users for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function users(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, Departement::class,'structure_id','userable_id','id','id');
+    }
+
+    /**
+     * Get all of the rapports for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rapports(): HasMany
+    {
+        return $this->hasMany(Rapport::class);
+    }
+
+
 
     public function DocLink(): string {
 

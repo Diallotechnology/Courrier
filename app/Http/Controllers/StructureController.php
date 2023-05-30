@@ -16,12 +16,27 @@ class StructureController extends Controller
      */
     public function store(StoreStructureRequest $request)
     {
-        $filename = Str::random(20).$request->logo->extension();
-        $chemin = $request->file('logo')->storeAs('structure/logo', $filename, 'public');
-
-        Structure::create([
-            'nom' => $request->nom,
-        ]);
+        if(!empty($request->logo)) {
+            $filename = Str::random(20).$request->logo->extension();
+            $chemin = $request->file('logo')->storeAs('structure/logo', $filename, 'public');
+            $data = [
+                'nom' => $request->nom,
+                'logo' => $chemin,
+                'email' => $request->email,
+                'contact' => $request->contact,
+                'adresse' => $request->adresse,
+                'description' => $request->description,
+            ];
+        } else {
+            $data = [
+                'nom' => $request->nom,
+                'email' => $request->email,
+                'contact' => $request->contact,
+                'adresse' => $request->adresse,
+                'description' => $request->description,
+            ];
+        }
+        Structure::create($data);
         toastr()->success('Structure ajouter avec success!');
         return back();
     }
@@ -47,7 +62,23 @@ class StructureController extends Controller
      */
     public function update(StoreStructureRequest $request, Structure $structure)
     {
-        $structure->update($request->validated());
+        if(!empty($request->logo)) {
+            $this->file_delete($structure);
+            $filename = Str::random(20).$request->logo->extension();
+            $chemin = $request->file('logo')->storeAs('structure/logo', $filename, 'public');
+            $data = [
+                'nom' => $request->nom,
+                'logo' => $chemin,
+                'email' => $request->email,
+                'contact' => $request->contact,
+                'adresse' => $request->adresse,
+                'description' => $request->description,
+            ];
+            $structure->update($data);
+        } else {
+            $structure->update($request->validated());
+        }
+
         toastr()->success('Structure mise à jour avec success!');
         return back();
     }

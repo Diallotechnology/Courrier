@@ -1,29 +1,35 @@
 <div>
-    @forelse (Auth::user()->notifications as $row)
-    <div class="list-group-item">
-        <div class="row align-items-center">
-            <div class="col-auto"><span class="status-dot d-block"></span></div>
-            <div class="col text-truncate">
-                <a href="#" class="text-body d-block text-uppercase"> {{ $row->data['type'] }}</a>
-                <div class="d-block text-muted text-truncate mt-n1">
-                    {{ $row->data['message'] }}
-                </div>
-            </div>
-            <div class="col-auto">
-                <a href="#" class="list-group-item-actions show">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24"
-                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path
-                            d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                    </svg>
-                </a>
-            </div>
+    <div class="card-header">
+        <div class="col">
+            <h3 class="card-title">{{ count(Auth::user()->unreadNotifications) }} Notifications
+
+            </h3>
+        </div>
+        <div class="col-auto">
+            <button wire:click='delete' class="btn btn-danger btn-sm btn-icon">
+                <i class="ti ti-x"></i>
+            </button>
+            <button wire:click='valid' class="btn btn-success btn-sm btn-icon">
+                <i class="ti ti-check"></i>
+            </button>
         </div>
     </div>
-    @empty
-    <h2 class="text-center mx-4"> Vous avez pas de notification</h2>
-    @endforelse
+    <div class="list-group list-group-flush list-group-hoverable">
+        @forelse ($notif as $row)
+        <div class="list-group-item">
+            <div class="row align-items-center">
+                <div class="col-auto"><span class="status-dot d-block"></span></div>
+                <div class="col ">
+                    <a href="#" class="text-body d-block text-uppercase"> {{ $row->type }}</a>
+                    <div class="d-block text-muted text-truncate mt-n1">
+                        {{-- {{ $row->data }} --}}
+                        Sapiente fugit ducimus qui et similique voluptas.
+                    </div>
+                </div>
+            </div>
+        </div>
+        @empty
+        <h2 class="text-center mx-4"> Vous avez pas de notification</h2>
+        @endforelse
+    </div>
 </div>

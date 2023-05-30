@@ -31,6 +31,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|History whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|History whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|History whereUserId($value)
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|History onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|History whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|History withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|History withoutTrashed()
  * @mixin \Eloquent
  */
 class History extends Model

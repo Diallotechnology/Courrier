@@ -21,7 +21,8 @@
         </div>
         @empty(!$btn)
         @if($btn_filter)
-        <button {{ $attributes->merge(['class' => 'btn btn-indigo mx-2']) }} {{ $attributes->merge(['type' => 'button'])
+        <button {{ $attributes->merge(['class' => 'btn btn-indigo mx-2 mb-2']) }} {{ $attributes->merge(['type' =>
+            'button'])
             }} data-bs-toggle="collapse" data-bs-target="#collapse-1"
             aria-expanded="true">
             <i class="ti ti-filter"></i>

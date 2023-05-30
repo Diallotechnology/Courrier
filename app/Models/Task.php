@@ -50,6 +50,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read string $debut_format
  * @property-read string $fin_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property int|null $imputation_id
+ * @property int $createur_id
+ * @property string|null $reference
+ * @property-read Courrier|null $courrier
+ * @property-read User $createur
+ * @property-read Imputation|null $imputation
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreateurId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereImputationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereReference($value)
  * @mixin \Eloquent
  */
 class Task extends Model

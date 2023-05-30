@@ -32,6 +32,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withoutTrashed()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read int|null $departs_count
  * @mixin \Eloquent
  */
 class Nature extends Model

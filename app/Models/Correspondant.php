@@ -48,6 +48,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string|null $contact
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant whereContact($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read int|null $departs_count
  * @mixin \Eloquent
  */
 class Correspondant extends Model

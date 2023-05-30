@@ -17,7 +17,7 @@ class DocumentFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => $this->faker->randomElement(['Arrivé','Depart','Interne']),
+            'type' => $this->faker->randomElement(['Arrivé','Depart','Interne','rapport']),
             'documentable_type' => $this->faker->randomElement(['App\Models\Courrier','App\Models\Depart','App\Models\Interne']),
             'documentable_id' => rand(1,15),
             'user_id' => rand(1,10),

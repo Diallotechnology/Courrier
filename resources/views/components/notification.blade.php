@@ -37,12 +37,8 @@
     <div {{ $attributes->merge(['class' => 'dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card'])
         }}>
         <div {{ $attributes->merge(['class' => 'card']) }} >
-            <div {{ $attributes->merge(['class' => 'card-header']) }} >
-                <h3 {{ $attributes->merge(['class' => 'card-title']) }} >Notification</h3>
-            </div>
-            <div {{ $attributes->merge(['class' => 'list-group list-group-flush list-group-hoverable']) }} >
-                @livewire('notif')
-            </div>
+            @livewire('notif')
+
         </div>
     </div>
 </div>

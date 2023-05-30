@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enum\CourrierEnum;
 use App\Models\Nature;
 use Livewire\Component;
 use App\Models\Courrier;
@@ -40,6 +41,7 @@ class CourrierArriver extends Component
     {
         if ($this->privacy || $this->priority  || $this->nature || $this->date || $this->etat || $this->expediteur) {
             $rows = Courrier::with('user','nature','correspondant')
+            ->whereNot('etat',CourrierEnum::ARCHIVE)
             ->when($this->privacy && !empty($this->privacy), function ($query) {
                 $query->where('confidentiel', $this->privacy);
             })
@@ -59,7 +61,7 @@ class CourrierArriver extends Component
                 $query->where('etat', $this->etat);
             })->latest()->paginate(15);
         } else {
-            $rows = Courrier::with('user','nature','correspondant')->latest()->paginate(15);
+            $rows = Courrier::with('user','nature','correspondant')->whereNot('etat',CourrierEnum::ARCHIVE)->latest()->paginate(15);
         }
 
         $correspondant = Correspondant::orderBy('nom')->get();

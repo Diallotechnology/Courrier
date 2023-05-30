@@ -7,12 +7,18 @@
                 url="{{ route('departement') }}">
                 <x-input type="text" name="nom" :value="$departement->nom" place="le nom du departement" />
                 <x-input type="text" name="code" :value="$departement->code" place="le code du departement" />
-                <x-select name="structure_id" label="structure">
+                @if(Auth::user()->isSuperadmin())
+                <x-select name='structure_id' label="structure">
                     @foreach ($structure as $row)
                     <option @selected($departement->structure_id == $row->id) value="{{ $row->id }}">{{ $row->nom }}
                     </option>
                     @endforeach
                 </x-select>
+                @else
+                <input type="hidden"
+                    value="{{ Auth::user()->userable->structure_id ? : Auth::user()->userable->departement->structure_id }}"
+                    name="structure_id">
+                @endif
             </x-form>
         </div>
     </div>
