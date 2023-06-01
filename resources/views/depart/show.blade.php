@@ -11,16 +11,16 @@
                 <div class="datagrid-content">{{ $depart->reference }}</div>
             </div>
             <div class="datagrid-item">
-                <div class="datagrid-title">Numero d'depart</div>
+                <div class="datagrid-title">Numero depart</div>
                 <div class="datagrid-content">{{ $depart->numero }}</div>
             </div>
             <div class="datagrid-item">
-                <div class="datagrid-title">Date d'depart</div>
+                <div class="datagrid-title">Date depart</div>
                 <div class="datagrid-content">{{ $depart->date }}</div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Correspondant du courrier</div>
-                <div class="datagrid-content">{{ $depart->correspondant->prenom }} {{ $depart->correspondant->nom }}
+                <div class="datagrid-content">{{ $depart->correspondant->nom }}
                 </div>
             </div>
             <div class="datagrid-item">

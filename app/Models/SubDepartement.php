@@ -45,6 +45,13 @@ class SubDepartement extends Model
     use HasFactory, DateFormat;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['departement_id','nom','code'];
+
+    /**
      * Get the departement that owns the SubDepartement
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

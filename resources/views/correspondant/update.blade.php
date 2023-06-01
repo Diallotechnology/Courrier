@@ -5,11 +5,6 @@
         <div class="card p-3">
             <x-form route="{{ route('correspondant.update',$correspondant) }}" type="update"
                 url="{{ route('correspondant') }}">
-
-                <div class="col-md-6">
-                    <x-input type="text" :value="$correspondant->prenom" name="prenom"
-                        place="le prenom du correspondant" />
-                </div>
                 <div class="col-md-6">
                     <x-input type="text" :value="$correspondant->nom" name="nom" place="le nom du correspondant" />
                 </div>
@@ -21,7 +16,10 @@
                     <x-input type="text" :value="$correspondant->contact" name="contact" :required="false"
                         label="contact facultatif" place="le contact du correspondant" />
                 </div>
-                <x-input type="email" :value="$correspondant->email" name="email" place="l'email du correspondant" />
+                <div class="col-md-6">
+                    <x-input type="email" :value="$correspondant->email" name="email"
+                        place="l'email du correspondant" />
+                </div>
                 @if(Auth::user()->isSuperadmin())
                 <x-select name='structure_id' label="structure">
                     @foreach ($structure as $row)
@@ -30,7 +28,9 @@
                     @endforeach
                 </x-select>
                 @else
-                <input type="hidden" value="{{ Auth::user()->structure_id }}" name="structure_id">
+                <input type="hidden"
+                    value="{{ Auth::user()->userable->structure_id ?: Auth::user()->userable->departement->structure_id }}"
+                    name="structure_id">
                 @endif
             </x-form>
         </div>

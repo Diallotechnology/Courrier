@@ -30,7 +30,6 @@ class StoreUserRequest extends FormRequest
             'poste' => ['required', 'string', 'max:150'],
             'role' => ['required', new Enum(RoleEnum::class)],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'departement_id' => ['required','exists:departements,id'],
         ];
     }
 

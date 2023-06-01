@@ -7,10 +7,6 @@
     <div class="card-body">
         <div class="datagrid">
             <div class="datagrid-item">
-                <div class="datagrid-title">Prenom</div>
-                <div class="datagrid-content">{{ $correspondant->prenom }}</div>
-            </div>
-            <div class="datagrid-item">
                 <div class="datagrid-title">Nom</div>
                 <div class="datagrid-content">{{ $correspondant->nom }}</div>
             </div>
@@ -59,33 +55,23 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($correspondant->courriers as $row)
+        @forelse ($correspondant->courriers as $row)
         <tr>
             <td>{{ $row->id }}</td>
             <td>
-                <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)"></span>
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $row->user->name }}</div>
-                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->user->email }}</a></div>
-                    </div>
-                </div>
+                <x-user-avatar :row="$row" />
             </td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
-                {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
+                {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
             </td>
             <td>{{ $row->reference }}</td>
 
             <td>
-                <span @class(['status','status-red'=> $row->Urgent(),'status-indigo' => $row->Normal()])>
-                    {{ $row->priorite }}
-                </span>
+                <x-statut type="prio" :courrier="$row" />
             </td>
             <td>
-                <span @class(['status','status-red'=> $row->Privacy(),'status-indigo' => !$row->Privacy()])>
-                    {{ $row->confidentiel }}
-                </span>
+                <x-statut type="privacy" :courrier="$row" />
             </td>
             <td>
                 <div class="d-flex py-1 align-items-center">
@@ -96,14 +82,7 @@
                 </div>
             </td>
             <td>
-                <span @class(['status', 'status-green'=> $row->Complet(),
-                    'status-red'=> $row->Impute(),
-                    'status-info'=> $row->Register(),
-                    'status-indigo' => $row->Progress(),
-                    'status-secondary' => $row->Archive(),
-                    ])>
-                    {{ $row->etat }}
-                </span>
+                <x-statut type="etat" :courrier="$row" />
             </td>
             <td>
                 <p class="text-muted">{{ $row->objet }}</p>
@@ -114,7 +93,13 @@
                 <x-button-show href="{{ route('arriver.show', ['arriver' => $row]) }}" />
             </td>
         </tr>
-        @endforeach
+        @empty
+        <tr>
+            <td colspan="10">
+                <h2 class="text-center">Aucun element</h2>
+            </td>
+        </tr>
+        @endforelse
     </tbody>
 </x-table>
 @endsection

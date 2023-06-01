@@ -10,7 +10,9 @@ use App\Models\Structure;
 use App\Helper\DateFormat;
 use App\Models\Correspondant;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -93,6 +95,7 @@ class Depart extends Model
         'etat',
         'date'
     ];
+
 
     /**
      * Get the user that owns the Depart

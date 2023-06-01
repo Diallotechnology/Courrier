@@ -20,7 +20,7 @@
                 <div class="col-md-12">
                     <x-select name="departement_id" label="Departement">
                         @foreach ($departement as $row)
-                        <option @selected($user->departement_id == $row->id) value="{{ $row->id }}">{{ $row->nom }}
+                        <option @selected($user->userable_id == $row->id) value="{{ $row->id }}">{{ $row->nom }}
                         </option>
                         @endforeach
                     </x-select>
@@ -29,7 +29,7 @@
                 <div class="col-md-12">
                     <x-select name="role" label="Role/Droit d'access">
                         @foreach (App\Enum\RoleEnum::cases() as $row)
-                        <option @selected($user->role == $row) value="{{ $row }}">{{ $row }}</option>
+                        <option @selected($user->role === $row) value="{{ $row }}">{{ $row }}</option>
                         @endforeach
                     </x-select>
                 </div>

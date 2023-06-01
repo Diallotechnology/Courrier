@@ -4,12 +4,12 @@
     <div class="mb-1">
         <ol class="breadcrumb" aria-label="breadcrumbs">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item" aria-current="page"><a href="#">Departement</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="#">Sous Departement</a></li>
             <li class="breadcrumb-item active" aria-current="page"><a href="#">Corbeille</a></li>
         </ol>
     </div>
     <h2 class="page-title">
-        <span class="text-truncate">Corbeille des departements</span>
+        <span class="text-truncate">Corbeille des sous departements</span>
     </h2>
 </div>
 @endsection
@@ -17,14 +17,14 @@
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-body">
-            <x-filter trash="departement" :create="false" />
+            <x-filter trash="subdepartement" :create="false" />
         </div>
     </x-slot>
     <thead>
         <tr>
             <th>ID</th>
-            <th>Structure</th>
-            <th>Nom du departement</th>
+            <th>Nom</th>
+            <th>departement</th>
             <th>Code</th>
             <th>Utilisateurs</th>
             <th>Date</th>
@@ -35,14 +35,14 @@
         @foreach ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
+            <td>{{ $row->departement ? $row->departement->nom : 'inexistant' }}</td>
             <td>{{ $row->nom }}</td>
             <td>{{ $row->code }}</td>
             <td>{{ $row->users_count }}</td>
             <td>{{ $row->deleted_at }}</td>
             <td>
-                <x-button-restore url="{{ url('departement/restore/'.$row->id) }}" />
-                <x-button-delete url="{{ url('departement/delete/'.$row->id) }}" />
+                <x-button-restore url="{{ url('subdepartement/restore/'.$row->id) }}" />
+                <x-button-delete url="{{ url('subdepartement/delete/'.$row->id) }}" />
             </td>
         </tr>
         @endforeach

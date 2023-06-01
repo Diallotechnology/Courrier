@@ -29,27 +29,31 @@ class CourrierInterne extends Component
 
     public function render()
     {
-        if ($this->privacy || $this->priority  || $this->nature || $this->etat || $this->destinataire) {
-            $rows = Interne::with('user','nature','destinataire','expediteur','reponse')
-            ->when($this->privacy && !empty($this->privacy), function ($query) {
+        $isSuperadmin = Auth::user()->isSuperadmin();
+        $userId = Auth::user()->id;
+
+        $query = Interne::with('nature', 'destinataire', 'expediteur', 'reponses')
+            ->when(!$isSuperadmin, function ($query) use ($userId) {
+                $query->where(function ($query) use ($userId) {
+                    $query->where('destinataire_id', $userId)
+                        ->orWhere('expediteur_id', $userId);
+                });
+            })
+            ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
             })
-            ->when($this->priority && !empty($this->priority), function ($query) {
+            ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);
             })
-            ->when($this->nature && !empty($this->nature), function ($query) {
+            ->when($this->nature, function ($query) {
                 $query->where('nature_id', $this->nature);
             })
-            ->when($this->destinataire && !empty($this->destinataire), function ($query) {
-                $query->where('destinataire_id', $this->destinataire);
-            })
-            ->when($this->etat && !empty($this->etat), function ($query) {
+            ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
-            })->latest()->paginate(15);
-        } else {
-            $rows = Interne::with('user','nature','destinataire','expediteur','reponses')->latest()->paginate(15);
-        }
-        $type = Nature::orderBy('nom')->get();
+            });
+        $rows = $query->latest()->paginate(15);
+        $typeQuery = Nature::orderBy('nom')->when(!$isSuperadmin, fn($query) => $query->where('structure_id', Auth::user()->structure()));
+        $type = $typeQuery->get();
 
         return view('livewire.courrier-interne', compact('rows','type'));
     }

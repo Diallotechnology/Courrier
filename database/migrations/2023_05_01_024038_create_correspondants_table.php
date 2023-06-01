@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('correspondants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string("prenom");
             $table->string("nom");
             $table->string("fonction");
             $table->string("contact")->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Correspondant;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -25,10 +26,9 @@ class FormeCorrespondantRequest extends FormRequest
     {
         return [
             'nom'=>'required|string|max:70',
-            'prenom'=>'required|string|max:70',
             'contact'=>'string|nullable|max:11',
             'fonction'=>'required|string|max:100',
-            'email'=> ['required','email','max:255','unique:correspondants,email'],
+            'email'=> ['required','email','max:255','unique:correspondants,email',Rule::unique(Correspondant::class,'email')->ignore($this->id)],
             'structure_id'=>'required|exists:structures,id',
         ];
     }

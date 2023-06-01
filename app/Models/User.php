@@ -20,6 +20,7 @@ use App\Models\Imputation;
 use App\Models\Departement;
 use App\Models\SubDepartement;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -182,24 +183,95 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
         'role' => RoleEnum::class,
     ];
 
-
     /**
-     * Get the parent documentable model (Departement or SubDepartement).
+     * Get the parent documentable model (Department or SubDepartment).
      */
     public function userable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function scopeUser_departement(Builder $query)
+    /**
+     * Scope to get department users.
+     */
+    public function scopeUserDepartement(Builder $query): Builder
     {
-      return  $query->whereUserableType(Departement::class);
+        return $query->whereUserableType(Departement::class);
     }
 
-    public function scopeUser_subdepartement(Builder $query)
+    /**
+     * Scope to get sub-department users.
+     */
+    public function scopeUserSubDepartement(Builder $query): Builder
     {
-      return  $query->whereUserableType(SubDepartement::class);
+        return $query->whereUserableType(SubDepartement::class);
     }
+
+    /**
+     * Get the user's structure ID.
+     */
+    public function structure(): int
+    {
+        return $this->userable->structure_id ?? $this->userable->department->structure_id;
+    }
+
+    /**
+     * Scope to get all users in the structure.
+     */
+    public function scopeStructureUser(Builder $query): Builder
+    {
+        $depIds = Structure::findOrFail(Auth::user()->structure())->departements()->pluck('id');
+        $subIds = SubDepartement::whereIn('departement_id', $depIds)->pluck('id');
+
+        return $query->where(function ($query) use ($depIds) {
+            $query->userDepartement()
+                ->whereIn('userable_id', $depIds);
+        })->orWhere(function ($query) use ($subIds) {
+            $query->userSubDepartement()
+                ->whereIn('userable_id', $subIds);
+        });
+    }
+
+    /**
+     * Check if the user has the superadmin role.
+     */
+    public function isSuperadmin(): bool
+    {
+        return $this->role === RoleEnum::SUPERADMIN;
+    }
+
+    /**
+     * Check if the user has the admin role.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === RoleEnum::ADMIN;
+    }
+
+    /**
+     * Check if the user has the agent role.
+     */
+    public function isAgent(): bool
+    {
+        return $this->role === RoleEnum::AGENT;
+    }
+
+    /**
+     * Check if the user has the superuser role.
+     */
+    public function isSuperuser(): bool
+    {
+        return $this->role === RoleEnum::SUPERUSER;
+    }
+
+    /**
+     * Check if the user has the secretaire role.
+     */
+    public function isSecretaire(): bool
+    {
+        return $this->role === RoleEnum::SECRETAIRE;
+    }
+
 
 
     public function getSignatureDocumentTemplate(): SignatureDocumentTemplate
@@ -220,27 +292,6 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
                  ),
             ]
         );
-    }
-
-    // verification role
-    public function isSuperadmin(){
-        return $this->role == RoleEnum::SUPERADMIN;
-    }
-
-    public function isAdmin(){
-        return $this->role == RoleEnum::ADMIN;
-    }
-
-    public function isAgent(){
-        return $this->role == RoleEnum::AGENT;
-    }
-
-    public function isSuperuser(){
-        return $this->role == RoleEnum::SUPERUSER;
-    }
-
-    public function isSecretaire(){
-        return $this->role == RoleEnum::SECRETAIRE;
     }
 
     /**
@@ -281,16 +332,6 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
     public function rapports(): HasMany
     {
         return $this->hasMany(Rapport::class);
-    }
-
-    /**
-     * Get all of the internes for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function internes(): HasMany
-    {
-        return $this->hasMany(Interne::class);
     }
 
     /**

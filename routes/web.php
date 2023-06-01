@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::get('document', 'document')->name('document');
         Route::get('annotation','annotation')->name('annotation');
         Route::get('departement','departement')->name('departement');
+        Route::get('subdepartement','subdepartement')->name('subdepartement');
         Route::get('structure','structure')->name('structure');
         Route::get('user','user')->name('user');
         Route::get('journal','journal')->name('journal');

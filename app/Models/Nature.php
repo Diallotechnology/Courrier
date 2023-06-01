@@ -6,7 +6,9 @@ use App\Models\Depart;
 use App\Models\Courrier;
 use App\Models\Structure;
 use App\Helper\DateFormat;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +46,7 @@ class Nature extends Model
     use HasFactory, DateFormat;
 
     protected $fillable = ['nom','structure_id'];
+
 
     /**
      * Get all of the courriers for the Nature

@@ -55,7 +55,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        $user = User::with('departement')->where('id','!=',Auth::user()->id)->get()->groupBy('departement.nom');
+        $user = Auth::user()->isSuperadmin() ?
+        User::with('userable')->get()->groupBy('userable.nom') : User::with('userable')->StructureUser()->get()->groupBy('userable.nom');
         return view('task.update', compact('task','user'));
     }
 

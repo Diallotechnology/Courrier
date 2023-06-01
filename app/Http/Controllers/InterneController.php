@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Enum\CourrierInterneEnum;
 use App\Models\User;
 use App\Models\Nature;
 use App\Models\Interne;
 use App\Models\Document;
+use App\Models\Structure;
 use App\Helper\DeleteAction;
+use App\Models\SubDepartement;
+use App\Enum\CourrierInterneEnum;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreInterneRequest;
 use App\Http\Requests\UpdateInterneRequest;
@@ -30,8 +32,12 @@ class InterneController extends Controller
      */
     public function create()
     {
-        $user = User::with('departement')->where('departement_id',Auth::user()->departement_id)->get()->groupBy('departement.nom');
-        $type = Nature::orderBy('nom')->get();
+        $isSuperadmin = Auth::user()->isSuperadmin();
+        $user = User::with('userable')->StructureUser()->latest()->get()->groupBy('userable.nom');
+
+        $typeQuery = Nature::orderBy('nom')->when(!$isSuperadmin, fn($query)  =>
+            $query->ByStructure());
+        $type = $typeQuery->get();
         return view('interne.create', compact('user','type'));
     }
 
@@ -88,7 +94,6 @@ class InterneController extends Controller
     public function show(Interne $interne)
     {
         if($interne->Recu()) {
-
             $interne->update(['etat' => CourrierInterneEnum::READ]);
         }
         return view('interne.show', compact('interne'));
@@ -99,8 +104,9 @@ class InterneController extends Controller
      */
     public function edit(Interne $interne)
     {
-        $user = User::with('departement')->where('departement_id',Auth::user()->departement_id)->get()->groupBy('departement.nom');
-        $type = Nature::orderBy('nom')->get();
+        $user = User::with('userable')->StructureUser()->latest()->get()->groupBy('userable.nom');
+        $typeQuery = Nature::orderBy('nom')->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure());
+        $type = $typeQuery->get();
         return view('interne.update', compact('interne','user','type'));
     }
 

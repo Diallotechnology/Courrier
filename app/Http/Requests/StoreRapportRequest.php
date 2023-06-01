@@ -26,8 +26,9 @@ class StoreRapportRequest extends FormRequest
         return [
             'objet'=>'required|string|max:255',
             'type'=>'required|string|max:200',
-            'user_id'=>'required',
+            'user_id'=>'required|exists:users,id',
             'courrier_id'=>'nullable|exists:courriers,id',
+            'structure_id'=>'required|exists:structures,id',
             'contenu'=> 'nullable|string',
             'files'=> 'nullable|sometimes|array',
         ];

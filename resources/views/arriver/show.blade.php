@@ -29,22 +29,13 @@
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Correspondant du courrier</div>
-                <div class="datagrid-content">
-                    @if($arriver->correspondant)
-                    {{ $arriver->correspondant->prenom }} {{ $arriver->correspondant->nom }}
-                    @else
-                    inexistant
-                    @endif
+                <div class="datagrid-content"> {{ $arriver->correspondant ? $row->correspondant->nom : 'inexistant' }}
                 </div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Nature du courrier</div>
                 <div class="datagrid-content">
-                    @if($arriver->nature)
-                    {{ $arriver->nature->nom }}
-                    @else
-                    inexistant
-                    @endif
+                    {{ $arriver->nature ? $row->nature->nom : 'inexistant' }}
                 </div>
             </div>
             <div class="datagrid-item">
@@ -86,7 +77,6 @@
         <h3 class="card-title">Informations de l'imputation du courrier arriver N° {{ $arriver->numero }}</h3>
     </div>
     @foreach ($imp as $key => $item)
-    {{-- @dd($item->groupBy('departement.nom')) --}}
     <div class="card-body">
         <div class="datagrid">
             <div class="datagrid-item">
@@ -130,10 +120,6 @@
                 </div>
                 @endforeach
             </div>
-
-            {{-- @empty
-            Aucun
-            @endforelse --}}
         </div>
     </div>
     @endforeach
@@ -221,7 +207,7 @@
             <td>
                 <x-user-avatar :row="$row" />
             </td>
-            <td>{{ $row->user->departement->nom }}</td>
+            <td>{{ $row->userable->nom }}</td>
             <td>{{ $row->courrier->numero }}</td>
             <td>{{ $row->action }}</td>
             <td>

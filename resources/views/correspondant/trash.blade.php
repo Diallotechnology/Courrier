@@ -24,7 +24,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Prenom</th>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <th>Nom</th>
             <th>Fonction</th>
             <th>Email</th>
@@ -37,7 +37,7 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>{{ $row->prenom }}</td>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->nom }}</td>
             <td>{{ $row->fonction }}</td>
             <td>{{ $row->email }}</td>

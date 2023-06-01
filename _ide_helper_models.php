@@ -252,8 +252,10 @@ namespace App\Models{
  * @property-read string $date_format
  * @property-read Nature $nature
  * @mixin \Eloquent
+ * @property int $structure_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \App\Models\Structure $structure
+ * @method static \Illuminate\Database\Eloquent\Builder|Depart whereStructureId($value)
  */
 	class Depart extends \Eloquent {}
 }
@@ -554,10 +556,12 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read int|null $departs_count
  * @mixin \Eloquent
+ * @property string $structure_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read string $date_format
  * @property-read \App\Models\Structure $structure
+ * @method static \Illuminate\Database\Eloquent\Builder|Nature whereStructureId($value)
  */
 	class Nature extends \Eloquent {}
 }
@@ -932,15 +936,15 @@ namespace App\Models{
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $internes
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @method static \Illuminate\Database\Eloquent\Builder|User structureUser()
  * @method static \Illuminate\Database\Eloquent\Builder|User userDepartement()
- * @method static \Illuminate\Database\Eloquent\Builder|User userSubdepartement()
+ * @method static \Illuminate\Database\Eloquent\Builder|User userSubDepartement()
  */
 	class User extends \Eloquent implements \Creagia\LaravelSignPad\Contracts\CanBeSigned, \Creagia\LaravelSignPad\Contracts\ShouldGenerateSignatureDocument {}
 }

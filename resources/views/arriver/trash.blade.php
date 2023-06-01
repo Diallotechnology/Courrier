@@ -49,7 +49,7 @@
             </td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
-                {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
+                {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
             </td>
             <td>{{ $row->reference }}</td>
 

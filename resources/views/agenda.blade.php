@@ -35,7 +35,7 @@
     </x-form>
 </x-modal>
 @endsection
-@section('scripts')
+@section('js')
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

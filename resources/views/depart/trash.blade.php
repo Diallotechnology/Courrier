@@ -24,6 +24,7 @@
         <tr>
             <th>ID</th>
             <th>Utilisateur</th>
+            <th>Structure</th>
             <th>Nature</th>
             <th>Correspondant</th>
             <th>Reference</th>
@@ -42,17 +43,12 @@
         <tr>
             <td>{{ $row->id }}</td>
             <td>
-                <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)"></span>
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $row->user->name }}</div>
-                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->user->email }}</a></div>
-                    </div>
-                </div>
+                <x-user-avatar :row="$row" />
             </td>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
-                {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
+                {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
             </td>
             <td>{{ $row->reference }}</td>
             <td>{{ $row->courrier ? 'Courrier arriver N°'. $row->courrier->numero : 'pas de response' }}</td>

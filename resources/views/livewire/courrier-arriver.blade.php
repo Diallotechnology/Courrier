@@ -152,7 +152,7 @@
                         <div wire:ignore>
                             <x-select label="Correspondant" :required='false' wire:model='expediteur'>
                                 @foreach ($correspondant as $row)
-                                <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
+                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
                             </x-select>
                         </div>
@@ -199,6 +199,7 @@
             <tr>
                 <th>ID</th>
                 <th>Utilisateur</th>
+                <th>Structure</th>
                 <th>Nature</th>
                 <th>Correspondant</th>
                 <th>Reference</th>
@@ -218,9 +219,10 @@
                 <td>
                     <x-user-avatar :row="$row" />
                 </td>
+                <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
                 <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
                 <td>
-                    {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
+                    {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
                 </td>
                 <td>{{ $row->reference }}</td>
 
@@ -266,7 +268,14 @@
     <x-modal title="nouveaux courrier arriver" size="modal-lg">
         <div wire:ignore>
             <x-form route="{{ route('arriver.store') }}" enctype="multipart/form-data">
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <x-input type="text" name="reference" place="la reference du courrier"
+                        label="reference du courrier" />
+                </div>
+                <div class="col-md-4">
+                    <x-input type="date" name="date" label="Date d'arriver" />
+                </div>
+                <div class="col-md-4">
                     <x-select name="nature_id" label="Nature de courrier">
                         @foreach ($type as $row)
                         <option value="{{ $row->id }}">{{ $row->nom }}
@@ -278,7 +287,7 @@
                 <div class="col-md-6">
                     <x-select name="correspondant_id" label="Correspondant(Expediteur)">
                         @foreach ($correspondant as $row)
-                        <option value="{{ $row->id }}">{{ $row->prenom.' '.$row->nom }}</option>
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
                         @endforeach
                     </x-select>
                 </div>
@@ -295,9 +304,7 @@
                         <option value="NON">NON</option>
                     </x-select>
                 </div>
-                <div class="col-md-6">
-                    <x-input type="date" name="date" label="Date d'arriver" />
-                </div>
+
                 <div class="col-md-6">
                     <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif"
                         :required='false' />

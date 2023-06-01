@@ -4,6 +4,8 @@ namespace App\Helper;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 trait DateFormat
@@ -43,6 +45,14 @@ trait DateFormat
         return $this->confidentiel === "OUI" ? true : false;
     }
 
+        /**
+     * Scope to get nature by structure.
+     */
+    public function scopeByStructure(Builder $query): Builder
+    {
+        return $query->where('structure_id', Auth::user()->structure());
+    }
+
 
     public function generateId(string $prefix_type)
     {
@@ -50,46 +60,20 @@ trait DateFormat
 
         return DB::transaction(function () use ($prefix) {
             // Verrouille le dernier identifiant de courrier enregistré dans la base de données pour la mise à jour
-            // $lastCourrier = self::where('reference', 'like', $prefix .'%')
-            $lastCourrier = self::where('reference', 'like', $prefix .'%')->whereNotNull('reference')
+            $lastCourrier = self::where('numero', 'like', $prefix .'%')->whereNotNull('numero')
             ->latest('id')
             ->lockForUpdate()
-            ->first(['reference']);
+            ->first(['numero']);
             // Si aucun identifiant de courrier n'a été enregistré, définit le numéro de séquence à 0
             $sequence = 0;
             if ($lastCourrier) {
                 // Récupère le numéro de séquence de l'identifiant de courrier précédent
-                $sequence = (int)substr($lastCourrier->reference, strlen($prefix));
+                $sequence = (int)substr($lastCourrier->numero, strlen($prefix));
             }
 
             // Incrémente le numéro de séquence et génère le nouvel identifiant de courrier
             $sequence++;
             $newCourrierNumber = $prefix . $sequence;
-            // \dd($newCourrierNumber);
-            // Met à jour le numéro de courrier de l'instance courante
-            $this->reference = $newCourrierNumber;
-            $this->save();
-            return $this;
-        });
-    }
-
-    public function generateNum()
-    {
-        return DB::transaction(function () {
-            $lastCourrier = self::latest()->lockForUpdate()->first();
-            \dd($lastCourrier);
-            // Si aucun identifiant de courrier n'a été enregistré, définit le numéro de séquence à 0
-            $sequence = 0;
-            if ($lastCourrier) {
-                // Récupère le numéro de séquence de l'identifiant de courrier précédent
-                $lastCourrier->increment('numero');
-                $newCourrierNumber = $lastCourrier->numero;
-            //    dd($lastCourrier->numero);
-            }
-            // Incrémente le numéro de séquence et génère le nouvel identifiant de courrier
-            // $sequence+1;
-            // $newCourrierNumber = $sequence;
-
             // Met à jour le numéro de courrier de l'instance courante
             $this->numero = $newCourrierNumber;
             $this->save();

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\SubDepartement;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreSubDepartementRequest extends FormRequest
 {
@@ -11,7 +14,7 @@ class StoreSubDepartementRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +25,15 @@ class StoreSubDepartementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'departement_id' => ['required','exists:departements,id'],
+            'nom'=>'required|string|max:100',
+            'code'=>'required|string|max:15'
         ];
     }
 
-    
+    protected function failedValidation(Validator $validator)
+    {
+       return toastr()->error('la validation a echoué verifiez vos informations!');
+    }
+
 }

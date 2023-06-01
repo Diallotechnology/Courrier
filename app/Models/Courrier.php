@@ -15,6 +15,8 @@ use App\Helper\DateFormat;
 use App\Models\Departement;
 use App\Models\Correspondant;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -128,7 +130,7 @@ class Courrier extends Model
     ];
 
 
-        /**
+    /**
      * Get all of the document's Courrier.
      */
     public function documents(): MorphMany

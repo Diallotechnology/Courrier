@@ -30,6 +30,7 @@
         <tr>
             <th>ID</th>
             <th>Utilisateur</th>
+            <th>Structure</th>
             <th>reference</th>
             <th>type</th>
             <th>objet</th>
@@ -44,6 +45,7 @@
             <td>
                 <x-user-avatar :row="$row" />
             </td>
+            <td>{{ $row->structure->nom }}</td>
             <td>{{ $row->reference }}</td>
             <td>{{ $row->type }}</td>
             <td>{{ $row->objet }}</td>

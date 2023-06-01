@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Structure;
 use App\Models\Departement;
 use App\Helper\DeleteAction;
+use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests\StoreDepartementRequest;
+use Auth;
 
 class DepartementController extends Controller
 {
@@ -35,7 +37,8 @@ class DepartementController extends Controller
      */
     public function edit(Departement $departement)
     {
-        $structure = Structure::all(['id','nom']);
+        $structure = Auth::user()->isSuperadmin() ? Structure::all(['id', 'nom']) : new Collection();
+
         return view('departement.update', compact('departement','structure'));
     }
 

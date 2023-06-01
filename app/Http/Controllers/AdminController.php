@@ -13,7 +13,6 @@ use App\Models\Document;
 use App\Models\Structure;
 use App\Models\Annotation;
 use App\Models\Departement;
-use App\Models\SubStructure;
 use App\Models\Correspondant;
 use App\Models\SubDepartement;
 use Illuminate\Contracts\View\View;
@@ -24,36 +23,9 @@ class AdminController extends Controller
 {
     public function nature(): View
     {
-        $rows = Nature::latest()->paginate(15);
+        $typeQuery = Nature::orderBy('nom')->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure());
+        $rows = $typeQuery->latest()->paginate(15);
         return view('nature.index', compact('rows'));
-    }
-
-    protected function getAnnotationUserIds($structureId)
-    {
-        $depIds = Structure::findOrFail($structureId)->departements()->pluck('id');
-        $subIds = SubDepartement::whereIn('departement_id', $depIds)->pluck('id');
-
-        return User::where(function ($query) use ($depIds) {
-            $query->user_departement()
-                ->whereIn('userable_id', $depIds);
-        })->orWhere(function ($query) use ($subIds) {
-            $query->user_subdepartement()
-                ->whereIn('userable_id', $subIds);
-        })->pluck('id');
-    }
-
-    protected function getUserIds($structureId)
-    {
-        $depIds = Structure::findOrFail($structureId)->departements()->pluck('id');
-        $subIds = SubDepartement::whereIn('departement_id', $depIds)->pluck('id');
-
-         User::where(function ($query) use ($depIds) {
-            $query->user_departement()
-                ->whereIn('userable_id', $depIds);
-        })->orWhere(function ($query) use ($subIds) {
-            $query->user_subdepartement()
-                ->whereIn('userable_id', $subIds);
-        })->pluck('id');
     }
 
     public function annotation(): View
@@ -64,8 +36,8 @@ class AdminController extends Controller
         if ($user->isSuperuser()) {
             $query->where('user_id', $user->id);
         } elseif ($user->isAdmin()) {
-            $structureId = $user->userable->structure_id ?: $user->userable->departement->structure_id;
-            $query->whereIn('user_id', $this->getAnnotationUserIds($structureId));
+            $structureUser = User::StructureUser()->pluck('id');
+            $query->whereIn('user_id', $structureUser);
         }
 
         $rows = $query->paginate(15);
@@ -81,8 +53,11 @@ class AdminController extends Controller
 
     public function correspondant(): View
     {
-        $structure = Auth::user()->isSuperadmin() ? Structure::all(['id', 'nom']) : new Collection();
-        $rows = Correspondant::with('structure')->latest()->paginate(15);
+        $user = Auth::user();
+        $structure = $user->isSuperadmin() ? Structure::all(['id', 'nom']) : new Collection();
+        $correspondantQuery = Correspondant::with('structure')->orderBy('nom')
+        ->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
+        $rows = $correspondantQuery->latest()->paginate(15);
         return view('correspondant.index', compact('rows', 'structure'));
     }
 
@@ -116,22 +91,11 @@ class AdminController extends Controller
             $query->whereUserableType($user->userable_type)->whereUserableId($user->userable_id);
             $departement = new Collection();
         } elseif ($user->isAdmin()) {
-            $structureId = $user->userable->structure_id ?: $user->userable->departement->structure_id;
-            $depIds = Structure::findOrFail($structureId)->departements()->pluck('id');
-            $subIds = SubDepartement::whereIn('departement_id', $depIds)->pluck('id');
-
-            $rows = User::where(function ($query) use ($depIds) {
-                $query->user_departement()
-                    ->whereIn('userable_id', $depIds);
-            })->orWhere(function ($query) use ($subIds) {
-                $query->user_subdepartement()
-                    ->whereIn('userable_id', $subIds);
-            })->latest()->paginate(15);
-            $departement = Departement::with('subdepartements')->whereStructureId($structureId)->get();
+            $rows = User::StructureUser()->latest()->paginate(15);
+            $departement = Departement::with('subdepartements')->ByStructure()->get();
         }
 
         $rows = $query->paginate(15);
-
         return view('user.index', compact('rows', 'departement'));
     }
 
@@ -145,8 +109,7 @@ class AdminController extends Controller
             $query->whereHas('structure');
             $structure = Structure::all(['id', 'nom']);
         } elseif ($user->isAdmin()) {
-            $structureId = $user->userable->structure_id ?: $user->userable->departement->structure_id;
-            $query->whereStructureId($structureId);
+            $query->ByStructure();
             $structure = new Collection();
         }
 
@@ -155,15 +118,29 @@ class AdminController extends Controller
         return view('departement.index', compact('rows', 'structure'));
     }
 
+    public function subdepartement(): View
+    {
+        $user = Auth::user();
+        $query = SubDepartement::withCount('users')->with('departement');
+        if ($user->isSuperadmin()) {
+            $departement = Departement::all(['id', 'nom']);
+        } elseif ($user->isAdmin()) {
+            $departement = Departement::ByStructure()->get();
+            $query->whereIn('departement_id',$departement->pluck('id'));
+        }
+        $rows = $query->latest()->paginate(15);
+        return view('subdepartement.index', compact('rows', 'departement'));
+    }
+
 
     public function rapport(): View
     {
         $user = Auth::user();
-        $structureId = $user->isSuperadmin() ? null : ($user->userable->structure_id ?: $user->userable->departement->structure_id);
-        $rows = Rapport::when($user->isSuperadmin(), function ($query) {
+        $structureId = $user->isSuperadmin() ? null : $user->structure();
+        $rows = Rapport::with('structure')->when($user->isSuperadmin(), function ($query) {
             $query->latest();
-        })->when($structureId, function ($query) use ($structureId) {
-            $query->whereStructureId($structureId);
+        })->when($structureId, function ($query) {
+            $query->ByStructure();
         })->latest()->paginate(15);
 
         return view('rapport.index', compact('rows'));
@@ -187,7 +164,7 @@ class AdminController extends Controller
 
     public function journal(): View
     {
-        $rows = Journal::with('users')->latest()->paginate(15);
+        $rows = Journal::with('user')->latest()->paginate(15);
         return view('journal.index', compact('rows'));
     }
 }

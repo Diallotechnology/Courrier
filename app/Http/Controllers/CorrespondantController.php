@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Structure;
 use App\Helper\DeleteAction;
 use App\Models\Correspondant;
+use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests\FormeCorrespondantRequest;
 
 class CorrespondantController extends Controller
@@ -35,7 +37,8 @@ class CorrespondantController extends Controller
      */
     public function edit(Correspondant $correspondant)
     {
-        $structure = Structure::all(['id','nom']);
+        $structure = Auth::user()->isSuperadmin() ? Structure::all(['id', 'nom']) : new Collection();
+
         return view('correspondant.update', compact('correspondant','structure'));
     }
 

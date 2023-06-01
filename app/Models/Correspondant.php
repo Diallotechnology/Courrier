@@ -6,7 +6,9 @@ use App\Models\Depart;
 use App\Models\Courrier;
 use App\Models\Structure;
 use App\Helper\DateFormat;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -62,7 +64,8 @@ class Correspondant extends Model
      *
      * @var array
      */
-    protected $fillable = ['prenom','nom','fonction','contact','email','structure_id'];
+    protected $fillable = ['nom','fonction','contact','email','structure_id'];
+
 
     /**
      * Get the structure that owns the Correspondant

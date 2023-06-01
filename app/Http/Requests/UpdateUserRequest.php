@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'poste' => ['required', 'string', 'max:150'],
             'role' => ['required', new Enum(RoleEnum::class)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class,'email')->ignore($this->id)],
             'departement_id' => ['required','exists:departements,id'],
         ];
     }

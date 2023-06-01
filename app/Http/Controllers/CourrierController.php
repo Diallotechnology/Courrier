@@ -65,9 +65,7 @@ class CourrierController extends Controller
      */
     public function show(Courrier $arriver)
     {
-
         $imp = Imputation::with('departement')->whereCourrierId($arriver->id)->get()->groupBy('reference');
-
         return view('arriver.show', compact('arriver','imp'));
     }
 
@@ -76,8 +74,14 @@ class CourrierController extends Controller
      */
     public function edit(Courrier $arriver)
     {
-        $correspondant = Correspondant::orderBy('nom')->get();
-        $type = Nature::orderBy('nom')->get();
+        $user = Auth::user();
+        $correspondantQuery = Correspondant::with('structure')->orderBy('nom')
+        ->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
+        $correspondant = $correspondantQuery->get();
+
+        $typeQuery = Nature::orderBy('nom')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
+        $type = $typeQuery->latest()->get();
+
         return view('arriver.update', compact('arriver','correspondant','type'));
     }
 
@@ -94,14 +98,14 @@ class CourrierController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('courrier/arriver', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $row->getClientOriginalName(),
+                    'libelle' => $arriver->numero,
                     'user_id' => Auth::user()->id,
                     'type' => 'Arrivé',
                     'chemin' => $chemin,
                 ]);
                 $arriver->documents()->save($data);
             endforeach;
-            $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé le N° $arriver->reference");
+            $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé N° $arriver->numero");
         endif;
         toastr()->success('Courrier mise à jour avec success!');
         return back();
@@ -113,7 +117,7 @@ class CourrierController extends Controller
     public function destroy(int $arriver)
     {
         $delete = Courrier::findOrFail($arriver);
-        $this->journal("Suppression du courrier REF N°$delete->reference");
+        $this->journal("Suppression du courrier REF N°$delete->numero");
         return  $this->supp($delete);
     }
 
@@ -127,7 +131,7 @@ class CourrierController extends Controller
     public function recover(int $id) {
 
         $row = Courrier::onlyTrashed()->whereId($id)->firstOrFail();
-        $this->journal("restauré le courrier REF N°$row->reference");
+        $this->journal("restauré le courrier REF N°$row->numero");
         return $this->Restore($row);
     }
 
@@ -139,7 +143,7 @@ class CourrierController extends Controller
                 $this->file_delete($item);
             }
         }
-        $this->journal("Suppression definitive du courrier REF N°$row->reference");
+        $this->journal("Suppression definitive du courrier REF N°$row->numero");
         return $this->Remove($row);
     }
 

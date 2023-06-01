@@ -30,10 +30,6 @@ class StoreDepartementRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
-    {
-        // $this->merge(['structure_id' => $this->input('structure_id') ? : Auth::user()->departement->structure->id ]);
-    }
     protected function failedValidation(Validator $validator)
     {
        return toastr()->error('la validation a echoué verifiez vos informations!');

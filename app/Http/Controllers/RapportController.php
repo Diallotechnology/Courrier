@@ -21,7 +21,9 @@ class RapportController extends Controller
      */
     public function create()
     {
-        $courrier = Courrier::all();
+        $user = Auth::user();
+        $courrierQuery = Courrier::with('nature')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
+        $courrier = $courrierQuery->latest()->get();
         $type = Rapport::TYPE;
         return view('rapport.create', \compact('courrier','type'));
     }
@@ -83,7 +85,7 @@ class RapportController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('rapport', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $request->type,
+                    'libelle' => $rapport->reference,
                     'user_id' => Auth::user()->id,
                     'type' => 'Rapport',
                     'chemin' => $chemin,

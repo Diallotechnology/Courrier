@@ -33,36 +33,28 @@ class CourrierDepart extends Component
 
     public function render()
     {
-        $structureId = Auth::user()->userable->structure_id ?: Auth::user()->userable->departement->structure_id;
+        $structureId = Auth::user()->structure();
         $isSuperadmin = Auth::user()->isSuperadmin();
         $query = Depart::with('user', 'nature', 'correspondant')
-            ->when($isSuperadmin, function ($query) use ($structureId) {
-                $query->where('structure_id', $structureId);
+            ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
+            ->when($this->privacy, function ($query) {
+                $query->where('confidentiel', $this->privacy);
+            })
+            ->when($this->priority, function ($query) {
+                $query->where('priorite', $this->priority);
+            })
+            ->when($this->nature, function ($query) {
+                $query->where('nature_id', $this->nature);
+            })
+            ->when($this->expediteur, function ($query) {
+                $query->where('correspondant_id', $this->expediteur);
+            })
+            ->when($this->date, function ($query) {
+                $query->where('date', $this->nature);
+            })
+            ->when($this->etat, function ($query) {
+                $query->where('etat', $this->etat);
             });
-
-        if ($this->privacy) {
-            $query->where('confidentiel', $this->privacy);
-        }
-
-        if ($this->priority) {
-            $query->where('priorite', $this->priority);
-        }
-
-        if ($this->nature) {
-            $query->where('nature_id', $this->nature);
-        }
-
-        if ($this->expediteur) {
-            $query->where('correspondant_id', $this->expediteur);
-        }
-
-        if ($this->date) {
-            $query->where('date', $this->date);
-        }
-
-        if ($this->etat) {
-            $query->where('etat', $this->etat);
-        }
 
         $rows = $query->latest()->paginate(15);
 
@@ -70,9 +62,9 @@ class CourrierDepart extends Component
         $typeQuery = Nature::orderBy('nom');
         $courrierQuery = Courrier::with('nature','correspondant');
         if (!$isSuperadmin) {
-            $correspondantQuery->where('structure_id', $structureId);
-            $typeQuery->where('structure_id', $structureId);
-            $courrierQuery->where('structure_id', $structureId);
+            $correspondantQuery->ByStructure();
+            $typeQuery->ByStructure();
+            $courrierQuery->ByStructure();
         }
 
         $correspondant = $correspondantQuery->get();

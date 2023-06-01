@@ -89,7 +89,7 @@ class DepartController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('courrier/depart', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $row->getClientOriginalName(),
+                    'libelle' => $depart->numero,
                     'user_id' => Auth::user()->id,
                     'type' => 'Depart',
                     'chemin' => $chemin,

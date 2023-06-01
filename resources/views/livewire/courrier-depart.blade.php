@@ -59,6 +59,7 @@
         <tr>
             <th>ID</th>
             <th>Utilisateur</th>
+            <th>Structure</th>
             <th>Nature</th>
             <th>Correspondant</th>
             <th>Reference</th>
@@ -79,9 +80,10 @@
             <td>
                 <x-user-avatar :row="$row" />
             </td>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
-                {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
+                {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
             </td>
             <td>{{ $row->reference }}</td>
             <td>{{ $row->courrier ? 'Courrier arriver N°'. $row->courrier->numero : 'pas de response' }}</td>
@@ -141,7 +143,7 @@
             <div class="col-md-6">
                 <x-select name="correspondant_id" label="Correspondant(Destinateur)">
                     @foreach ($correspondant as $row)
-                    <option value="{{ $row->id }}">{{ $row->prenom.' '.$row->nom }}</option>
+                    <option value="{{ $row->id }}">{{ $row->nom }}</option>
                     @endforeach
                 </x-select>
             </div>

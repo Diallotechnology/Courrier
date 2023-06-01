@@ -68,7 +68,7 @@ class ImputationController extends Controller
         }
 
         // Get notifiable users' emails
-        $users = User::whereIn('departement_id', $request->departement_id)
+        $users = User::whereIn('userable_id', $request->departement_id)
             ->whereRole(RoleEnum::SUPERUSER)
             ->get(['email','id']);
         $emails = $users->pluck('email')->toArray();
@@ -104,8 +104,12 @@ class ImputationController extends Controller
      */
     public function edit(Imputation $imputation)
     {
-        $courrier = Courrier::with('nature')->latest()->get(['id','numero','reference','date']);
-        $departement = Departement::all();
+        $user = Auth::user();
+        $courrierQuery = Courrier::with('nature')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
+        $courrier = $courrierQuery->latest()->get(['id','numero','reference','date']);
+
+        $departementQuery = Departement::with('subdepartements')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
+        $departement = $departementQuery->latest()->get();
         return view('imputation.update', compact('imputation','courrier','departement'));
     }
 

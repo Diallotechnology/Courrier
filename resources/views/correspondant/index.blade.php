@@ -22,7 +22,7 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Prenom</th>
+            <th>Structure</th>
             <th>Nom</th>
             <th>Fonction</th>
             <th>Email</th>
@@ -36,7 +36,7 @@
         @foreach ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>{{ $row->prenom }}</td>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->nom }}</td>
             <td>{{ $row->fonction }}</td>
             <td>{{ $row->email }}</td>
@@ -55,9 +55,6 @@
 <x-modal title="nouveaux correspondant">
     <x-form route="{{ route('correspondant.store') }}">
         <div class="col-md-6">
-            <x-input type="text" name="prenom" place="le prenom du correspondant" />
-        </div>
-        <div class="col-md-6">
             <x-input type="text" name="nom" place="le nom du correspondant" />
         </div>
         <div class="col-md-6">
@@ -67,7 +64,9 @@
             <x-input type="text" name="contact" :required="false" label="contact facultatif"
                 place="le contact du correspondant" />
         </div>
-        <x-input type="email" name="email" place="l'email du correspondant" />
+        <div class="col-md-6">
+            <x-input type="email" name="email" place="l'email du correspondant" />
+        </div>
         @if(Auth::user()->isSuperadmin())
         <x-select name='structure_id' label="structure">
             @foreach ($structure as $row)
@@ -75,7 +74,7 @@
             @endforeach
         </x-select>
         @else
-        <input type="hidden" value="{{ Auth::user()->structure_id }}" name="structure_id">
+        <input type="hidden" value="{{ Auth::user()->structure() }}" name="structure_id">
         @endif
 
     </x-form>

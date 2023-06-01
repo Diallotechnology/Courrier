@@ -6,7 +6,11 @@
             <x-form route="{{ route('arriver.update',$arriver) }}" type="update" url="{{ route('arriver') }}">
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                        <x-input type="text" :value="$arriver->reference" name="reference"
+                            place="la reference du courrier" label="reference du courrier" />
+                    </div>
+                    <div class="col-md-3">
                         <x-select name="nature_id" label="Nature de courrier">
                             @foreach ($type as $row)
                             <option @selected($arriver->nature_id == $row->id) value="{{ $row->id }}">{{ $row->nom }}
@@ -19,7 +23,7 @@
                         <x-select name="correspondant_id" label="Correspondant(Expediteur)">
                             @foreach ($correspondant as $row)
                             <option @selected($arriver->correspondant_id == $row->id) value="{{ $row->id }}">{{
-                                $row->prenom.' '.$row->nom }}</option>
+                                $row->nom }}</option>
                             @endforeach
                         </x-select>
                     </div>
@@ -37,7 +41,8 @@
                         </x-select>
                     </div>
                     <div class="col-md-6">
-                        <x-input type="date" name="date" :value="$arriver->date" label="Date d'arriver" />
+                        <x-input type="date" name="date" :value="$arriver->date->format('Y-m-d')"
+                            label="Date d'arriver" />
                     </div>
                     <div class="col-md-6">
                         <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif"

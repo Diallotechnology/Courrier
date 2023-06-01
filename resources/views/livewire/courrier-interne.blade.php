@@ -8,7 +8,7 @@
         </div>
         <div class="card-body">
             <x-filter url="interne" :create="false">
-                <div class="mb-3 col-sm-4 col-md-2">
+                <div class="mb-3  col-md-3">
                     <div wire:ignore>
                         <x-select label="Nature de courrier" :required='false' wire:model='nature'>
                             @foreach ($type as $row)
@@ -18,7 +18,7 @@
 
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-2">
+                <div class="mb-3  col-md-3">
                     <div wire:ignore>
                         <x-select label="Priorite" :required='false' wire:model='priority'>
                             <option value="Urgent">Urgent</option>
@@ -26,7 +26,7 @@
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-2">
+                <div class="mb-3  col-md-3">
                     <div wire:ignore>
                         <x-select label="Confidentialité" :required='false' wire:model='privacy'>
                             <option value="OUI">OUI</option>
@@ -34,17 +34,17 @@
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-2">
+                <div class="mb-3  col-md-3">
                     <div wire:ignore>
                         <x-select label="Etat" :required='false' wire:model='etat'>
-                            @foreach (App\Enum\CourrierEnum::cases() as $row)
+                            @foreach (App\Enum\CourrierInterneEnum::cases() as $row)
                             <option value="{{ $row }}">{{ $row }}</option>
                             @endforeach
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-2">
-                    <x-input type="date" label="Date d'arriver" wire:model='date' :required='false' />
+                <div class="mb-3  col-md-3">
+                    <x-input type="date" label="Date" wire:model='date' :required='false' />
                 </div>
 
                 <x-slot name="btn">
@@ -64,6 +64,7 @@
         <tr>
             <th>ID</th>
             <th>Reference</th>
+            <th>Structure</th>
             <th>Nature</th>
             <th>Expéditeur</th>
             <th>Destinateur</th>
@@ -80,6 +81,7 @@
         <tr>
             <td>{{ $row->id }}</td>
             <td>{{ $row->reference }}</td>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
                 @if($row->expediteur)
