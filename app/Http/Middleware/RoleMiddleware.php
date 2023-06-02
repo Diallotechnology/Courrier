@@ -14,46 +14,40 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next, string $role): Response
     {
-        $user = $request->user();
+        $user = $request->user(); // Obtenez l'objet utilisateur à partir de la requête (assurez-vous d'avoir la fonctionnalité d'authentification configurée)
 
-        // Vérifie si l'utilisateur a l'un des rôles spécifiés
-        $hasAccess = false;
-        foreach ($roles as $role) {
-            if ($user && $user->role === $role) {
-                $hasAccess = true;
-                break;
-            }
+        // Vérifiez si l'utilisateur a le rôle requis
+        if ($user && $this->hasRole($user, $role)) {
+            return $next($request); // L'utilisateur a le rôle approprié, laissez-le accéder à la route suivante
         }
 
-        // Si l'utilisateur a l'un des rôles spécifiés ou un rôle supérieur, autoriser l'accès
-        if ($hasAccess || $this->hasHigherRole($user, $roles)) {
-            return $next($request);
-        }
-
-        abort(403, 'Unauthorized');
+        // L'utilisateur n'a pas le rôle approprié, vous pouvez personnaliser la réponse d'erreur selon vos besoins
+        return abort(403);
     }
 
-    private function hasHigherRole($user, $roles)
+
+    /**
+     * Check if the user has the specified role.
+     *
+     * @param  \App\User  $user
+     * @param  string  $role
+     * @return bool
+     */
+    private function hasRole($user, string $role): bool
     {
-        $rolePriorities = [
-            RoleEnum::SUPERADMIN => 5,
-            RoleEnum::ADMIN => 4,
-            RoleEnum::USER => 3,
-            RoleEnum::SUPERUSER => 2,
-            RoleEnum::SECRETAIRE => 1,
-            RoleEnum::AGENT => 0,
-        ];
-
-        $userPriority = $rolePriorities[$user->role] ?? 0;
-
-        foreach ($roles as $role) {
-            if ($rolePriorities[$role] > $userPriority) {
-                return true;
-            }
-        }
-
-        return false;
+        // Utilisez les fonctions de la classe User pour vérifier le rôle de l'utilisateur
+        return  match ($role) {
+            RoleEnum::SUPERADMIN->value => $user->isSuperadmin(),
+            RoleEnum::ADMIN->value => $user->isAdmin() || $user->isSuperadmin(),
+            RoleEnum::SUPERUSER->value => $user->isSuperuser() || $user->isAdmin() || $user->isSuperadmin(),
+            RoleEnum::SECRETAIRE->value => $user->isSecretaire() || $user->isAdmin() || $user->isSuperuser() || $user->isSuperadmin(),
+            RoleEnum::AGENT->value => $user->isAgent(),
+            default => false, // Rôle non pris en charge
+        };
     }
+
+
+
 }

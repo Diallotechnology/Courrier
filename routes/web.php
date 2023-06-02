@@ -1,53 +1,49 @@
 <?php
 
+use App\Enum\RoleEnum;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AnnotationController;
-use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\BackupController;
-use App\Http\Controllers\CorrespondantController;
-use App\Http\Controllers\CourrierController;
 use App\Http\Controllers\DepartController;
-use App\Http\Controllers\DepartementController;
-use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\HistoryController;
-use App\Http\Controllers\ImputationController;
-use App\Http\Controllers\InterneController;
 use App\Http\Controllers\NatureController;
+use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\InterneController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\ReponseController;
+use App\Http\Controllers\CourrierController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\StructureController;
-use App\Http\Controllers\SubDepartementController;
+use App\Http\Controllers\AnnotationController;
+use App\Http\Controllers\ImputationController;
+use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\SubStructureController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CorrespondantController;
+use App\Http\Controllers\SubDepartementController;
 
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::controller(AdminController::class)->group(function () {
-        // Route::get('courrier/arriver','arriver')->name('arriver');
-        // Route::get('courrier/depart','depart')->name('depart');
-        // Route::get('courrier/interne','interne')->name('interne');
-        // Route::get('courrier/suivie','suivie')->name('suivie');
-        Route::get('nature','nature')->name('nature');
-        Route::get('correspondant','correspondant')->name('correspondant');
-        Route::get('document', 'document')->name('document');
-        Route::get('annotation','annotation')->name('annotation');
-        Route::get('departement','departement')->name('departement');
-        Route::get('subdepartement','subdepartement')->name('subdepartement');
-        Route::get('structure','structure')->name('structure');
-        Route::get('user','user')->name('user');
-        Route::get('journal','journal')->name('journal');
-        Route::get('agenda','agenda')->name('agenda');
-        Route::get('rapport','rapport')->name('rapport');
-        Route::get('dashboard','dashboard')->name('dashboard');
+    Route::middleware("role:".RoleEnum::ADMIN->value)->group(function () {
+        Route::controller(AdminController::class)->group(function () {
+            Route::get('nature','nature')->name('nature');
+            Route::get('correspondant','correspondant')->name('correspondant');
+            Route::get('document', 'document')->name('document');
+            Route::get('annotation','annotation')->name('annotation');
+            Route::get('departement','departement')->name('departement');
+            Route::get('subdepartement','subdepartement')->name('subdepartement');
+            Route::get('structure','structure')->name('structure');
+            Route::get('user','user')->name('user');
+            Route::get('journal','journal')->name('journal');
+            Route::get('agenda','agenda')->name('agenda');
+            Route::get('rapport','rapport')->name('rapport');
+            Route::get('dashboard','dashboard')->name('dashboard');
+        });
     });
+
 
     Route::view('courrier/arriver','arriver.index')->name('arriver');
     Route::view('courrier/depart','depart.index')->name('depart');
@@ -113,13 +109,15 @@ Route::middleware('auth')->group(function () {
         Route::delete('nature/delete/{id}','force_delete')->whereNumber('id');
     });
 
-    Route::controller(StructureController::class)->group(function () {
-        Route::get('structure/trash','trash')->name('structure.trash');
-        Route::get('structure/restore/all','all_recover')->name('structure.restore');
-        Route::get('structure/delete/all','all_delete')->name('structure.delete');
-        Route::get('structure/restore/{id}','recover')->whereNumber('id');
-        Route::delete('structure/delete/{id}','force_delete')->whereNumber('id');
-    });
+        Route::controller(StructureController::class)->group(function () {
+            Route::get('structure/trash','trash')->name('structure.trash');
+            Route::get('structure/restore/all','all_recover')->name('structure.restore');
+            Route::get('structure/delete/all','all_delete')->name('structure.delete');
+            Route::get('structure/restore/{id}','recover')->whereNumber('id');
+            Route::delete('structure/delete/{id}','force_delete')->whereNumber('id');
+        });
+
+
 
     Route::controller(TaskController::class)->group(function () {
         Route::get('task/trash','trash')->name('task.trash');
