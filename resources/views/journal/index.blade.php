@@ -23,6 +23,7 @@
         <tr>
             <th>ID</th>
             <th>Utilisateur</th>
+            <th>structure</th>
             <th>Libelle</th>
             <th>Date</th>
             <th>Action</th>
@@ -36,6 +37,7 @@
             <td>
                 <x-user-avatar :row="$row" />
             </td>
+            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->libelle }}</td>
             <td>{{ $row->created_at }}</td>
             <td>

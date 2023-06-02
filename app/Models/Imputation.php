@@ -57,6 +57,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation wherePriorite($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation byStructure()
  * @mixin \Eloquent
  */
 class Imputation extends Model

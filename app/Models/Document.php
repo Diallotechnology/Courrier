@@ -42,6 +42,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
+ * @property-read string $date_format
+ * @method static \Illuminate\Database\Eloquent\Builder|Document byStructure()
  * @mixin \Eloquent
  */
 class Document extends Model

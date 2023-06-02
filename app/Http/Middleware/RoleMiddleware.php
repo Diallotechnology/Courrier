@@ -43,7 +43,7 @@ class RoleMiddleware
             RoleEnum::ADMIN->value => $user->isAdmin() || $user->isSuperadmin(),
             RoleEnum::SUPERUSER->value => $user->isSuperuser() || $user->isAdmin() || $user->isSuperadmin(),
             RoleEnum::SECRETAIRE->value => $user->isSecretaire() || $user->isAdmin() || $user->isSuperuser() || $user->isSuperadmin(),
-            RoleEnum::AGENT->value => $user->isAgent(),
+            RoleEnum::AGENT->value => $user->isAgent() || $user->isSecretaire() || $user->isAdmin() || $user->isSuperuser() || $user->isSuperadmin(),
             default => false, // Rôle non pris en charge
         };
     }

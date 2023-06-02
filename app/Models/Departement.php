@@ -56,6 +56,13 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read int|null $subdepartement_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, SubDepartement> $subdepartements
+ * @property-read int|null $subdepartements_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Departement byStructure()
  * @mixin \Eloquent
  */
 class Departement extends Model

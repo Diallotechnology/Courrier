@@ -68,6 +68,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read string $date_format
  * @property-read Nature $nature
+ * @property int $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read Structure $structure
+ * @method static Builder|Depart byStructure()
+ * @method static Builder|Depart whereStructureId($value)
  * @mixin \Eloquent
  */
 class Depart extends Model

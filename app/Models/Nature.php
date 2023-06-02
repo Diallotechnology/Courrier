@@ -39,6 +39,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read int|null $departs_count
+ * @property string $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read string $date_format
+ * @property-read Structure $structure
+ * @method static Builder|Nature byStructure()
+ * @method static Builder|Nature whereStructureId($value)
  * @mixin \Eloquent
  */
 class Nature extends Model

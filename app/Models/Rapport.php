@@ -53,6 +53,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereObjet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereReference($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read string $date_format
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport byStructure()
  * @mixin \Eloquent
  */
 class Rapport extends Model

@@ -35,6 +35,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withoutTrashed()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
  * @property-read int|null $imputations_count
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
+ * @method static \Illuminate\Database\Eloquent\Builder|Annotation byStructure()
  * @mixin \Eloquent
  */
 class Annotation extends Model

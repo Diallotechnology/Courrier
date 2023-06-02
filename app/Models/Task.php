@@ -60,6 +60,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreateurId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereImputationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereReference($value)
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Task byStructure()
  * @mixin \Eloquent
  */
 class Task extends Model

@@ -53,6 +53,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read int|null $departs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read string $date_format
+ * @method static Builder|Correspondant byStructure()
  * @mixin \Eloquent
  */
 class Correspondant extends Model

@@ -70,6 +70,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read Nature $nature
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
  * @property-read int|null $reponses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
+ * @method static \Illuminate\Database\Eloquent\Builder|Interne byStructure()
  * @mixin \Eloquent
  */
 class Interne extends Model

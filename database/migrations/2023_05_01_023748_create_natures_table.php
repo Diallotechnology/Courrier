@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('natures', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('nom');
-            $table->string('structure_id');
             $table->timestamps();
             $table->softDeletes();
         });

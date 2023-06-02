@@ -92,6 +92,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @property int $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read Structure $structure
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier byStructure()
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereStructureId($value)
  * @mixin \Eloquent
  */
 class Courrier extends Model

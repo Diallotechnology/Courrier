@@ -38,6 +38,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement withoutTrashed()
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement byStructure()
  * @mixin \Eloquent
  */
 class SubDepartement extends Model

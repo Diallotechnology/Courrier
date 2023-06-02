@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Depart;
 use App\Models\Nature;
+use App\Models\Journal;
 use App\Models\Rapport;
 use App\Models\Courrier;
 use App\Helper\DateFormat;
@@ -61,6 +62,20 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read int|null $substructures_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read int|null $courriers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read int|null $departs_count
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Journal> $jourals
+ * @property-read int|null $jourals_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Nature> $natures
+ * @property-read int|null $natures_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Structure byStructure()
  * @mixin \Eloquent
  */
 class Structure extends Model
@@ -143,6 +158,16 @@ class Structure extends Model
     public function departs(): HasMany
     {
         return $this->hasMany(Depart::class);
+    }
+
+    /**
+     * Get all of the jourals for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jourals(): HasMany
+    {
+        return $this->hasMany(Journal::class);
     }
 
 

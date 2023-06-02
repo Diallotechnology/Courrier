@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Structure;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +32,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Journal withoutTrashed()
+ * @property-read string $date_format
+ * @property-read Structure $structure
+ * @method static \Illuminate\Database\Eloquent\Builder|Journal byStructure()
  * @mixin \Eloquent
  */
 class Journal extends Model
@@ -51,5 +55,15 @@ class Journal extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the structure that owns the Journal
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
     }
 }

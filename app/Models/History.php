@@ -37,6 +37,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|History whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|History withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|History withoutTrashed()
+ * @property-read string $date_format
+ * @method static \Illuminate\Database\Eloquent\Builder|History byStructure()
  * @mixin \Eloquent
  */
 class History extends Model
