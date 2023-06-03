@@ -32,7 +32,7 @@ class CourrierArriver extends Component
     public function render()
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = Courrier::with('user', 'nature', 'correspondant')
+        $query = Courrier::with('user', 'nature', 'correspondant','structure')
             ->whereNot('etat', CourrierEnum::ARCHIVE)
             ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
@@ -48,7 +48,7 @@ class CourrierArriver extends Component
                 $query->where('correspondant_id', $this->expediteur);
             })
             ->when($this->date, function ($query) {
-                $query->where('date', $this->nature);
+                $query->where('date', $this->date);
             })
             ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);

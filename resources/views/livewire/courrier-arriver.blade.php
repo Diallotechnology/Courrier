@@ -256,7 +256,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="8">
+                <td colspan="10">
                     <h2 class="text-center">Aucun element</h2>
                 </td>
             </tr>

@@ -36,43 +36,43 @@ class Tache extends Component
 
     public function ValidTask(int $id): void
     {
-       $task = Task::findOrFail($id);
-       $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
-        // create action history
-        if($task->type === "imputation") {
-            // update courrier etat if is impute
-            if($task->courrier and $task->courrier->Impute()) {
+        $task = Task::with('courrier')->findOrFail($id);
+        $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
+
+        if ($task->type === "imputation") {
+            if ($task->courrier && $task->courrier->impute()) {
                 $task->courrier->update(['etat' => CourrierEnum::PROCESS]);
             }
-            if($task->courrier) {
+            if ($task->courrier) {
+                $courrier = $task->courrier;
+                $id = $courrier->id;
+                $num = $courrier->numero;
 
-                $id = $task->courrier_id;
-                $num = $task->courrier->numero;
                 // Send notification
                 $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
                 $task->createur->notify($notification);
 
-                $this->history($id,"validation de tache","Une tache du courrier N°$num validé");
+                $this->history($id, "validation de tache", "Une tache du courrier N°$num validé");
 
-                // verify if all task to courrier is complet
-                $get_courrier_task = Task::whereCourrierId($task->courrier_id)->whereEtat(!TaskEnum::TERMINE)->get();
+                // Verify if all tasks for the courrier are completed
+                $incompleteTasksCount = Task::whereCourrierId($courrier->id)
+                    ->whereEtat('!=', TaskEnum::TERMINE)
+                    ->count();
 
-                if($get_courrier_task->isEmpty()) {
-                    $task->courrier->update(['etat' => CourrierEnum::TERMINE]);
-                    $id = $task->courrier_id;
-                    $num = $task->courrier->numero;
-                    $this->history($id,"tache accompli","Toute les tache du courrier N°$num effectué");
+                if ($incompleteTasksCount === 0) {
+                    $courrier->update(['etat' => CourrierEnum::TERMINE]);
+                    $this->history($id, "tache accompli", "Toute les tache du courrier N°$num effectué");
                 }
             }
-
         } else {
             // Send notification
             $notification = new TaskNotification($task, "Une tache que vous avez assigné a été effectuer");
             $task->createur->notify($notification);
         }
 
-        toastr()->success('Tache validé avec success!');
+        toastr()->success('Tache validé avec succès!');
     }
+
 
     public function render()
     {

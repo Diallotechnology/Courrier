@@ -50,7 +50,7 @@ class CourrierDepart extends Component
                 $query->where('correspondant_id', $this->expediteur);
             })
             ->when($this->date, function ($query) {
-                $query->where('date', $this->nature);
+                $query->where('date', $this->date);
             })
             ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);

@@ -261,7 +261,7 @@
                                     Total Taches
                                 </div>
                                 <div class="text-muted">
-                                    {{ count(Auth::user()->tasks) }}
+                                    {{ count(Auth::user()->createurs) }}
                                 </div>
                             </div>
                         </div>
@@ -499,7 +499,7 @@
     </div>
 </div>
 @endsection
-@section('scripts')
+@section('js')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {

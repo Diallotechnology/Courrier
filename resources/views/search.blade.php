@@ -1,6 +1,21 @@
 @extends('layouts.app')
+@section('header')
+<div class="col">
+    <div class="mb-1">
+        <ol class="breadcrumb" aria-label="breadcrumbs">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Filtre avancé</a></li>
+        </ol>
+    </div>
+    <h2 class="page-title">
+        <span class="text-truncate">Filtre avancée</span>
+    </h2>
+</div>
+@endsection
 @section('content')
 @livewire('advandced-search')
+@endsection
+@section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.12/js/main.min.js"
     integrity="sha512-2ZCMKBFziFWe/FnKORBGFo77WCMedx3B37yFyj0trigxShzXLMSgOFR8epX48rkRK8aenlJ45pKrzBrnRhBvJw=="
     crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -23,5 +38,6 @@
             singleMode: true,
         });
 });
+
 </script>
 @endsection
