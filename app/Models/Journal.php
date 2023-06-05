@@ -46,7 +46,7 @@ class Journal extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id','libelle'];
+    protected $fillable = ['user_id','libelle','structure_id'];
     /**
      * Get the user that owns the Journal
      *

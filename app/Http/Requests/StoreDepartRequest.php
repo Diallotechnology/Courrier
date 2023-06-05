@@ -25,7 +25,6 @@ class StoreDepartRequest extends FormRequest
     {
         return [
             'objet'=>'required|string|max:255',
-            'reference'=>'required|string|max:25',
             'confidentiel'=>'required|string|max:3',
             'priorite'=>'required|string|max:6',
             'observation'=>'string|nullable|max:255',
@@ -44,10 +43,9 @@ class StoreDepartRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $structureId = Auth::user()->userable->structure_id ?: Auth::user()->userable->departement->structure_id;
         $this->merge([
             'user_id' => Auth::user()->id,
-            'structure_id' => $structureId,
+            'structure_id' => Auth::user()->structure(),
          ]);
     }
 

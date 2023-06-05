@@ -25,8 +25,10 @@ trait DeleteAction
 
     public function journal(string $action): void
     {
+
         Journal::create([
             'user_id' => Auth::user()->id,
+            'structure_id' => Auth::user()->structure(),
             'libelle' => $action,
         ]);
     }

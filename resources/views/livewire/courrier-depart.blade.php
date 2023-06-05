@@ -60,13 +60,13 @@
             <th>ID</th>
             <th>Utilisateur</th>
             <th>Structure</th>
+            <th>Numero depart</th>
+            <th>Date depart</th>
             <th>Nature</th>
             <th>Correspondant</th>
-            <th>Reference</th>
             <th>En Reponse</th>
             <th>Priorite</th>
             <th>Confidential</th>
-            <th>Numero/Date depart</th>
             <th>Etat</th>
             <th>Objet</th>
             <th>Date</th>
@@ -81,11 +81,14 @@
                 <x-user-avatar :row="$row" />
             </td>
             <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
+            <td>{{ $row->numero }}</td>
+            <td>
+                {{ $row->date_format }}
+            </td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
                 {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
             </td>
-            <td>{{ $row->reference }}</td>
             <td>{{ $row->courrier ? 'Courrier arriver N°'. $row->courrier->numero : 'pas de response' }}</td>
 
             <td>
@@ -94,14 +97,7 @@
             <td>
                 <x-statut type="privacy" :courrier="$row" />
             </td>
-            <td>
-                <div class="d-flex py-1 align-items-center">
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">N° {{ $row->numero }}</div>
-                        <div class="text-muted">Date {{ $row->date_format }}</div>
-                    </div>
-                </div>
-            </td>
+
             <td>
                 <span @class(['status status-success'])>
                     {{ $row->etat }}

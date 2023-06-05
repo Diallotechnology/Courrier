@@ -4,9 +4,11 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use App\Enum\RoleEnum;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreUserRequest extends FormRequest
 {
@@ -15,7 +17,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return  $this->user()->can('create', User::class);
     }
 
     /**
@@ -28,6 +30,8 @@ class StoreUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'poste' => ['required', 'string', 'max:150'],
+            'type' => ['required', 'string', 'max:50', Rule::in(['departement', 'subdepartement'])],
+            'userable_id' => ['required', 'string'],
             'role' => ['required', new Enum(RoleEnum::class)],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
         ];

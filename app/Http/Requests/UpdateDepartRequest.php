@@ -24,7 +24,6 @@ class UpdateDepartRequest extends FormRequest
     {
         return [
             'objet'=>'required|string|max:255',
-            'reference'=>'required|string|max:25',
             'confidentiel'=>'required|string|max:3',
             'priorite'=>'required|string|max:6',
             'observation'=>'string|nullable|max:255',

@@ -232,7 +232,15 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
      */
     public function structure(): int
     {
-        return $this->userable->structure_id ?? $this->userable->department->structure_id;
+        return $this->userable->structure_id ?? $this->userable->departement->structure_id;
+    }
+
+        /**
+     * Check the user parent.
+     */
+    public function ParentCheck(User $model): bool
+    {
+        return Auth::user()->userable_id === $model->userable_id and Auth::user()->userable_type === $model->userable_type;
     }
 
     /**
@@ -271,10 +279,10 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
     /**
      * Check if the user has the agent role.
      */
-    public function isAgent(): bool
-    {
-        return $this->role === RoleEnum::AGENT;
-    }
+    // public function isAgent(): bool
+    // {
+    //     return $this->role === RoleEnum::AGENT;
+    // }
 
     /**
      * Check if the user has the superuser role.

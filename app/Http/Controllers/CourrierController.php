@@ -37,9 +37,11 @@ class CourrierController extends Controller
      */
     public function store(StoreCourrierRequest $request)
     {
-
-        $item = Courrier::create($request->validated());
-        $ref = $item->generateId('CA');
+        // foreach (range(1,15) as $value) {
+            $item = Courrier::create($request->validated());
+            $ref = $item->generateId('CA');
+        // }
+        // \dd('ok');
         $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé REF N° $item->reference");
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):

@@ -18,7 +18,7 @@ class CourrierFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'reference' => uniqid(),
+            'reference' => uniqid(),
             'objet' => $this->faker->sentence(2),
             'correspondant_id' => rand(1,5),
             'nature_id' => rand(1,5),

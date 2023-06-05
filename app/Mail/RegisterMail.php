@@ -17,7 +17,7 @@ class RegisterMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private User $user)
+    public function __construct(protected User $user)
     {
         //
     }
@@ -39,6 +39,10 @@ class RegisterMail extends Mailable
     {
         return new Content(
             markdown: 'email.UserRegister',
+            with: [
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+            ],
         );
     }
 

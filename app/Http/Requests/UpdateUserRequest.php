@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -15,7 +17,13 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+
+        // Utilisez la méthode can() pour vérifier l'autorisation en fonction de la politique (Policy) et de l'action
+        if ($this->route()->getName() === 'user.update') {
+            return $this->user()->can('update', $this->route('user'));
+        }
+
+        return false;
     }
 
     /**
@@ -28,9 +36,9 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'poste' => ['required', 'string', 'max:150'],
-            'role' => ['required', new Enum(RoleEnum::class)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class,'email')->ignore($this->id)],
-            'departement_id' => ['required','exists:departements,id'],
+            'role' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id)],
+            'userable_id' => ['required','exists:departements,id'],
         ];
     }
 

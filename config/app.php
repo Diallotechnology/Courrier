@@ -168,7 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // Maatwebsite\Excel\ExcelServiceProvider::class,
+        PulkitJalan\Google\GoogleServiceProvider::class
     ])->toArray(),
 
     /*
@@ -183,7 +183,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Google' => PulkitJalan\Google\Facades\Google::class
     ])->toArray(),
 
 ];

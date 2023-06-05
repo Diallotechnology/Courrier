@@ -73,7 +73,7 @@ class Imputation extends Model
         'etat' => ImputationEnum::class,
     ];
 
-    protected $fillable = ['courrier_id', 'departement_id','user_id', 'reference','fin_traitement','observation','delai','etat'];
+    protected $fillable = ['courrier_id', 'departement_id','user_id', 'numero','fin_traitement','observation','delai','etat'];
 
     /**
      * Get the courrier that owns the Imputation

@@ -36,10 +36,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withoutTrashed()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
  * @property-read int|null $imputations_count
- * @mixin \Eloquent
  * @property-read string $date_format
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation byStructure()
+ * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  */
 	class Annotation extends \Eloquent {}
 }
@@ -109,11 +110,13 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read int|null $departs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read string $date_format
+ * @method static Builder|Correspondant byStructure()
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
- * @property-read string $date_format
- * @method static \Illuminate\Database\Eloquent\Builder|Correspondant byStructure()
  */
 	class Correspondant extends \Eloquent {}
 }
@@ -187,17 +190,23 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
- * @mixin \Eloquent
  * @property int $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read Structure $structure
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier byStructure()
+ * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereStructureId($value)
+ * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
- * @property-read \App\Models\Structure $structure
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
- * @method static \Illuminate\Database\Eloquent\Builder|Courrier byStructure()
- * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereStructureId($value)
  */
 	class Courrier extends \Eloquent {}
 }
@@ -254,12 +263,13 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read string $date_format
  * @property-read Nature $nature
- * @mixin \Eloquent
  * @property int $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read Structure $structure
+ * @method static Builder|Depart byStructure()
+ * @method static Builder|Depart whereStructureId($value)
+ * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
- * @property-read \App\Models\Structure $structure
- * @method static \Illuminate\Database\Eloquent\Builder|Depart byStructure()
- * @method static \Illuminate\Database\Eloquent\Builder|Depart whereStructureId($value)
  */
 	class Depart extends \Eloquent {}
 }
@@ -304,14 +314,18 @@ namespace App\Models{
  * @property-read int|null $subdepartement_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
- * @mixin \Eloquent
  * @property-read string $date_format
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $imputations
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, SubDepartement> $subdepartements
  * @property-read int|null $subdepartements_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Departement byStructure()
+ * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  */
 	class Departement extends \Eloquent {}
 }
@@ -349,9 +363,9 @@ namespace App\Models{
  * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
- * @mixin \Eloquent
  * @property-read string $date_format
  * @method static \Illuminate\Database\Eloquent\Builder|Document byStructure()
+ * @mixin \Eloquent
  */
 	class Document extends \Eloquent {}
 }
@@ -385,9 +399,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|History whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|History withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|History withoutTrashed()
- * @mixin \Eloquent
  * @property-read string $date_format
  * @method static \Illuminate\Database\Eloquent\Builder|History byStructure()
+ * @mixin \Eloquent
  */
 	class History extends \Eloquent {}
 }
@@ -436,11 +450,15 @@ namespace App\Models{
  * @property-read User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation wherePriorite($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
  * @property-read string $date_format
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation byStructure()
+ * @mixin \Eloquent
+ * @property string|null $numero
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereNumero($value)
  */
 	class Imputation extends \Eloquent {}
 }
@@ -499,10 +517,12 @@ namespace App\Models{
  * @property-read Nature $nature
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
  * @property-read int|null $reponses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
+ * @method static \Illuminate\Database\Eloquent\Builder|Interne byStructure()
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
- * @method static \Illuminate\Database\Eloquent\Builder|Interne byStructure()
  */
 	class Interne extends \Eloquent {}
 }
@@ -531,10 +551,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Journal withoutTrashed()
- * @mixin \Eloquent
  * @property-read string $date_format
- * @property-read \App\Models\Structure $structure
+ * @property-read Structure $structure
  * @method static \Illuminate\Database\Eloquent\Builder|Journal byStructure()
+ * @mixin \Eloquent
+ * @property int $structure_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Journal whereStructureId($value)
  */
 	class Journal extends \Eloquent {}
 }
@@ -566,14 +588,16 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read int|null $departs_count
- * @mixin \Eloquent
  * @property string $structure_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read string $date_format
+ * @property-read Structure $structure
+ * @method static Builder|Nature byStructure()
+ * @method static Builder|Nature whereStructureId($value)
+ * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
- * @property-read string $date_format
- * @property-read \App\Models\Structure $structure
- * @method static \Illuminate\Database\Eloquent\Builder|Nature byStructure()
- * @method static \Illuminate\Database\Eloquent\Builder|Nature whereStructureId($value)
  */
 	class Nature extends \Eloquent {}
 }
@@ -649,10 +673,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereObjet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereReference($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereStructureId($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read string $date_format
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport byStructure()
+ * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  */
 	class Rapport extends \Eloquent {}
 }
@@ -729,21 +754,29 @@ namespace App\Models{
  * @property-read int|null $substructures_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read int|null $courriers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read int|null $departs_count
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Journal> $jourals
+ * @property-read int|null $jourals_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Nature> $natures
+ * @property-read int|null $natures_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Structure byStructure()
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
- * @property-read int|null $courriers_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
- * @property-read int|null $departs_count
- * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $jourals
- * @property-read int|null $jourals_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
- * @property-read int|null $natures_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
- * @method static \Illuminate\Database\Eloquent\Builder|Structure byStructure()
  */
 	class Structure extends \Eloquent {}
 }
@@ -776,10 +809,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement withoutTrashed()
- * @mixin \Eloquent
  * @property-read string $date_format
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement byStructure()
+ * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  */
 	class SubDepartement extends \Eloquent {}
 }
@@ -832,10 +866,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreateurId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereImputationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereReference($value)
- * @mixin \Eloquent
  * @property-read string $date_format
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Task byStructure()
+ * @mixin \Eloquent
+ * @property string|null $numero
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereNumero($value)
  */
 	class Task extends \Eloquent {}
 }
@@ -943,6 +980,26 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserableType($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $createurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Interne> $destinataires
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Interne> $expediteurs
+ * @property-read string $date_format
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Journal> $journals
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @method static Builder|User byStructure()
+ * @method static Builder|User structureUser()
+ * @method static Builder|User userDepartement()
+ * @method static Builder|User userSubDepartement()
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
@@ -951,7 +1008,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $destinataires
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $expediteurs
- * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
@@ -960,10 +1016,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
- * @method static \Illuminate\Database\Eloquent\Builder|User byStructure()
- * @method static \Illuminate\Database\Eloquent\Builder|User structureUser()
- * @method static \Illuminate\Database\Eloquent\Builder|User userDepartement()
- * @method static \Illuminate\Database\Eloquent\Builder|User userSubDepartement()
  */
 	class User extends \Eloquent implements \Creagia\LaravelSignPad\Contracts\CanBeSigned, \Creagia\LaravelSignPad\Contracts\ShouldGenerateSignatureDocument {}
 }

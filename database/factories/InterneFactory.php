@@ -18,7 +18,7 @@ class InterneFactory extends Factory
     public function definition(): array
     {
         return [
-            'reference' => uniqid(),
+            'numero' => uniqid(),
             'objet' => $this->faker->sentence(2),
             'nature_id' => rand(1,5),
             'expediteur_id' => rand(1,5),

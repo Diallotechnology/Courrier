@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.13.0.
+ * Generated for Laravel 10.13.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -18292,7 +18292,55 @@
      
 }
 
-        namespace Barryvdh\Debugbar\Facades { 
+        namespace PulkitJalan\Google\Facades { 
+            /**
+     * 
+     *
+     * @mixin Client
+     */ 
+        class Google {
+                    /**
+         * Getter for the google client.
+         *
+         * @return \Google\Client 
+         * @static 
+         */ 
+        public static function getClient()
+        {
+                        /** @var \PulkitJalan\Google\Client $instance */
+                        return $instance->getClient();
+        }
+                    /**
+         * Setter for the google client.
+         *
+         * @param string $client
+         * @return self 
+         * @static 
+         */ 
+        public static function setClient($client)
+        {
+                        /** @var \PulkitJalan\Google\Client $instance */
+                        return $instance->setClient($client);
+        }
+                    /**
+         * Getter for the google service.
+         *
+         * @param string $service
+         * @return \Google_Service 
+         * @throws \Exception
+         * @static 
+         */ 
+        public static function make($service)
+        {
+                        /** @var \PulkitJalan\Google\Client $instance */
+                        return $instance->make($service);
+        }
+         
+    }
+     
+}
+
+    namespace Barryvdh\Debugbar\Facades { 
             /**
      * 
      *
@@ -24006,6 +24054,7 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class Vite extends \Illuminate\Support\Facades\Vite {}
+            class Google extends \PulkitJalan\Google\Facades\Google {}
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
             class Livewire extends \Livewire\Livewire {}
             class Toaster extends \Masmerise\Toaster\Toaster {}

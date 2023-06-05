@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Enum\RoleEnum;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Agenda;
@@ -34,7 +35,7 @@ class DatabaseSeeder extends Seeder
         Structure::factory(5)->create();
         Departement::factory(5)->create();
         SubDepartement::factory(5)->create();
-        $test = User::factory()->create(['email' => 'admin@gmail.com']);
+        $test = User::factory()->create(['email' => 'admin@gmail.com', 'role' =>RoleEnum::ADMIN]);
         User::factory(25)->create();
         Nature::factory(5)->create();
         Correspondant::factory(35)->create();

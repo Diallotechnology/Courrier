@@ -38,7 +38,7 @@ class DepartController extends Controller
     public function store(StoreDepartRequest $request)
     {
         $item = Depart::create($request->validated());
-        $ref = $item->generateId('CA');
+        $ref = $item->generateId('CD');
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
@@ -71,9 +71,14 @@ class DepartController extends Controller
      */
     public function edit(Depart $depart)
     {
-        $correspondant = Correspondant::orderBy('nom')->get();
-        $type = Nature::orderBy('nom')->get();
-        $courrier = Courrier::with('nature','correspondant')->latest()->get(['id','numero','reference','date']);
+        $user = Auth::user();
+        $correspondant = Correspondant::with('structure')->orderBy('nom')
+        ->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())->get();
+
+        $type = Nature::orderBy('nom')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())->latest()->get();
+
+        $courrier = Courrier::with('nature','correspondant')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())
+        ->latest()->get(['id','numero','reference','date']);
         return view('depart.update', compact('depart','correspondant','type','courrier'));
     }
 
@@ -107,7 +112,7 @@ class DepartController extends Controller
     public function destroy(int $depart)
     {
         $delete = Depart::findOrFail($depart);
-        $this->journal("Suppression du courrier depart REF N°$delete->reference");
+        $this->journal("Suppression du courrier depart REF N°$delete->numero");
         return  $this->supp($delete);
     }
 
@@ -120,7 +125,7 @@ class DepartController extends Controller
     public function recover(int $id) {
 
         $row = Depart::onlyTrashed()->whereId($id)->firstOrFail();
-        $this->journal("restauré le courrier depart REF N°$row->reference");
+        $this->journal("restauré le courrier depart REF N°$row->numero");
         return $this->Restore($row);
     }
 
@@ -132,7 +137,7 @@ class DepartController extends Controller
                 $this->file_delete($item);
             }
         }
-        $this->journal("Suppression definitive du courrier depart REF N°$row->reference");
+        $this->journal("Suppression definitive du courrier depart REF N°$row->numero");
         return $this->Remove($row);
     }
 

@@ -78,6 +78,7 @@
 <x-modal title="nouveaux utilisateur">
 
     <x-form route="{{ route('user.store') }}">
+        <input type="hidden" value="departement" name="type">
         <div class="col-md-6">
             <x-input type="text" name="name" label="Nom complet" place="le nom et prenom de l'utilisateur" />
         </div>
@@ -90,7 +91,7 @@
             <x-input type="email" name="email" place="email de l'utilisateur" />
         </div>
 
-        @if(Auth::user()->isSuperadmin())
+        @if(Auth::user()->isSuperuser())
         <input type="hidden" name="userable_id" value="{{ Auth::user()->userable_id }}">
         @else
         <div class="col-md-12">
@@ -104,6 +105,7 @@
         <div class="col-md-12">
             <x-select name="role" label="Role/Droit d'access">
                 @foreach (App\Enum\RoleEnum::cases() as $row)
+                @continue(!Auth::user()->isSuperuser() and $loop->first)
                 <option value="{{ $row }}">{{ $row }}</option>
                 @endforeach
             </x-select>

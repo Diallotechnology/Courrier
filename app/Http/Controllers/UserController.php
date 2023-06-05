@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\RegisterMail;
+use App\Models\Departement;
 use App\Helper\DeleteAction;
+use App\Models\SubDepartement;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUserRequest;
-use App\Mail\RegisterMail;
-use App\Models\Departement;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -19,7 +21,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        $user = User::create($request->validated());
+        $validate = $request->validated();
+        if($validate['type'] === "departement") {
+            $parent = Departement::findOrFail($validate['userable_id']);
+        } elseif($validate['type'] === "subdepartement") {
+            $parent = SubDepartement::findOrFail($validate['userable_id']);
+        }
+        $user = $parent->users()->create($request->safe()->except(['userable_id']));
         Mail::to($user->email)->send(new RegisterMail($user));
         toastr()->success('Utilisateur ajouter avec success!');
         return back();
@@ -30,6 +38,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('view', $user);
         return view('user.show', compact('user'));
     }
 
@@ -38,14 +47,15 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $departement = Departement::all();
+        $departement = $user->isSuperadmin() ?
+         Departement::all(['id', 'nom']) : Departement::byStructure()->get();
         return view('user.update', compact('user','departement'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
         toastr()->success('Utilisateur mise à jour avec success!');

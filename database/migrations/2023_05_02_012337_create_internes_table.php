@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('expediteur_id')->constrained('users');
             $table->foreignId('destinataire_id')->constrained('users');
             $table->dateTime('delai')->nullable();
-            $table->string('reference')->nullable()->unique();
+            $table->string('numero')->nullable()->unique();
             $table->string('objet');
             $table->string('priorite');
             $table->string('confidentiel');

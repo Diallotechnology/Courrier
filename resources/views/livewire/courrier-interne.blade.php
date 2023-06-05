@@ -80,7 +80,7 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>{{ $row->reference }}</td>
+            <td>{{ $row->numero }}</td>
             <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
@@ -147,7 +147,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="8">
+            <td colspan="11">
                 <h2 class="text-center">Aucun element</h2>
             </td>
         </tr>

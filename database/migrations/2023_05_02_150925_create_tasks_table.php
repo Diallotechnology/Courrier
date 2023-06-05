@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('courrier_id')->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('imputation_id')->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('createur_id')->constrained('users');
-            $table->string('reference')->nullable()->unique();
+            $table->string('numero')->nullable()->unique();
             $table->string('nom');
             $table->longText('description');
             $table->string('type');

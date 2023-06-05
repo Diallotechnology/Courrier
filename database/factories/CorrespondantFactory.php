@@ -17,7 +17,7 @@ class CorrespondantFactory extends Factory
     public function definition(): array
     {
         return [
-            'prenom' => $this->faker->firstName(),
+            'nom' => $this->faker->firstName(),
             'structure_id' => rand(1,5),
             'nom' => $this->faker->lastName(),
             'email' => $this->faker->email(),

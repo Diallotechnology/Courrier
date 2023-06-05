@@ -56,7 +56,8 @@ trait DateFormat
 
     public function generateId(string $prefix_type)
     {
-        $prefix = $prefix_type . Carbon::today()->format('Y') . '-';
+        $currentYear = Carbon::today()->format('Y');
+        $prefix = $prefix_type . $currentYear . '-';
 
         return DB::transaction(function () use ($prefix) {
             // Verrouille le dernier identifiant de courrier enregistré dans la base de données pour la mise à jour
@@ -69,6 +70,7 @@ trait DateFormat
             if ($lastCourrier) {
                 // Récupère le numéro de séquence de l'identifiant de courrier précédent
                 $sequence = (int)substr($lastCourrier->numero, strlen($prefix));
+
             }
 
             // Incrémente le numéro de séquence et génère le nouvel identifiant de courrier

@@ -17,7 +17,6 @@ class DepartFactory extends Factory
     public function definition(): array
     {
         return [
-            'reference' => uniqid(),
             'objet' => $this->faker->sentence(2),
             'structure_id' => rand(1,5),
             'correspondant_id' => rand(1,5),
@@ -27,7 +26,7 @@ class DepartFactory extends Factory
             'priorite' => $this->faker->randomElement(['Normal','Urgent']),
             'confidentiel' => $this->faker->randomElement(['OUI','NON']),
             'date' => $this->faker->date(),
-            'etat' => $this->faker->randomElement(['foo','bar']),
+            'etat' => "Enregistré",
         ];
     }
 }

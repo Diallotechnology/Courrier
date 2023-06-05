@@ -22,6 +22,7 @@ use App\Http\Controllers\ImputationController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\SubStructureController;
 use App\Http\Controllers\CorrespondantController;
+use App\Http\Controllers\GmailController;
 use App\Http\Controllers\SubDepartementController;
 
 
@@ -250,17 +251,15 @@ Route::middleware('auth')->group(function () {
         Route::resource('reponse',ReponseController::class)->except('index','show','create');
     });
 
-    // Route::middleware("role:".RoleEnum::AGENT->value)->group(function () {
-    //     Route::controller(AdminController::class)->group(function () {
-    //         Route::get('dashboard','dashboard')->name('dashboard');
-    //         Route::get('nature','nature')->name('nature');
-    //         Route::get('correspondant','correspondant')->name('correspondant');
-    //     });
-    //     Route::view('courrier/arriver','arriver.index')->name('arriver');
-    //     Route::view('courrier/depart','depart.index')->name('depart');
-    // });
-
     Route::resource('backup',BackupController::class)->except('index');
+    // Route::get('test', [GmailController::class, 'test'])->name('test');
+Route::get('listMessages', [GmailController::class, 'listMessages'])->name('gmail.messages');
+// Route for authentication callback
+Route::get('/auth/callback', [GmailController::class, 'callback']);
+
+// Route to initiate authentication
+Route::get('/auth', [GmailController::class, 'authenticate']);
 });
+
 
 require __DIR__.'/auth.php';

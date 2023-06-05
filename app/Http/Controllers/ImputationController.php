@@ -41,7 +41,7 @@ class ImputationController extends Controller
         }
 
         // Get imputation
-        $imp_id = Imputation::whereReference($request->reference)->firstOrFail(['id', 'reference']);
+        $imp_id = Imputation::whereNumero($request->numero)->firstOrFail(['id', 'numero']);
 
         // Save annotations pivot value
         $imp_id->annotations()->attach($request->annotation_id);

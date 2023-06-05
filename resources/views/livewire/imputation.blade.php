@@ -81,7 +81,7 @@
             <td>
                 <x-user-avatar :row="$row" />
             </td>
-            <td>{{ $row->reference }}</td>
+            <td>{{ $row->numero }}</td>
             <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
             <td>{{ $row->departement ? $row->departement->nom : 'inexistant' }}</td>
             <td>

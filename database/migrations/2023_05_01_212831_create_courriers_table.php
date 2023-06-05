@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('correspondant_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('reference');
-            $table->integer('numero')->nullable()->unique();
+            $table->string('numero')->nullable()->unique();
             $table->string('objet');
             $table->string('priorite');
             $table->string('confidentiel');

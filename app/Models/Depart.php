@@ -91,7 +91,6 @@ class Depart extends Model
         'courrier_id',
         'structure_id',
         'correspondant_id',
-        'reference',
         'numero',
         'objet',
         'priorite',

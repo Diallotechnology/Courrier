@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.12",
         "masmerise/livewire-toaster": "^1.1",
+        "pulkitjalan/google-apiclient": "^6.1",
         "yoeunes/toastr": "^2.3"
     },
     "require-dev": {
@@ -26,7 +27,6 @@
         "laravel/breeze": "^1.20",
         "laravel/pint": "^1.10",
         "laravel/sail": "^1.18",
-        "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "phpstan/phpstan": "^1.10",
         "spatie/laravel-ignition": "^2.0"

@@ -3,16 +3,19 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
-    /**
-     * Determine whether the user can view any models.
+        /**
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): bool|null
     {
-        //
+        if ($user->isSuperadmin()) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
@@ -20,7 +23,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        //
+        return $user->id === $model->id || $user->isAdmin() || $user->isSuperuser() and $user->ParentCheck($model);
     }
 
     /**
@@ -28,7 +31,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->isSuperuser() || $user->isAdmin();
     }
 
     /**
@@ -36,7 +39,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        //
+        return $user->structure() == $model->structure() and $user->isAdmin()  || $user->isSuperuser() and $user->ParentCheck($model);
     }
 
     /**
@@ -44,7 +47,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        //
+        return $user->isAdmin() and $user->structure() == $model->structure();
     }
 
     /**
@@ -52,7 +55,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        //
+        return $user->isAdmin() and $user->structure() == $model->structure();
     }
 
     /**
@@ -60,6 +63,6 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        //
+        return false;
     }
 }

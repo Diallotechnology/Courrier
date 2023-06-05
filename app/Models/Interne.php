@@ -88,7 +88,6 @@ class Interne extends Model
         'nature_id',
         'expediteur_id',
         'destinataire_id',
-        'reference',
         'numero',
         'objet',
         'priorite',

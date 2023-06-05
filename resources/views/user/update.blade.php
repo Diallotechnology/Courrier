@@ -16,19 +16,22 @@
                 <div class="col-md-12">
                     <x-input type="email" name="email" :value="$user->email" place="email de l'utilisateur" />
                 </div>
-
+                @if(Auth::user()->isSuperuser())
+                <input type="hidden" name="userable_id" value="{{ Auth::user()->userable_id }}">
+                @else
                 <div class="col-md-12">
-                    <x-select name="departement_id" label="Departement">
+                    <x-select name="userable_id" label="Departement">
                         @foreach ($departement as $row)
                         <option @selected($user->userable_id == $row->id) value="{{ $row->id }}">{{ $row->nom }}
                         </option>
                         @endforeach
                     </x-select>
                 </div>
-
+                @endif
                 <div class="col-md-12">
                     <x-select name="role" label="Role/Droit d'access">
                         @foreach (App\Enum\RoleEnum::cases() as $row)
+                        @continue(!Auth::user()->isSuperuser() and $loop->first)
                         <option @selected($user->role === $row) value="{{ $row }}">{{ $row }}</option>
                         @endforeach
                     </x-select>
