@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Annotation;
+use App\Models\Nature;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class AnnotationPolicy
+class NaturePolicy
 {
     /**
      * Perform pre-authorization checks.
@@ -25,38 +25,38 @@ class AnnotationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperuser() || $user->isAdmin();
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Annotation $annotation): bool
+    public function update(User $user, Nature $nature): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return  $user->structure() === $nature->structure_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Annotation $annotation): bool
+    public function delete(User $user, Nature $nature): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return  $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Annotation $annotation): bool
+    public function restore(User $user, Nature $nature): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return  $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Annotation $annotation): bool
+    public function forceDelete(User $user, Nature $nature): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return  $user->structure() === $nature->structure_id && $user->isAdmin();
     }
 }

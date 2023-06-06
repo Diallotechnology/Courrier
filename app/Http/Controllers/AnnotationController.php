@@ -16,6 +16,7 @@ class AnnotationController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Annotation::class);
         $request->validate(['nom'=>'required|string|max:150']);
         Annotation::create(['nom'=> $request->nom, 'user_id' => Auth::user()->id]);
         toastr()->success('Annotation ajouter avec success!');
@@ -27,14 +28,17 @@ class AnnotationController extends Controller
      */
     public function edit(Annotation $annotation)
     {
+        $this->authorize('update', $annotation);
         return view('annotation.update', compact('annotation'));
     }
 
     /**
      * Update the specified resource in storage.
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Annotation $annotation)
     {
+        $this->authorize('update', $annotation);
         $data = $request->validate(['nom'=>'required|string|max:150']);
         $annotation->update($data);
         toastr()->success('Annotation mise à jour avec success!');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\DeleteAction;
 use App\Models\Reponse;
 use App\Models\User;
 use App\Notifications\ReponseNotification;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 
 class ReponseController extends Controller
 {
+    use DeleteAction;
 
     /**
      * Store a newly created resource in storage.
@@ -44,7 +46,8 @@ class ReponseController extends Controller
      */
     public function edit(Reponse $reponse)
     {
-        //
+        $this->authorize('update', $reponse);
+        return view('reponse.update', compact('reponse'));
     }
 
     /**
@@ -52,14 +55,22 @@ class ReponseController extends Controller
      */
     public function update(Request $request, Reponse $reponse)
     {
-        //
+        $this->authorize('update', $reponse);
+        $request->validate([
+            'message'=>'required|string',
+        ]);
+        $reponse->update(['message'=> $request->message]);
+        toastr()->success('Reponse mise à jour avec success!');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reponse $reponse)
+    public function destroy(int $reponse)
     {
-        //
+        $delete = Reponse::findOrFail($reponse);
+        $this->journal("Suppression de la reponse N°$delete->id");
+        return  $this->supp($delete);
     }
 }

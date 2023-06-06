@@ -16,13 +16,6 @@ use App\Http\Requests\UpdateDepartRequest;
 class DepartController extends Controller
 {
     use DeleteAction;
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -71,6 +64,7 @@ class DepartController extends Controller
      */
     public function edit(Depart $depart)
     {
+        $this->authorize('update', $depart);
         $user = Auth::user();
         $correspondant = Correspondant::with('structure')->orderBy('nom')
         ->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())->get();

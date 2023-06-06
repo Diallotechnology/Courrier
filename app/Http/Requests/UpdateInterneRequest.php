@@ -12,7 +12,9 @@ class UpdateInterneRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if ($this->route()->getName() === 'interne.update') {
+            return $this->user()->can('update', $this->route('interne'));
+        }
     }
 
     /**

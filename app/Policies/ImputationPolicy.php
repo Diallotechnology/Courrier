@@ -9,11 +9,15 @@ use Illuminate\Auth\Access\Response;
 class ImputationPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): ?bool
     {
-        //
+        if ($user->isSuperadmin()) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
@@ -21,7 +25,7 @@ class ImputationPolicy
      */
     public function view(User $user, Imputation $imputation): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +33,7 @@ class ImputationPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->isSuperuser() || $user->isAdmin();
     }
 
     /**
@@ -37,7 +41,7 @@ class ImputationPolicy
      */
     public function update(User $user, Imputation $imputation): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() && $user->id === $imputation->user_id;
     }
 
     /**
@@ -45,7 +49,7 @@ class ImputationPolicy
      */
     public function delete(User $user, Imputation $imputation): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() && $user->id === $imputation->user_id;
     }
 
     /**
@@ -53,7 +57,7 @@ class ImputationPolicy
      */
     public function restore(User $user, Imputation $imputation): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() && $user->id === $imputation->user_id;
     }
 
     /**
@@ -61,6 +65,6 @@ class ImputationPolicy
      */
     public function forceDelete(User $user, Imputation $imputation): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() && $user->id === $imputation->user_id;
     }
 }

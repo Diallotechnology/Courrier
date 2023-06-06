@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Departement;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -13,7 +14,10 @@ class StoreDepartementRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if ($this->route()->getName() === 'departement.update') {
+            return $this->user()->can('update', $this->route('departement'));
+        }
+        return  $this->user()->can('create', Departement::class);
     }
 
     /**

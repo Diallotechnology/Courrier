@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Annotation;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class AnnotationPolicy
+class TaskPolicy
 {
     /**
      * Perform pre-authorization checks.
@@ -21,42 +21,50 @@ class AnnotationPolicy
     }
 
     /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Task $task): bool
+    {
+        return $user->isAdmin() || $user->id === $task->createur_id;
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return $user->isSuperuser() || $user->isAdmin();
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Annotation $annotation): bool
+    public function update(User $user, Task $task): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return $user->id === $task->createur_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Annotation $annotation): bool
+    public function delete(User $user, Task $task): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return $user->id === $task->createur_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Annotation $annotation): bool
+    public function restore(User $user, Task $task): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return $user->id === $task->createur_id;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Annotation $annotation): bool
+    public function forceDelete(User $user, Task $task): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() and $user->id === $annotation->user_id;
+        return $user->id === $task->createur_id;
     }
 }

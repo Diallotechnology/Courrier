@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Courrier;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\File;
@@ -15,7 +16,7 @@ class StoreCourrierRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return  $this->user()->can('create', Courrier::class);
     }
 
     /**

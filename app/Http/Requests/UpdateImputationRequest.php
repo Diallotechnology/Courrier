@@ -12,7 +12,10 @@ class UpdateImputationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        // Utilisez la méthode can() pour vérifier l'autorisation en fonction de la politique (Policy) et de l'action
+        if ($this->route()->getName() === 'imputation.update') {
+            return $this->user()->can('update', $this->route('imputation'));
+        }
     }
 
     /**

@@ -32,6 +32,7 @@ class InterneController extends Controller
      */
     public function create()
     {
+        $this->user()->can('create', Interne::class);
         $isSuperadmin = Auth::user()->isSuperadmin();
         $user = User::with('userable')->StructureUser()->latest()->get()->groupBy('userable.nom');
 
@@ -93,6 +94,7 @@ class InterneController extends Controller
      */
     public function show(Interne $interne)
     {
+        $this->authorize('view', $interne);
         if($interne->Recu()) {
             $interne->update(['etat' => CourrierInterneEnum::READ]);
         }
@@ -104,6 +106,7 @@ class InterneController extends Controller
      */
     public function edit(Interne $interne)
     {
+        $this->authorize('update', $interne);
         $user = User::with('userable')->StructureUser()->latest()->get()->groupBy('userable.nom');
         $typeQuery = Nature::orderBy('nom')->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure());
         $type = $typeQuery->get();

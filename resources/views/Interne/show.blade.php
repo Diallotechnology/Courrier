@@ -96,7 +96,7 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Discussion du courrier interne REF {{ $interne->reference }}</h3>
+            <h3 class="card-title">Discussion du courrier interne N° {{ $interne->numero }}</h3>
         </div>
         <div class="list-group list-group-flush overflow-auto" style="max-height: 35rem">
             @forelse ($interne->reponses as $row)
@@ -110,9 +110,14 @@
                     </div>
                     <div class="col text-truncate">
                         <a href="#" class="text-body d-block">{{ $row->user->name }} Departement {{
-                            $row->user->departement->nom }}</a>
+                            $row->user->userable->nom }}</a>
                         <div class="text-muted text-truncate mt-n1">{{ $row->message }}</div>
                         <div class="text-muted text-truncate mt-n1">{{ $row->created_at }}</div>
+
+                    </div>
+                    <div class="col-auto">
+                        <x-button-edit href="{{ route('reponse.edit', ['reponse' => $row]) }}" />
+                        <x-button-delete url="{{ url('reponse/'.$row->id) }}" />
                     </div>
                 </div>
             </div>

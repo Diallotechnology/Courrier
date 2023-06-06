@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Structure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -12,7 +13,10 @@ class StoreStructureRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if ($this->route()->getName() === 'structure.update') {
+            return $this->user()->can('update', $this->route('structure'));
+        }
+        return  $this->user()->can('create', Structure::class);
     }
 
     /**

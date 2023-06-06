@@ -47,6 +47,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         $departement = $user->isSuperadmin() ?
          Departement::all(['id', 'nom']) : Departement::byStructure()->get();
         return view('user.update', compact('user','departement'));

@@ -22,6 +22,7 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+
         $data = Arr::except($request->validated(),['user_id']);
         // create task
         $task = Task::create($data);
@@ -47,6 +48,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        $this->authorize('view', $task);
         return view('task.show', compact('task'));
     }
 
@@ -55,6 +57,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $this->authorize('update', $task);
         $user = Auth::user()->isSuperadmin() ?
         User::with('userable')->get()->groupBy('userable.nom') : User::with('userable')->StructureUser()->get()->groupBy('userable.nom');
         return view('task.update', compact('task','user'));

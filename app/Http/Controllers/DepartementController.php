@@ -29,6 +29,7 @@ class DepartementController extends Controller
      */
     public function show(Departement $departement)
     {
+        $this->authorize('view', $departement);
         return view('departement.show', compact('departement'));
     }
 
@@ -37,8 +38,8 @@ class DepartementController extends Controller
      */
     public function edit(Departement $departement)
     {
+        $this->authorize('update', $departement);
         $structure = Auth::user()->isSuperadmin() ? Structure::all(['id', 'nom']) : new Collection();
-
         return view('departement.update', compact('departement','structure'));
     }
 

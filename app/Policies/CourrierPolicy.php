@@ -9,11 +9,15 @@ use Illuminate\Auth\Access\Response;
 class CourrierPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): ?bool
     {
-        //
+        if ($user->isSuperadmin()) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
@@ -21,7 +25,7 @@ class CourrierPolicy
      */
     public function view(User $user, Courrier $courrier): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +33,7 @@ class CourrierPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +41,9 @@ class CourrierPolicy
      */
     public function update(User $user, Courrier $courrier): bool
     {
-        //
+        return ($user->isAdmin() || $user->isSuperuser() || $user->isSecretaire()) &&
+            $user->id === $courrier->user_id &&
+            $courrier->Register();
     }
 
     /**
@@ -45,15 +51,19 @@ class CourrierPolicy
      */
     public function delete(User $user, Courrier $courrier): bool
     {
-        //
+        return $user->structure() === $courrier->structure_id &&
+            ($user->isAdmin() || $user->isSuperuser() || $user->isSecretaire()) &&
+            $user->id === $courrier->user_id &&
+            $courrier->Register();
     }
+
 
     /**
      * Determine whether the user can restore the model.
      */
     public function restore(User $user, Courrier $courrier): bool
     {
-        //
+        return $user->structure() === $courrier->structure_id && ($user->isAdmin() || $user->isSuperuser());
     }
 
     /**
@@ -61,6 +71,6 @@ class CourrierPolicy
      */
     public function forceDelete(User $user, Courrier $courrier): bool
     {
-        //
+       return $user->structure() === $courrier->structure_id && $user->isAdmin();
     }
 }

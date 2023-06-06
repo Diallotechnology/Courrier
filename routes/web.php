@@ -241,7 +241,7 @@ Route::middleware('auth')->group(function () {
             Route::get('rapport/restore/all','all_recover')->name('rapport.restore');
             Route::get('rapport/restore/{id}','recover')->whereNumber('id');
         });
-        Route::resource('courrier/arriver',CourrierController::class)->except('index','destroy');
+        Route::resource('courrier/arriver',CourrierController::class)->except('index','destroy','create');
         Route::resource('courrier/depart',DepartController::class)->except('index','destroy');
         Route::resource('courrier/interne',InterneController::class)->except('index');
         Route::resource('correspondant',CorrespondantController::class)->except('index','create','destroy');

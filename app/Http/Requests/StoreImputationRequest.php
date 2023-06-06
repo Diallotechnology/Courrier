@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Imputation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -13,7 +14,7 @@ class StoreImputationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return  $this->user()->can('create', Imputation::class);
     }
 
     /**

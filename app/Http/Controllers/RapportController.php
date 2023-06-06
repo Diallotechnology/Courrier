@@ -21,6 +21,7 @@ class RapportController extends Controller
      */
     public function create()
     {
+        $this->user()->can('create', Rapport::class);
         $user = Auth::user();
         $courrierQuery = Courrier::with('nature')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
         $courrier = $courrierQuery->latest()->get();
@@ -60,6 +61,7 @@ class RapportController extends Controller
      */
     public function show(Rapport $rapport)
     {
+        $this->user()->can('view', Rapport::class);
         return view('rapport.show', compact('rapport'));
     }
 
@@ -68,6 +70,7 @@ class RapportController extends Controller
      */
     public function edit(Rapport $rapport)
     {
+        $this->authorize('update', $rapport);
         $courrier = Courrier::all();
         $type = Rapport::TYPE;
         return view('rapport.update', compact('rapport','courrier','type'));

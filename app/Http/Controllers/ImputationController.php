@@ -96,6 +96,7 @@ class ImputationController extends Controller
      */
     public function show(Imputation $imputation)
     {
+        $this->authorize('view', $imputation);
         return view('imputation.show', compact('imputation'));
     }
 
@@ -104,6 +105,7 @@ class ImputationController extends Controller
      */
     public function edit(Imputation $imputation)
     {
+        $this->authorize('update', $imputation);
         $user = Auth::user();
         $courrierQuery = Courrier::with('nature')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
         $courrier = $courrierQuery->latest()->get(['id','numero','reference','date']);

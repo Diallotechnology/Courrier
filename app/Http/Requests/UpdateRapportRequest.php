@@ -12,7 +12,9 @@ class UpdateRapportRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if ($this->route()->getName() === 'rapport.update') {
+            return $this->user()->can('update', $this->route('rapport'));
+        }
     }
 
     /**

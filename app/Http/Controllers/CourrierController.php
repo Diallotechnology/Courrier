@@ -16,21 +16,6 @@ use App\Models\Imputation;
 class CourrierController extends Controller
 {
     use DeleteAction;
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -67,6 +52,7 @@ class CourrierController extends Controller
      */
     public function show(Courrier $arriver)
     {
+        $this->authorize('view', $arriver);
         $imp = Imputation::with('departement')->whereCourrierId($arriver->id)->get()->groupBy('reference');
         return view('arriver.show', compact('arriver','imp'));
     }
@@ -76,6 +62,7 @@ class CourrierController extends Controller
      */
     public function edit(Courrier $arriver)
     {
+        $this->authorize('update', $arriver);
         $user = Auth::user();
         $correspondantQuery = Correspondant::with('structure')->orderBy('nom')
         ->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
@@ -92,7 +79,6 @@ class CourrierController extends Controller
      */
     public function update(UpdateCourrierRequest $request, Courrier $arriver)
     {
-
         $arriver->update($request->validated());
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):

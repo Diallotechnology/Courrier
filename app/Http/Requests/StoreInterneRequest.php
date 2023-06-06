@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enum\CourrierInterneEnum;
+use App\Models\Interne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -14,7 +15,7 @@ class StoreInterneRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return  $this->user()->can('create', Interne::class);
     }
 
     /**

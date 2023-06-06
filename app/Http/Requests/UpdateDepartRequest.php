@@ -12,7 +12,9 @@ class UpdateDepartRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if ($this->route()->getName() === 'depart.update') {
+            return $this->user()->can('update', $this->route('depart'));
+        }
     }
 
     /**

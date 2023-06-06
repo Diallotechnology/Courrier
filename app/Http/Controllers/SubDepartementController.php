@@ -25,8 +25,9 @@ class SubDepartementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SubDepartement $departement)
+    public function show(SubDepartement $subdepartement)
     {
+        $this->authorize('view', $subdepartement);
         return view('subdepartement.show', compact('departement'));
     }
 
@@ -35,9 +36,9 @@ class SubDepartementController extends Controller
      */
     public function edit(SubDepartement $subdepartement)
     {
+        $this->authorize('update', $subdepartement);
         $departement = Auth::user()->isSuperadmin() ?
          Departement::all() : Departement::ByStructure()->get();
-         
         return view('subdepartement.update', compact('departement','subdepartement'));
     }
 

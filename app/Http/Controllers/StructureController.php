@@ -46,6 +46,7 @@ class StructureController extends Controller
      */
     public function show(Structure $structure)
     {
+        $this->authorize('view', $structure);
         return view('structure.show', compact('structure'));
     }
 
@@ -54,6 +55,7 @@ class StructureController extends Controller
      */
     public function edit(Structure $structure)
     {
+        $this->authorize('update', $structure);
         return view('structure.update', compact('structure'));
     }
 

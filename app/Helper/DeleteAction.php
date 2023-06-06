@@ -25,7 +25,6 @@ trait DeleteAction
 
     public function journal(string $action): void
     {
-
         Journal::create([
             'user_id' => Auth::user()->id,
             'structure_id' => Auth::user()->structure(),
@@ -33,8 +32,9 @@ trait DeleteAction
         ]);
     }
 
-    function supp(Model $delete): JsonResponse {
-
+    function supp(Model $delete): JsonResponse
+    {
+        $this->authorize('delete', $delete);
         $delete->delete();
         return response()->json([
             'success' => true,
@@ -42,7 +42,8 @@ trait DeleteAction
         ]);
     }
 
-    public function file_delete(Model $model): bool {
+    public function file_delete(Model $model): bool
+    {
         $fileDeleted = false;
         if (File::exists(public_path($model->DocLink()))) {
             $fileDeleted = File::delete(public_path($model->DocLink()));
@@ -53,6 +54,7 @@ trait DeleteAction
 
     public function Restore(Model $delete): JsonResponse
     {
+        $this->authorize('restore', $delete);
         $delete->restore();
         return response()->json([
             'success' => true,
@@ -60,10 +62,9 @@ trait DeleteAction
         ]);
     }
 
-
-
     public function Remove(Model $delete)
     {
+        $this->authorize('forceDelete', $delete);
         $delete->forceDelete();
         return response()->json([
             'success' => true,

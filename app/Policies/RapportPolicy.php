@@ -2,9 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Rapport;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class RapportPolicy
 {
     /**
      * Perform pre-authorization checks.
@@ -21,9 +23,9 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Rapport $rapport): bool
     {
-        return $user->id === $model->id || $user->isAdmin() || $user->isSuperuser() and $user->ParentCheck($model);
+        return true;
     }
 
     /**
@@ -31,38 +33,38 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isSuperuser() || $user->isAdmin();
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, Rapport $rapport): bool
     {
-        return $user->structure() == $model->structure() and $user->isAdmin()  || $user->isSuperuser() and $user->ParentCheck($model);
+        return $user->structure() === $rapport->structure_id && $user->id === $rapport->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Rapport $rapport): bool
     {
-        return $user->isAdmin() and $user->structure() == $model->structure();
+        return $user->structure() === $rapport->structure_id && $user->id === $rapport->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Rapport $rapport): bool
     {
-        return $user->isAdmin() and $user->structure() == $model->structure();
+        return $user->structure() === $rapport->structure_id && $user->id === $rapport->user_id;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Rapport $rapport): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 }

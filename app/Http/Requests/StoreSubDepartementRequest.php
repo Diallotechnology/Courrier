@@ -14,7 +14,10 @@ class StoreSubDepartementRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if ($this->route()->getName() === 'subdepartement.update') {
+            return $this->user()->can('update', $this->route('subdepartement'));
+        }
+        return  $this->user()->can('create', SubDepartement::class);
     }
 
     /**
