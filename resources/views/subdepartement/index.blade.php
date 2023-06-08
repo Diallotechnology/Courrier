@@ -21,7 +21,7 @@
             </h3>
         </div>
         <div class="card-body">
-            <x-filter url="subdepartement" />
+            <x-filter url="subdepartement" :create="App\Models\SubDepartement::class" />
         </div>
     </x-slot>
     <thead>
@@ -45,9 +45,9 @@
             <td>{{ $row->users_count }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('subdepartement.edit', ['subdepartement' => $row]) }}" />
-                <x-button-show href="{{ route('subdepartement.show', ['subdepartement' => $row]) }}" />
-                <x-button-delete url="{{ url('subdepartement/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('subdepartement.edit', ['subdepartement' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('subdepartement.show', ['subdepartement' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('subdepartement/'.$row->id) }}" />
             </td>
         </tr>
         @empty

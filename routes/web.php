@@ -82,11 +82,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('task/delete/{id}','force_delete')->whereNumber('id');
         });
 
-        Route::controller(CourrierController::class)->group(function () {
-            Route::get('arriver/delete/all','all_delete')->name('arriver.delete');
-            Route::delete('arriver/delete/{id}','force_delete')->whereNumber('id');
-        });
-
         Route::controller(DepartController::class)->group(function () {
             Route::get('depart/delete/all','all_delete')->name('depart.delete');
             Route::delete('depart/delete/{id}','force_delete')->whereNumber('id');
@@ -145,6 +140,12 @@ Route::middleware('auth')->group(function () {
             Route::get('user/restore/all','all_recover')->name('user.restore');
             Route::get('user/restore/{id}','recover')->whereNumber('id');
         });
+
+        Route::controller(CourrierController::class)->group(function () {
+            Route::get('arriver/delete/all','all_delete')->name('arriver.delete');
+            Route::delete('arriver/delete/{id}','force_delete')->whereNumber('id');
+        });
+
         Route::resource('departement',DepartementController::class)->except('index','create');
         Route::resource('subdepartement',SubDepartementController::class)->except('index','create');
     });
@@ -179,12 +180,6 @@ Route::middleware('auth')->group(function () {
             Route::get('document/restore/{id}','recover')->whereNumber('id');
         });
 
-        Route::controller(CourrierController::class)->group(function () {
-            Route::get('arriver/trash','trash')->name('arriver.trash');
-            Route::get('arriver/restore/all','all_recover')->name('arriver.restore');
-            Route::get('arriver/restore/{id}','recover')->whereNumber('id');
-        });
-
         Route::controller(DepartController::class)->group(function () {
             Route::get('depart/trash','trash')->name('depart.trash');
             Route::get('depart/restore/all','all_recover')->name('depart.restore');
@@ -196,6 +191,11 @@ Route::middleware('auth')->group(function () {
             Route::get('imputation/restore/all','all_recover')->name('imputation.restore');
             Route::get('imputation/restore/{id}','recover')->whereNumber('id');
         });
+
+        Route::controller(CourrierController::class)->group(function () {
+            Route::get('arriver/restore/all','all_recover')->name('arriver.restore');
+            Route::get('arriver/restore/{id}','recover')->whereNumber('id');
+        });
         Route::resource('annotation',AnnotationController::class)->except('index','show','create');
         Route::resource('user',UserController::class)->except('index','create');
         Route::resource('courrier/arriver',CourrierController::class)->only('destroy');
@@ -203,7 +203,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('correspondant',CorrespondantController::class)->only('destroy');
         Route::resource('nature',NatureController::class)->only('destroy');
         Route::resource('imputation',ImputationController::class)->except('index');
-        Route::resource('document',DocumentController::class)->only('destroy');
+        Route::resource('document',DocumentController::class)->except('create','store');
     });
 
     Route::middleware("role:".RoleEnum::SECRETAIRE->value)->group(function () {
@@ -236,12 +236,16 @@ Route::middleware('auth')->group(function () {
             Route::get('interne/restore/{id}','recover')->whereNumber('id');
         });
 
+        Route::controller(CourrierController::class)->group(function () {
+            Route::get('arriver/trash','trash')->name('arriver.trash');
+        });
+
         Route::controller(RapportController::class)->group(function () {
             Route::get('rapport/trash','trash')->name('rapport.trash');
             Route::get('rapport/restore/all','all_recover')->name('rapport.restore');
             Route::get('rapport/restore/{id}','recover')->whereNumber('id');
         });
-        Route::resource('courrier/arriver',CourrierController::class)->except('index','destroy','create');
+        Route::resource('courrier/arriver',CourrierController::class)->except('index','create');
         Route::resource('courrier/depart',DepartController::class)->except('index','destroy');
         Route::resource('courrier/interne',InterneController::class)->except('index');
         Route::resource('correspondant',CorrespondantController::class)->except('index','create','destroy');

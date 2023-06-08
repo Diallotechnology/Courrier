@@ -18,10 +18,12 @@
         <div class="card-body">
             <x-filter url="rapport" :create="false" :btn_filter="false">
                 <x-slot name="btn">
+                    @can('create',App\Models\Rapport::class)
                     <a href="{{ route('rapport.create') }}" class="btn btn-primary mx-2" role="button">
                         <i class="ti ti-plus"></i>
                         Nouveau
                     </a>
+                    @endcan
                 </x-slot>
             </x-filter>
         </div>
@@ -51,9 +53,9 @@
             <td>{{ $row->objet }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('rapport.edit', ['rapport' => $row]) }}" />
-                <x-button-show href="{{ route('rapport.show', ['rapport' => $row]) }}" />
-                <x-button-delete url="{{ url('rapport/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('rapport.edit', ['rapport' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('rapport.show', ['rapport' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('rapport/'.$row->id) }}" />
             </td>
         </tr>
         @empty

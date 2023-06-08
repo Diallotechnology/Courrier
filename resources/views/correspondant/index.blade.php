@@ -16,7 +16,7 @@
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-body">
-            <x-filter url="correspondant" />
+            <x-filter url="correspondant" :create="App\Models\Correspondant::class" />
         </div>
     </x-slot>
     <thead>
@@ -43,9 +43,9 @@
             <td>{{ $row->contact }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('correspondant.edit', ['correspondant' => $row]) }}" />
-                <x-button-show href="{{ route('correspondant.show', ['correspondant' => $row]) }}" />
-                <x-button-delete url="{{ url('correspondant/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('correspondant.edit', ['correspondant' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('correspondant.show', ['correspondant' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('correspondant/'.$row->id) }}" />
             </td>
         </tr>
         @endforeach

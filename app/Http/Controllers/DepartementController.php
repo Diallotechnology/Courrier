@@ -65,7 +65,9 @@ class DepartementController extends Controller
 
     public function trash()
     {
-        $rows = Departement::with('structure')->onlyTrashed()->latest()->paginate(15);
+        $rows = Departement::with('structure')->onlyTrashed()
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
+        ->latest()->paginate(15);
         return view('departement.trash', compact('rows'));
     }
 

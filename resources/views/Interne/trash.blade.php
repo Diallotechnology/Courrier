@@ -83,9 +83,10 @@
             </td>
             <td>{{ $row->deleted_at }}</td>
             <td>
-
-                <x-button-restore url="{{ url('interne/restore/'.$row->id) }}" />
-                <x-button-delete url="{{ url('interne/delete/'.$row->id) }}" />
+                <x-button-restore :row="$row" url="{{ url('interne/restore/'.$row->id) }}" />
+                @can('forceDelete')
+                <x-button-delete :row="$row" url="{{ url('interne/delete/'.$row->id) }}" />
+                @endcan
             </td>
         </tr>
         @empty

@@ -40,8 +40,10 @@
             <td>{{ $row->nom }}</td>
             <td>{{ $row->deleted_at }}</td>
             <td>
-                <x-button-restore url="{{ url('annotation/restore/'.$row->id) }}" />
-                <x-button-delete url="{{ url('annotation/delete/'.$row->id) }}" />
+                <x-button-restore :row="$row" url="{{ url('annotation/restore/'.$row->id) }}" />
+                @can('forceDelete')
+                <x-button-delete :row="$row" url="{{ url('annotation/delete/'.$row->id) }}" />
+                @endcan
             </td>
 
         </tr>

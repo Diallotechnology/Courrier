@@ -21,7 +21,7 @@
             </h3>
         </div>
         <div class="card-body">
-            <x-filter url="departement" />
+            <x-filter url="departement" :create="App\Models\Departement::class" />
         </div>
     </x-slot>
     <thead>
@@ -31,6 +31,7 @@
             <th>Nom du departement</th>
             <th>Code</th>
             <th>Utilisateurs</th>
+            <th>Sous departement</th>
             <th>Date</th>
             <th>Action</th>
         </tr>
@@ -43,11 +44,12 @@
             <td>{{ $row->nom }}</td>
             <td>{{ $row->code }}</td>
             <td>{{ $row->users_count }}</td>
+            <td>{{ $row->subdepartements_count }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('departement.edit', ['departement' => $row]) }}" />
-                <x-button-show href="{{ route('departement.show', ['departement' => $row]) }}" />
-                <x-button-delete url="{{ url('departement/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('departement.edit', ['departement' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('departement.show', ['departement' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('departement/'.$row->id) }}" />
             </td>
         </tr>
         @empty

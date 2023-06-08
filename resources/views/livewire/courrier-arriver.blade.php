@@ -27,7 +27,7 @@
                                         Total courrier arrivé
                                     </div>
                                     <div class="text-muted">
-                                        {{ $rows->count() }}
+                                        {{ $rows->total() }}
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
                 </h3>
             </div>
             <div class="card-body">
-                <x-filter url="arriver">
+                <x-filter url="arriver" :create="App\Models\Courrier::class">
                     <div class="mb-3 col-sm-4 col-md-2">
                         <div wire:ignore>
                             <x-select label="Nature de courrier" :required='false' wire:model='nature'>
@@ -201,6 +201,7 @@
                 <th>Confidential</th>
                 <th>Etat</th>
                 <th>Objet</th>
+                <th>Archiver</th>
                 <th>Date</th>
                 <th>Action</th>
             </tr>
@@ -239,12 +240,19 @@
                 <td>
                     <p class="text-muted">{{ $row->objet }}</p>
                 </td>
+                <td>
+                    <label class="form-check form-switch">
+                        <input class="form-check-input" wire:model='archive' wire:change="test({{ $row }})"
+                            type="checkbox">
+                        <span class="form-check-label"></span>
+                    </label>
+                </td>
 
                 <td>{{ $row->created_at }}</td>
                 <td>
-                    <x-button-edit href="{{ route('arriver.edit', ['arriver' => $row]) }}" />
-                    <x-button-show href="{{ route('arriver.show', ['arriver' => $row]) }}" />
-                    <x-button-delete url="{{ url('courrier/arriver/'.$row->id) }}" />
+                    <x-button-edit :row="$row" href="{{ route('arriver.edit', ['arriver' => $row]) }}" />
+                    <x-button-show :row="$row" href="{{ route('arriver.show', ['arriver' => $row]) }}" />
+                    <x-button-delete :row="$row" url="{{ url('courrier/arriver/'.$row->id) }}" />
                 </td>
             </tr>
             @empty

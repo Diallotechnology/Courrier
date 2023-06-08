@@ -38,6 +38,14 @@ class DepartementPolicy
     }
 
     /**
+     * Determine whether the user can trash the model.
+     */
+    public function trash(User $user): bool
+    {
+        return $user->isAdmin();
+    }
+
+    /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Departement $departement): bool

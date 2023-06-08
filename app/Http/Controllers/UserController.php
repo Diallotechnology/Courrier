@@ -7,6 +7,7 @@ use App\Mail\RegisterMail;
 use App\Models\Departement;
 use App\Helper\DeleteAction;
 use App\Models\SubDepartement;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUserRequest;
@@ -76,7 +77,9 @@ class UserController extends Controller
 
     public function trash()
     {
-        $rows = User::with('departement')->withCount('imputations')->onlyTrashed()->latest()->paginate(15);
+        $rows = User::with('departement')->withCount('imputations')->onlyTrashed()
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->StructureUser())
+        ->latest()->paginate(15);
         return view('user.trash', compact('rows'));
     }
 

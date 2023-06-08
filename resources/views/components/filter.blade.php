@@ -1,4 +1,4 @@
-@props(['btn'=>'','btn_filter'=> true, 'url' => '', 'trash'=>'', 'create' => true])
+@props(['btn'=>'','btn_filter'=> true, 'url' => '', 'trash'=>'', 'create' => ""])
 <div {{ $attributes->merge(['class' => 'd-flex']) }} >
     <div {{ $attributes->merge(['class' => 'text-muted']) }} >
         <div {{ $attributes->merge(['class' => 'ms-2 d-inline-block']) }} >
@@ -33,9 +33,9 @@
 
     </div>
     <div {{ $attributes->merge(['class' => 'ms-auto text-muted']) }} >
-        @if($create)
+        @can('create',$create)
         <x-button-modal />
-        @endif
+        @endcan
         @empty(!$trash)
         <a href="{{ route($trash) }}" {{ $attributes->merge(['class' => 'btn btn-primary']) }} aria-label="Button">
             <i class="ti ti-list"></i>Liste</a>
@@ -53,10 +53,12 @@
         @endempty
 
         @empty(!$url)
+        @can('trash',$create)
         <a aria-label="Button" href="{{ route($url.'.trash') }}" {{ $attributes->merge(['class' => 'btn
             btn-red'])
             }}>
             <i class="ti ti-trash-x"></i>Corbeille</a>
+        @endcan
         @endempty
         {{ $btn }}
 

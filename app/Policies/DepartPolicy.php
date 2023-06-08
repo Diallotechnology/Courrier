@@ -37,11 +37,19 @@ class DepartPolicy
     }
 
     /**
+     * Determine whether the user can trash the model.
+     */
+    public function trash(User $user): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id &&   $user->isAdmin() || $user->id === $depart->user_id;
+        return $user->structure() === $depart->structure_id  &&  $user->isAdmin() || $user->id === $depart->user_id;
     }
 
     /**

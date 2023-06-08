@@ -16,7 +16,7 @@
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-body">
-            <x-filter url="nature" />
+            <x-filter url="nature" :create="App\Models\Nature::class" />
         </div>
     </x-slot>
     <thead>
@@ -34,8 +34,8 @@
             <td>{{ $row->nom }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('nature.edit', ['nature' => $row]) }}" />
-                <x-button-delete url="{{ url('nature/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('nature.edit', ['nature' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('nature/'.$row->id) }}" />
             </td>
         </tr>
         @empty

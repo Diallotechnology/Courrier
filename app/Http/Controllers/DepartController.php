@@ -38,7 +38,7 @@ class DepartController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('courrier/depart', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $ref,
+                    'libelle' => $ref->numero,
                     'user_id' => Auth::user()->id,
                     'type' => 'Depart',
                     'chemin' => $chemin,
@@ -112,7 +112,9 @@ class DepartController extends Controller
 
     public function trash()
     {
-        $rows = Depart::with('user','courrier')->onlyTrashed()->latest()->paginate(15);
+        $rows = Depart::with('user','courrier')->onlyTrashed()
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
+        ->latest()->paginate(15);
         return view('depart.trash', compact('rows'));
     }
 

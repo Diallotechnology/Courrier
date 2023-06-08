@@ -21,12 +21,19 @@ class CourrierArriver extends Component
     public string $date = '';
     public string $expediteur = '';
     public string $etat = '';
+    public string $archive = '';
 
     public function ResetFilter(): void
     {
         $this->reset('privacy','priority','nature','date', 'expediteur','etat');
         $this->resetPage();
 
+    }
+
+    public function test(Courrier $row) {
+        $row->update(['etat' => CourrierEnum::ARCHIVE]);
+        toastr()->success('Courrier archiver avec success!');
+        // \dd($row);
     }
 
     public function render()

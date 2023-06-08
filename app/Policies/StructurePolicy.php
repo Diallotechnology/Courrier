@@ -28,6 +28,14 @@ class StructurePolicy
         return false;
     }
 
+        /**
+     * Determine whether the user can trash the model.
+     */
+    public function trash(User $user): bool
+    {
+        return false;
+    }
+
     /**
      * Determine whether the user can create models.
      */

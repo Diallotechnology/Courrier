@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Interne;
 use App\Models\Reponse;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -23,9 +24,9 @@ class ReponsePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Interne $interne): bool
     {
-        return true;
+        return $user->id === $interne->destinataire_id || $user->id === $interne->expediteur_id;
     }
 
     /**

@@ -21,6 +21,7 @@ use App\Models\User;
 use App\Policies\AnnotationPolicy;
 use App\Policies\CorrespondantPolicy;
 use App\Policies\CourrierPolicy;
+use App\Policies\DepartementPolicy;
 use App\Policies\DepartPolicy;
 use App\Policies\ImputationPolicy;
 use App\Policies\InternePolicy;
@@ -45,7 +46,7 @@ class AuthServiceProvider extends ServiceProvider
         Imputation::class => ImputationPolicy::class,
         Annotation::class => AnnotationPolicy::class,
         Courrier::class => CourrierPolicy::class,
-        Departement::class => DepartPolicy::class,
+        Departement::class => DepartementPolicy::class,
         SubDepartement::class => SubDepartementPolicy::class,
         Structure::class => StructurePolicy::class,
         Interne::class => InternePolicy::class,

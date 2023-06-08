@@ -88,7 +88,9 @@ class TaskController extends Controller
 
     public function trash()
     {
-        $rows = Task::with('users')->onlyTrashed()->latest()->paginate(15);
+        $rows = Task::with('users')->onlyTrashed()
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->whereCreateurId(Auth::user()->id))
+        ->latest()->paginate(15);
         return view('task.trash', compact('rows'));
     }
 

@@ -21,7 +21,7 @@
             </h3>
         </div>
         <div class="card-body">
-            <x-filter url="structure" />
+            <x-filter url="structure" :create="App\Models\Structure::class" />
         </div>
     </x-slot>
     <thead>
@@ -47,9 +47,9 @@
             <td>{{ $row->departements_count }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('structure.edit', ['structure' => $row]) }}" />
-                <x-button-show href="{{ route('structure.show', ['structure' => $row]) }}" />
-                <x-button-delete url="{{ url('structure/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('structure.edit', ['structure' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('structure.show', ['structure' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('structure/'.$row->id) }}" />
             </td>
         </tr>
         @empty

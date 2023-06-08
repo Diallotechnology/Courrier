@@ -77,29 +77,24 @@ class Tache extends Component
     public function render()
     {
 
-        if ($this->type || $this->debut  || $this->fin || $this->etat) {
-            $rows = Task::with('createur')
-            ->when($this->type && !empty($this->type), function ($query) {
+        $isSuperadmin = Auth::user()->isSuperadmin();
+        $query = Task::with('createur','users')
+            ->when(!$isSuperadmin, fn($query) => $query->whereCreateurId(Auth::user()->id))
+            ->when($this->type, function ($query) {
                 $query->where('type', $this->type);
             })
-            ->when($this->debut && !empty($this->debut), function ($query) {
+            ->when($this->debut, function ($query) {
                 $query->where('debut', $this->debut);
             })
-            ->when($this->fin && !empty($this->fin), function ($query) {
+            ->when($this->fin, function ($query) {
                 $query->where('fin', $this->fin);
             })
-            ->when($this->etat && !empty($this->etat), function ($query) {
+            ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
-            })->latest()->paginate(15);
-        } else {
+            });
 
-            if (Auth::user()->isSuperadmin()) {
-                $user = Task::with('users','createur')->paginate(15);
-            } else {
-                $rows = Task::with('users','createur')->whereCreateurId(Auth::user()->id)->paginate(15);
-            }
-        }
-        $user = User::with('userable')->where('id','!=',Auth::user()->id)->get()->groupBy('userable.nom');
+        $rows = $query->latest()->paginate(15);
+        $user = User::with('userable')->when(!$isSuperadmin, fn($query) => $query->StructureUser())->get()->groupBy('userable.nom');
         return view('livewire.tache', compact('user','rows'));
     }
 }

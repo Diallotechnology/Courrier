@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Nature;
 use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -60,7 +61,7 @@ class NatureController extends Controller
 
     public function trash()
     {
-        $rows = Nature::onlyTrashed()->latest()->paginate(15);
+        $rows = Nature::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())->latest()->paginate(15);
         return view('nature.trash', compact('rows'));
     }
 

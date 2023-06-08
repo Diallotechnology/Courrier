@@ -64,7 +64,9 @@ class SubDepartementController extends Controller
 
     public function trash()
     {
-        $rows = SubDepartement::with('departement')->onlyTrashed()->latest()->paginate(15);
+        $rows = SubDepartement::with('departement')->onlyTrashed()
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
+        ->latest()->paginate(15);
         return view('subdepartement.trash', compact('rows'));
     }
 

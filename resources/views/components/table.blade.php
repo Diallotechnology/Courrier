@@ -1,5 +1,4 @@
 @props(['header', 'rows' => ''])
-
 <div class="col-12">
     <div class="card">
         {{ $header }}

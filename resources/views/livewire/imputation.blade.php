@@ -7,7 +7,7 @@
 
         </div>
         <div class="card-body">
-            <x-filter url="imputation">
+            <x-filter url="imputation" :create="App\Models\Imputation::class">
                 <div class="mb-3 col-sm-4 col-md-4">
                     <div wire:ignore>
                         <x-select label="Courrier arrivé" :required='false' wire:model='courrier'>
@@ -95,9 +95,9 @@
 
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('imputation.edit', ['imputation' => $row]) }}" />
-                <x-button-show href="{{ route('imputation.show', ['imputation' => $row]) }}" />
-                <x-button-delete url="{{ url('imputation/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('imputation.edit', ['imputation' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('imputation.show', ['imputation' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('imputation/'.$row->id) }}" />
             </td>
         </tr>
         @empty

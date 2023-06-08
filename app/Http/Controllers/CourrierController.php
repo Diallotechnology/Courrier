@@ -27,14 +27,14 @@ class CourrierController extends Controller
             $ref = $item->generateId('CA');
         // }
         // \dd('ok');
-        $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé REF N° $item->reference");
+        $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé REF N° $item->numero");
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('courrier/arriver', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $ref,
+                    'libelle' => $ref->numero,
                     'user_id' => Auth::user()->id,
                     'type' => 'Arrivé',
                     'chemin' => $chemin,
@@ -42,7 +42,7 @@ class CourrierController extends Controller
                 $item->documents()->save($data);
             endforeach;
         endif;
-        $this->journal("Ajout du courrier REF N°$ref");
+        $this->journal("Ajout du courrier REF N°$ref->numero");
         toastr()->success('Courrier ajouter avec success!');
         return back();
     }
@@ -112,7 +112,9 @@ class CourrierController extends Controller
 
     public function trash()
     {
-        $rows = Courrier::with('nature','correspondant')->onlyTrashed()->latest()->paginate(15);
+        $rows = Courrier::with('nature','correspondant')->onlyTrashed()
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
+        ->latest()->paginate(15);
         return view('arriver.trash', compact('rows'));
     }
 

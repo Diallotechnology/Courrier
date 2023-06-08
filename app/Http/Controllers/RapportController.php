@@ -43,7 +43,7 @@ class RapportController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('rapport', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $ref,
+                    'libelle' => $ref->numero,
                     'user_id' => Auth::user()->id,
                     'type' => 'Rapport',
                     'chemin' => $chemin,
@@ -88,7 +88,7 @@ class RapportController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('rapport', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $rapport->reference,
+                    'libelle' => $rapport->numero,
                     'user_id' => Auth::user()->id,
                     'type' => 'Rapport',
                     'chemin' => $chemin,
@@ -112,7 +112,9 @@ class RapportController extends Controller
 
     public function trash()
     {
-        $rows = Rapport::onlyTrashed()->latest()->paginate(15);
+        $rows = Rapport::onlyTrashed()->latest()
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
+        ->paginate(15);
         return view('rapport.trash', compact('rows'));
     }
 

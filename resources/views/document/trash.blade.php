@@ -39,8 +39,10 @@
             <td>{{ $row->chemin }}</td>
             <td>{{ $row->deleted_at }}</td>
             <td>
-                <x-button-restore url="{{ url('document/restore/'.$row->id) }}" />
-                <x-button-delete url="{{ url('document/delete/'.$row->id) }}" />
+                <x-button-restore :row="$row" url="{{ url('document/restore/'.$row->id) }}" />
+                @can('forceDelete')
+                <x-button-delete :row="$row" url="{{ url('document/delete/'.$row->id) }}" />
+                @endcan
             </td>
         </tr>
         @endforeach

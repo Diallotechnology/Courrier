@@ -56,8 +56,10 @@
             <td>{{ $row->fin_traitement }}</td>
             <td>{{ $row->deleted_at }}</td>
             <td>
-                <x-button-restore url="{{ url('imputation/restore/'.$row->id) }}" />
-                <x-button-delete url="{{ url('imputation/delete/'.$row->id) }}" />
+                <x-button-restore :row="$row" url="{{ url('imputation/restore/'.$row->id) }}" />
+                @can('forceDelete')
+                <x-button-delete :row="$row" url="{{ url('imputation/delete/'.$row->id) }}" />
+                @endcan
             </td>
         </tr>
         @empty

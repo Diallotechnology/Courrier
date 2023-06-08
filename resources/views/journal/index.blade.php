@@ -41,7 +41,7 @@
             <td>{{ $row->libelle }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-delete url="{{ url('journal/'.$row->id) }}" />
+                <x-button-delete :row="$row" url="{{ url('journal/'.$row->id) }}" />
             </td>
         </tr>
         @endforeach

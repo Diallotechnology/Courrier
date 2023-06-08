@@ -93,6 +93,7 @@
     </div>
     @endforeach
 </div>
+@can('create',$interne)
 <div class="col-12">
     <div class="card">
         <div class="card-header">
@@ -116,8 +117,8 @@
 
                     </div>
                     <div class="col-auto">
-                        <x-button-edit href="{{ route('reponse.edit', ['reponse' => $row]) }}" />
-                        <x-button-delete url="{{ url('reponse/'.$row->id) }}" />
+                        <x-button-edit :row="$row" href="{{ route('reponse.edit', ['reponse' => $row]) }}" />
+                        <x-button-delete :row="$row" url="{{ url('reponse/'.$row->id) }}" />
                     </div>
                 </div>
             </div>
@@ -148,4 +149,5 @@
     </form>
 
 </div>
+@endcan
 @endsection

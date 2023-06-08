@@ -48,10 +48,12 @@
                 </div>
 
                 <x-slot name="btn">
+                    @can('create',App\Models\Interne::class)
                     <a href="{{ route('interne.create') }}" class="btn btn-primary mx-2" role="button">
                         <i class="ti ti-plus"></i>
                         Nouveau
                     </a>
+                    @endcan
                     <button class="btn btn-info mx-2" type="button">
                         <i class="ti ti-file-export"></i>
                         Export
@@ -135,14 +137,17 @@
             </td>
             <td>{{ $row->created_at }}</td>
             <td>
+                @can('create',$interne)
                 @if($row->Recu() || $row->Read())
-                <a aria-label="Button" class="btn btn-primary btn-icon">
+                <a aria-label="Button" href="{{ route('interne.show', ['interne' => $row]) }}"
+                    class="btn btn-primary btn-icon">
                     <i class="ti ti-mail-forward"></i>
                 </a>
                 @endif
-                <x-button-edit href="{{ route('interne.edit', ['interne' => $row]) }}" />
-                <x-button-show href="{{ route('interne.show', ['interne' => $row]) }}" />
-                <x-button-delete url="{{ url('courrier/interne/'.$row->id) }}" />
+                @endcan
+                <x-button-edit :row="$row" href="{{ route('interne.edit', ['interne' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('interne.show', ['interne' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('courrier/interne/'.$row->id) }}" />
             </td>
         </tr>
         @empty

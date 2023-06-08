@@ -75,7 +75,7 @@ class InterneController extends Controller
             $filename = $row->hashName();
             $chemin = $row->storeAs('courrier/interne', $filename, 'public');
             $data = new Document([
-                'libelle' => $row->getClientOriginalName(),
+                'libelle' => $itemData->numero,
                 'type' => 'Interne',
                 'user_id' => Auth::user()->id,
                 'chemin' => $chemin,
@@ -125,7 +125,7 @@ class InterneController extends Controller
                 $filename =  $row->hashName();
                 $chemin = $row->storeAs('courrier/interne', $filename, 'public');
                 $data = new Document([
-                    'libelle' => $row->getClientOriginalName(),
+                    'libelle' => $interne->numero,
                     'user_id' => Auth::user()->id,
                     'type' => 'Interne',
                     'chemin' => $chemin,
@@ -148,7 +148,16 @@ class InterneController extends Controller
 
     public function trash()
     {
-        $rows = Interne::with('user','nature','destinataire','expediteur')->onlyTrashed()->latest()->paginate(15);
+        $isSuperadmin = Auth::user()->isSuperadmin();
+        $userId = Auth::user()->id;
+        $rows = Interne::with('creat','nature','destinataire','expediteur')->onlyTrashed()
+        ->when(!$isSuperadmin, function ($query) use ($userId) {
+            $query->where(function ($query) use ($userId) {
+                $query->where('destinataire_id', $userId)
+                    ->orWhere('expediteur_id', $userId);
+            });
+        })
+        ->latest()->paginate(15);
         return view('interne.trash', compact('rows'));
     }
 

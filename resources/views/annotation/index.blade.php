@@ -16,7 +16,7 @@
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-body">
-            <x-filter url="annotation" />
+            <x-filter url="annotation" :create="App\Models\Annotation::class" />
         </div>
     </x-slot>
     <thead>
@@ -39,8 +39,8 @@
             <td>{{ $row->nom }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('annotation.edit', ['annotation' => $row]) }}" />
-                <x-button-delete url="{{ url('annotation/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('annotation.edit', ['annotation' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('annotation/'.$row->id) }}" />
             </td>
 
         </tr>

@@ -29,6 +29,14 @@ class NaturePolicy
     }
 
     /**
+     * Determine whether the user can trash the model.
+     */
+    public function trash(User $user): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Nature $nature): bool

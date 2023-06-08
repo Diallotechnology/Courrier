@@ -132,7 +132,7 @@
     <x-table :rows="$rows">
         <x-slot name="header">
             <div class="card-body">
-                <x-filter url="task">
+                <x-filter url="task" :create="App\Models\Task::class">
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
                             <x-select label="Type de tache" :required='false' wire:model='type'>
@@ -215,9 +215,9 @@
                         <i class="ti ti-checks"></i>
                     </button>
                     @endif
-                    <x-button-edit href="{{ route('task.edit', ['task' => $row]) }}" />
-                    <x-button-show href="{{ route('task.show', ['task' => $row]) }}" />
-                    <x-button-delete url="{{ url('task/'.$row->id) }}" />
+                    <x-button-edit :row="$row" href="{{ route('task.edit', ['task' => $row]) }}" />
+                    <x-button-show :row="$row" href="{{ route('task.show', ['task' => $row]) }}" />
+                    <x-button-delete :row="$row" url="{{ url('task/'.$row->id) }}" />
                 </td>
             </tr>
             @empty

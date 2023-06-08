@@ -7,7 +7,7 @@
 
         </div>
         <div class="card-body">
-            <x-filter url="depart">
+            <x-filter url="depart" :create="App\Models\Depart::class">
                 <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
                         <x-select label="Nature de courrier" :required='false' wire:model='nature'>
@@ -109,9 +109,9 @@
 
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('depart.edit', ['depart' => $row]) }}" />
-                <x-button-show href="{{ route('depart.show', ['depart' => $row]) }}" />
-                <x-button-delete url="{{ url('courrier/depart/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('depart.edit', ['depart' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('depart.show', ['depart' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('courrier/depart/'.$row->id) }}" />
             </td>
         </tr>
         @empty

@@ -27,6 +27,14 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can trash the model.
+     */
+    public function trash(User $user): bool
+    {
+        return $user->isAdmin() || $user->isSuperuser();
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool

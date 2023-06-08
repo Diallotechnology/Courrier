@@ -21,7 +21,7 @@
             </h3>
         </div>
         <div class="card-body border-bottom py-3">
-            <x-filter url="user" />
+            <x-filter url="user" :create="App\Models\User::class" />
         </div>
     </x-slot>
     <thead>
@@ -60,9 +60,9 @@
             <td>{{ $row->role }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-edit href="{{ route('user.edit', ['user' => $row]) }}" />
-                <x-button-show href="{{ route('user.show', ['user' => $row]) }}" />
-                <x-button-delete url="{{ url('user/'.$row->id) }}" />
+                <x-button-edit :row="$row" href="{{ route('user.edit', ['user' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('user.show', ['user' => $row]) }}" />
+                <x-button-delete :row="$row" url="{{ url('user/'.$row->id) }}" />
             </td>
         </tr>
         @empty
