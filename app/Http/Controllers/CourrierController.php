@@ -36,6 +36,7 @@ class CourrierController extends Controller
                 $data = new Document([
                     'libelle' => $ref->numero,
                     'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
                     'type' => 'Arrivé',
                     'chemin' => $chemin,
                 ]);
@@ -53,7 +54,7 @@ class CourrierController extends Controller
     public function show(Courrier $arriver)
     {
         $this->authorize('view', $arriver);
-        $imp = Imputation::with('departement')->whereCourrierId($arriver->id)->get()->groupBy('reference');
+        $imp = Imputation::with('departement')->whereCourrierId($arriver->id)->get();
         return view('arriver.show', compact('arriver','imp'));
     }
 
@@ -88,6 +89,7 @@ class CourrierController extends Controller
                 $data = new Document([
                     'libelle' => $arriver->numero,
                     'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
                     'type' => 'Arrivé',
                     'chemin' => $chemin,
                 ]);
@@ -140,11 +142,11 @@ class CourrierController extends Controller
 
     public function all_recover() {
         $this->journal("Restauré de tous les courriers");
-        return $this->All_restore(Courrier::onlyTrashed());
+        return $this->All_restore(Courrier::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vidé la corbeille du courrier");
-        return $this->All_remove(Courrier::onlyTrashed());
+        return $this->All_remove(Courrier::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

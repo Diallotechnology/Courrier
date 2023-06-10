@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Enum\CourrierEnum;
 use Livewire\Component;
 use App\Models\Courrier;
+use App\Enum\CourrierEnum;
 use App\Models\Departement;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Imputation as ModelsImputation;
 
 class Imputation extends Component
@@ -25,40 +26,39 @@ class Imputation extends Component
 
     public function ResetFilter(): void
     {
-        $this->reset('delai','priority','fin','courrier', 'departement','etat','fin');
+        $this->reset('delai','priority','fin','courrier', 'departement','etat');
         $this->resetPage();
     }
 
     public function render()
     {
-        if ($this->delai || $this->priority  || $this->courrier || $this->etat || $this->departement || $this->fin) {
-            $rows = ModelsImputation::with('user','departement','courrier')
-            ->when($this->priority && !empty($this->priority), function ($query) {
+
+        $isSuperadmin = Auth::user()->isSuperadmin();
+        $query = ModelsImputation::with('user','departement','courrier')
+            ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
+            ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);
             })
-            ->when($this->delai && !empty($this->delai), function ($query) {
+            ->when($this->delai, function ($query) {
                 $query->where('delai', $this->delai);
             })
-            ->when($this->fin && !empty($this->fin), function ($query) {
+            ->when($this->fin, function ($query) {
                 $query->where('fin_traitement', $this->fin);
             })
-            ->when($this->departement && !empty($this->departement), function ($query) {
+            ->when($this->departement, function ($query) {
                 $query->where('departement_id', $this->departement);
             })
-            ->when($this->courrier && !empty($this->courrier), function ($query) {
+            ->when($this->courrier, function ($query) {
                 $query->where('courrier_id', $this->courrier);
             })
-            ->when($this->etat && !empty($this->etat), function ($query) {
+            ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
-            })->latest()->paginate(15);
-        } else {
-            $rows = ModelsImputation::with('user','departement','courrier')->latest()->paginate(15);
-            // $rows = DB::table('imputations')->select('imputations.*')->groupBy('reference')->paginate(15);
-            // \dd($rows);
-        }
+            });
+        $rows = $query->latest()->paginate(15);
 
-        $arriver = Courrier::where('etat','!=',CourrierEnum::ARCHIVE)->latest()->get(['id','numero','reference','date']);
-        $division = Departement::all();
+        $arriver = Courrier::where('etat','!=',CourrierEnum::ARCHIVE)
+        ->when(!$isSuperadmin, fn($query) => $query->ByStructure())->latest()->get(['id','numero','date']);
+        $division = Departement::when(!$isSuperadmin, fn($query) => $query->ByStructure())->get();
         return view('livewire.imputation', compact('rows','arriver','division'));
     }
 }

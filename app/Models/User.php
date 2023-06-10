@@ -161,9 +161,9 @@ use Creagia\LaravelSignPad\Contracts\ShouldGenerateSignatureDocument;
  * @method static Builder|User userSubDepartement()
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatureDocument
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, DateFormat, RequiresSignature;
+    use HasApiTokens, HasFactory, Notifiable, DateFormat;
 
     /**
      * The attributes that are mass assignable.
@@ -235,6 +235,15 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
         return $this->userable->structure_id ?? $this->userable->departement->structure_id;
     }
 
+    /**
+     * Get the user's structure ID.
+     */
+    public function user_structure(): Structure
+    {
+        $id = $this->userable->structure_id ?? $this->userable->departement->structure_id;
+        return Structure::findOrFail($id);
+    }
+
         /**
      * Check the user parent.
      */
@@ -259,6 +268,20 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
                 ->whereIn('userable_id', $subIds);
         });
     }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // static::retrieved(function ($user) {
+        //     if ($user->structure && !$user->user_structure()->license->active) {
+        //         // Gérer le cas où la licence de la structure n'est pas active
+        //         throw new \Exception('Licence inactive');
+        //     }
+        // });
+    }
+
 
     /**
      * Check if the user has the superadmin role.
@@ -300,27 +323,6 @@ class User extends Authenticatable implements CanBeSigned, ShouldGenerateSignatu
         return $this->role === RoleEnum::SECRETAIRE;
     }
 
-
-
-    public function getSignatureDocumentTemplate(): SignatureDocumentTemplate
-    {
-        return new SignatureDocumentTemplate(
-            outputPdfPrefix: 'document',
-            template: new BladeDocumentTemplate('pdf/my-pdf-blade-template'),
-            signaturePositions: [
-                 new SignaturePosition(
-                     signaturePage: 1,
-                     signatureX: 20,
-                     signatureY: 25,
-                 ),
-                 new SignaturePosition(
-                     signaturePage: 2,
-                     signatureX: 25,
-                     signatureY: 50,
-                 ),
-            ]
-        );
-    }
 
     /**
      * Get all of the imputations for the User

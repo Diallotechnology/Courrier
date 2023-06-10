@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\DeleteAction;
-use App\Models\Structure;
-use App\Http\Requests\StoreStructureRequest;
 use Str;
+use App\Models\Licence;
+use App\Models\Structure;
+use App\Helper\DeleteAction;
+use App\Http\Requests\StoreStructureRequest;
 
 class StructureController extends Controller
 {
@@ -36,7 +37,18 @@ class StructureController extends Controller
                 'description' => $request->description,
             ];
         }
-        Structure::create($data);
+        $structure = Structure::create($data);
+        // Génération d'un code de licence unique
+        $licenseCode = Str::random(64);
+
+        // Création de la licence associée à la structure
+        Licence::create([
+            'structure_id' => $structure->id,
+            'code' => $licenseCode,
+            'date_expiration' => now()->addDays(15), // Exemple : licence valide pendant 30 jours
+            'version' => '1.0', // Version de la licence
+            'active' => true, // Activation de la licence
+        ]);
         toastr()->success('Structure ajouter avec success!');
         return back();
     }

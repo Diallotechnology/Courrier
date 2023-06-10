@@ -38,17 +38,7 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        if($document->type === "Arrivé") {
-            $courrier = Courrier::all(['id','reference','numero']);
-        }
-        if($document->type === "Depart") {
-            $courrier = Depart::all(['id','reference','numero']);
-        }
-        if($document->type === "Interne") {
-            $courrier = Interne::all(['id','reference','numero']);
-        }
-
-        return view('document.update', compact('document','courrier'));
+        return view('document.update', compact('document'));
     }
 
     /**

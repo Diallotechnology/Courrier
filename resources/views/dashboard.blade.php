@@ -484,7 +484,7 @@
                     </td>
                     <td>{{ $row->created_at }}</td>
                     <td>
-                        <x-button-show href="{{ route('task.show', ['task' => $row]) }}" />
+                        <x-button-show :row="$row" href="{{ route('task.show', ['task' => $row]) }}" />
                     </td>
                 </tr>
                 @empty

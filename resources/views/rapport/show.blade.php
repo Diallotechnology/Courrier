@@ -2,7 +2,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Informations du rapport N° {{ $rapport->reference }}</h3>
+        <h3 class="card-title">Informations du rapport N° {{ $rapport->numero }}</h3>
     </div>
     <div class="card-body">
         <div class="datagrid">
@@ -14,7 +14,7 @@
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">reference du rapport</div>
-                <div class="datagrid-content">{{ $rapport->reference }}</div>
+                <div class="datagrid-content">{{ $rapport->numero }}</div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Type de rapport</div>
@@ -42,8 +42,8 @@
 
 @empty(!$rapport->contenu)
 <div class="card card-lg">
+    <h2 class="text-center my-2">Contenu du rapport</h2>
     <div class="card-body markdown">
-        <h2 class="text-center m-3">Contenu du rapport</h2>
         {!! $rapport->contenu !!}
     </div>
 </div>

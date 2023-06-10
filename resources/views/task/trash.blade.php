@@ -25,11 +25,12 @@
         <tr>
             <th>ID</th>
             <th>Utilisateur</th>
-            <th>Type</th>
-            <th>Description</th>
+            <th>reference</th>
+            <th>Type de tache</th>
+            <th>nom de la tache</th>
             <th>Debut de la tache</th>
             <th>Fin de la tache</th>
-            <th>Etat</th>
+            <th>Etat de la tache</th>
             <th>Date de suppression</th>
             <th>Action</th>
         </tr>
@@ -45,18 +46,18 @@
                         style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->createur->name }}')"></span>
                     <div class="flex-fill">
                         <div class="font-weight-medium">{{ $row->createur->name }}</div>
-                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->createur->email }}</a></div>
+                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->createur->email }}</a>
+                        </div>
                     </div>
                 </div>
                 @else
                 inexistant
                 @endif
-
             </td>
+            <td>{{ $row->numero }}</td>
             <td>{{ $row->type }}</td>
             <td>
-                <p class="text-muted">{{ $row->description }}</p>
-
+                {{ $row->nom }}
             </td>
             <td>{{ $row->debut_format }}</td>
             <td>{{ $row->fin_format }}</td>

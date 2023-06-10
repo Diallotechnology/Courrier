@@ -8,7 +8,6 @@
     </div>
     @endforeach
 </div>
-
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Informations du courrier arriver N° {{ $arriver->numero }}</h3>
@@ -25,17 +24,18 @@
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Date d'arriver</div>
-                <div class="datagrid-content">{{ $arriver->date }}</div>
+                <div class="datagrid-content">{{ $arriver->date_format }}</div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Correspondant du courrier</div>
-                <div class="datagrid-content"> {{ $arriver->correspondant ? $row->correspondant->nom : 'inexistant' }}
+                <div class="datagrid-content"> {{ $arriver->correspondant ? $arriver->correspondant->nom : 'inexistant'
+                    }}
                 </div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Nature du courrier</div>
                 <div class="datagrid-content">
-                    {{ $arriver->nature ? $row->nature->nom : 'inexistant' }}
+                    {{ $arriver->nature ? $arriver->nature->nom : 'inexistant' }}
                 </div>
             </div>
             <div class="datagrid-item">
@@ -66,63 +66,68 @@
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Observation et Commentaire</div>
-                <div class="datagrid-content">{{ $arriver->observation }} {{ $arriver->etat }}</div>
+                <div class="datagrid-content">{{ $arriver->observation }}</div>
             </div>
 
         </div>
     </div>
 </div>
 <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Informations de l'imputation du courrier arriver N° {{ $arriver->numero }}</h3>
-    </div>
-    @foreach ($imp as $key => $item)
-    <div class="card-body">
-        <div class="datagrid">
-            <div class="datagrid-item">
-                <div class="datagrid-title">Reference</div>
-                <div class="datagrid-content">{{ $key }}</div>
-                @foreach ($item as $key2 => $row)
-                <div class="datagrid my-3 py-2">
-                    <div class="datagrid-item">
-                        <div class="datagrid-title">Departement</div>
-                        {{-- <div class="datagrid-content">{{ $key2 }}</div> --}}
-                    </div>
-                    <div class="datagrid-item">
-                        <div class="datagrid-title">Delai de traitement</div>
-                        <div class="datagrid-content">{{ $row->delai }}</div>
-                    </div>
-                    <div class="datagrid-item">
-                        <div class="datagrid-title">Fin de traitement</div>
-                        <div class="datagrid-content">{{ $row->fin_traitement }}
-                        </div>
-                    </div>
-                    <div class="datagrid-item">
-                        <div class="datagrid-title">Etat de l'imputation</div>
-                        <div class="datagrid-content">
-                            <x-statut-imputation :row="$row" />
-                        </div>
-                    </div>
-                    <div class="datagrid-item">
-                        <div class="datagrid-title">Date de creation</div>
-                        <div class="datagrid-content">{{ $row->created_at }}</div>
-                    </div>
-                    <div class="datagrid-item">
-                        <div class="datagrid-title">Observation et Commentaire</div>
-                        <div class="datagrid-content">
-                            @empty($row->observation)
-                            Aucun
-                            @else
-                            {{ $row->observation }}
-                            @endempty
-                        </div>
-                    </div>
-                </div>
-                @endforeach
+    <x-table>
+        <x-slot name="header">
+            <div class="card-header">
+                <h3 class="card-title">Informations de l'imputation du courrier arriver N° {{ $arriver->numero }}
+                </h3>
             </div>
-        </div>
-    </div>
-    @endforeach
+        </x-slot>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Utilisateur</th>
+                <th>Reference</th>
+                <th>N/A du courrier</th>
+                <th>Nom du departement</th>
+                <th>Priorité</th>
+                <th>Etat</th>
+                <th>Delai</th>
+                <th>Fin de traitement</th>
+                <th>Date de creation</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($imp as $row)
+            <tr>
+                <td>{{ $row->id }}</td>
+                <td>
+                    <x-user-avatar :row="$row" />
+                </td>
+                <td>{{ $row->numero }}</td>
+                <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
+                <td>{{ $row->departement ? $row->departement->nom : 'inexistant' }}</td>
+                <td>
+                    <x-statut type="prio" :courrier="$row" />
+                </td>
+                <td>
+                    <x-statut-imputation :row="$row" />
+                </td>
+                <td>{{ $row->delai }}</td>
+                <td>{{ $row->fin_traitement }}</td>
+
+                <td>{{ $row->created_at }}</td>
+                <td>
+                    <x-button-show :row="$row" href="{{ route('imputation.show', ['imputation' => $row]) }}" />
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="11">
+                    <h2 class="text-center">Aucun element</h2>
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </x-table>
 </div>
 <x-table>
     <x-slot name="header">
@@ -207,7 +212,7 @@
             <td>
                 <x-user-avatar :row="$row" />
             </td>
-            <td>{{ $row->userable->nom }}</td>
+            <td>{{ $row->user->userable->nom }}</td>
             <td>{{ $row->courrier->numero }}</td>
             <td>{{ $row->action }}</td>
             <td>

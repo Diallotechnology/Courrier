@@ -85,11 +85,11 @@ class CorrespondantController extends Controller
 
     public function all_recover() {
         $this->journal("Restauré tous les correspondant");
-        return $this->All_restore(Correspondant::onlyTrashed());
+        return $this->All_restore(Correspondant::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vider la corbeille  des correspondants");
-        return $this->All_remove(Correspondant::onlyTrashed());
+        return $this->All_remove(Correspondant::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

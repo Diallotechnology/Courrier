@@ -40,6 +40,7 @@ class DepartController extends Controller
                 $data = new Document([
                     'libelle' => $ref->numero,
                     'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
                     'type' => 'Depart',
                     'chemin' => $chemin,
                 ]);
@@ -90,6 +91,7 @@ class DepartController extends Controller
                 $data = new Document([
                     'libelle' => $depart->numero,
                     'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
                     'type' => 'Depart',
                     'chemin' => $chemin,
                 ]);
@@ -141,11 +143,11 @@ class DepartController extends Controller
     public function all_recover() {
 
         $this->journal("Restauré de tous les courriers depart");
-        return $this->All_restore(Depart::onlyTrashed());
+        return $this->All_restore(Depart::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vidé la corbeille du courrier depart");
-        return $this->All_remove(Depart::onlyTrashed());
+        return $this->All_remove(Depart::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

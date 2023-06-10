@@ -2,34 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\DeleteAction;
 use App\Models\Journal;
 use Illuminate\Http\Request;
 
 class JournalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    use DeleteAction;
 
     /**
      * Display the specified resource.
@@ -40,26 +19,11 @@ class JournalController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Journal $journal)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Journal $journal)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Journal $journal)
+    public function destroy(int $journal)
     {
-        //
+        $delete = Journal::findOrFail($journal);
+        return  $this->supp($delete);
     }
 }

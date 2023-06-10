@@ -78,6 +78,12 @@
         <div class="col-md-6">
             <x-input type="file" name="logo" label="Logo Faculatif" :required='false' />
         </div>
+        <div class="col-md-12">
+            <x-select name="licence" label="Type de licence">
+                <option value="0">Version essai</option>
+                <option value="1">Licence active</option>
+            </x-select>
+        </div>
         <x-input type="text" name="adresse" place="l'adresse de la structure" />
         <x-textarea :required='false' place="Fait une description de l'organisation ou de la structure"
             name="description" label="description de la structure " />

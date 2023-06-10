@@ -87,11 +87,11 @@ class SubDepartementController extends Controller
 
     public function all_recover() {
         $this->journal("Restauré tous les sous departement");
-        return $this->All_restore(SubDepartement::onlyTrashed());
+        return $this->All_restore(SubDepartement::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vider la corbeille des sous departements");
-        return $this->All_remove(SubDepartement::onlyTrashed());
+        return $this->All_remove(SubDepartement::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

@@ -60,7 +60,6 @@ class CourrierArriver extends Component
             ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
             });
-
         $rows = $query->latest()->paginate(15);
         $correspondantQuery = Correspondant::orderBy('nom');
         $typeQuery = Nature::orderBy('nom');

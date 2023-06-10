@@ -8,6 +8,7 @@ use App\Enum\TaskEnum;
 use Livewire\Component;
 use App\Models\Courrier;
 use App\Enum\CourrierEnum;
+use App\Enum\ImputationEnum;
 use App\Helper\DeleteAction;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
@@ -36,12 +37,15 @@ class Tache extends Component
 
     public function ValidTask(int $id): void
     {
-        $task = Task::with('courrier')->findOrFail($id);
+        $task = Task::with('courrier','imputation')->findOrFail($id);
         $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
 
         if ($task->type === "imputation") {
             if ($task->courrier && $task->courrier->impute()) {
                 $task->courrier->update(['etat' => CourrierEnum::PROCESS]);
+            }
+            if ($task->imputation && $task->imputation->Pending()) {
+                $task->imputation->update(['etat' => ImputationEnum::EN_COURS]);
             }
             if ($task->courrier) {
                 $courrier = $task->courrier;
@@ -52,7 +56,7 @@ class Tache extends Component
                 $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
                 $task->createur->notify($notification);
 
-                $this->history($id, "validation de tache", "Une tache du courrier N°$num validé");
+                $this->history($id, "validation de tache", "Une tache du courrier N°$num a été validé");
 
                 // Verify if all tasks for the courrier are completed
                 $incompleteTasksCount = Task::whereCourrierId($courrier->id)
@@ -60,8 +64,8 @@ class Tache extends Component
                     ->count();
 
                 if ($incompleteTasksCount === 0) {
-                    $courrier->update(['etat' => CourrierEnum::TERMINE]);
-                    $this->history($id, "tache accompli", "Toute les tache du courrier N°$num effectué");
+                    $courrier->updateOrFail(['etat' => CourrierEnum::TERMINE]);
+                    $this->history($id, "tache terminé", "Toute les taches du courrier arrivé N°$num sont terminés");
                 }
             }
         } else {
@@ -69,7 +73,6 @@ class Tache extends Component
             $notification = new TaskNotification($task, "Une tache que vous avez assigné a été effectuer");
             $task->createur->notify($notification);
         }
-
         toastr()->success('Tache validé avec succès!');
     }
 
@@ -77,9 +80,9 @@ class Tache extends Component
     public function render()
     {
 
-        $isSuperadmin = Auth::user()->isSuperadmin();
+        $auth = Auth::user();
         $query = Task::with('createur','users')
-            ->when(!$isSuperadmin, fn($query) => $query->whereCreateurId(Auth::user()->id))
+            ->when(!$auth->isSuperadmin(), fn($query) => $query->whereCreateurId($auth->id))
             ->when($this->type, function ($query) {
                 $query->where('type', $this->type);
             })
@@ -94,7 +97,8 @@ class Tache extends Component
             });
 
         $rows = $query->latest()->paginate(15);
-        $user = User::with('userable')->when(!$isSuperadmin, fn($query) => $query->StructureUser())->get()->groupBy('userable.nom');
+        $user = User::with('userable')->when(!$auth->isSuperadmin(), fn($query) => $query->StructureUser())->get()
+        ->groupBy('userable.nom');
         return view('livewire.tache', compact('user','rows'));
     }
 }

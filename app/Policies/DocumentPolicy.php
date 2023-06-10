@@ -9,11 +9,15 @@ use Illuminate\Auth\Access\Response;
 class DocumentPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): bool|null
     {
-        //
+        if ($user->isSuperadmin()) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
@@ -21,7 +25,7 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() || $user->id === $document->user_id;
     }
 
     /**
@@ -29,7 +33,15 @@ class DocumentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return false;
+    }
+
+        /**
+     * Determine whether the user can trash the model.
+     */
+    public function trash(User $user): bool
+    {
+        return $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -37,7 +49,7 @@ class DocumentPolicy
      */
     public function update(User $user, Document $document): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() || $user->id === $document->user_id;
     }
 
     /**
@@ -45,7 +57,7 @@ class DocumentPolicy
      */
     public function delete(User $user, Document $document): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() && $user->id === $document->user_id;
     }
 
     /**
@@ -53,7 +65,7 @@ class DocumentPolicy
      */
     public function restore(User $user, Document $document): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser() || $user->id === $document->user_id;
     }
 
     /**
@@ -61,6 +73,6 @@ class DocumentPolicy
      */
     public function forceDelete(User $user, Document $document): bool
     {
-        //
+        return $user->isAdmin() || $user->isSuperuser();
     }
 }

@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware("role:".RoleEnum::SUPERADMIN->value)->group(function () {
         Route::controller(AdminController::class)->group(function () {
             Route::get('structure','structure')->name('structure');
-
+            Route::get('licence','licence')->name('licence');
         });
 
         Route::controller(CorrespondantController::class)->group(function () {
@@ -76,12 +76,6 @@ Route::middleware('auth')->group(function () {
             Route::get('structure/restore/{id}','recover')->whereNumber('id');
             Route::delete('structure/delete/{id}','force_delete')->whereNumber('id');
         });
-
-        Route::controller(TaskController::class)->group(function () {
-            Route::get('task/delete/all','all_delete')->name('task.delete');
-            Route::delete('task/delete/{id}','force_delete')->whereNumber('id');
-        });
-
         Route::controller(DepartController::class)->group(function () {
             Route::get('depart/delete/all','all_delete')->name('depart.delete');
             Route::delete('depart/delete/{id}','force_delete')->whereNumber('id');
@@ -99,7 +93,6 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(RapportController::class)->group(function () {
             Route::get('rapport/delete/all','all_delete')->name('rapport.delete');
-            Route::delete('rapport/delete/{id}','force_delete')->whereNumber('id');
         });
 
         Route::controller(SubDepartementController::class)->group(function () {
@@ -191,13 +184,8 @@ Route::middleware('auth')->group(function () {
             Route::get('imputation/restore/all','all_recover')->name('imputation.restore');
             Route::get('imputation/restore/{id}','recover')->whereNumber('id');
         });
-
-        Route::controller(CourrierController::class)->group(function () {
-            Route::get('arriver/restore/all','all_recover')->name('arriver.restore');
-            Route::get('arriver/restore/{id}','recover')->whereNumber('id');
-        });
         Route::resource('annotation',AnnotationController::class)->except('index','show','create');
-        Route::resource('user',UserController::class)->except('index','create');
+        Route::resource('user',UserController::class)->except('index','create','show');
         Route::resource('courrier/arriver',CourrierController::class)->only('destroy');
         Route::resource('courrier/depart',DepartController::class)->only('destroy');
         Route::resource('correspondant',CorrespondantController::class)->only('destroy');
@@ -224,11 +212,15 @@ Route::middleware('auth')->group(function () {
         Route::view('imputation','imputation.index')->name('imputation');
         Route::view('tache','task.index')->name('task');
         Route::view('search','search')->name('search');
-
+        Route::view('licence/error','licence_expire')->name('licence_expire');
+        Route::post('user/active/two_factor', [UserController::class, 'active_2fa'])->name('user.active_2fa');
+        Route::delete('rapport/delete/{id}', [RapportController::class, 'force_delete'])->whereNumber('id');
         Route::controller(TaskController::class)->group(function () {
             Route::get('task/trash','trash')->name('task.trash');
             Route::get('task/restore/all','all_recover')->name('task.restore');
             Route::get('task/restore/{id}','recover')->whereNumber('id');
+            Route::get('task/delete/all','all_delete')->name('task.delete');
+            Route::delete('task/delete/{id}','force_delete')->whereNumber('id');
         });
         Route::controller(InterneController::class)->group(function () {
             Route::get('interne/trash','trash')->name('interne.trash');
@@ -238,6 +230,8 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(CourrierController::class)->group(function () {
             Route::get('arriver/trash','trash')->name('arriver.trash');
+            Route::get('arriver/restore/all','all_recover')->name('arriver.restore');
+            Route::get('arriver/restore/{id}','recover')->whereNumber('id');
         });
 
         Route::controller(RapportController::class)->group(function () {
@@ -253,6 +247,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('rapport',RapportController::class)->except('index');
         Route::resource('task',TaskController::class)->except('index');
         Route::resource('reponse',ReponseController::class)->except('index','show','create');
+        Route::resource('user',UserController::class)->only('show');
     });
 
     Route::resource('backup',BackupController::class)->except('index');

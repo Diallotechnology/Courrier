@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -74,6 +75,13 @@ class UserController extends Controller
         return  $this->supp($delete);
     }
 
+    public function active_2fa(Request $request)
+    {
+        $value = $request->two_factor === "on" ? 1 : 0 ;
+         User::findOrFail($request->id)->updateOrFail(['two_factor_enabled'=> $value]);
+        toastr()->success(' L’authentification à deux facteurs activé avec success!');
+        return back();
+    }
 
     public function trash()
     {
@@ -97,11 +105,11 @@ class UserController extends Controller
 
     public function all_recover() {
 
-        return $this->All_restore(User::onlyTrashed());
+        return $this->All_restore(User::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->StructureUser()));
     }
 
     public function all_delete() {
 
-        return $this->All_remove(User::onlyTrashed());
+        return $this->All_remove(User::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->StructureUser()));
     }
 }

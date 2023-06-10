@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Task;
 use App\Models\User;
+use App\Enum\TaskEnum;
 use App\Models\Nature;
 use App\Models\Journal;
 use App\Models\Rapport;
@@ -14,6 +15,7 @@ use App\Models\Structure;
 use App\Models\Annotation;
 use App\Models\Departement;
 use App\Models\Correspondant;
+use App\Models\Licence;
 use App\Models\SubDepartement;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\Paginator;
@@ -47,7 +49,9 @@ class AdminController extends Controller
 
     public function document(): View
     {
-        $rows = Document::with('documentable')->latest()->paginate(15);
+        $rows = Document::with('documentable')
+        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
+        ->latest()->paginate(15);
         return view('document.index', compact('rows'));
     }
 
@@ -67,7 +71,6 @@ class AdminController extends Controller
                     ->selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')
                     ->orderBy('day')->groupBy('day')->pluck('total_arrriver', 'day');
         $tasks = Task::where('createur_id', Auth::user()->id)->latest()->take(6)->get();
-
         return view('dashboard', compact('arriver', 'tasks'));
     }
 
@@ -164,7 +167,13 @@ class AdminController extends Controller
 
     public function journal(): View
     {
-        $rows = Journal::with('user')->latest()->paginate(15);
+        $rows = Journal::with('user')->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())->latest()->paginate(15);
         return view('journal.index', compact('rows'));
+    }
+
+    public function licence(): View
+    {
+        $rows = Licence::with('structure')->latest()->paginate(15);
+        return view('licence.index', compact('rows'));
     }
 }

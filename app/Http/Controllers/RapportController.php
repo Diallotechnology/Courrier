@@ -45,6 +45,7 @@ class RapportController extends Controller
                 $data = new Document([
                     'libelle' => $ref->numero,
                     'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
                     'type' => 'Rapport',
                     'chemin' => $chemin,
                 ]);
@@ -61,7 +62,7 @@ class RapportController extends Controller
      */
     public function show(Rapport $rapport)
     {
-        $this->user()->can('view', Rapport::class);
+        $this->authorize('view', $rapport);
         return view('rapport.show', compact('rapport'));
     }
 
@@ -90,6 +91,7 @@ class RapportController extends Controller
                 $data = new Document([
                     'libelle' => $rapport->numero,
                     'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
                     'type' => 'Rapport',
                     'chemin' => $chemin,
                 ]);
@@ -106,6 +108,7 @@ class RapportController extends Controller
     public function destroy(int $rapport)
     {
         $delete = Rapport::findOrFail($rapport);
+        
         $this->journal("Suppression du rapport REF N°$delete->reference");
         return  $this->supp($delete);
     }
@@ -140,11 +143,11 @@ class RapportController extends Controller
 
     public function all_recover() {
         $this->journal("Restauré tous les rapport");
-        return $this->All_restore(Rapport::onlyTrashed());
+        return $this->All_restore(Rapport::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vider la corbeille  des rapport");
-        return $this->All_remove(Rapport::onlyTrashed());
+        return $this->All_remove(Rapport::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

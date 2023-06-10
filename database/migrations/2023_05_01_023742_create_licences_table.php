@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('licences', function (Blueprint $table) {
             $table->id();
-            $table->morphs('documentable');
-            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('libelle');
-            $table->string('type');
-            $table->string('chemin');
+            $table->string('code');
+            $table->string('version');
+            $table->date('date_expiration');
+            $table->date('activated_at');
+            $table->boolean('active');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('licences');
     }
 };

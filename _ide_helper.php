@@ -18225,19 +18225,6 @@
      *
      */ 
         class Str {
-                    /**
-         * 
-         *
-         * @see \LaraDumps\LaraDumps\LaraDumpsServiceProvider::bootMacros()
-         * @param string $str
-         * @param string $start
-         * @param string $end
-         * @static 
-         */ 
-        public static function cut($str, $start, $end)
-        {
-                        return \Illuminate\Support\Str::cut($str, $start, $end);
-        }
          
     }
             /**
@@ -18258,35 +18245,6 @@
         public static function debug()
         {
                         return \Illuminate\Support\Collection::debug();
-        }
-                    /**
-         * 
-         *
-         * @see \LaraDumps\LaraDumps\LaraDumpsServiceProvider::registerMacros()
-         * @param string $label
-         * @static 
-         */ 
-        public static function ds($label = '')
-        {
-                        return \Illuminate\Support\Collection::ds($label);
-        }
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class Stringable {
-                    /**
-         * 
-         *
-         * @see \LaraDumps\LaraDumps\LaraDumpsServiceProvider::registerMacros()
-         * @param string $label
-         * @static 
-         */ 
-        public static function ds($label = '')
-        {
-                        return \Illuminate\Support\Stringable::ds($label);
         }
          
     }
@@ -19947,27 +19905,6 @@
         public static function warning($message, $replace = [])
         {
                         return \Illuminate\Http\RedirectResponse::warning($message, $replace);
-        }
-         
-    }
-     
-}
-
-    namespace Illuminate\Database\Query { 
-            /**
-     * 
-     *
-     */ 
-        class Builder {
-                    /**
-         * 
-         *
-         * @see \LaraDumps\LaraDumps\LaraDumpsServiceProvider::registerMacros()
-         * @static 
-         */ 
-        public static function ds()
-        {
-                        return \Illuminate\Database\Query\Builder::ds();
         }
          
     }
@@ -24016,17 +23953,6 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Query\Builder $instance */
                                 return $instance->macroCall($method, $parameters);
-            }
-             
-                /**
-             * 
-             *
-             * @see \LaraDumps\LaraDumps\LaraDumpsServiceProvider::registerMacros()
-             * @static 
-             */ 
-            public static function ds()
-            {
-                                return \Illuminate\Database\Query\Builder::ds();
             }
                     }
             class Event extends \Illuminate\Support\Facades\Event {}

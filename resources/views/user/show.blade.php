@@ -60,6 +60,7 @@
                             </svg>
                             Role: {{ $user->role }}
                         </div>
+                        @if($user->id === Auth::user()->id)
                         <div class="h4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock" width="24"
                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -72,16 +73,18 @@
                                 <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path>
                             </svg>
                             L’authentification à deux facteurs (2FA):
-                            <form action="" method="post" class="d-inline">
+                            <form action="{{ route('user.active_2fa') }}" method="post" class="d-inline">
                                 @csrf
+                                <input type="hidden" name="id" value="{{ Auth::user()->id }}">
                                 <div class="form-switch d-inline">
-                                    <input class="form-check-input" name="two_factor_enabled"
-                                        @checked($user->two_factor_enabled == true)
+                                    <input class="form-check-input" name="two_factor" @checked($user->two_factor_enabled
+                                    == true)
                                     type="checkbox">
                                 </div>
-                                <button class="btn mx-4 btn-sm btn-primary">Valider</button>
+                                <button type="submit" class="btn mx-4 btn-sm btn-primary">Valider</button>
                             </form>
                         </div>
+                        @endif
                         <div class="h4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cell-signal-5"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -311,13 +314,14 @@
                             Total Taches
                         </div>
                         <div class="text-muted">
-                            {{ count($user->tasks) }}
+                            {{ count($user->createurs) }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @if(Auth::user()->isAdmin() || Auth::user()->isSuperadmin())
     <div class="col-md-6 col-xl-3">
         <div class="card card-sm">
             <div class="card-body">
@@ -344,6 +348,7 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
 
 <div class="row mx-1 my-3">
@@ -386,21 +391,21 @@
                     <div class="tab-pane active show" id="tabs-home-9">
                         <h4>Historique des courriers arrivé</h4>
                         <div class="table-responsive">
-                            <table id="datatable" class="table card-table table-vcenter text-nowrap datatable">
-                                <thead>
+                            <table id="datatable" class="table  text-nowrap datatable">
+                                <thead class="sticky-top">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Utilisateur</th>
-                                        <th>Nature</th>
-                                        <th>Correspondant</th>
-                                        <th>Reference</th>
-                                        <th>Priorite</th>
-                                        <th>Confidential</th>
-                                        <th>Numero/Date arriver</th>
-                                        <th>Etat</th>
-                                        <th>Objet</th>
-                                        <th>Date</th>
-                                        <th>Action</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Utilisateur</th>
+                                        <th scope="col">Nature</th>
+                                        <th scope="col">Correspondant</th>
+                                        <th scope="col">Reference</th>
+                                        <th scope="col">Priorite</th>
+                                        <th scope="col">Confidential</th>
+                                        <th scope="col">Numero/Date arriver</th>
+                                        <th scope="col">Etat</th>
+                                        <th scope="col">Objet</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -412,8 +417,7 @@
                                         </td>
                                         <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
                                         <td>
-                                            {{ $row->correspondant ? $row->correspondant->prenom.'
-                                            '.$row->correspondant->nom : 'inexistant' }}
+                                            {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
                                         </td>
                                         <td>{{ $row->reference }}</td>
 
@@ -440,7 +444,8 @@
 
                                         <td>{{ $row->created_at }}</td>
                                         <td>
-                                            <x-button-show href="{{ route('arriver.show', ['arriver' => $row]) }}" />
+                                            <x-button-show :row="$row"
+                                                href="{{ route('arriver.show', ['arriver' => $row]) }}" />
                                         </td>
                                     </tr>
                                     @empty
@@ -481,7 +486,7 @@
                                         <td>
                                             <x-user-avatar :row="$row" />
                                         </td>
-                                        <td>{{ $row->reference }}</td>
+                                        <td>{{ $row->numero }}</td>
                                         <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
                                         <td>{{ $row->departement ? $row->departement->nom : 'inexistant' }}</td>
                                         <td>
@@ -495,9 +500,8 @@
 
                                         <td>{{ $row->created_at }}</td>
                                         <td>
-                                            <x-button-show
+                                            <x-button-show :row="$row"
                                                 href="{{ route('imputation.show', ['imputation' => $row]) }}" />
-
                                         </td>
                                     </tr>
                                     @empty

@@ -133,7 +133,7 @@
         <x-slot name="header">
             <div class="card-header">
                 <h3 class="card-title">
-                    <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
+                    <br> NB: La suppression d'un courrier entrainera la suppression de ses imputations
                 </h3>
             </div>
             <div class="card-body">
@@ -241,11 +241,7 @@
                     <p class="text-muted">{{ $row->objet }}</p>
                 </td>
                 <td>
-                    <label class="form-check form-switch">
-                        <input class="form-check-input" wire:model='archive' wire:change="test({{ $row }})"
-                            type="checkbox">
-                        <span class="form-check-label"></span>
-                    </label>
+                    <livewire:form-switch :courrier="$row" :wire:key="'form-switch-'.$row->id">
                 </td>
 
                 <td>{{ $row->created_at }}</td>

@@ -78,6 +78,7 @@ class InterneController extends Controller
                 'libelle' => $itemData->numero,
                 'type' => 'Interne',
                 'user_id' => Auth::user()->id,
+                'structure_id' => Auth::user()->structure(),
                 'chemin' => $chemin,
             ]);
             $item->documents()->save($data);
@@ -127,6 +128,7 @@ class InterneController extends Controller
                 $data = new Document([
                     'libelle' => $interne->numero,
                     'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
                     'type' => 'Interne',
                     'chemin' => $chemin,
                 ]);

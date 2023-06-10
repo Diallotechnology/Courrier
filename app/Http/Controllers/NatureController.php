@@ -82,11 +82,11 @@ class NatureController extends Controller
 
     public function all_recover() {
         $this->journal("Restauré tous les natures de courrier");
-        return $this->All_restore(Nature::onlyTrashed());
+        return $this->All_restore(Nature::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vider la corbeille  des natures de courrier");
-        return $this->All_remove(Nature::onlyTrashed());
+        return $this->All_remove(Nature::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

@@ -6,14 +6,18 @@ use App\Models\User;
 use App\Models\Depart;
 use App\Models\Nature;
 use App\Models\Journal;
+use App\Models\Licence;
 use App\Models\Rapport;
 use App\Models\Courrier;
+use App\Models\Document;
 use App\Helper\DateFormat;
+use App\Models\Imputation;
 use App\Models\Departement;
 use App\Models\SubStructure;
 use App\Models\Correspondant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -90,6 +94,16 @@ class Structure extends Model
     protected $fillable = ['nom','email','logo','contact','description','adresse'];
 
     /**
+     * Get the licence associated with the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function licence(): HasOne
+    {
+        return $this->hasOne(Licence::class);
+    }
+
+    /**
      * Get all of the correspondants for the Structure
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -158,6 +172,26 @@ class Structure extends Model
     public function departs(): HasMany
     {
         return $this->hasMany(Depart::class);
+    }
+
+    /**
+     * Get all of the imputations for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function imputations(): HasMany
+    {
+        return $this->hasMany(Imputation::class);
+    }
+
+    /**
+     * Get all of the documents for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(Document::class);
     }
 
     /**

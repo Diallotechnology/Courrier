@@ -57,6 +57,7 @@ class Document extends Model
      */
     protected $fillable = [
         'user_id',
+        'structure_id',
         'documentable_type',
         'documentable_id',
         'libelle',

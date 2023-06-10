@@ -32,6 +32,7 @@ class StoreStructureRequest extends FormRequest
             'contact'=>'required|string|min:8',
             'email'=>'required|email|max:255',
             'adresse'=>'required|string|max:255',
+            'licence'=>'required|boolean',
             'logo'=>'nullable',
         ];
     }

@@ -15,7 +15,7 @@ class TaskNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(private Task $task, private string $message)
+    public function __construct(private ?Task $task, private string $message)
     {
         //
     }
@@ -35,10 +35,11 @@ class TaskNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-                    ->line($this->message)
-                    ->action("Voir la tache", route('task.show',$this->task))
-                    ->line('Merci!');
+        if($this->task) {
+            return (new MailMessage)->line($this->message)->action("Voir la tache", route('task.show',$this->task));
+        }
+        return (new MailMessage)->line($this->message);
+
     }
 
     /**
@@ -51,7 +52,7 @@ class TaskNotification extends Notification
 
         $etat = $this->task->etat->value;
         return [
-            'message' =>   $this->message.'REF'.$this->task->reference,
+            'message' =>   $this->message.'REF'.$this->task->numero,
             'type' =>  "Tache $etat",
 
         ];

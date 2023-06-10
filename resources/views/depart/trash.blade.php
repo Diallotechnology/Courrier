@@ -77,7 +77,6 @@
             </td>
             <td>{{ $row->deleted_at }}</td>
             <td>
-
                 <x-button-restore :row="$row" url="{{ url('depart/restore/'.$row->id) }}" />
                 <x-button-delete :row="$row" url="{{ url('depart/delete/'.$row->id) }}" />
             </td>

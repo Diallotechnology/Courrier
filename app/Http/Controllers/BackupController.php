@@ -24,15 +24,6 @@ class BackupController extends Controller
      */
     public function create()
     {
-                // Chemin vers le fichier PDF à signer
-                $pdfPath = public_path('/img/sample.pdf');
-
-                // Charger l'image de signature
-                $signatureImage = public_path('/img/86304d84-eca3-48b1-97ea-b12de55fbba0.png');
-                        // Chemin vers le fichier PDF signé
-        $signedPDFPath = public_path('documents/signed-report.pdf');
-        $pdfFilePath = 'chemin/vers/votre/rapport.pdf';
-
 
     }
 

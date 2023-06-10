@@ -1,7 +1,6 @@
 <div>
     <div class="card">
         <div class="card-body">
-            {{-- <h1 class="text-center my-3">Filtre avancée</h1> --}}
             <div wire:loading.class="opacity-50">
                 <div class="row row-cards">
                     <div class="mb-3 col-md-4">
@@ -90,7 +89,7 @@
     <x-table :rows="$rows">
         <x-slot name="header">
             <div class="card-header">
-                <h3 class="card-title"> {{ count($rows) }} resultats trouvés
+                <h3 class="card-title"> {{ $rows->total() }} resultats trouvés
                 </h3>
             </div>
             <div class="card-body">

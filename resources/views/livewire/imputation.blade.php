@@ -49,13 +49,6 @@
                 <div class="mb-3 col-sm-4 col-md-4">
                     <x-input type="date" label="Date de fin traitement" wire:model='fin' :required='false' />
                 </div>
-
-                <x-slot name="btn">
-                    <button class="btn btn-info mx-2" type="button">
-                        <i class="ti ti-file-export"></i>
-                        Export
-                    </button>
-                </x-slot>
             </x-filter>
         </div>
     </x-slot>
@@ -64,7 +57,7 @@
             <th>ID</th>
             <th>Utilisateur</th>
             <th>Reference</th>
-            <th>N° du courrier</th>
+            <th>N/A du courrier</th>
             <th>Nom du departement</th>
             <th>Priorité</th>
             <th>Etat</th>
@@ -115,7 +108,7 @@
             <div class="col-md-12">
                 <x-select label="Courrier arrivé" name="courrier_id">
                     @foreach ($arriver as $row)
-                    <option value="{{ $row->id }}">Reférence {{ $row->reference }}, Numero d'arriver {{ $row->numero
+                    <option value="{{ $row->id }}">Courrier arriver N°{{ $row->numero
                         }},Date
                         d'arriver {{
                         $row->date_format }}

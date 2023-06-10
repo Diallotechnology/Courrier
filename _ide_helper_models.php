@@ -455,10 +455,12 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation byStructure()
  * @mixin \Eloquent
+ * @property int $structure_id
  * @property string|null $numero
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereNumero($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereStructureId($value)
  */
 	class Imputation extends \Eloquent {}
 }
@@ -559,6 +561,19 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereStructureId($value)
  */
 	class Journal extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Licence
+ *
+ * @property-read \App\Models\Structure $structure
+ * @method static \Database\Factories\LicenceFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence query()
+ */
+	class Licence extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -677,7 +692,9 @@ namespace App\Models{
  * @property-read string $date_format
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport byStructure()
  * @mixin \Eloquent
+ * @property string|null $numero
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereNumero($value)
  */
 	class Rapport extends \Eloquent {}
 }
@@ -773,7 +790,12 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read int|null $imputations_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $jourals
+ * @property-read \App\Models\Licence|null $licence
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -1017,6 +1039,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  */
-	class User extends \Eloquent implements \Creagia\LaravelSignPad\Contracts\CanBeSigned, \Creagia\LaravelSignPad\Contracts\ShouldGenerateSignatureDocument {}
+	class User extends \Eloquent {}
 }
 

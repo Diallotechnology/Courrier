@@ -8,7 +8,7 @@
         </ol>
     </div>
     <h2 class="page-title">
-        <span class="text-truncate">Liste des documents de courrier</span>
+        <span class="text-truncate">Liste des documents</span>
     </h2>
 </div>
 @endsection
@@ -22,6 +22,7 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Utilisateur</th>
             <th>Libelle</th>
             <th>type</th>
             <th>Chemin</th>
@@ -33,13 +34,15 @@
         @foreach ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
+            <td>
+                <x-user-avatar :row="$row" />
+            </td>
             <td>{{ $row->libelle }}</td>
             <td>{{ $row->type }}</td>
             <td>{{ $row->chemin }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                {{--
-                <x-button-edit :row="$row" href="{{ route('document.edit', ['document' => $row]) }}" /> --}}
+                <x-button-edit :row="$row" href="{{ route('document.edit', ['document' => $row]) }}" />
                 <x-button-show :row="$row" href="{{ route('document.show', ['document' => $row]) }}" target="_blank" />
                 <x-button-delete :row="$row" url="{{ url('document/'.$row->id) }}" />
             </td>

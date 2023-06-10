@@ -48,7 +48,7 @@
                 <x-user-avatar :row="$row" />
             </td>
             <td>{{ $row->structure->nom }}</td>
-            <td>{{ $row->reference }}</td>
+            <td>{{ $row->numero }}</td>
             <td>{{ $row->type }}</td>
             <td>{{ $row->objet }}</td>
             <td>{{ $row->created_at }}</td>

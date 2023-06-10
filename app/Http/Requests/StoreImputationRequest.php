@@ -28,11 +28,13 @@ class StoreImputationRequest extends FormRequest
             'priorite'=>'required|string|max:6',
             'observation'=>'string|nullable|max:255',
             'delai'=>'nullable|date',
+            'numero'=>'nullable',
             'notif'=> 'required|boolean',
             'courrier_id'=>'required|exists:courriers,id',
             'departement_id'=>'required|array|exists:departements,id',
             'annotation_id'=>'required|array|exists:annotations,id',
             'user_id'=>'required|exists:users,id',
+            'structure_id'=>'required|exists:structures,id',
         ];
     }
 
@@ -40,6 +42,8 @@ class StoreImputationRequest extends FormRequest
     {
         $this->merge([
             'user_id' => Auth::user()->id,
+            'structure_id' => Auth::user()->structure(),
+            'numero' => 'test',
          ]);
     }
 

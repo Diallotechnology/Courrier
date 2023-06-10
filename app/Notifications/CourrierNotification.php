@@ -57,9 +57,9 @@ class CourrierNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $ref = $this->courrier->reference;
+        $ref = $this->courrier->numero;
         return [
-            'message' =>   $this->message.'REF'.$this->courrier->reference,
+            'message' =>   $this->message.'REF'.$this->courrier->numero,
             'type' =>  "courrier $ref",
         ];
     }

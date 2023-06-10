@@ -30,7 +30,6 @@ class ImputationController extends Controller
     public function store(StoreImputationRequest $request)
     {
         $courrier = Courrier::findOrFail($request->courrier_id);
-
         // Save imputation pivot value
         $pivot_value = Arr::except($request->validated(), ['departement_id', 'annotation_id', 'notif']);
         $courrier->imputations()->attach($request->departement_id, $pivot_value);
@@ -78,12 +77,10 @@ class ImputationController extends Controller
         if ($request->notif == 1) {
             Notification::route('mail', $emails)->notify($notification);
         } else {
-
             Notification::send($users, $notification);
         }
 
         $this->history($courrier->id, "Impuatation", "Imputé le courrier arrivé le N° $courrier->reference");
-        // $this->journal("Ajout du correspondant N°$item->id");
         toastr()->success('Imputation ajoutée avec succès!');
         return back();
     }
@@ -159,11 +156,11 @@ class ImputationController extends Controller
 
     public function all_recover() {
         $this->journal("Restauré tous les imputations");
-        return $this->All_restore(Imputation::onlyTrashed());
+        return $this->All_restore(Imputation::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vider la corbeille  des imputations");
-        return $this->All_remove(Imputation::onlyTrashed());
+        return $this->All_remove(Imputation::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

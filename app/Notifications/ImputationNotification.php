@@ -48,9 +48,9 @@ class ImputationNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $ref = $this->imputation->reference;
+        $ref = $this->imputation->numero;
         return [
-            'message' =>  $this->message.' REF '.$this->imputation->reference,
+            'message' =>  $this->message.' REF '.$this->imputation->numero,
             'type' =>  "imputation REF $ref",
         ];
     }

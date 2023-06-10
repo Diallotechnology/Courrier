@@ -88,11 +88,11 @@ class DepartementController extends Controller
 
     public function all_recover() {
         $this->journal("Restauré tous les departement");
-        return $this->All_restore(Departement::onlyTrashed());
+        return $this->All_restore(Departement::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 
     public function all_delete() {
         $this->journal("Vider la corbeille  des departements");
-        return $this->All_remove(Departement::onlyTrashed());
+        return $this->All_remove(Departement::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
     }
 }

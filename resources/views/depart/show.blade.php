@@ -7,10 +7,6 @@
     <div class="card-body">
         <div class="datagrid">
             <div class="datagrid-item">
-                <div class="datagrid-title">Reference</div>
-                <div class="datagrid-content">{{ $depart->reference }}</div>
-            </div>
-            <div class="datagrid-item">
                 <div class="datagrid-title">Numero depart</div>
                 <div class="datagrid-content">{{ $depart->numero }}</div>
             </div>
@@ -77,5 +73,4 @@
     </div>
     @endforeach
 </div>
-
 @endsection

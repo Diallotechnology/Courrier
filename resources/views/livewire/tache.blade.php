@@ -157,10 +157,7 @@
                         </div>
                     </div>
                     <x-slot name="btn">
-                        <button class="btn btn-info mx-2" type="button">
-                            <i class="ti ti-file-export"></i>
-                            Export
-                        </button>
+
                     </x-slot>
                 </x-filter>
             </div>
@@ -198,7 +195,7 @@
                     inexistant
                     @endif
                 </td>
-                <td>{{ $row->reference }}</td>
+                <td>{{ $row->numero }}</td>
                 <td>{{ $row->type }}</td>
                 <td>
                     {{ $row->nom }}
