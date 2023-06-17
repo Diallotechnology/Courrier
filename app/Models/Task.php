@@ -135,7 +135,12 @@ class Task extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('etat');
+    }
+
+    public function pivot_values(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->wherePivot('etat',0);
     }
 
     /**

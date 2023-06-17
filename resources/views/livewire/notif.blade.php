@@ -20,10 +20,9 @@
             <div class="row align-items-center">
                 <div class="col-auto"><span class="status-dot d-block"></span></div>
                 <div class="col ">
-                    <a href="#" class="text-body d-block text-uppercase"> {{ $row->type }}</a>
+                    <a href="#" class="text-body d-block text-uppercase"> {{ $row->data['type'] }}</a>
                     <div class="d-block text-muted text-truncate mt-n1">
-                        {{-- {{ $row->data }} --}}
-                        Sapiente fugit ducimus qui et similique voluptas.
+                        {{ $row->data['message'] }}
                     </div>
                 </div>
             </div>

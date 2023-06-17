@@ -23,7 +23,7 @@
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">reference de la tache</div>
-                <div class="datagrid-content">{{ $task->reference }}</div>
+                <div class="datagrid-content">{{ $task->numero }}</div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Nom de la tache</div>
@@ -33,23 +33,7 @@
                 <div class="datagrid-title">Type de tache</div>
                 <div class="datagrid-content">{{ $task->type }}</div>
             </div>
-            <div class="datagrid-item">
-                <div class="datagrid-title">Utilisateur concerné</div>
-                <div class="datagrid-content">
-                    @forelse ($task->users as $row)
-                    <div class="d-flex py-1 align-items-center">
-                        <span class="avatar me-2"
-                            style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')"></span>
-                        <div class="flex-fill">
-                            <div class="font-weight-medium">{{ $row->name }}</div>
-                            <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}</a></div>
-                        </div>
-                    </div>
-                    @empty
-                    Aucun
-                    @endforelse
-                </div>
-            </div>
+
             <div class="datagrid-item">
                 <div class="datagrid-title">Date de creation</div>
                 <div class="datagrid-content">{{ $task->created_at }}</div>
@@ -62,13 +46,37 @@
                 <div class="datagrid-title">Date de fin</div>
                 <div class="datagrid-content">{{ $task->fin_format }}</div>
             </div>
+
             <div class="datagrid-item">
                 <div class="datagrid-title">Etat de la tache</div>
                 <div class="datagrid-content">
                     <x-statut-task :task="$task" />
                 </div>
             </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Utilisateurs concerné</div>
+                <div class="datagrid-content">
+                    @forelse ($task->users as $row)
+                    <div class="d-flex py-1 align-items-center">
+                        <span class="avatar me-2"
+                            style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')"></span>
+                        <div class="flex-fill">
+                            <div class="font-weight-medium">{{ $row->name }}</div>
+                            <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}
+                                    <span @class(['status', 'status-green'=> $row->pivot->etat == 1,
+                                        'status-red'=> $row->pivot->etat == 0])>
+                                        <span class="status-dot status-dot-animated"></span>
+                                        {{ $row->pivot->etat == 1 ? 'Termine' : 'Non termine' }}
+                                    </span>
+                                </a></div>
 
+                        </div>
+                    </div>
+                    @empty
+                    Aucun
+                    @endforelse
+                </div>
+            </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Description de la tache</div>
                 <div class="datagrid-content">

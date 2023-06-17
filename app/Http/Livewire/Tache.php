@@ -83,6 +83,7 @@ class Tache extends Component
         $auth = Auth::user();
         $query = Task::with('createur','users')
             ->when(!$auth->isSuperadmin(), fn($query) => $query->whereCreateurId($auth->id))
+            ->orWhereHas('users', fn($query) => $query->where('user_id', $auth->id))
             ->when($this->type, function ($query) {
                 $query->where('type', $this->type);
             })

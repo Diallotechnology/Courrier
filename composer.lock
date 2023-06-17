@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6ec24a0bcb7ec1249a64b40aa6d8ea7",
+    "content-hash": "6dbb1f1011fd0a84477d27cba48ecbda",
     "packages": [
         {
             "name": "brick/math",
@@ -60,6 +60,78 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "dacastro4/laravel-gmail",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dacastro4/laravel-gmail.git",
+                "reference": "48653be4d460ba7d4898ad221b2beb967901636f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dacastro4/laravel-gmail/zipball/48653be4d460ba7d4898ad221b2beb967901636f",
+                "reference": "48653be4d460ba7d4898ad221b2beb967901636f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "google/apiclient": "^v2.12.6",
+                "illuminate/auth": "~5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/config": "~5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/database": "~5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/routing": "~5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/session": "~5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/support": "~5.8|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "php": "^7.4|^8.0",
+                "symfony/mime": "^5.4|^6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^v4.18.0|^v5.20.0|^v6.25.0|^8.0",
+                "phpunit/phpunit": "^9.3",
+                "squizlabs/php_codesniffer": "~3.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Dacastro4\\LaravelGmail\\LaravelGmailServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelGmail": "Dacastro4\\LaravelGmail\\Facade\\LaravelGmail"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dacastro4\\LaravelGmail\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Castro",
+                    "email": "danielcastro04@gmail.com",
+                    "homepage": "https://danielcastro.dev"
+                }
+            ],
+            "description": "Gmail API package for Laravel",
+            "keywords": [
+                "api",
+                "gmail",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/dacastro4/laravel-gmail/issues",
+                "source": "https://github.com/dacastro4/laravel-gmail/tree/master"
+            },
+            "time": "2023-02-25T16:51:12+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -8328,7 +8400,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "dacastro4/laravel-gmail": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

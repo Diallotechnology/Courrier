@@ -73,13 +73,41 @@
         .file-list:hover .file-action {
             display: inline;
         }
+
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
     </style>
 
 </head>
 
 <body class=" layout-fluid">
-
-
+    <!-- Loader -->
+    {{-- <div class="loader-container">
+        <div class="page page-center">
+            <div class="container container-slim py-4">
+                <div class="text-center">
+                    <div class="mb-3">
+                        <a href="." class="navbar-brand navbar-brand-autodark"><img src="./static/logo-small.svg"
+                                height="36" alt=""></a>
+                    </div>
+                    <div class="text-muted mb-3">Preparing application</div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar progress-bar-indeterminate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
     <div class="page">
         <!-- Sidebar -->
         <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
@@ -126,6 +154,7 @@
             </div>
         </header>
         <div class="page-wrapper">
+
             <div class="page-header d-print-none">
                 <div class="container-xl">
                     <div class="row g-2 align-items-center mw-100">
@@ -134,26 +163,25 @@
                 </div>
             </div>
             <div class="page-body">
-                <div class="container-xl">
-                    @yield('content')
-                </div>
+                @yield('content')
             </div>
-            <footer class="footer footer-transparent d-print-none">
-                <div class="container-xl">
-                    <div class="row text-center align-items-center flex-row-reverse">
-                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                            <ul class="list-inline list-inline-dots mb-0">
-                                <li class="list-inline-item">
-                                    Copyright &copy; 2023
-                                    <a href="." class="link-secondary">Tabler</a>.
-                                    All rights reserved.
-                                </li>
-                            </ul>
-                        </div>
+        </div>
+        <footer class="footer footer-transparent d-print-none">
+            <div class="container-xl">
+                <div class="row text-center align-items-center flex-row-reverse">
+                    <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                        <ul class="list-inline list-inline-dots mb-0">
+                            <li class="list-inline-item">
+                                Copyright &copy; 2023
+                                <a href="." class="link-secondary">Tabler</a>.
+                                All rights reserved.
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </footer>
-        </div>
+            </div>
+        </footer>
+    </div>
     </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
@@ -163,9 +191,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
-    {{-- @if(!Route::is('search')) --}}
     <script src="{{ asset('js/main.js') }}"></script>
-    {{-- @endif --}}
     @livewireScripts
     @yield('js')
 </body>

@@ -28,12 +28,12 @@ class TaskController extends Controller
         $task = Task::create($data);
         $ref = $task->generateId('TA');
          // Send notification
-         $notification = new TaskNotification($task, "Une tache vous avez été assigner");
+         $notification = new TaskNotification($task, " vous avez été assigner");
         if(!empty($request->user_id)) {
         // create task user pivot data
         $task->users()->attach($request->user_id);
         // Get notifiable users' emails
-        $users = User::whereIn('id', $request->user_id)->get(['email']);
+        $users = User::whereIn('id', $request->user_id)->get(['email','id']);
         // $emails = $users->pluck('email')->toArray();
         Notification::send($users, $notification);
         }
@@ -82,7 +82,7 @@ class TaskController extends Controller
     public function destroy(int $task)
     {
         $delete = Task::findOrFail($task);
-        $this->journal("Suppression de la tache REF N°$delete->reference");
+        $this->journal("Suppression de la tache REF N°$delete->numero");
         return  $this->supp($delete);
     }
 
@@ -97,14 +97,14 @@ class TaskController extends Controller
     public function recover(int $id) {
 
         $row = Task::onlyTrashed()->whereId($id)->firstOrFail();
-        $this->journal("restauré la tache REF N°$row->reference");
+        $this->journal("restauré la tache REF N°$row->numero");
         return $this->Restore($row);
     }
 
     public function force_delete(int $id) {
 
         $row = Task::onlyTrashed()->whereId($id)->firstOrFail();
-        $this->journal("Suppression definitive de la tache REF N°$row->reference");
+        $this->journal("Suppression definitive de la tache REF N°$row->numero");
         return $this->Remove($row);
     }
 

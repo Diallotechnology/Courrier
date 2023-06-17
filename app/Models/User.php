@@ -446,7 +446,12 @@ class User extends Authenticatable
      */
     public function tasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class);
+        return $this->belongsToMany(Task::class)->withPivot('etat');
+    }
+
+    public function pivot_values(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class)->wherePivot('etat',0);
     }
 
     /**

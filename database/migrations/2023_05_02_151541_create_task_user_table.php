@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('task_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->primary(['task_id', 'user_id']);
+            $table->boolean('etat')->default(false);
         });
     }
 

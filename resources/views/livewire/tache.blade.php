@@ -168,6 +168,7 @@
                 <th>Utilisateur</th>
                 <th>reference</th>
                 <th>Type de tache</th>
+                <th>Exécution</th>
                 <th>nom de la tache</th>
                 <th>Debut de la tache</th>
                 <th>Fin de la tache</th>
@@ -177,6 +178,7 @@
             </tr>
         </thead>
         <tbody>
+
             @forelse ($rows as $row)
             <tr>
                 <td>{{ $row->id }}</td>
@@ -198,8 +200,15 @@
                 <td>{{ $row->numero }}</td>
                 <td>{{ $row->type }}</td>
                 <td>
+                    @foreach ($row->users as $item)
+                    <div> {{ $item->email }}</div>
+                    {{-- <div class="mb-2">Departement {{ $item->userable->nom }}</div> --}}
+                    @endforeach
+                </td>
+                <td>
                     {{ $row->nom }}
                 </td>
+
                 <td>{{ $row->debut_format }}</td>
                 <td>{{ $row->fin_format }}</td>
                 <td>
@@ -207,7 +216,9 @@
                 </td>
                 <td>{{ $row->created_at }}</td>
                 <td>
-                    @if(!$row->Pending() and !$row->Complet())
+
+                    @if(!$row->Pending() && !$row->Complet() && auth()->user()->tasks->contains($row) &&
+                    auth()->user()->pivot_values->contains($row))
                     <button type="button" wire:click="ValidTask({{ $row->id }})" class="btn btn-indigo btn-icon">
                         <i class="ti ti-checks"></i>
                     </button>
@@ -242,7 +253,7 @@
                 </div>
                 <div class="col-md-12">
                     <div wire:ignore>
-                        <x-select name="user_id[]" multiple label="liste des Utilisateurs">
+                        <x-select name="user_id[]" multiple label="liste des Utilisateurs exécuteur">
                             @foreach ($user as $key => $row)
                             <optgroup label="Departement {{ $key }}">
                                 @foreach ($row as $item)

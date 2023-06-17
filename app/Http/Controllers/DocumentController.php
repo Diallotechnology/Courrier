@@ -47,28 +47,19 @@ class DocumentController extends Controller
     public function update(Request $request, Document $document)
     {
         $request->validate([
-            'courrier' => 'required',
+            'type' => 'required',
             'libelle' => 'required',
-            'file' => 'nullable|mimes:png,jpg,pdf',
+            'file' => 'nullable',
         ]);
 
         if ($request->hasFile('file')) {
-            $this->file_delete($document);
+            // $this->file_delete($document);
             $filename = $request->file->hashName();
-            $directory = 'courrier/' . strtolower($document->type);
-            $chemin = $request->file->storeAs($directory, $filename, 'public');
-            $documentData = [
-                'libelle' => $request->libelle,
-                'documentable_id' => $request->courrier,
-                'chemin' => $chemin,
-            ];
+            $chemin = $request->file->storeAs('courrier/arriver', $filename, 'public');
+            $documentData = ['chemin' => $chemin];
             $this->journal("Mise a jour le fichier du document N°$document->id");
         } else {
-           $documentData = [
-            'libelle' => $request->libelle,
-            'documentable_id' => $request->courrier,
-        ];
-
+           $documentData = ['libelle' => $request->libelle];
         }
         $document->update($documentData);
         toastr()->success('Document mise à jour avec succès!');

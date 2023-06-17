@@ -90,7 +90,7 @@
 
             <td>{{ $row->created_at }}</td>
             <td>
-                <x-button-show href="{{ route('arriver.show', ['arriver' => $row]) }}" />
+                <x-button-show :row="$row" href="{{ route('arriver.show', ['arriver' => $row]) }}" />
             </td>
         </tr>
         @empty

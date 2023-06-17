@@ -366,6 +366,8 @@ namespace App\Models{
  * @property-read string $date_format
  * @method static \Illuminate\Database\Eloquent\Builder|Document byStructure()
  * @mixin \Eloquent
+ * @property int $structure_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereStructureId($value)
  */
 	class Document extends \Eloquent {}
 }
@@ -567,11 +569,29 @@ namespace App\Models{
 /**
  * App\Models\Licence
  *
+ * @property int $id
+ * @property int $structure_id
+ * @property string $code
+ * @property string $version
+ * @property string $date_expiration
+ * @property string $activated_at
+ * @property int $active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Structure $structure
  * @method static \Database\Factories\LicenceFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Licence newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Licence newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Licence query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereActivatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereDateExpiration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereStructureId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereVersion($value)
  */
 	class Licence extends \Eloquent {}
 }
@@ -893,6 +913,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Task byStructure()
  * @mixin \Eloquent
  * @property string|null $numero
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $pivot_values
+ * @property-read int|null $pivot_values_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereNumero($value)
  */
@@ -1034,6 +1056,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $pivot_values
+ * @property-read int|null $pivot_values_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks

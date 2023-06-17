@@ -393,12 +393,9 @@
                             @forelse (Auth::user()->notifications as $row)
                             <div>
                                 <div class="row">
-
                                     <div class="col">
                                         <div class="text-truncate">
-                                            {{-- {{ $row->data['message'] }} --}}
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam accusamus alias
-                                            tempore animi
+                                            {{ $row->data['message'] }}
                                         </div>
                                         <div class="text-muted">{{ $row->created_at->locale('fr')->diffForHumans() }}
                                         </div>

@@ -10,5 +10,4 @@
     {{ $task->etat }}
 
 </span>
-
 @endif

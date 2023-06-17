@@ -89,7 +89,7 @@
     <x-table :rows="$rows">
         <x-slot name="header">
             <div class="card-header">
-                <h3 class="card-title"> {{ $rows->total() }} resultats trouvés
+                <h3 class="card-title"> {{ $rows }} resultats trouvés
                 </h3>
             </div>
             <div class="card-body">
