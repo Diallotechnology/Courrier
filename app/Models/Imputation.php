@@ -66,14 +66,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Imputation extends Model
 {
     use HasFactory, DateFormat;
-
-    protected $table = 'imputations';
-
     protected $casts = [
         'etat' => ImputationEnum::class,
     ];
 
-    protected $fillable = ['courrier_id','structure_id' ,'departement_id','user_id', 'numero','fin_traitement','observation','delai','etat'];
+    protected $fillable = [
+        'courrier_id',
+        'structure_id',
+        'user_id',
+        'priorite',
+        'numero',
+        'fin_traitement',
+        'observation',
+        'delai',
+        'etat'
+    ];
 
     /**
      * Get the courrier that owns the Imputation
@@ -86,13 +93,13 @@ class Imputation extends Model
     }
 
     /**
-     * Get the departement that owns the Imputation
+     * The departements that belong to the Imputation
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function departement(): BelongsTo
+    public function departements(): BelongsToMany
     {
-        return $this->belongsTo(Departement::class);
+        return $this->belongsToMany(Departement::class);
     }
 
     /**

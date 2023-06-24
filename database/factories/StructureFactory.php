@@ -18,6 +18,7 @@ class StructureFactory extends Factory
     {
         return [
             'nom' => $this->faker->company(),
+            'code' => $this->faker->companySuffix(),
             'logo' => $this->faker->imageUrl(),
             'email' => $this->faker->companyEmail(),
             'adresse' => $this->faker->address(),

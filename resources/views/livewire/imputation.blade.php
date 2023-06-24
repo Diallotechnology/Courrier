@@ -8,25 +8,16 @@
         </div>
         <div class="card-body">
             <x-filter url="imputation" :create="App\Models\Imputation::class">
-                <div class="mb-3 col-sm-4 col-md-4">
+                <div class="mb-3  col-md-3">
                     <div wire:ignore>
                         <x-select label="Courrier arrivé" :required='false' wire:model='courrier'>
                             @foreach ($arriver as $row)
-                            <option value="{{ $row->id }}">{{ $row->reference }}</option>
+                            <option value="{{ $row->id }}">N/A {{ $row->reference }}</option>
                             @endforeach
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-4">
-                    <div wire:ignore>
-                        <x-select label="Departement" :required='false' wire:model='departement'>
-                            @foreach ($division as $row)
-                            <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
-                            @endforeach
-                        </x-select>
-                    </div>
-                </div>
-                <div class="mb-3 col-sm-4 col-md-4">
+                <div class="mb-3  col-md-3">
                     <div wire:ignore>
                         <x-select label="Priorite" :required='false' wire:model='priority'>
                             <option value="Urgent">Urgent</option>
@@ -34,7 +25,7 @@
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-4">
+                <div class="mb-3  col-md-3">
                     <div wire:ignore>
                         <x-select label="Etat" :required='false' wire:model='etat'>
                             @foreach (App\Enum\ImputationEnum::cases() as $row)
@@ -43,12 +34,13 @@
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-4">
+                <div class="mb-3  col-md-3">
                     <x-input type="date" label="Delai de traitement" wire:model='delai' :required='false' />
                 </div>
-                <div class="mb-3 col-sm-4 col-md-4">
+                <div class="mb-3  col-md-3">
                     <x-input type="date" label="Date de fin traitement" wire:model='fin' :required='false' />
                 </div>
+                <x-slot name="btn"></x-slot>
             </x-filter>
         </div>
     </x-slot>
@@ -58,7 +50,7 @@
             <th>Utilisateur</th>
             <th>Reference</th>
             <th>N/A du courrier</th>
-            <th>Nom du departement</th>
+            <th>Departement concerné</th>
             <th>Priorité</th>
             <th>Etat</th>
             <th>Delai</th>
@@ -76,7 +68,13 @@
             </td>
             <td>{{ $row->numero }}</td>
             <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
-            <td>{{ $row->departement ? $row->departement->nom : 'inexistant' }}</td>
+            <td>
+                @forelse ($row->departements as $item)
+                <div>{{ $item->nom }}</div>
+                @empty
+                aucun
+                @endforelse
+            </td>
             <td>
                 <x-statut type="prio" :courrier="$row" />
             </td>
@@ -85,7 +83,6 @@
             </td>
             <td>{{ $row->delai }}</td>
             <td>{{ $row->fin_traitement }}</td>
-
             <td>{{ $row->created_at }}</td>
             <td>
                 <x-button-edit :row="$row" href="{{ route('imputation.edit', ['imputation' => $row]) }}" />

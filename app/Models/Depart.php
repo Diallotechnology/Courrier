@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Depart
@@ -90,7 +91,6 @@ class Depart extends Model
         'nature_id',
         'courrier_id',
         'structure_id',
-        'correspondant_id',
         'numero',
         'objet',
         'priorite',
@@ -140,13 +140,13 @@ class Depart extends Model
     }
 
     /**
-     * Get the correspondant that owns the Depart
+     * The correspondants that belong to the Depart
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function correspondant(): BelongsTo
+    public function correspondants(): BelongsToMany
     {
-        return $this->belongsTo(Correspondant::class);
+        return $this->belongsToMany(Correspondant::class);
     }
 
 

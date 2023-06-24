@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('courrier_id')->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('imputation_id')->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('createur_id')->constrained('users');
             $table->string('numero')->nullable()->unique();
@@ -22,8 +21,8 @@ return new class extends Migration
             $table->longText('description');
             $table->string('type');
             $table->string('etat')->default(TaskEnum::EN_ATTENTE->value);
-            $table->dateTime('debut')->nullable();
-            $table->dateTime('fin')->nullable();
+            $table->dateTime('debut');
+            $table->dateTime('fin');
             $table->timestamps();
             $table->softDeletes();
         });

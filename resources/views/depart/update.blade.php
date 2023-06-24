@@ -16,10 +16,11 @@
                     </div>
 
                     <div class="col-md-6">
-                        <x-select name="correspondant_id" label="Correspondant(Destinateur)">
+                        <x-select name="correspondant_id[]" multiple label="Correspondant (Destinateurs)">
                             @foreach ($correspondant as $row)
-                            <option @selected($depart->correspondant_id == $row->id) value="{{ $row->id }}">{{
-                                $row->prenom.' '.$row->nom }}</option>
+                            <option @selected($depart->correspondants->contains('id',$row->id)) value="{{ $row->id
+                                }}">{{
+                                $row->nom }}</option>
                             @endforeach
                         </x-select>
                     </div>

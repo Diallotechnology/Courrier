@@ -12,6 +12,7 @@ use App\Models\Document;
 use App\Models\Structure;
 use App\Enum\CourrierEnum;
 use App\Helper\DateFormat;
+use App\Models\Imputation;
 use App\Models\Departement;
 use App\Models\Correspondant;
 use Illuminate\Support\Carbon;
@@ -179,13 +180,13 @@ class Courrier extends Model
     }
 
     /**
-     * The imputations that belong to the Courrier
+     * Get all of the imputations for the Courrier
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function imputations(): BelongsToMany
+    public function imputations(): HasMany
     {
-        return $this->belongsToMany(Departement::class, 'imputations')->withPivot('delai','reference','fin_traitement','observation','etat','priorite')->withTimestamps();
+        return $this->hasMany(Imputation::class);
     }
 
     /**

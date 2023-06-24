@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use Auth;
 use App\Models\Depart;
 use App\Models\Courrier;
 use App\Models\Structure;
 use App\Helper\DateFormat;
-use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Correspondant
@@ -92,12 +93,13 @@ class Correspondant extends Model
     }
 
     /**
-     * Get all of the depart for the Correspondant
+     * The departs that belong to the Correspondant
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function departs(): HasMany
+    public function departs(): BelongsToMany
     {
-        return $this->hasMany(Depart::class);
+        return $this->belongsToMany(Depart::class);
     }
+
 }

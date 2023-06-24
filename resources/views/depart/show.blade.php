@@ -16,12 +16,18 @@
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Correspondant du courrier</div>
-                <div class="datagrid-content">{{ $depart->correspondant->nom }}
+                <div class="datagrid-content">
+                    @forelse ($depart->correspondants as $item)
+                    <div> {{ $item->item }}</div>
+                    @empty
+                    aucun
+                    @endforelse
                 </div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Nature du courrier</div>
-                <div class="datagrid-content">{{ $depart->nature->nom }}
+                <div class="datagrid-content">
+                    {{ $depart->nature ? $depart->nature->nom : 'inexistant' }}
                 </div>
             </div>
             <div class="datagrid-item">

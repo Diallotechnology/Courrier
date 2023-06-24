@@ -44,10 +44,19 @@
                         <x-input type="date" name="date" :value="$arriver->date->format('Y-m-d')"
                             label="Date d'arriver" />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif"
                             :required='false' />
                     </div>
+                    @if(Auth::user()->isAdmin() || Auth::user()->isSuperadmin())
+                    <div class="col-md-3">
+                        <x-select label="Etat" :required='false' wire:model='etat'>
+                            @foreach (App\Enum\CourrierEnum::cases() as $row)
+                            <option @selected($arriver->etat == $row) value="{{ $row }}">{{ $row }}</option>
+                            @endforeach
+                        </x-select>
+                    </div>
+                    @endif
                     <x-textarea :value="$arriver->objet" place="objet du courrier" name="objet"
                         label="Objet/Origine du courrier" />
                     <x-textarea :value="$arriver->observation" place="observation ou commentaire sur le courrier"

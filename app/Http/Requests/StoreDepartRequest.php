@@ -34,7 +34,7 @@ class StoreDepartRequest extends FormRequest
             // 'files.*'=> 'mimes:pdf',
             'courrier_id'=>'nullable|exists:courriers,id',
             'nature_id'=>'required|exists:natures,id',
-            'correspondant_id'=>'required|exists:correspondants,id',
+            'correspondant_id'=>'required|array|exists:correspondants,id',
             'user_id'=>'required|exists:users,id',
             'structure_id'=>'required|exists:structures,id',
         ];

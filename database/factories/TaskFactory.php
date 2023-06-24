@@ -19,7 +19,7 @@ class TaskFactory extends Factory
     {
         return [
             'createur_id' => rand(1,10),
-            'courrier_id' => rand(1,10),
+            'imputation_id' => rand(1,10),
             'nom' => $this->faker->jobTitle(),
             'description' => $this->faker->sentence(2),
             'etat' => $this->faker->randomElement(TaskEnum::cases()),

@@ -5,10 +5,10 @@ namespace App\Enum;
 
 enum RoleEnum: string
 {
-    case SUPERADMIN = 'superadmin';
-    case ADMIN = 'admin';
+    case SUPERADMIN = 'Superadmin';
+    case ADMIN = 'Administrateur';
     // case USER = 'user';
-    case SUPERUSER = 'superuser';
-    case SECRETAIRE = 'secretaire';
+    case SUPERUSER = 'Superuser';
+    case STANDARD = 'Standard';
     // case AGENT = 'agent';
 }

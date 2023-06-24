@@ -204,7 +204,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  */
@@ -269,6 +269,8 @@ namespace App\Models{
  * @method static Builder|Depart byStructure()
  * @method static Builder|Depart whereStructureId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
+ * @property-read int|null $correspondants_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  */
 	class Depart extends \Eloquent {}
@@ -322,7 +324,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Departement byStructure()
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -460,6 +462,8 @@ namespace App\Models{
  * @property int $structure_id
  * @property string|null $numero
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read int|null $departements_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereNumero($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereStructureId($value)
@@ -806,6 +810,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Structure byStructure()
  * @mixin \Eloquent
+ * @property string $code
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
@@ -819,6 +824,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Structure whereCode($value)
  */
 	class Structure extends \Eloquent {}
 }
@@ -1048,6 +1054,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $createurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read int|null $departements_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $destinataires
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents

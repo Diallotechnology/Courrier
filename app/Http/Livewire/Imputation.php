@@ -34,7 +34,7 @@ class Imputation extends Component
     {
 
         $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = ModelsImputation::with('user','departement','courrier')
+        $query = ModelsImputation::with('user','departements','courrier')
             ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
             ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);
@@ -45,16 +45,16 @@ class Imputation extends Component
             ->when($this->fin, function ($query) {
                 $query->where('fin_traitement', $this->fin);
             })
-            ->when($this->departement, function ($query) {
-                $query->where('departement_id', $this->departement);
-            })
+            // ->when($this->departement, function ($query) {
+            //     $query->where('departement_id', $this->departement);
+            // })
             ->when($this->courrier, function ($query) {
                 $query->where('courrier_id', $this->courrier);
             })
             ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
             });
-        $rows = $query->latest()->paginate(15);
+        $rows = $query->latest('id')->paginate(15);
 
         $arriver = Courrier::where('etat','!=',CourrierEnum::ARCHIVE)
         ->when(!$isSuperadmin, fn($query) => $query->ByStructure())->latest()->get(['id','numero','date']);

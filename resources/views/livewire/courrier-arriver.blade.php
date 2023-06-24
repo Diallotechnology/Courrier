@@ -185,6 +185,7 @@
                     <div class="mb-3 col-sm-4 col-md-2">
                         <x-input type="date" label="Date d'arriver" wire:model='date' :required='false' />
                     </div>
+                    <x-slot name="btn"></x-slot>
                 </x-filter>
             </div>
         </x-slot>

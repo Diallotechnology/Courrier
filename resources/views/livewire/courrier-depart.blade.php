@@ -78,7 +78,11 @@
             </td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
-                {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
+                @forelse ($row->correspondants as $item)
+                <div> {{ $item->nom }}</div>
+                @empty
+                aucun
+                @endforelse
             </td>
             <td>{{ $row->courrier ? 'Courrier arriver N°'. $row->courrier->numero : 'pas de response' }}</td>
 
@@ -88,16 +92,12 @@
             <td>
                 <x-statut type="privacy" :courrier="$row" />
             </td>
-
             <td>
-                <span @class(['status status-success'])>
-                    {{ $row->etat }}
-                </span>
+                <span @class(['status status-success'])>{{ $row->etat }}</span>
             </td>
             <td>
                 <p class="text-muted">{{ $row->objet }}</p>
             </td>
-
             <td>{{ $row->created_at }}</td>
             <td>
                 <x-button-edit :row="$row" href="{{ route('depart.edit', ['depart' => $row]) }}" />
@@ -128,7 +128,7 @@
             </div>
 
             <div class="col-md-6">
-                <x-select name="correspondant_id" label="Correspondant(Destinateur)">
+                <x-select name="correspondant_id[]" multiple label="Correspondant (Destinateurs)">
                     @foreach ($correspondant as $row)
                     <option value="{{ $row->id }}">{{ $row->nom }}</option>
                     @endforeach

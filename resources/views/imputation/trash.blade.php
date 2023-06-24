@@ -45,7 +45,13 @@
             </td>
             <td>{{ $row->reference }}</td>
             <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
-            <td>{{ $row->departement ? $row->departement->nom : 'inexistant' }}</td>
+            <td>
+                @forelse ($row->departements as $item)
+                <div>{{ $item->nom }}</div>
+                @empty
+                aucun
+                @endforelse
+            </td>
             <td>
                 <x-statut type="prio" :courrier="$row" />
             </td>

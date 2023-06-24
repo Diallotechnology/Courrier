@@ -194,13 +194,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('document',DocumentController::class)->except('create','store');
     });
 
-    Route::middleware("role:".RoleEnum::SECRETAIRE->value)->group(function () {
+    Route::middleware("role:".RoleEnum::STANDARD->value)->group(function () {
 
         Route::controller(AdminController::class)->group(function () {
             Route::get('rapport','rapport')->name('rapport');
             Route::get('agenda','agenda')->name('agenda');
             Route::get('document', 'document')->name('document');
-            Route::get('dashboard','dashboard')->name('dashboard');
+            Route::get('/','dashboard')->name('dashboard');
             Route::get('nature','nature')->name('nature');
             Route::get('correspondant','correspondant')->name('correspondant');
         });

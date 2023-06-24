@@ -29,31 +29,25 @@ class ImputationController extends Controller
      */
     public function store(StoreImputationRequest $request)
     {
-        $courrier = Courrier::findOrFail($request->courrier_id);
-        // Save imputation pivot value
-        $pivot_value = Arr::except($request->validated(), ['departement_id', 'annotation_id', 'notif']);
-        $courrier->imputations()->attach($request->departement_id, $pivot_value);
 
-        // Update courrier status
-        if($courrier->Register()) {
-            $courrier->update(['etat' => CourrierEnum::IMPUTE]);
-        }
-
-        // Get imputation
-        $imp_id = Imputation::whereNumero($request->numero)->firstOrFail(['id', 'numero']);
-
+        $item = Imputation::create($request->safe()->except(['annotation_id','departement_id','notif']));
+        $item->generateId('IMP');
+         // Save departements pivot value
+        $item->departements()->attach($request->departement_id);
         // Save annotations pivot value
-        $imp_id->annotations()->attach($request->annotation_id);
-
+        $item->annotations()->attach($request->annotation_id);
+        // Update courrier status
+        if($item->courrier->Register()) {
+            $item->courrier->update(['etat' => CourrierEnum::IMPUTE]);
+        }
         // Create tasks for imputation
         if (!empty($request->annotation_id)) {
             $tache = Annotation::whereIn('id', $request->annotation_id)->get();
-
-            $tache->map(function ($row) use ($courrier, $imp_id, $request) {
+            $tache->map(function ($row) use ($item, $request) {
               $task = Task::create([
-                        'courrier_id' => $courrier->id,
+                        'courrier_id' => $item->courrier->id,
                         'createur_id' => Auth::user()->id,
-                        'imputation_id' => $imp_id->id,
+                        'imputation_id' => $item->id,
                         'nom' => $row->nom,
                         'type' => 'imputation',
                         'description' => $row->nom,
@@ -65,22 +59,19 @@ class ImputationController extends Controller
                     return $task;
             });
         }
-
         // Get notifiable users' emails
-        $users = User::whereIn('userable_id', $request->departement_id)
-            ->whereRole(RoleEnum::SUPERUSER)
-            ->get(['email','id']);
+        $users = User::whereIn('userable_id', $request->departement_id)->whereRole(RoleEnum::SUPERUSER)->get(['email','id']);
         $emails = $users->pluck('email')->toArray();
 
         // Send notification
-        $notification = new ImputationNotification($imp_id, "Vous avez été imputé d'un nouveau courrier");
+        $notification = new ImputationNotification($item, "Vous avez été imputé d'un nouveau courrier");
         if ($request->notif == 1) {
             Notification::route('mail', $emails)->notify($notification);
         } else {
             Notification::send($users, $notification);
         }
-
-        $this->history($courrier->id, "Impuatation", "Imputé le courrier arrivé le N° $courrier->reference");
+        $ref = $item->courrier->numero;
+        $this->history($item->courrier->id, "Impuatation", "Imputé le courrier arrivé le N° $ref");
         toastr()->success('Imputation ajoutée avec succès!');
         return back();
     }
@@ -104,11 +95,10 @@ class ImputationController extends Controller
     {
         $this->authorize('update', $imputation);
         $user = Auth::user();
-        $courrierQuery = Courrier::with('nature')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
-        $courrier = $courrierQuery->latest()->get(['id','numero','reference','date']);
-
-        $departementQuery = Departement::with('subdepartements')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
-        $departement = $departementQuery->latest()->get();
+        $courrier = Courrier::with('nature')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())
+                    ->latest('id')->get(['id','numero','reference','date']);
+        $departement = Departement::with('subdepartements')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())
+                    ->latest('id')->get();
         return view('imputation.update', compact('imputation','courrier','departement'));
     }
 
@@ -117,8 +107,9 @@ class ImputationController extends Controller
      */
     public function update(UpdateImputationRequest $request, Imputation $imputation)
     {
-        $imputation->update($request->validated());
+        $imputation->update($request->safe()->except(['annotation_id','departement_id']));
         $imputation->annotations()->sync($request->annotation_id);
+        $imputation->departements()->sync($request->departement_id);
         toastr()->success('Imputation mise à jour avec success!');
         return back();
     }
@@ -135,7 +126,7 @@ class ImputationController extends Controller
 
     public function trash()
     {
-        $rows = Imputation::with('user')->onlyTrashed()->latest()->paginate(15);
+        $rows = Imputation::with('user')->onlyTrashed()->latest('id')->paginate(15);
         return view('imputation.trash', compact('rows'));
     }
 

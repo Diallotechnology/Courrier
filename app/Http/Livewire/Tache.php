@@ -8,6 +8,7 @@ use App\Enum\TaskEnum;
 use Livewire\Component;
 use App\Models\Courrier;
 use App\Enum\CourrierEnum;
+use App\Models\Imputation;
 use App\Enum\ImputationEnum;
 use App\Helper\DeleteAction;
 use Livewire\WithPagination;
@@ -25,9 +26,7 @@ class Tache extends Component
     public string $debut = '';
     public string $fin = '';
     public string $etat = '';
-    public string $selectbox = '';
-    public string $type_select = '';
-    public bool $show = false;
+    public string $imputation = '';
 
     public function ResetFilter(): void
     {
@@ -37,36 +36,31 @@ class Tache extends Component
 
     public function ValidTask(int $id): void
     {
-        $task = Task::with('courrier','imputation')->findOrFail($id);
+        // get task
+        $task = Task::with('imputation', 'users')->findOrFail($id);
+        // update user pivot etat
+        $task->users()->updateExistingPivot(Auth::user()->id, ['etat' => 1]);
+        // update task to terminie
         $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
 
-        if ($task->type === "imputation") {
-            if ($task->courrier && $task->courrier->impute()) {
-                $task->courrier->update(['etat' => CourrierEnum::PROCESS]);
-            }
-            if ($task->imputation && $task->imputation->Pending()) {
-                $task->imputation->update(['etat' => ImputationEnum::EN_COURS]);
-            }
-            if ($task->courrier) {
-                $courrier = $task->courrier;
-                $id = $courrier->id;
-                $num = $courrier->numero;
+        if ($task->type === "imputation" && $task->imputation && $task->imputation->courrier) {
+            $courrier = $task->imputation->courrier;
+            // update imputation courrier etat
+            $courrier->impute() ? : $courrier->update(['etat' => CourrierEnum::PROCESS]);
+            // update imputation etat
+            $task->imputation->Pending() ? : $task->imputation->update(['etat' => ImputationEnum::EN_COURS]);
 
-                // Send notification
-                $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
-                $task->createur->notify($notification);
-
-                $this->history($id, "validation de tache", "Une tache du courrier N°$num a été validé");
-
-                // Verify if all tasks for the courrier are completed
-                $incompleteTasksCount = Task::whereCourrierId($courrier->id)
-                    ->whereEtat('!=', TaskEnum::TERMINE)
-                    ->count();
-
-                if ($incompleteTasksCount === 0) {
-                    $courrier->updateOrFail(['etat' => CourrierEnum::TERMINE]);
-                    $this->history($id, "tache terminé", "Toute les taches du courrier arrivé N°$num sont terminés");
-                }
+            $id = $courrier->id;
+            $num = $courrier->numero;
+            // Send notification
+            $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
+            $task->createur->notify($notification);
+            $this->history($id, "validation de tache", "La tache N°$task->numero du courrier arrivé N°$num a été validé");
+            // Verify if all tasks for the courrier are completed
+            $incompleteTasksCount = Task::where('imputation_id',$id)->whereEtat('!=', TaskEnum::TERMINE)->exists();
+            if (!$incompleteTasksCount) {
+                $courrier->updateOrFail(['etat' => CourrierEnum::TERMINE]);
+                $this->history($id, "tache terminé", "Toute les taches du courrier arrivé N°$num sont terminés");
             }
         } else {
             // Send notification
@@ -82,8 +76,11 @@ class Tache extends Component
 
         $auth = Auth::user();
         $query = Task::with('createur','users')
-            ->when(!$auth->isSuperadmin(), fn($query) => $query->whereCreateurId($auth->id))
+            ->when(!$auth->isSuperadmin(), fn($query) => $query->where('createur_id',$auth->id))
             ->orWhereHas('users', fn($query) => $query->where('user_id', $auth->id))
+            ->when($this->imputation, function ($query) {
+                $query->where('imputation_id', $this->imputation);
+            })
             ->when($this->type, function ($query) {
                 $query->where('type', $this->type);
             })
@@ -97,9 +94,10 @@ class Tache extends Component
                 $query->where('etat', $this->etat);
             });
 
-        $rows = $query->latest()->paginate(15);
+        $rows = $query->latest('id')->paginate(15);
         $user = User::with('userable')->when(!$auth->isSuperadmin(), fn($query) => $query->StructureUser())->get()
         ->groupBy('userable.nom');
-        return view('livewire.tache', compact('user','rows'));
+        $imp = Imputation::when(!$auth->isSuperadmin(), fn($query) => $query->ByStructure())->orderBy('numero')->get();
+        return view('livewire.tache', compact('user','rows','imp'));
     }
 }

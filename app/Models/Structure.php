@@ -91,7 +91,7 @@ class Structure extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom','email','logo','contact','description','adresse'];
+    protected $fillable = ['nom','code','email','logo','contact','description','adresse'];
 
     /**
      * Get the licence associated with the Structure

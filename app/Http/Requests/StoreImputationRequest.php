@@ -43,7 +43,6 @@ class StoreImputationRequest extends FormRequest
         $this->merge([
             'user_id' => Auth::user()->id,
             'structure_id' => Auth::user()->structure(),
-            'numero' => 'test',
          ]);
     }
 

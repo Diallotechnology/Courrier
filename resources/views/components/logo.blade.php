@@ -1,1 +1,1 @@
-<h1>Courribox</h1>
+<img src="{{ asset('/img/logo/logo_black.png') }}" style="height: 8rem;" alt="logo" class="navbar-brand-image">

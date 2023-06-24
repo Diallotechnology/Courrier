@@ -45,7 +45,7 @@ trait DateFormat
         return $this->confidentiel === "OUI" ? true : false;
     }
 
-        /**
+    /**
      * Scope to get nature by structure.
      */
     public function scopeByStructure(Builder $query): Builder
@@ -57,7 +57,7 @@ trait DateFormat
     public function generateId(string $prefix_type)
     {
         $currentYear = Carbon::today()->format('Y');
-        $prefix = $prefix_type . $currentYear . '-';
+        $prefix = Auth::user()->user_structure()->code.'-'.$prefix_type . $currentYear . '-';
 
         return DB::transaction(function () use ($prefix) {
             // Verrouille le dernier identifiant de courrier enregistré dans la base de données pour la mise à jour
@@ -70,9 +70,7 @@ trait DateFormat
             if ($lastCourrier) {
                 // Récupère le numéro de séquence de l'identifiant de courrier précédent
                 $sequence = (int)substr($lastCourrier->numero, strlen($prefix));
-
             }
-
             // Incrémente le numéro de séquence et génère le nouvel identifiant de courrier
             $sequence++;
             $newCourrierNumber = $prefix . $sequence;

@@ -24,7 +24,7 @@ class CourrierFactory extends Factory
             'nature_id' => rand(1,5),
             'structure_id' => rand(1,5),
             'user_id' => rand(1,5),
-            // 'numero' => uniqid(),
+            'numero' => uniqid(),
             'priorite' => $this->faker->randomElement(['Normal','Urgent']),
             'confidentiel' => $this->faker->randomElement(['OUI','NON']),
             'date' => $this->faker->date(),

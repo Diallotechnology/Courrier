@@ -135,6 +135,15 @@
                 <x-filter url="task" :create="App\Models\Task::class">
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
+                            <x-select label="imputation" :required='false' wire:model='imputation'>
+                                @foreach ($imp as $row)
+                                <option value="{{ $row->id }}">Reference {{ $row->numero }}</option>
+                                @endforeach
+                            </x-select>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-sm-4 col-md-3">
+                        <div wire:ignore>
                             <x-select label="Type de tache" :required='false' wire:model='type'>
                                 <option value="utilisateur">Utilisateur</option>
                                 <option value="imputation">Imputation</option>
@@ -168,7 +177,7 @@
                 <th>Utilisateur</th>
                 <th>reference</th>
                 <th>Type de tache</th>
-                <th>Exécution</th>
+                <th>Exécutant</th>
                 <th>nom de la tache</th>
                 <th>Debut de la tache</th>
                 <th>Fin de la tache</th>

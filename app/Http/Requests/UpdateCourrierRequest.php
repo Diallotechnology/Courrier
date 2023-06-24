@@ -35,6 +35,7 @@ class UpdateCourrierRequest extends FormRequest
             'observation'=>'string|nullable|max:255',
             'date'=>'required|date',
             'files'=> 'nullable',
+            'etat'=> 'nullable',
             // 'files.*'=> 'mimes:pdf',
             'nature_id'=>'required|exists:natures,id',
             'correspondant_id'=>'required|exists:correspondants,id',

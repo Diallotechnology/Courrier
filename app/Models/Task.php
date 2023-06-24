@@ -75,7 +75,6 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'courrier_id',
         'createur_id',
         'imputation_id',
         'reference',

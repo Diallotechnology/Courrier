@@ -30,8 +30,13 @@ class DepartController extends Controller
      */
     public function store(StoreDepartRequest $request)
     {
-        $item = Depart::create($request->validated());
+
+        $item = Depart::create($request->safe()->except(['correspondant_id']));
         $ref = $item->generateId('CD');
+        if(!empty($request->correspondant_id)) {
+            $item->correspondants()->attach($request->correspondant_id);
+        }
+
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
@@ -82,7 +87,10 @@ class DepartController extends Controller
      */
     public function update(UpdateDepartRequest $request, Depart $depart)
     {
-        $depart->update($request->validated());
+        $depart->update($request->safe()->except(['correspondant_id']));
+        if(!empty($request->correspondant_id)) {
+            $depart->correspondants()->sync($request->correspondant_id);
+        }
         if ($request->hasFile('files')):
             foreach ($request->file('files') as $key => $row):
                 // renome le document
@@ -116,7 +124,7 @@ class DepartController extends Controller
     {
         $rows = Depart::with('user','courrier')->onlyTrashed()
         ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
-        ->latest()->paginate(15);
+        ->latest('id')->paginate(15);
         return view('depart.trash', compact('rows'));
     }
 

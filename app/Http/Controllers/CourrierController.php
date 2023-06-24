@@ -54,7 +54,7 @@ class CourrierController extends Controller
     public function show(Courrier $arriver)
     {
         $this->authorize('view', $arriver);
-        $imp = Imputation::with('departement')->whereCourrierId($arriver->id)->get();
+        $imp = Imputation::with('departements')->whereCourrierId($arriver->id)->get();
         return view('arriver.show', compact('arriver','imp'));
     }
 

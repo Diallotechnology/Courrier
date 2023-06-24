@@ -161,7 +161,6 @@ class AdminController extends Controller
                 'end' => $row->fin,
             ];
         });
-
         return view('agenda', compact('events'));
     }
 

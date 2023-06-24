@@ -51,7 +51,7 @@ class CourrierInterne extends Component
             ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
             });
-        $rows = $query->latest()->paginate(15);
+        $rows = $query->latest('id')->paginate(15);
         $typeQuery = Nature::orderBy('nom')->when(!$isSuperadmin, fn($query) => $query->where('structure_id', Auth::user()->structure()));
         $type = $typeQuery->get();
 

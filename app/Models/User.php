@@ -300,14 +300,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user has the agent role.
-     */
-    // public function isAgent(): bool
-    // {
-    //     return $this->role === RoleEnum::AGENT;
-    // }
-
-    /**
      * Check if the user has the superuser role.
      */
     public function isSuperuser(): bool
@@ -318,9 +310,9 @@ class User extends Authenticatable
     /**
      * Check if the user has the secretaire role.
      */
-    public function isSecretaire(): bool
+    public function isStandard(): bool
     {
-        return $this->role === RoleEnum::SECRETAIRE;
+        return $this->role === RoleEnum::STANDARD;
     }
 
 
@@ -427,17 +419,14 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the departement that owns the User
+     * The departements that belong to the User
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    // public function departement(): BelongsTo
-    // {
-    //     return $this->belongsTo(Departement::class);
-    // }
-
-
-
+    public function departements(): BelongsToMany
+    {
+        return $this->belongsToMany(Departement::class);
+    }
 
     /**
      * The tasks that belong to the User

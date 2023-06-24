@@ -137,7 +137,7 @@
             </td>
             <td>{{ $row->created_at }}</td>
             <td>
-                @can('create',$interne)
+                @can('create',$row)
                 @if($row->Recu() || $row->Read())
                 <a aria-label="Button" href="{{ route('interne.show', ['interne' => $row]) }}"
                     class="btn btn-primary btn-icon">

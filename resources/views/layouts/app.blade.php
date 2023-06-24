@@ -117,10 +117,9 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark">
-                    <a href="#">
-                        COURRIBOX
-                        {{-- <img src="https://preview.tabler.io/static/logo-white.svg" width="110" height="32"
-                            alt="Tabler" class="navbar-brand-image"> --}}
+                    <a href="{{ route('dashboard') }}">
+                        <img src="{{ asset('/img/logo/logo_white2.png') }}" style="height: 3rem;" alt="logo"
+                            class="navbar-brand-image">
                     </a>
                 </h1>
                 <div class="navbar-nav flex-row d-lg-none">
@@ -173,7 +172,7 @@
                         <ul class="list-inline list-inline-dots mb-0">
                             <li class="list-inline-item">
                                 Copyright &copy; 2023
-                                <a href="." class="link-secondary">Tabler</a>.
+                                <a href="." class="link-secondary">Couribox</a>.
                                 All rights reserved.
                             </li>
                         </ul>

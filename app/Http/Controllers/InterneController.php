@@ -32,7 +32,7 @@ class InterneController extends Controller
      */
     public function create()
     {
-        $this->user()->can('create', Interne::class);
+        Auth::user()->can('create', Interne::class);
         $isSuperadmin = Auth::user()->isSuperadmin();
         $user = User::with('userable')->StructureUser()->latest()->get()->groupBy('userable.nom');
 

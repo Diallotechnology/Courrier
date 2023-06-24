@@ -35,7 +35,7 @@ class CourrierDepart extends Component
     {
         $structureId = Auth::user()->structure();
         $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = Depart::with('user', 'nature', 'correspondant')
+        $query = Depart::with('user', 'nature', 'correspondants')
             ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
@@ -46,9 +46,9 @@ class CourrierDepart extends Component
             ->when($this->nature, function ($query) {
                 $query->where('nature_id', $this->nature);
             })
-            ->when($this->expediteur, function ($query) {
-                $query->where('correspondant_id', $this->expediteur);
-            })
+            // ->when($this->expediteur, function ($query) {
+            //     $query->where('correspondant_id', $this->expediteur);
+            // })
             ->when($this->date, function ($query) {
                 $query->where('date', $this->date);
             })
@@ -56,7 +56,7 @@ class CourrierDepart extends Component
                 $query->where('etat', $this->etat);
             });
 
-        $rows = $query->latest()->paginate(15);
+        $rows = $query->latest('id')->paginate(15);
 
         $correspondantQuery = Correspondant::orderBy('nom');
         $typeQuery = Nature::orderBy('nom');

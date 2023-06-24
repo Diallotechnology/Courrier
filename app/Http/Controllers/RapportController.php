@@ -21,7 +21,7 @@ class RapportController extends Controller
      */
     public function create()
     {
-        $this->user()->can('create', Rapport::class);
+        Auth::user()->can('create', Rapport::class);
         $user = Auth::user();
         $courrierQuery = Courrier::with('nature')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
         $courrier = $courrierQuery->latest()->get();
@@ -108,7 +108,7 @@ class RapportController extends Controller
     public function destroy(int $rapport)
     {
         $delete = Rapport::findOrFail($rapport);
-        
+
         $this->journal("Suppression du rapport REF N°$delete->reference");
         return  $this->supp($delete);
     }

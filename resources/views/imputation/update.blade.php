@@ -7,20 +7,19 @@
                 <div class="col-md-12">
                     <x-select label="Courrier arrivé" name="courrier_id">
                         @foreach ($courrier as $row)
-                        <option @selected($imputation->courrier_id == $row->id) value="{{ $row->id }}">Reférence {{
-                            $row->reference }}, Numero d'arriver {{ $row->numero
-                            }},Date
-                            d'arriver {{
-                            $row->date_format }}
+                        <option @selected($imputation->courrier_id == $row->id) value="{{ $row->id }}">
+                            Reférence {{ $row->reference }}, Numero d'arriver {{ $row->numero }},
+                            Date d'arriver {{ $row->date_format }}
                         </option>
                         @endforeach
                     </x-select>
                 </div>
                 <div class="col-md-6">
-                    <x-select label="Departement" name="departement_id">
+                    <x-select label="Departement" multiple name="departement_id[]">
                         @foreach ($departement as $row)
-                        <option @selected($imputation->departement_id == $row->id) value="{{ $row->id }}"> {{ $row->nom
-                            }}</option>
+                        <option @selected($imputation->departements->contains('id',$row->id)) value="{{ $row->id }}">
+                            {{ $row->nom }}
+                        </option>
                         @endforeach
                     </x-select>
                 </div>
@@ -42,8 +41,8 @@
 
                             <div class="col-md-4">
                                 <label class="form-check">
-                                    <input class="form-check-input" @checked($imputation->annotations->contains('id',
-                                    $row->id))
+                                    <input class="form-check-input"
+                                        @checked($imputation->annotations->contains('id',$row->id))
                                     value="{{ $row->id }}"
                                     name="annotation_id[]" type="checkbox">
                                     <span class="form-check-label">{{ $row->nom }}</span>

@@ -40,7 +40,6 @@ class CourrierArriver extends Component
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
         $query = Courrier::with('user', 'nature', 'correspondant','structure')
-            ->whereNot('etat', CourrierEnum::ARCHIVE)
             ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
@@ -60,7 +59,7 @@ class CourrierArriver extends Component
             ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
             });
-        $rows = $query->latest()->paginate(15);
+        $rows = $query->latest('id')->paginate(15);
         $correspondantQuery = Correspondant::orderBy('nom');
         $typeQuery = Nature::orderBy('nom');
         if (!$isSuperadmin) {

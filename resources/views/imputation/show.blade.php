@@ -2,13 +2,13 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Informations de imputation N° {{ $imputation->reference }}</h3>
+        <h3 class="card-title">Informations de imputation N° {{ $imputation->numero }}</h3>
     </div>
     <div class="card-body">
         <div class="datagrid">
             <div class="datagrid-item">
                 <div class="datagrid-title">Reference</div>
-                <div class="datagrid-content">{{ $imputation->reference }}</div>
+                <div class="datagrid-content">{{ $imputation->numero }}</div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Utilisateur</div>
@@ -16,17 +16,20 @@
                     <x-user-avatar :row="$imputation" />
                 </div>
             </div>
-
+            <div class="datagrid-item">
+                <div class="datagrid-title">Departement concerné</div>
+                <div class="datagrid-content">
+                    @forelse ($imputation->departements as $item)
+                    <div>{{ $item->nom }}</div>
+                    @empty
+                    aucun
+                    @endforelse
+                </div>
+            </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Priorite</div>
                 <div class="datagrid-content">
                     <x-statut type="prio" :courrier="$imputation" />
-                </div>
-            </div>
-            <div class="datagrid-item">
-                <div class="datagrid-title">Departement concerné</div>
-                <div class="datagrid-content">
-                    {{ $imputation->departement ? $imputation->departement->nom : 'inexistant' }}
                 </div>
             </div>
             <div class="datagrid-item">
@@ -69,12 +72,11 @@
 </div>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Liste des annotations et instruction de imputation</h3>
+        <h3 class="card-title">Liste des annotations et instructions de imputation</h3>
     </div>
     <div class="card-body">
         <div class="datagrid">
             <div class="datagrid-item">
-                {{-- <div class="datagrid-title">annotations</div> --}}
                 <div class="datagrid-content">
                     <div class="row">
                         @foreach ($imputation->annotations as $row)
