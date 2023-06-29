@@ -84,7 +84,7 @@
                 aucun
                 @endforelse
             </td>
-            <td>{{ $row->courrier ? 'Courrier arriver N°'. $row->courrier->numero : 'pas de response' }}</td>
+            <td>{{ $row->courrier ? 'Courrier N°'. $row->courrier->numero : 'pas de response' }}</td>
 
             <td>
                 <x-statut type="prio" :courrier="$row" />

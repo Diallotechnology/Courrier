@@ -35,11 +35,7 @@ class TaskNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        // if($this->task) {
-        //     return (new MailMessage)->line($this->message)->action("Voir la tache", route('task.show',$this->task));
-        // }
         return (new MailMessage)->line($this->message);
-
     }
 
     /**
@@ -49,12 +45,10 @@ class TaskNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-
-        // $etat = $this->task->etat;
-        // \dd($this->task);
+        $ref = $this->task->numero;
         return [
-            'message' =>   'la tache N°'.$this->task->numero .' '. $this->message,
-            'type' =>  "Tache",
+            'message' =>  $this->message,
+            'type' =>  "Tache N° $ref",
 
         ];
     }

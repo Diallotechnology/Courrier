@@ -1,7 +1,7 @@
 @props(['disabled' => false,'required'=>true, 'name' => '','type' => '', 'place' => '', 'label' => '', 'value' =>
 false,'messages'])
 
-<label {{ $attributes->merge(['class' => 'form-label required text-uppercase']) }}>
+<label {{ $attributes->merge(['class' => 'form-label text-uppercase']) }}>
     @empty($label)
     {{ $name }}
     @else

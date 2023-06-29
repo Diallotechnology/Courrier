@@ -414,7 +414,7 @@
             </div>
         </div>
     </div>
-    <div class="col-9">
+    <div class="col-md-9 col-sm-12">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex">
@@ -424,8 +424,8 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
-        <img src="{{ asset('/img/Mail-bro.svg') }}" height="300" alt="">
+    <div class="col-md-3">
+        <img src="{{ asset('/img/Mail-bro.svg') }}" class="" height="300" alt="">
     </div>
     <div class="col-md-12">
         <x-table>
@@ -469,7 +469,7 @@
                         inexistant
                         @endif
                     </td>
-                    <td>{{ $row->reference }}</td>
+                    <td>{{ $row->numero }}</td>
                     <td>{{ $row->type }}</td>
                     <td>
                         {{ $row->nom }}

@@ -206,7 +206,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  */
 	class Courrier extends \Eloquent {}
 }
@@ -575,11 +574,11 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $structure_id
- * @property string $code
- * @property string $version
- * @property string $date_expiration
- * @property string $activated_at
- * @property int $active
+ * @property \App\Enum\LicenceEnum $version
+ * @property string|null $code
+ * @property string|null $debut
+ * @property string|null $fin
+ * @property int|null $active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Structure $structure
@@ -587,11 +586,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Licence newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Licence newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Licence query()
- * @method static \Illuminate\Database\Eloquent\Builder|Licence whereActivatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Licence whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Licence whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Licence whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Licence whereDateExpiration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereDebut($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Licence whereFin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Licence whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Licence whereStructureId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Licence whereUpdatedAt($value)

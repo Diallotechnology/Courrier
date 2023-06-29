@@ -11,6 +11,7 @@ use App\Enum\CourrierEnum;
 use App\Models\Imputation;
 use App\Enum\ImputationEnum;
 use App\Helper\DeleteAction;
+use App\Notifications\ImputationNotification;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\TaskNotification;
@@ -40,9 +41,12 @@ class Tache extends Component
         $task = Task::with('imputation', 'users')->findOrFail($id);
         // update user pivot etat
         $task->users()->updateExistingPivot(Auth::user()->id, ['etat' => 1]);
-        // update task to terminie
-        $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
-
+         // Verify if all tasks for the imputation are completed
+        $incompleteTasksUserCount = $task->users()->wherePivot('etat',0)->exists();
+        if(!$incompleteTasksUserCount) {
+            // update task to terminie
+            $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
+        }
         if ($task->type === "imputation" && $task->imputation && $task->imputation->courrier) {
             $courrier = $task->imputation->courrier;
             // update imputation courrier etat
@@ -56,9 +60,12 @@ class Tache extends Component
             $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
             $task->createur->notify($notification);
             $this->history($id, "validation de tache", "La tache N°$task->numero du courrier arrivé N°$num a été validé");
-            // Verify if all tasks for the courrier are completed
-            $incompleteTasksCount = Task::where('imputation_id',$id)->whereEtat('!=', TaskEnum::TERMINE)->exists();
+            // Verify if all tasks for the imputation are completed
+            $incompleteTasksCount = Task::where('imputation_id',$task->imputation_id)->whereEtat('!=', TaskEnum::TERMINE)->exists();
             if (!$incompleteTasksCount) {
+                $task->imputation->updateOrFail(['fin_traitement' => today(), 'etat' => ImputationEnum::TERMINE]);
+                $notification = new ImputationNotification($task->imputation,"l'imputation N°".$task->imputation->numero.'terminé avec success');
+                $task->imputation->user->notify($notification);
                 $courrier->updateOrFail(['etat' => CourrierEnum::TERMINE]);
                 $this->history($id, "tache terminé", "Toute les taches du courrier arrivé N°$num sont terminés");
             }
@@ -95,8 +102,8 @@ class Tache extends Component
             });
 
         $rows = $query->latest('id')->paginate(15);
-        $user = User::with('userable')->when(!$auth->isSuperadmin(), fn($query) => $query->StructureUser())->get()
-        ->groupBy('userable.nom');
+        $user = User::with('userable')->when(!$auth->isSuperadmin(), fn($query) => $query->StructureUser())
+        ->whereNot('id',$auth->id)->get()->groupBy('userable.nom');
         $imp = Imputation::when(!$auth->isSuperadmin(), fn($query) => $query->ByStructure())->orderBy('numero')->get();
         return view('livewire.tache', compact('user','rows','imp'));
     }

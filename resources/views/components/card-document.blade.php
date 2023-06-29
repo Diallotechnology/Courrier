@@ -3,8 +3,8 @@
 <div class="card text-center mb-2 shadow">
     <div class="card-body file">
         <div class="file-action">
-            <x-button-edit href="{{ route('document.edit', ['document' => $row]) }}" />
-            <x-button-show href="{{ route('document.show', ['document' => $row]) }}" target="_blank" />
+            <x-button-edit :row="$row" href="{{ route('document.edit', ['document' => $row]) }}" />
+            <x-button-show :row="$row" href="{{ route('document.show', ['document' => $row]) }}" target="_blank" />
         </div>
         <div class="rounded my-4">
             <span style="

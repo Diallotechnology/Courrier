@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="row">
-    <div class="col-10 mx-auto">
+    <div class="col-12 mx-auto">
         <div class="card p-3">
             <x-form route="{{ route('task.update',$task) }}" type="update" url="{{ route('task') }}">
                 <div class="col-md-6">
@@ -35,7 +35,7 @@
                     <x-input type="datetime-local" :value="$task->fin" name="fin" label="Fin de la tache" />
                 </div>
                 <x-textarea place="Fait une description de la tache" :value="$task->description" name="description"
-                    label="description de la taches" />
+                    label="description de la tache" />
             </x-form>
         </div>
     </div>

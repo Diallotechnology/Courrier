@@ -49,9 +49,9 @@ class CourrierPolicy
      */
     public function update(User $user, Courrier $courrier): bool
     {
-        return ($user->isAdmin() || $user->isSuperuser() || $user->isStandard()) &&
+        return ($user->isAdmin() || $user->isSuperuser() && !$courrier->Archive() || $user->isStandard()) &&
             $user->id === $courrier->user_id &&
-           ! $courrier->Archive();
+           !$courrier->Archive();
     }
 
     /**
@@ -59,10 +59,7 @@ class CourrierPolicy
      */
     public function delete(User $user, Courrier $courrier): bool
     {
-        return $user->structure() === $courrier->structure_id &&
-            ($user->isAdmin() || $user->isSuperuser() || $user->isStandard()) &&
-            $user->id === $courrier->user_id &&
-            $courrier->Register();
+        return $user->structure() === $courrier->structure_id && ($user->isAdmin() || $user->isSuperuser() || $user->id === $courrier->user_id && $courrier->Archive());
     }
 
 

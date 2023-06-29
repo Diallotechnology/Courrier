@@ -2,13 +2,19 @@
 
 namespace App\Helper;
 
+use App\Models\Courrier;
+use App\Models\Depart;
 use App\Models\History;
 use App\Models\Journal;
+use App\Models\Document;
+use App\Models\Interne;
+use App\Models\Rapport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Request;
 
 trait DeleteAction
 {
@@ -49,6 +55,35 @@ trait DeleteAction
             $fileDeleted = File::delete(public_path($model->DocLink()));
         }
         return $fileDeleted;
+    }
+
+    public function file_uplode(Request $request,Model  $model) {
+        if($model instanceof Interne) {
+            $type = "Interne";
+        }
+        if($model instanceof Courrier) {
+            $type = "Courrier Arrivé";
+        }
+        if($model instanceof Rapport) {
+            $type = "Rapport";
+        }
+        if($model instanceof Depart) {
+            $type = "Courrier Depart";
+        }
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $key => $row) {
+                $filename = $row->hashName();
+                $chemin = $row->storeAs('courrier/interne', $filename, 'public');
+                $data = new Document([
+                    'libelle' => $model->numero,
+                    'type' => $type,
+                    'user_id' => Auth::user()->id,
+                    'structure_id' => Auth::user()->structure(),
+                    'chemin' => $chemin,
+                ]);
+                $model->documents()->save($data);
+            }
+        }
     }
 
 

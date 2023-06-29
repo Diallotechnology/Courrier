@@ -20,14 +20,6 @@ class InterneController extends Controller
 {
     use DeleteAction;
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -47,35 +39,33 @@ class InterneController extends Controller
      */
 
     public function store(StoreInterneRequest $request) {
-    foreach ($request->destinataire_id as $value) {
-        $itemData = [
-            "objet" => $request->objet,
-            "confidentiel" => $request->confidentiel,
-            "priorite" => $request->priorite,
-            "contenu" => $request->contenu,
-            "etat" => $request->etat,
-            "nature_id" => $request->nature_id,
-            "user_id" => $request->user_id,
-            "destinataire_id" => $value,
-            "expediteur_id" => $request->expediteur_id,
-        ];
+    // foreach ($request->destinataire_id as $value) {
+        // $itemData = [
+        //     "objet" => $request->objet,
+        //     "confidentiel" => $request->confidentiel,
+        //     "priorite" => $request->priorite,
+        //     "contenu" => $request->contenu,
+        //     "etat" => $request->etat,
+        //     "nature_id" => $request->nature_id,
+        //     "user_id" => $request->user_id,
+        //     "destinataire_id" => $value,
+        //     "expediteur_id" => $request->expediteur_id,
+        // ];
 
-        $item = Interne::create($itemData);
+        $item = Interne::create($request->validated());
         $item->generateId('CI');
-
-        $user = User::whereId($value)->first(['email','id']);
-
+        $user = User::findOrFail($request->destinataire_id);
         $notification = new CourrierNotification($item, "Vous avez reçu un nouveau courrier interne");
         // Notification::route('mail', $emails)->notify($notification);
         $user->notify($notification);
-    }
+    // }
 
     if ($request->hasFile('files')) {
         foreach ($request->file('files') as $key => $row) {
             $filename = $row->hashName();
             $chemin = $row->storeAs('courrier/interne', $filename, 'public');
             $data = new Document([
-                'libelle' => $itemData->numero,
+                'libelle' => $item->numero,
                 'type' => 'Interne',
                 'user_id' => Auth::user()->id,
                 'structure_id' => Auth::user()->structure(),

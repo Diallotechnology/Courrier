@@ -18,15 +18,15 @@
         document.body.classList.add("theme-".concat(e));
 });
 
-function deleteConfirmation(url, title, message, confirmText, cancelText) {
+function deleteConfirmation(url) {
     swal.fire({
-        title: title,
+        title: "Supprimer?",
         icon: "question",
-        text: message,
+        text: "Etes vous sur de vouloir supprimer cet element!",
         type: "warning",
         showCancelButton: true,
-        confirmButtonText: confirmText,
-        cancelButtonText: cancelText,
+        confirmButtonText: "Oui, Supprimer!",
+        cancelButtonText: "Non, Annuler!",
         reverseButtons: true,
     }).then(
         function (e) {
@@ -61,13 +61,13 @@ function deleteConfirmation(url, title, message, confirmText, cancelText) {
 
 function restore(url, title, message, confirmText, cancelText) {
     swal.fire({
-        title: title,
+        title: "Restaurer?",
         icon: "question",
-        text: message,
+        text: "Etes vous sur de vouloir restauré cet element!",
         type: "warning",
         showCancelButton: true,
-        confirmButtonText: confirmText,
-        cancelButtonText: cancelText,
+        confirmButtonText: "Oui, Restauré!",
+        cancelButtonText: "Non, Annuler!",
         reverseButtons: true,
     }).then(
         function (e) {

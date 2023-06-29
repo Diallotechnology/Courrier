@@ -3,51 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Licence;
+use App\Enum\LicenceEnum;
+use App\Models\Structure;
+use App\Helper\LicenceCode;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class LicenceController extends Controller
 {
-    // Exemple de renouvellement de licence
-    public function renewLicense()
-    {
-        $structure = auth()->user()->structure;
-        $license = $structure->license;
-        // Mettre à jour la date d'expiration de la licence
-        $license->update([
-            'date_expiration' => $license->date_expiration->addDays(30), // Exemple : prolonger la licence de 30 jours
+    use LicenceCode;
+
+    public function licence_review(Request $request, Licence $licence) {
+        $request->validate([
+            'version' => 'required',
+            'temps' => 'required|integer'
         ]);
-
-        // Autres actions nécessaires après le renouvellement
+        $licence->updateOrFail([
+            'version' => $request->version,
+            'temps' => $request->temps,
+            'fin' => now()->addMonth($request->temps),
+        ]);
+        toastr()->success('Licence renouvelé avec succès!');
+        return back();
     }
-
-        // Exemple de vérification de l'authenticité du code de licence
-    public function verifyLicenseCode($licenseCode)
-    {
-        $license = Licence::where('code', $licenseCode)->first();
-
-        if ($license) {
-            // Le code de licence est valide
-        } else {
-            // Le code de licence est invalide
-        }
-    }
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'version' => ['required',new Enum(LicenceEnum::class)],
+            'structure_id'=>'required|exists:structures,id',
+        ]);
+
+        if ($request->version == LicenceEnum::TRIAL->value) {
+            Licence::create([
+                'structure_id' => $request->structure_id,
+                'version' => $request->version,
+                'temps' => 15,
+                'debut' => now(),
+                'fin' => now()->addDays(15),
+                'active' => true,
+            ]);
+        } elseif($request->version === LicenceEnum::LICENCE->value) {
+            Licence::create([
+                'structure_id' => $request->structure_id,
+                'version' => $request->version,
+                'temps' => $request->temps,
+                'code' => $this->generateLicenseCode(),
+                'debut' => now(),
+                'fin' => now()->addMonth($request->temps),
+                'active' => true,
+            ]);
+        }
+
+        toastr()->success('Licence ajouter avec succès!');
+        return back();
     }
 
     /**
@@ -55,7 +66,7 @@ class LicenceController extends Controller
      */
     public function show(Licence $licence)
     {
-        //
+        return view('licence.show', compact('licence'));
     }
 
     /**
@@ -63,7 +74,8 @@ class LicenceController extends Controller
      */
     public function edit(Licence $licence)
     {
-        //
+        $structure = Structure::all();
+        return view('licence.update', compact('licence','structure'));
     }
 
     /**

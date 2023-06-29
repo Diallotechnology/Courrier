@@ -23,15 +23,25 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\SubStructureController;
 use App\Http\Controllers\CorrespondantController;
 use App\Http\Controllers\GmailController;
+use App\Http\Controllers\LicenceController;
 use App\Http\Controllers\SubDepartementController;
 
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth','licence')->group(function () {
     Route::middleware("role:".RoleEnum::SUPERADMIN->value)->group(function () {
         Route::controller(AdminController::class)->group(function () {
             Route::get('structure','structure')->name('structure');
             Route::get('licence','licence')->name('licence');
+        });
+        Route::resource('licence',LicenceController::class)->except('index','create');
+        Route::patch('licence/review/{licence}', [LicenceController::class, 'licence_review'])->name('licence.review');
+        Route::controller(StructureController::class)->group(function () {
+            Route::get('structure/trash','trash')->name('structure.trash');
+            Route::get('structure/restore/all','all_recover')->name('structure.restore');
+            Route::get('structure/delete/all','all_delete')->name('structure.delete');
+            Route::get('structure/restore/{id}','recover')->whereNumber('id');
+            Route::delete('structure/delete/{id}','force_delete')->whereNumber('id');
         });
 
         Route::controller(CorrespondantController::class)->group(function () {
@@ -67,14 +77,6 @@ Route::middleware('auth')->group(function () {
         Route::controller(NatureController::class)->group(function () {
             Route::get('nature/delete/all','all_delete')->name('nature.delete');
             Route::delete('nature/delete/{id}','force_delete')->whereNumber('id');
-        });
-
-        Route::controller(StructureController::class)->group(function () {
-            Route::get('structure/trash','trash')->name('structure.trash');
-            Route::get('structure/restore/all','all_recover')->name('structure.restore');
-            Route::get('structure/delete/all','all_delete')->name('structure.delete');
-            Route::get('structure/restore/{id}','recover')->whereNumber('id');
-            Route::delete('structure/delete/{id}','force_delete')->whereNumber('id');
         });
         Route::controller(DepartController::class)->group(function () {
             Route::get('depart/delete/all','all_delete')->name('depart.delete');
@@ -212,7 +214,7 @@ Route::middleware('auth')->group(function () {
         Route::view('imputation','imputation.index')->name('imputation');
         Route::view('tache','task.index')->name('task');
         Route::view('search','search')->name('search');
-        Route::view('licence/error','licence_expire')->name('licence_expire');
+        Route::view('licence_expire','licence_expire')->name('licence_expire');
         Route::post('user/active/two_factor', [UserController::class, 'active_2fa'])->name('user.active_2fa');
         Route::delete('rapport/delete/{id}', [RapportController::class, 'force_delete'])->whereNumber('id');
         Route::controller(TaskController::class)->group(function () {
@@ -249,15 +251,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('reponse',ReponseController::class)->except('index','show','create');
         Route::resource('user',UserController::class)->only('show');
     });
-
-    Route::resource('backup',BackupController::class)->except('index');
-    // Route::get('test', [GmailController::class, 'test'])->name('test');
-Route::get('listMessages', [GmailController::class, 'listMessages'])->name('gmail.messages');
-// Route for authentication callback
-Route::get('/auth/callback', [GmailController::class, 'callback']);
-
-// Route to initiate authentication
-Route::get('/auth', [GmailController::class, 'authenticate']);
 });
 
 

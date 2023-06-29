@@ -2,13 +2,13 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Informations du courrier interne N° {{ $interne->reference }}</h3>
+        <h3 class="card-title">Informations du courrier interne N° {{ $interne->numero }}</h3>
     </div>
     <div class="card-body">
         <div class="datagrid">
             <div class="datagrid-item">
                 <div class="datagrid-title">Reference</div>
-                <div class="datagrid-content">{{ $interne->reference }}</div>
+                <div class="datagrid-content">{{ $interne->numero }}</div>
             </div>
 
             <div class="datagrid-item">
@@ -59,7 +59,9 @@
             <div class="datagrid-item">
                 <div class="datagrid-title">Etat du courrier</div>
                 <div class="datagrid-content">
-                    <span @class(['status', 'status-success'=> $interne->Send(), 'status-red' => $interne->Recu()])>
+                    <span @class(['status', 'status-success'=> $interne->Send(), 'status-red' => $interne->Recu(),
+                        'status-indigo'
+                        => $interne->Read()])>
                         <span class="status-dot status-dot-animated"></span>
                         {{ $interne->etat }}
                     </span>

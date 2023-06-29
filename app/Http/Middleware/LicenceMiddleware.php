@@ -16,22 +16,11 @@ class LicenceMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $structure = $request->user()->user_structure();
-
-        if (!$structure) {
+        if (!$request->user()->isSuperadmin() && $structure->licence && $structure->licence->isExpired()) {
+            $structure->licence->active == true ? $structure->licence->updateOrFail(['active' => 0]) : '';
             // Gérer le cas où la structure n'est pas associée à une licence valide
-            return redirect()->route('licence_expire');
-        }
-
-        $license = $structure->licence;
-
-        if (!$license->active || ($license->isTrialVersion() && !$license->isExpired())) {
-            // Gérer le cas où la licence est inactive ou en version d'essai expirée
-            return redirect()->route('licence_expire');
-        }
-
-        if (!$license || !$license->active || $license->date_expiration < now()) {
-            // Gérer le cas où la licence est invalide ou expirée
-            return redirect()->route('licence_expire');
+            return abort(403);
+            // return to_route('licence_expire');
         }
         return $next($request);
     }

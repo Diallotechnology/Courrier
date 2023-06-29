@@ -36,7 +36,6 @@ class ReponseNotification extends Notification
     {
         return (new MailMessage)
                     ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
 
@@ -48,7 +47,8 @@ class ReponseNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => $this->message
+            'message' => $this->message,
+            'type' =>  "Courrier interne",
         ];
     }
 }

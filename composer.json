@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.12",
         "masmerise/livewire-toaster": "^1.1",
+        "opcodesio/log-viewer": "^2.4",
         "pulkitjalan/google-apiclient": "^6.1",
         "yoeunes/toastr": "^2.3"
     },

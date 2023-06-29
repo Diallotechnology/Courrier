@@ -36,7 +36,7 @@ class StoreInterneRequest extends FormRequest
             // 'files.*'=> 'mimes:pdf',
             'nature_id'=>'required|exists:natures,id',
             'user_id'=>'required|exists:users,id',
-            'destinataire_id'=>'required|array|exists:users,id',
+            'destinataire_id'=>'required|exists:users,id',
             'expediteur_id'=>'required|exists:users,id',
         ];
     }

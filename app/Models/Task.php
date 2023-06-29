@@ -77,7 +77,7 @@ class Task extends Model
     protected $fillable = [
         'createur_id',
         'imputation_id',
-        'reference',
+        'numero',
         'description',
         'nom',
         'type',
@@ -118,15 +118,6 @@ class Task extends Model
         return $this->belongsTo(Imputation::class);
     }
 
-    /**
-     * Get the courrier that owns the Task
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function courrier(): BelongsTo
-    {
-        return $this->belongsTo(Courrier::class);
-    }
     /**
      * The users that belong to the Task
      *

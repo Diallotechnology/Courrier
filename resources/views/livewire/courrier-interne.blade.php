@@ -54,10 +54,6 @@
                         Nouveau
                     </a>
                     @endcan
-                    <button class="btn btn-info mx-2" type="button">
-                        <i class="ti ti-file-export"></i>
-                        Export
-                    </button>
                 </x-slot>
             </x-filter>
         </div>

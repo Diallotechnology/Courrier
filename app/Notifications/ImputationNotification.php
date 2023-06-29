@@ -50,8 +50,8 @@ class ImputationNotification extends Notification
     {
         $ref = $this->imputation->numero;
         return [
-            'message' =>  $this->message.' REF '.$this->imputation->numero,
-            'type' =>  "imputation REF $ref",
+            'message' =>  $this->message,
+            'type' =>  "imputation N°$ref",
         ];
     }
 }

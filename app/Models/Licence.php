@@ -2,22 +2,34 @@
 
 namespace App\Models;
 
+use App\Enum\LicenceEnum;
 use App\Models\Structure;
+use App\Helper\LicenceCode;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Licence extends Model
 {
-    use HasFactory;
+    use HasFactory, LicenceCode;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['structure_id', 'code', 'date_expiration', 'version', 'active','activated_at'];
+    protected $fillable = ['structure_id', 'code', 'debut','fin', 'version','temps', 'active'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'version' => LicenceEnum::class,
+    ];
 
     /**
      * Get the structure that owns the Licence
@@ -29,38 +41,42 @@ class Licence extends Model
         return $this->belongsTo(Structure::class);
     }
 
-    // fonction pour générer un code de licence unique
-    function generateLicenseCode($length = 64): string
+    //vérification de l'authenticité du code de licence
+    public function verifyLicenseCode($licenseCode)
     {
-        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=,.<>{}[]';
-        $licenseCode = '';
+        $license = self::where('code', $licenseCode)->firstOrFail();
 
-        $characterCount = strlen($characters);
-
-        for ($i = 0; $i < $length; $i++) {
-            $licenseCode .= $characters[rand(0, $characterCount - 1)];
+        if ($license) {
+            // Le code de licence est valide
+        } else {
+            // Le code de licence est invalide
         }
+    }
 
-        return $licenseCode;
+    //renouvellement de licence
+    public function renewLicense(int $structure, int $temps)
+    {
+        return DB::transaction(function () use ($structure, $temps) {
+            $license = self::where('structure_id', $structure)->lockForUpdate()->firstOrFail();
+            // Mettre à jour la date d'expiration de la licence
+            $license->update([
+                'code' => $this->generateLicenseCode(),
+                'version' => LicenceEnum::LICENCE,
+                'active' => 1,
+                'debut' => now(),
+                'fin' => now()->addMonth($temps)
+            ]);
+        });
     }
 
     public function isTrialVersion()
     {
-        if (!$this->activated_at) {
-            return false; // La licence n'a pas été activée
-        }
-
-        $trialPeriod = 15; // Durée de la période d'essai en jours
-        $expirationDate = $this->activated_at->addDays($trialPeriod);
-
-        return now()->lt($expirationDate);
+        return $this->version === "trial" && $this->code == null;
     }
 
     public function isExpired()
     {
-        return $this->date_expiration < now();
+        return $this->fin < now();
     }
-
-
 
 }

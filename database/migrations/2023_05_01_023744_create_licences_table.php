@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('licences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('code');
             $table->string('version');
-            $table->date('date_expiration');
-            $table->date('activated_at');
-            $table->boolean('active');
+            $table->integer('temps');
+            $table->string('code')->nullable()->unique();
+            $table->dateTime('debut');
+            $table->dateTime('fin');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

@@ -30,6 +30,7 @@ class StoreTaskRequest extends FormRequest
             'debut'=>'required|date_format:Y-m-d\TH:i',
             'fin'=>'required|date_format:Y-m-d\TH:i',
             'createur_id'=>'required|exists:users,id',
+            'imputation_id'=>'nullable|exists:imputations,id',
             'user_id'=>'nullable|array|exists:users,id',
         ];
     }

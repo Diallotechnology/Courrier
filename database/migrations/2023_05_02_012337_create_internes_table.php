@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('nature_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('expediteur_id')->constrained('users');
             $table->foreignId('destinataire_id')->constrained('users');
-            $table->dateTime('delai')->nullable();
+            $table->date('delai')->nullable();
             $table->string('numero')->nullable()->unique();
             $table->string('objet');
             $table->string('priorite');

@@ -18,7 +18,7 @@
                 <div class="datagrid-title">Correspondant du courrier</div>
                 <div class="datagrid-content">
                     @forelse ($depart->correspondants as $item)
-                    <div> {{ $item->item }}</div>
+                    <div> {{ $item->nom }}</div>
                     @empty
                     aucun
                     @endforelse
@@ -68,7 +68,6 @@
                 <div class="datagrid-title">Observation et Commentaire</div>
                 <div class="datagrid-content">{{ $depart->observation }}</div>
             </div>
-
         </div>
     </div>
 </div>

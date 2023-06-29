@@ -38,7 +38,7 @@ class TaskController extends Controller
         Notification::send($users, $notification);
         }
 
-        $this->journal("Ajout de la tache REF N°$ref");
+        $this->journal("Ajout de la tache N°$ref");
         toastr()->success('Taches ajouter avec success!');
         return back();
     }
@@ -71,7 +71,6 @@ class TaskController extends Controller
         $data = Arr::except($request->validated(),['user_id']);
         $task->update($data);
         $task->users()->sync($request->user_id);
-
         toastr()->success('Taches mise à jour avec success!');
         return back();
     }

@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Models\Courrier;
+use App\Models\Interne;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -35,13 +37,13 @@ class CourrierNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        if (class_basename($this->courrier) === "Interne") {
+        if ($this->courrier instanceof Interne) {
             return (new MailMessage)
             ->line($this->message)
             ->action("Voir le courrier", route('interne.show',$this->courrier))
             ->line('Merci!');
         }
-        if (class_basename($this->courrier) === "Courrier") {
+        if ($this->courrier instanceof Courrier) {
             return (new MailMessage)
             ->line($this->message)
             ->action("Voir le courrier", route('courrier.show',$this->courrier))
@@ -59,8 +61,8 @@ class CourrierNotification extends Notification
     {
         $ref = $this->courrier->numero;
         return [
-            'message' =>   $this->message.'REF'.$this->courrier->numero,
-            'type' =>  "courrier $ref",
+            'message' =>   $this->message,
+            'type' =>  "courrier  N°$ref",
         ];
     }
 }

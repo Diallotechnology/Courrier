@@ -121,7 +121,6 @@
                 </td>
                 <td>{{ $row->delai }}</td>
                 <td>{{ $row->fin_traitement }}</td>
-
                 <td>{{ $row->created_at }}</td>
                 <td>
                     <x-button-show :row="$row" href="{{ route('imputation.show', ['imputation' => $row]) }}" />

@@ -3,7 +3,8 @@
 <div class="row">
     <div class="col-md-12 mx-auto">
         <div class="card p-3">
-            <x-form route="{{ route('arriver.update',$arriver) }}" type="update" url="{{ route('arriver') }}">
+            <x-form route="{{ route('arriver.update',$arriver) }}" type="update" url="{{ route('arriver') }}"
+                enctype="multipart/form-data">
 
                 <div class="row">
                     <div class="col-md-3">

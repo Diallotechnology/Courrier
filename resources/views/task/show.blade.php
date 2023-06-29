@@ -91,4 +91,7 @@
         </div>
     </div>
 </div>
+@if(Auth::user()->id === $task->createur_id)
+@livewire('task-assign', ['task' => $task])
+@endif
 @endsection

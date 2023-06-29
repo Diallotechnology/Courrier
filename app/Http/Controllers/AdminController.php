@@ -173,6 +173,7 @@ class AdminController extends Controller
     public function licence(): View
     {
         $rows = Licence::with('structure')->latest()->paginate(15);
-        return view('licence.index', compact('rows'));
+        $structure = Structure::doesntHave('licence')->get();
+        return view('licence.index', compact('rows','structure'));
     }
 }

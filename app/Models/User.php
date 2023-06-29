@@ -270,17 +270,17 @@ class User extends Authenticatable
     }
 
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::retrieved(function ($user) {
+    //         if ($user->structure() && !$user->user_structure()->licence->active) {
+    //             // Gérer le cas où la licence de la structure n'est pas active
+    //             return redirect()->route('licence_expire');
+    //         }
+    //     });
+    // }
 
-        // static::retrieved(function ($user) {
-        //     if ($user->structure && !$user->user_structure()->license->active) {
-        //         // Gérer le cas où la licence de la structure n'est pas active
-        //         throw new \Exception('Licence inactive');
-        //     }
-        // });
-    }
 
 
     /**

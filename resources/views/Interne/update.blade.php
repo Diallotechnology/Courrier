@@ -3,7 +3,8 @@
 <div class="row">
     <div class="col-md-12 mx-auto">
         <div class="card p-3">
-            <x-form route="{{ route('interne.update',$interne) }}" type="update" url="{{ route('interne') }}">
+            <x-form route="{{ route('interne.update',$interne) }}" type="update" url="{{ route('interne') }}"
+                enctype="multipart/form-data">
 
                 <div class="col-md-6">
                     <x-select name="nature_id" label="Nature de courrier">

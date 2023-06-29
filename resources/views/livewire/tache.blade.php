@@ -209,10 +209,22 @@
                 <td>{{ $row->numero }}</td>
                 <td>{{ $row->type }}</td>
                 <td>
-                    @foreach ($row->users as $item)
-                    <div> {{ $item->email }}</div>
+                    @forelse ($row->users as $item)
+                    <div>
+                        @if($item->pivot->etat == true)
+                        <i class="ti ti-checks"></i>
+                        @endif
+                        {{ $item->email }}
+                    </div>
                     {{-- <div class="mb-2">Departement {{ $item->userable->nom }}</div> --}}
-                    @endforeach
+                    @empty
+                    @if($row->type === "imputation")
+
+                    <a role="button" href="{{ route('task.show', ['task' => $row]) }}" class="btn btn-indigo ">
+                        <i class="ti ti-user"></i> assigné
+                    </a>
+                    @endif
+                    @endforelse
                 </td>
                 <td>
                     {{ $row->nom }}

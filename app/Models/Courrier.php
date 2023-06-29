@@ -130,7 +130,7 @@ class Courrier extends Model
     ];
 
 
-        /**
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -207,16 +207,6 @@ class Courrier extends Model
     public function structure(): BelongsTo
     {
         return $this->belongsTo(Structure::class);
-    }
-
-    /**
-     * Get all of the tasks for the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function tasks(): HasMany
-    {
-        return $this->hasMany(Task::class);
     }
 
 

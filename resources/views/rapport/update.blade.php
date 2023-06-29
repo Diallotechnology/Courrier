@@ -3,7 +3,8 @@
 <div class="row">
     <div class="col-12 mx-auto">
         <div class="card p-3">
-            <x-form route="{{ route('rapport.update',$rapport) }}" type="update" url="{{ route('rapport') }}">
+            <x-form route="{{ route('rapport.update',$rapport) }}" type="update" url="{{ route('rapport') }}"
+                enctype="multipart/form-data">
 
                 <div class="col-md-6">
                     <x-input type="text" :value="$rapport->objet" name="objet" label="Objet du rapport" />
