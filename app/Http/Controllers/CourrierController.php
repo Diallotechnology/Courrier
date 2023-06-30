@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\Nature;
 use App\Models\Courrier;
 use App\Models\Document;
+use App\Models\Imputation;
 use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
 use App\Models\Correspondant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
-use App\Models\Imputation;
 
 class CourrierController extends Controller
 {
@@ -26,23 +27,8 @@ class CourrierController extends Controller
             $item = Courrier::create($request->validated());
             $ref = $item->generateId('CA');
         // }
-        // \dd('ok');
         $this->history($item->id, "Enregistrement","Enregistré le courrier arrivé REF N° $item->numero");
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('courrier/arriver', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $ref->numero,
-                    'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
-                    'type' => 'Arrivé',
-                    'chemin' => $chemin,
-                ]);
-                $item->documents()->save($data);
-            endforeach;
-        endif;
+        $this->file_uplode($request, $item);
         $this->journal("Ajout du courrier REF N°$ref->numero");
         toastr()->success('Courrier ajouter avec success!');
         return back();
@@ -54,8 +40,8 @@ class CourrierController extends Controller
     public function show(Courrier $arriver)
     {
         $this->authorize('view', $arriver);
-        $imp = Imputation::with('departements')->whereCourrierId($arriver->id)->get();
-        return view('arriver.show', compact('arriver','imp'));
+        $task = Task::with('users')->whereIn('imputation_id',$arriver->imputations()->pluck('id'))->get();
+        return view('arriver.show', compact('arriver', 'task'));
     }
 
     /**
@@ -81,22 +67,8 @@ class CourrierController extends Controller
     public function update(UpdateCourrierRequest $request, Courrier $arriver)
     {
         $arriver->update($request->validated());
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('courrier/arriver', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $arriver->numero,
-                    'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
-                    'type' => 'Arrivé',
-                    'chemin' => $chemin,
-                ]);
-                $arriver->documents()->save($data);
-            endforeach;
-            $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé N° $arriver->numero");
-        endif;
+        $this->file_uplode($request, $arriver);
+        // $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé N° $arriver->numero");
         toastr()->success('Courrier mise à jour avec success!');
         return back();
     }

@@ -4,15 +4,15 @@
             <a href="." class="navbar-brand navbar-brand-autodark"><img src="{{ asset('/img/logo/logo_black.png') }}"
                     style="height: 6rem;" alt="logo"></a>
         </div>
-        <div class="card card-md">
+        <div class="card card p-2">
             <div class="card-body">
-                <h2 class="mb-3">Votre période d'essai gratuite a expiré !</h2>
+                <h2 class="mb-3">{{ $message }}</h2>
                 <p class="text-muted mb-4">
                     Si vous souhaitez continuer à utiliser de courribox, mettre à niveau votre licence.
                 </p>
                 <div class="my-4">
                     <a href="#" class="btn btn-primary w-100">
-                        Activé la licence
+                        Veuillez Contacter le support
                     </a>
                 </div>
             </div>

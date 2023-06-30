@@ -10,7 +10,13 @@ class FormSwitch extends Component
 {
     public Courrier $courrier;
     public string $archive = '';
+    public bool $show = false;
 
+    public function mount(Courrier $courrier) {
+        if($courrier->Archive()) {
+            $this->show = true;
+        }
+    }
     public function render()
     {
         if($this->archive == 1) {

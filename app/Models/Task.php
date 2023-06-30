@@ -147,7 +147,7 @@ class Task extends Model
     {
         return $this->etat == TaskEnum::TERMINE;
     }
-    public function No_complet()
+    public function Nocomplet()
     {
         return $this->etat == TaskEnum::NON_TERMINE;
     }

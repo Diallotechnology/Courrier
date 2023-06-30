@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class LicenceMiddleware
@@ -15,12 +17,13 @@ class LicenceMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $structure = $request->user()->user_structure();
-        if (!$request->user()->isSuperadmin() && $structure->licence && $structure->licence->isExpired()) {
-            $structure->licence->active == true ? $structure->licence->updateOrFail(['active' => 0]) : '';
-            // Gérer le cas où la structure n'est pas associée à une licence valide
-            return abort(403);
-            // return to_route('licence_expire');
+        $user = $request->user();
+        $structure = $user->user_structure();
+
+        if (!$user->isSuperadmin() && (!$structure || !$structure->expire_at || $structure->isExpired()))
+        {
+        Auth::logout();
+        return response(View::make('licence_expire', ['message' => 'Votre licence a expiré !']), 403);
         }
         return $next($request);
     }

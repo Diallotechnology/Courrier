@@ -36,22 +36,7 @@ class DepartController extends Controller
         if(!empty($request->correspondant_id)) {
             $item->correspondants()->attach($request->correspondant_id);
         }
-
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('courrier/depart', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $ref->numero,
-                    'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
-                    'type' => 'Depart',
-                    'chemin' => $chemin,
-                ]);
-                $item->documents()->save($data);
-            endforeach;
-        endif;
+        $this->file_uplode($request, $item);
         $this->journal("Ajout du courrier depart REF N°$ref");
         toastr()->success('Courrier ajouter avec success!');
         return back();

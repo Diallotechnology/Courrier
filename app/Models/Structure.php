@@ -91,17 +91,7 @@ class Structure extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom','code','email','logo','contact','description','adresse'];
-
-    /**
-     * Get the licence associated with the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function licence(): HasOne
-    {
-        return $this->hasOne(Licence::class);
-    }
+    protected $fillable = ['nom','code','email','logo','contact','description','adresse','expire_at'];
 
     /**
      * Get all of the correspondants for the Structure
@@ -208,5 +198,10 @@ class Structure extends Model
     public function DocLink(): string {
 
         return Storage::url($this->logo);
+    }
+
+    public function isExpired()
+    {
+        return $this->expire_at < now();
     }
 }

@@ -2,7 +2,7 @@
 @if($task)
 
 <span @class(['status', 'status-green'=> $task->Complet(),
-    'status-red'=> $task->No_complet(),
+    'status-red'=> $task->Nocomplet(),
     'status-orange'=> $task->Pending(),
     'status-indigo' => $task->Progress(),
     ])>

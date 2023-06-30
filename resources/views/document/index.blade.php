@@ -25,7 +25,6 @@
             <th>Utilisateur</th>
             <th>Libelle</th>
             <th>type</th>
-            <th>Chemin</th>
             <th>Date de creation</th>
             <th>Action</th>
         </tr>
@@ -39,7 +38,6 @@
             </td>
             <td>{{ $row->libelle }}</td>
             <td>{{ $row->type }}</td>
-            <td>{{ $row->chemin }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
                 <x-button-edit :row="$row" href="{{ route('document.edit', ['document' => $row]) }}" />

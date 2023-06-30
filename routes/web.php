@@ -28,14 +28,9 @@ use App\Http\Controllers\SubDepartementController;
 
 
 
-Route::middleware('auth','licence')->group(function () {
+Route::middleware(['auth','licence','throttle'])->group(function () {
     Route::middleware("role:".RoleEnum::SUPERADMIN->value)->group(function () {
-        Route::controller(AdminController::class)->group(function () {
-            Route::get('structure','structure')->name('structure');
-            Route::get('licence','licence')->name('licence');
-        });
-        Route::resource('licence',LicenceController::class)->except('index','create');
-        Route::patch('licence/review/{licence}', [LicenceController::class, 'licence_review'])->name('licence.review');
+        Route::get('structure', [AdminController::class, 'structure'])->name('structure');
         Route::controller(StructureController::class)->group(function () {
             Route::get('structure/trash','trash')->name('structure.trash');
             Route::get('structure/restore/all','all_recover')->name('structure.restore');

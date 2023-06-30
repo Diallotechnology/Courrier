@@ -57,23 +57,28 @@ trait DeleteAction
         return $fileDeleted;
     }
 
-    public function file_uplode(Request $request,Model  $model) {
-        if($model instanceof Interne) {
-            $type = "Interne";
+    public function file_uplode($request,Model  $model) {
+        $type = '';
+        $path = '';
+
+        if ($model instanceof Interne) {
+            $type = 'Interne';
+            $path = 'courrier/interne';
+        } elseif ($model instanceof Courrier) {
+            $type = 'Courrier Arrivé';
+            $path = 'courrier/arrive';
+        } elseif ($model instanceof Rapport) {
+            $type = 'Rapport';
+            $path = 'rapport';
+        } elseif ($model instanceof Depart) {
+            $type = 'Courrier Depart';
+            $path = 'courrier/depart';
         }
-        if($model instanceof Courrier) {
-            $type = "Courrier Arrivé";
-        }
-        if($model instanceof Rapport) {
-            $type = "Rapport";
-        }
-        if($model instanceof Depart) {
-            $type = "Courrier Depart";
-        }
+
         if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $key => $row) {
-                $filename = $row->hashName();
-                $chemin = $row->storeAs('courrier/interne', $filename, 'public');
+            foreach ($request->file('files') as $key => $file) {
+                $filename = $file->hashName();
+                $chemin = $file->storeAs($path, $filename, 'public');
                 $data = new Document([
                     'libelle' => $model->numero,
                     'type' => $type,

@@ -169,11 +169,4 @@ class AdminController extends Controller
         $rows = Journal::with('user')->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())->latest()->paginate(15);
         return view('journal.index', compact('rows'));
     }
-
-    public function licence(): View
-    {
-        $rows = Licence::with('structure')->latest()->paginate(15);
-        $structure = Structure::doesntHave('licence')->get();
-        return view('licence.index', compact('rows','structure'));
-    }
 }

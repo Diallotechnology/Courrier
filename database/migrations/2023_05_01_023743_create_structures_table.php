@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('contact');
             $table->string('adresse');
             $table->longText('description')->nullable();
+            $table->dateTime('expire_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

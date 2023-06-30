@@ -57,6 +57,12 @@
                 </div>
             </div>
             <div class="datagrid-item">
+                <div class="datagrid-title">Archivé ce courrier</div>
+                <div class="datagrid-content">
+                    <livewire:form-switch :courrier="$arriver">
+                </div>
+            </div>
+            <div class="datagrid-item">
                 <div class="datagrid-title">Date de creation</div>
                 <div class="datagrid-content">{{ $arriver->created_at }}</div>
             </div>
@@ -76,7 +82,7 @@
     <x-table>
         <x-slot name="header">
             <div class="card-header">
-                <h3 class="card-title">Informations de l'imputation du courrier arriver N° {{ $arriver->numero }}
+                <h3 class="card-title">Les imputations du courrier arriver N° {{ $arriver->numero }}
                 </h3>
             </div>
         </x-slot>
@@ -96,7 +102,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($imp as $row)
+            @forelse ($arriver->imputations as $row)
             <tr>
                 <td>{{ $row->id }}</td>
                 <td>
@@ -147,53 +153,85 @@
         <tr>
             <th>ID</th>
             <th>Utilisateur</th>
-            <th>Type</th>
-            <th>Description</th>
+            <th>reference</th>
+            <th>Type de tache</th>
+            <th>Exécutant</th>
+            <th>nom de la tache</th>
             <th>Debut de la tache</th>
             <th>Fin de la tache</th>
-            <th>Etat</th>
+            <th>Etat de la tache</th>
             <th>Date de creation</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @forelse ($arriver->tasks as $item)
+        @forelse ($task as $row)
         <tr>
-            <td>{{ $item->id }}</td>
+            <td>{{ $row->id }}</td>
             <td>
-                @if($item->createur)
+                @if($row->createur)
                 <div class="d-flex py-1 align-items-center">
                     <span class="avatar me-2"
-                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $item->createur->name }}')"></span>
+                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->createur->name }}')"></span>
                     <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $item->createur->name }}</div>
-                        <div class="text-muted"><a href="#" class="text-reset">{{ $item->createur->email }}</a></div>
+                        <div class="font-weight-medium">{{ $row->createur->name }}</div>
+                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->createur->email }}</a>
+                        </div>
                     </div>
                 </div>
                 @else
                 inexistant
                 @endif
             </td>
-            <td>{{ $item->type }}</td>
+            <td>{{ $row->numero }}</td>
+            <td>{{ $row->type }}</td>
             <td>
-                <p class="text-muted">{{ $item->description }}</p>
+                @forelse ($row->users as $item)
+                <div>
+                    @if($item->pivot->etat == true)
+                    <i class="ti ti-checks"></i>
+                    @endif
+                    {{ $item->email }}
+                </div>
+                {{-- <div class="mb-2">Departement {{ $item->userable->nom }}</div> --}}
+                @empty
+                @if($row->type === "imputation")
+                <a role="button" href="{{ route('task.show', ['task' => $row]) }}" class="btn btn-indigo ">
+                    <i class="ti ti-user"></i> assigner
+                </a>
+                @endif
+                @endforelse
             </td>
-            <td>{{ $item->debut_format }}</td>
-            <td>{{ $item->fin_format }}</td>
             <td>
-                <x-statut-task :task="$item" />
+                {{ $row->nom }}
             </td>
-            <td>{{ $item->created_at }}</td>
+
+            <td>{{ $row->debut_format }}</td>
+            <td>{{ $row->fin_format }}</td>
+            <td>
+                <x-statut-task :task="$row" />
+            </td>
+            <td>{{ $row->created_at }}</td>
+            <td>
+
+                @if(!$row->Pending() && !$row->Complet() && auth()->user()->tasks->contains($row) &&
+                auth()->user()->pivot_values->contains($row))
+                <button type="button" wire:click="ValidTask({{ $row->id }})" class="btn btn-indigo btn-icon">
+                    <i class="ti ti-checks"></i>
+                </button>
+                @endif
+                <x-button-show :row="$row" href="{{ route('task.show', ['task' => $row]) }}" />
+            </td>
         </tr>
         @empty
         <tr>
-            <td colspan="8">
-                <h2 class="text-center">Aucune tache</h2>
+            <td colspan="11">
+                <h2 class="text-center">Aucun element</h2>
             </td>
         </tr>
         @endforelse
     </tbody>
 </x-table>
-
 <x-table>
     <x-slot name="header">
         <div class="card-header">

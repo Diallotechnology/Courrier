@@ -37,21 +37,7 @@ class RapportController extends Controller
         $data = Arr::except($request->validated(), ['files']);
         $rapport = Rapport::create($data);
         $ref = $rapport->generateId('RA');
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('rapport', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $ref->numero,
-                    'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
-                    'type' => 'Rapport',
-                    'chemin' => $chemin,
-                ]);
-                $rapport->documents()->save($data);
-            endforeach;
-        endif;
+        $this->file_uplode($request, $rapport);
         $this->journal("Ajout du rapport REF N°$ref");
         toastr()->success('Rapport ajouter avec success!');
         return back();
@@ -83,21 +69,7 @@ class RapportController extends Controller
     public function update(UpdateRapportRequest $request, Rapport $rapport)
     {
         $rapport->update($request->validated());
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('rapport', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $rapport->numero,
-                    'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
-                    'type' => 'Rapport',
-                    'chemin' => $chemin,
-                ]);
-                $rapport->documents()->save($data);
-            endforeach;
-        endif;
+        $this->file_uplode($request, $rapport);
         toastr()->success('Rapport mise à jour avec success!');
         return back();
     }

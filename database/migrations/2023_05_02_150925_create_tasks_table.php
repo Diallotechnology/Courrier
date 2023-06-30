@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('etat')->default(TaskEnum::EN_ATTENTE->value);
             $table->dateTime('debut');
-            $table->dateTime('fin');
+            $table->dateTime('fin')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

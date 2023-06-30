@@ -187,7 +187,6 @@
             </tr>
         </thead>
         <tbody>
-
             @forelse ($rows as $row)
             <tr>
                 <td>{{ $row->id }}</td>
@@ -221,7 +220,7 @@
                     @if($row->type === "imputation")
 
                     <a role="button" href="{{ route('task.show', ['task' => $row]) }}" class="btn btn-indigo ">
-                        <i class="ti ti-user"></i> assigné
+                        <i class="ti ti-user"></i> assigner
                     </a>
                     @endif
                     @endforelse

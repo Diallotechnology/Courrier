@@ -60,21 +60,7 @@ class InterneController extends Controller
         $user->notify($notification);
     // }
 
-    if ($request->hasFile('files')) {
-        foreach ($request->file('files') as $key => $row) {
-            $filename = $row->hashName();
-            $chemin = $row->storeAs('courrier/interne', $filename, 'public');
-            $data = new Document([
-                'libelle' => $item->numero,
-                'type' => 'Interne',
-                'user_id' => Auth::user()->id,
-                'structure_id' => Auth::user()->structure(),
-                'chemin' => $chemin,
-            ]);
-            $item->documents()->save($data);
-        }
-    }
-
+    $this->file_uplode($request, $item);
     toastr()->success('Courrier envoyé avec succès!');
     return back();
     }
@@ -110,21 +96,7 @@ class InterneController extends Controller
     public function update(UpdateInterneRequest $request, Interne $interne)
     {
         $interne->update($request->validated());
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('courrier/interne', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $interne->numero,
-                    'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
-                    'type' => 'Interne',
-                    'chemin' => $chemin,
-                ]);
-                $interne->documents()->save($data);
-            endforeach;
-        endif;
+        $this->file_uplode($request, $interne);
         toastr()->success('Courrier mise à jour avec success!');
         return back();
     }

@@ -91,23 +91,6 @@
 </head>
 
 <body class=" layout-fluid">
-    <!-- Loader -->
-    {{-- <div class="loader-container">
-        <div class="page page-center">
-            <div class="container container-slim py-4">
-                <div class="text-center">
-                    <div class="mb-3">
-                        <a href="." class="navbar-brand navbar-brand-autodark"><img src="./static/logo-small.svg"
-                                height="36" alt=""></a>
-                    </div>
-                    <div class="text-muted mb-3">Preparing application</div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar progress-bar-indeterminate"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <div class="page">
         <!-- Sidebar -->
         <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
@@ -153,15 +136,14 @@
             </div>
         </header>
         <div class="page-wrapper">
-
             <div class="page-header d-print-none">
                 <div class="container-xl">
-                    <div class="row g-2 align-items-center mw-100">
+                    <div class="row px-3 align-items-center mw-100">
                         @yield('header')
                     </div>
                 </div>
             </div>
-            <div class="page-body">
+            <div class="page-body ps-3">
                 @yield('content')
             </div>
         </div>

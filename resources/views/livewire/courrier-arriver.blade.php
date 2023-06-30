@@ -86,8 +86,7 @@
                                         Total Courrier Imputé
                                     </div>
                                     <div class="text-muted">
-                                        {{ count(Auth::user()->createurs->where('etat',App\Enum\CourrierEnum::IMPUTE))
-                                        }}
+                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::IMPUTE)) }}
                                     </div>
                                 </div>
                             </div>
@@ -118,8 +117,7 @@
                                         Total courrier Archivé
                                     </div>
                                     <div class="text-muted">
-                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::ARCHIVE))
-                                        }}
+                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::ARCHIVE)) }}
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +200,6 @@
                 <th>Confidential</th>
                 <th>Etat</th>
                 <th>Objet</th>
-                <th>Archiver</th>
                 <th>Date</th>
                 <th>Action</th>
             </tr>
@@ -241,10 +238,6 @@
                 <td>
                     <p class="text-muted">{{ $row->objet }}</p>
                 </td>
-                <td>
-                    <livewire:form-switch :courrier="$row" :wire:key="'form-switch-'.$row->id">
-                </td>
-
                 <td>{{ $row->created_at }}</td>
                 <td>
                     <x-button-edit :row="$row" href="{{ route('arriver.edit', ['arriver' => $row]) }}" />

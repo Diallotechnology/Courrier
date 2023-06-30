@@ -274,7 +274,8 @@ class User extends Authenticatable
     // {
     //     parent::boot();
     //     static::retrieved(function ($user) {
-    //         if ($user->structure() && !$user->user_structure()->licence->active) {
+    //         if (!$user->isSuperadmin()) {
+    //             dd('f');
     //             // Gérer le cas où la licence de la structure n'est pas active
     //             return redirect()->route('licence_expire');
     //         }
