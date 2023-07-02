@@ -4,7 +4,6 @@
             <h3 class="card-title">
                 <br> NB: La suppression d'une imputation entrainera la suppression de tous les elements lié
             </h3>
-
         </div>
         <div class="card-body">
             <x-filter url="imputation" :create="App\Models\Imputation::class">

@@ -20,11 +20,12 @@ class LicenceMiddleware
         $user = $request->user();
         $structure = $user->user_structure();
 
-        if (!$user->isSuperadmin() && (!$structure || !$structure->expire_at || $structure->isExpired()))
-        {
-        Auth::logout();
-        return response(View::make('licence_expire', ['message' => 'Votre licence a expiré !']), 403);
+        if (! $user->isSuperadmin() && (! $structure || ! $structure->expire_at || $structure->isExpired())) {
+            Auth::logout();
+
+            return response(View::make('licence_expire', ['message' => 'Votre licence a expiré !']), 403);
         }
+
         return $next($request);
     }
 }

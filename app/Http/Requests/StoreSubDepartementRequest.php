@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\SubDepartement;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSubDepartementRequest extends FormRequest
 {
@@ -17,7 +16,8 @@ class StoreSubDepartementRequest extends FormRequest
         if ($this->route()->getName() === 'subdepartement.update') {
             return $this->user()->can('update', $this->route('subdepartement'));
         }
-        return  $this->user()->can('create', SubDepartement::class);
+
+        return $this->user()->can('create', SubDepartement::class);
     }
 
     /**
@@ -28,15 +28,14 @@ class StoreSubDepartementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'departement_id' => ['required','exists:departements,id'],
-            'nom'=>'required|string|max:100',
-            'code'=>'required|string|max:15'
+            'departement_id' => ['required', 'exists:departements,id'],
+            'nom' => 'required|string|max:100',
+            'code' => 'required|string|max:15',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
-
 }

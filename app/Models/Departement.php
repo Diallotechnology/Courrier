@@ -2,20 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Courrier;
-use App\Models\Structure;
 use App\Helper\DateFormat;
-use App\Models\Imputation;
-use App\Models\SubDepartement;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\Models\Departement
@@ -63,6 +57,14 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Departement byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
  */
 class Departement extends Model
@@ -74,9 +76,7 @@ class Departement extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom','structure_id','code'];
-
-
+    protected $fillable = ['nom', 'structure_id', 'code'];
 
     /**
      * Get all of the user for the Departement
@@ -85,14 +85,11 @@ class Departement extends Model
      */
     public function users(): MorphMany
     {
-        return $this->morphMany(User::class,'userable');
+        return $this->morphMany(User::class, 'userable');
     }
-
 
     /**
      * Get the structure that owns the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {
@@ -101,8 +98,6 @@ class Departement extends Model
 
     /**
      * Get all of the subdepartement for the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subdepartements(): HasMany
     {
@@ -111,8 +106,6 @@ class Departement extends Model
 
     /**
      * The imputations that belong to the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function imputations(): BelongsToMany
     {
@@ -121,8 +114,6 @@ class Departement extends Model
 
     /**
      * Get all of the tasks for the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function tasks(): HasManyThrough
     {

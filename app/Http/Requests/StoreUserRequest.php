@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use App\Enum\RoleEnum;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Enum;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreUserRequest extends FormRequest
 {
@@ -17,7 +16,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return  $this->user()->can('create', User::class);
+        return $this->user()->can('create', User::class);
     }
 
     /**
@@ -39,6 +38,6 @@ class StoreUserRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

@@ -4,21 +4,26 @@ namespace App\Http\Livewire;
 
 use Auth;
 use Livewire\Component;
+use Illuminate\Contracts\View\View;
 
 class Notif extends Component
 {
-    public function delete() {
+    public function delete(): void
+    {
         Auth::user()->notifications->delete();
         toastr()->success('Toute les notifications ont été effacé!');
     }
 
-    public function  valid() {
+    public function valid(): void
+    {
         Auth::user()->unreadNotifications()->update(['read_at' => now()]);
         toastr()->success('Toute les notifications ont été marquer comme lu!');
     }
-    public function render()
+
+    public function render(): View
     {
         $notif = Auth::user()->unreadNotifications;
+
         return view('livewire.notif', compact('notif'));
     }
 }

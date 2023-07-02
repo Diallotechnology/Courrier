@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -25,17 +25,17 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'=>'required|string|max:100',
-            'type'=>'string|required|max:50',
-            'description'=>'string|required',
-            'debut'=>'required|date_format:Y-m-d\TH:i',
-            'fin'=>'required|date_format:Y-m-d\TH:i',
-            'user_id'=>'required|array',
+            'nom' => 'required|string|max:100',
+            'type' => 'string|required|max:50',
+            'description' => 'string|required',
+            'debut' => 'required|date_format:Y-m-d\TH:i',
+            'fin' => 'required|date_format:Y-m-d\TH:i',
+            'user_id' => 'required|array',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

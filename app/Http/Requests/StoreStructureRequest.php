@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\Structure;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreStructureRequest extends FormRequest
 {
@@ -16,7 +16,8 @@ class StoreStructureRequest extends FormRequest
         if ($this->route()->getName() === 'structure.update') {
             return $this->user()->can('update', $this->route('structure'));
         }
-        return  $this->user()->can('create', Structure::class);
+
+        return $this->user()->can('create', Structure::class);
     }
 
     /**
@@ -27,18 +28,17 @@ class StoreStructureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'=>'required|string|max:100',
-            'description'=>'required|nullable|string',
-            'contact'=>'required|string|min:8',
-            'email'=>'required|email|max:255',
-            'adresse'=>'required|string|max:255',
-            'licence'=>'required|boolean',
-            'logo'=>'nullable',
+            'nom' => 'required|string|max:100',
+            'description' => 'required|nullable|string',
+            'contact' => 'required|string|min:8',
+            'email' => 'required|email|max:255',
+            'adresse' => 'required|string|max:255',
+            'logo' => 'nullable',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

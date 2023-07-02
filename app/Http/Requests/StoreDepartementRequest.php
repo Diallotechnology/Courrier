@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\Departement;
-use Auth;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDepartementRequest extends FormRequest
 {
@@ -17,7 +16,8 @@ class StoreDepartementRequest extends FormRequest
         if ($this->route()->getName() === 'departement.update') {
             return $this->user()->can('update', $this->route('departement'));
         }
-        return  $this->user()->can('create', Departement::class);
+
+        return $this->user()->can('create', Departement::class);
     }
 
     /**
@@ -29,13 +29,13 @@ class StoreDepartementRequest extends FormRequest
     {
         return [
             'structure_id' => 'required|exists:structures,id',
-            'nom'=>'required|string|max:100',
-            'code'=>'required|string|max:15'
+            'nom' => 'required|string|max:100',
+            'code' => 'required|string|max:15',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

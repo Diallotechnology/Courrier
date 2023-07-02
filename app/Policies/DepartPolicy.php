@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Depart;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class DepartPolicy
 {
@@ -33,7 +32,7 @@ class DepartPolicy
      */
     public function create(User $user): bool
     {
-        return  true;
+        return true;
     }
 
     /**
@@ -49,7 +48,7 @@ class DepartPolicy
      */
     public function update(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id  &&  $user->isAdmin() || $user->id === $depart->user_id;
+        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
     }
 
     /**
@@ -57,7 +56,7 @@ class DepartPolicy
      */
     public function delete(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id &&   $user->isAdmin() || $user->id === $depart->user_id;
+        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
     }
 
     /**
@@ -65,7 +64,7 @@ class DepartPolicy
      */
     public function restore(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id &&   $user->isAdmin() || $user->id === $depart->user_id;
+        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
     }
 
     /**
@@ -73,6 +72,6 @@ class DepartPolicy
      */
     public function forceDelete(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id &&   $user->isAdmin() || $user->id === $depart->user_id;
+        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
     }
 }

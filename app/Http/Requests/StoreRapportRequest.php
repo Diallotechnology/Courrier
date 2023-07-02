@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Rapport;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreRapportRequest extends FormRequest
 {
@@ -14,7 +14,7 @@ class StoreRapportRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return  $this->user()->can('create', Rapport::class);
+        return $this->user()->can('create', Rapport::class);
     }
 
     /**
@@ -25,13 +25,13 @@ class StoreRapportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'objet'=>'required|string|max:255',
-            'type'=>'required|string|max:200',
-            'user_id'=>'required|exists:users,id',
-            'courrier_id'=>'nullable|exists:courriers,id',
-            'structure_id'=>'required|exists:structures,id',
-            'contenu'=> 'nullable|string',
-            'files'=> 'nullable|sometimes|array',
+            'objet' => 'required|string|max:255',
+            'type' => 'required|string|max:200',
+            'user_id' => 'required|exists:users,id',
+            'courrier_id' => 'nullable|exists:courriers,id',
+            'structure_id' => 'required|exists:structures,id',
+            'contenu' => 'nullable|string',
+            'files' => 'nullable|sometimes|array',
         ];
     }
 
@@ -39,11 +39,11 @@ class StoreRapportRequest extends FormRequest
     {
         $this->merge([
             'user_id' => Auth::user()->id,
-         ]);
+        ]);
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

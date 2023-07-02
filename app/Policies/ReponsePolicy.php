@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Interne;
 use App\Models\Reponse;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ReponsePolicy
 {
@@ -44,5 +43,4 @@ class ReponsePolicy
     {
         return $user->id === $reponse->user_id;
     }
-
 }

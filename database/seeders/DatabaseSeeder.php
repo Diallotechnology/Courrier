@@ -5,24 +5,22 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Enum\RoleEnum;
-use App\Models\Task;
-use App\Models\User;
-use App\Models\Agenda;
+use App\Models\Annotation;
+use App\Models\Correspondant;
+use App\Models\Courrier;
 use App\Models\Depart;
-use App\Models\Nature;
+use App\Models\Departement;
+use App\Models\Document;
+use App\Models\Imputation;
 use App\Models\Interne;
 use App\Models\Journal;
-use App\Models\Rapport;
-use App\Models\Courrier;
-use App\Models\Document;
-use App\Models\Structure;
-use App\Models\Annotation;
-use App\Models\Imputation;
-use App\Models\Departement;
+use App\Models\Nature;
 use App\Models\Notification;
-use App\Models\SubStructure;
-use App\Models\Correspondant;
+use App\Models\Rapport;
+use App\Models\Structure;
 use App\Models\SubDepartement;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -35,7 +33,7 @@ class DatabaseSeeder extends Seeder
         Structure::factory(5)->create();
         Departement::factory(5)->create();
         SubDepartement::factory(5)->create();
-        $test = User::factory()->create(['email' => 'admin@gmail.com', 'role' =>RoleEnum::ADMIN]);
+        $test = User::factory()->create(['email' => 'admin@gmail.com', 'role' => RoleEnum::ADMIN]);
         User::factory(25)->create();
         Nature::factory(5)->create();
         Depart::factory(260)->hasCorrespondants(2)->create();
@@ -51,15 +49,15 @@ class DatabaseSeeder extends Seeder
         // Journal::factory(10)->create()
         // Générer 10 fausses notifications pour chaque utilisateur
         // User::all()->each(function ($user) {
-            // Notification::factory()->count(10)->create();
+        // Notification::factory()->count(10)->create();
         // });
 
         User::factory()
-        ->has(Courrier::factory()->count(10), 'courriers')
-        ->has(Imputation::factory()->count(10), 'imputations')
-        ->has(Task::factory()->count(10), 'tasks')
+            ->has(Courrier::factory()->count(10), 'courriers')
+            ->has(Imputation::factory()->count(10), 'imputations')
+            ->has(Task::factory()->count(10), 'tasks')
         // ->has(Journal::factory()->count(5), 'journals')
         // ->has(Notification::factory()->count(5), 'journals')
-        ->create();
+            ->create();
     }
 }

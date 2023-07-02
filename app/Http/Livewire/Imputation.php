@@ -7,7 +7,7 @@ use App\Models\Courrier;
 use App\Enum\CourrierEnum;
 use App\Models\Departement;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Imputation as ModelsImputation;
 
@@ -18,24 +18,29 @@ class Imputation extends Component
     protected string $paginationTheme = 'bootstrap';
 
     public string $priority = '';
+
     public string $delai = '';
+
     public string $fin = '';
+
     public string $courrier = '';
+
     public string $departement = '';
+
     public string $etat = '';
 
     public function ResetFilter(): void
     {
-        $this->reset('delai','priority','fin','courrier', 'departement','etat');
+        $this->reset('delai', 'priority', 'fin', 'courrier', 'departement', 'etat');
         $this->resetPage();
     }
 
-    public function render()
+    public function render(): View
     {
 
         $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = ModelsImputation::with('user','departements','courrier')
-            ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
+        $query = ModelsImputation::with('user', 'departements', 'courrier')
+            ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
             ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);
             })
@@ -45,9 +50,6 @@ class Imputation extends Component
             ->when($this->fin, function ($query) {
                 $query->where('fin_traitement', $this->fin);
             })
-            // ->when($this->departement, function ($query) {
-            //     $query->where('departement_id', $this->departement);
-            // })
             ->when($this->courrier, function ($query) {
                 $query->where('courrier_id', $this->courrier);
             })
@@ -56,9 +58,10 @@ class Imputation extends Component
             });
         $rows = $query->latest('id')->paginate(15);
 
-        $arriver = Courrier::where('etat','!=',CourrierEnum::ARCHIVE)
-        ->when(!$isSuperadmin, fn($query) => $query->ByStructure())->latest()->get(['id','numero','date']);
-        $division = Departement::when(!$isSuperadmin, fn($query) => $query->ByStructure())->get();
-        return view('livewire.imputation', compact('rows','arriver','division'));
+        $arriver = Courrier::where('etat', '!=', CourrierEnum::ARCHIVE)
+            ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())->latest()->get(['id', 'numero', 'date']);
+        $division = Departement::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->get();
+
+        return view('livewire.imputation', compact('rows', 'arriver', 'division'));
     }
 }

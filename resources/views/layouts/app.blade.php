@@ -29,13 +29,13 @@
 
         @import url('https://rsms.me/inter/inter.css');
 
-        :root {
+        /* :root {
             --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
         }
 
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
-        }
+        } */
 
         .file,
         .file-list {
@@ -72,19 +72,6 @@
         .file:hover .file-action,
         .file-list:hover .file-action {
             display: inline;
-        }
-
-        .loader-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
         }
     </style>
 
@@ -137,7 +124,7 @@
         </header>
         <div class="page-wrapper">
             <div class="page-header d-print-none">
-                <div class="container-xl">
+                <div class="container-fluid">
                     <div class="row px-3 align-items-center mw-100">
                         @yield('header')
                     </div>
@@ -163,8 +150,6 @@
             </div>
         </footer>
     </div>
-    </div>
-    </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -172,6 +157,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
+    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> --}}
     <script src="{{ asset('js/main.js') }}"></script>
     @livewireScripts
     @yield('js')

@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use Auth;
 use App\Models\Nature;
 use App\Models\Interne;
-use App\Models\User;
-use Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Contracts\View\View;
 
 class CourrierInterne extends Component
 {
@@ -17,23 +17,27 @@ class CourrierInterne extends Component
 
     public function ResetFilter(): void
     {
-        $this->reset('privacy','priority','nature','destinataire','etat');
+        $this->reset('privacy', 'priority', 'nature', 'destinataire', 'etat');
         $this->resetPage();
     }
 
     public string $privacy = '';
+
     public string $priority = '';
+
     public string $nature = '';
+
     public string $destinataire = '';
+
     public string $etat = '';
 
-    public function render()
+    public function render(): View
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
         $userId = Auth::user()->id;
 
         $query = Interne::with('nature', 'destinataire', 'expediteur', 'reponses')
-            ->when(!$isSuperadmin, function ($query) use ($userId) {
+            ->when(! $isSuperadmin, function ($query) use ($userId) {
                 $query->where(function ($query) use ($userId) {
                     $query->where('destinataire_id', $userId)
                         ->orWhere('expediteur_id', $userId);
@@ -52,9 +56,9 @@ class CourrierInterne extends Component
                 $query->where('etat', $this->etat);
             });
         $rows = $query->latest('id')->paginate(15);
-        $typeQuery = Nature::orderBy('nom')->when(!$isSuperadmin, fn($query) => $query->where('structure_id', Auth::user()->structure()));
+        $typeQuery = Nature::orderBy('nom')->when(! $isSuperadmin, fn ($query) => $query->where('structure_id', Auth::user()->structure()));
         $type = $typeQuery->get();
 
-        return view('livewire.courrier-interne', compact('rows','type'));
+        return view('livewire.courrier-interne', compact('rows', 'type'));
     }
 }

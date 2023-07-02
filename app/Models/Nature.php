@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Depart;
-use App\Models\Courrier;
-use App\Models\Structure;
 use App\Helper\DateFormat;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Nature
@@ -46,19 +42,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read Structure $structure
  * @method static Builder|Nature byStructure()
  * @method static Builder|Nature whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @mixin \Eloquent
  */
 class Nature extends Model
 {
     use HasFactory, DateFormat;
 
-    protected $fillable = ['nom','structure_id'];
-
+    protected $fillable = ['nom', 'structure_id'];
 
     /**
      * Get all of the courriers for the Nature
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function courriers(): HasMany
     {
@@ -67,8 +64,6 @@ class Nature extends Model
 
     /**
      * Get all of the departs for the Nature
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function departs(): HasMany
     {
@@ -77,8 +72,6 @@ class Nature extends Model
 
     /**
      * Get the structure that owns the Nature
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {

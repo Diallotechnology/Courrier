@@ -3,11 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Courrier;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\File;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreCourrierRequest extends FormRequest
 {
@@ -16,7 +14,7 @@ class StoreCourrierRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return  $this->user()->can('create', Courrier::class);
+        return $this->user()->can('create', Courrier::class);
     }
 
     /**
@@ -27,18 +25,18 @@ class StoreCourrierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'objet'=>'required|string|max:255',
-            'reference'=>'required|string|max:25',
-            'confidentiel'=>'required|string|max:3',
-            'priorite'=>'required|string|max:6',
-            'observation'=>'string|nullable|max:255',
-            'date'=>'required|date',
-            'files'=> 'nullable',
+            'objet' => 'required|string|max:255',
+            'reference' => 'required|string|max:25',
+            'confidentiel' => 'required|string|max:3',
+            'priorite' => 'required|string|max:6',
+            'observation' => 'string|nullable|max:255',
+            'date' => 'required|date',
+            'files' => 'nullable',
             // 'files.*'=> 'mimes:png,jpg',
-            'nature_id'=>'required|exists:natures,id',
-            'correspondant_id'=>'required|exists:correspondants,id',
-            'user_id'=>'required|exists:users,id',
-            'structure_id'=>'required|exists:structures,id',
+            'nature_id' => 'required|exists:natures,id',
+            'correspondant_id' => 'required|exists:correspondants,id',
+            'user_id' => 'required|exists:users,id',
+            'structure_id' => 'required|exists:structures,id',
         ];
     }
 
@@ -48,11 +46,11 @@ class StoreCourrierRequest extends FormRequest
         $this->merge([
             'user_id' => Auth::user()->id,
             'structure_id' => $structureId,
-         ]);
+        ]);
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

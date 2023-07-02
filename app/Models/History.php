@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use App\Helper\DateFormat;
-use App\Models\User;
-use App\Models\Courrier;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\History
@@ -50,12 +48,10 @@ class History extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id','courrier_id','action','description'];
+    protected $fillable = ['user_id', 'courrier_id', 'action', 'description'];
 
     /**
      * Get the courrier that owns the History
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function courrier(): BelongsTo
     {
@@ -64,8 +60,6 @@ class History extends Model
 
     /**
      * Get the user that owns the History
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {

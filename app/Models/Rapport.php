@@ -2,15 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Courrier;
-use App\Models\Document;
-use App\Models\Structure;
 use App\Helper\DateFormat;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Rapport
@@ -56,6 +52,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read string $date_format
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport byStructure()
+ * @property string|null $numero
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereNumero($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @mixin \Eloquent
  */
 class Rapport extends Model
@@ -64,25 +64,25 @@ class Rapport extends Model
 
     const TYPE = [
         "Rapport d'activité",
-        "Rapport financier",
-        "Rapport de vente",
-        "Rapport de mission",
-        "Rapport de marketing",
-        "Rapport de gestion des ressources humaines",
-        "Rapport de recherche et développement",
-        "Rapport de gestion de projet",
-        "Rapport de qualité",
-        "Rapport de gestion environnementale",
-        "Rapport annuel",
-        "Rapport de performance",
-        "Rapport de conformité",
+        'Rapport financier',
+        'Rapport de vente',
+        'Rapport de mission',
+        'Rapport de marketing',
+        'Rapport de gestion des ressources humaines',
+        'Rapport de recherche et développement',
+        'Rapport de gestion de projet',
+        'Rapport de qualité',
+        'Rapport de gestion environnementale',
+        'Rapport annuel',
+        'Rapport de performance',
+        'Rapport de conformité',
         "Rapport d'audit",
-        "Rapport de transparence",
-        "Rapport de gestion des risques",
+        'Rapport de transparence',
+        'Rapport de gestion des risques',
         "Rapport d'évaluation des politiques publiques",
-        "Rapport de gestion des actifs publics",
-        "Rapport de conformité financière",
-        "Autres",
+        'Rapport de gestion des actifs publics',
+        'Rapport de conformité financière',
+        'Autres',
     ];
 
     /**
@@ -90,12 +90,10 @@ class Rapport extends Model
      *
      * @var array
      */
-    protected $fillable = ['objet','user_id','type','contenu','courrier_id','structure_id'];
+    protected $fillable = ['objet', 'user_id', 'type', 'contenu', 'courrier_id', 'structure_id'];
 
     /**
      * Get the user that owns the Rapport
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -104,8 +102,6 @@ class Rapport extends Model
 
     /**
      * Get the courrier that owns the Rapport
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function courrier(): BelongsTo
     {
@@ -122,8 +118,6 @@ class Rapport extends Model
 
     /**
      * Get the structure that owns the Rapport
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {

@@ -2,25 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Depart;
-use App\Models\Nature;
-use App\Models\Journal;
-use App\Models\Licence;
-use App\Models\Rapport;
-use App\Models\Courrier;
-use App\Models\Document;
 use App\Helper\DateFormat;
-use App\Models\Imputation;
-use App\Models\Departement;
-use App\Models\SubStructure;
-use App\Models\Correspondant;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\Structure
@@ -80,6 +67,32 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Structure byStructure()
+ * @property string $code
+ * @property string|null $expire_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read int|null $imputations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $jourals
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Structure whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Structure whereExpireAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $jourals
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
  */
 class Structure extends Model
@@ -91,12 +104,10 @@ class Structure extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom','code','email','logo','contact','description','adresse','expire_at'];
+    protected $fillable = ['nom', 'code', 'email', 'logo', 'contact', 'description', 'adresse', 'expire_at'];
 
     /**
      * Get all of the correspondants for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function correspondants(): HasMany
     {
@@ -105,8 +116,6 @@ class Structure extends Model
 
     /**
      * Get all of the departements for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function departements(): HasMany
     {
@@ -115,18 +124,14 @@ class Structure extends Model
 
     /**
      * Get all of the users for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function users(): HasManyThrough
     {
-        return $this->hasManyThrough(User::class, Departement::class,'structure_id','userable_id','id','id');
+        return $this->hasManyThrough(User::class, Departement::class, 'structure_id', 'userable_id', 'id', 'id');
     }
 
     /**
      * Get all of the rapports for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function rapports(): HasMany
     {
@@ -135,19 +140,14 @@ class Structure extends Model
 
     /**
      * Get all of the courriers for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function courriers(): HasMany
     {
         return $this->hasMany(Courrier::class);
     }
 
-
     /**
      * Get all of the natures for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function natures(): HasMany
     {
@@ -156,8 +156,6 @@ class Structure extends Model
 
     /**
      * Get all of the departs for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function departs(): HasMany
     {
@@ -166,8 +164,6 @@ class Structure extends Model
 
     /**
      * Get all of the imputations for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function imputations(): HasMany
     {
@@ -176,8 +172,6 @@ class Structure extends Model
 
     /**
      * Get all of the documents for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function documents(): HasMany
     {
@@ -186,16 +180,14 @@ class Structure extends Model
 
     /**
      * Get all of the jourals for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function jourals(): HasMany
     {
         return $this->hasMany(Journal::class);
     }
 
-
-    public function DocLink(): string {
+    public function DocLink(): string
+    {
 
         return Storage::url($this->logo);
     }

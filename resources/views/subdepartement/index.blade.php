@@ -21,7 +21,16 @@
             </h3>
         </div>
         <div class="card-body">
-            <x-filter url="subdepartement" :create="App\Models\SubDepartement::class" />
+            <x-filter url="subdepartement" :btn_filter='false' :create="App\Models\SubDepartement::class">
+                <x-slot name="btn">
+                    @can('create',App\Models\SubDepartement::class)
+                    <button class="btn btn-blue" type="button" data-bs-toggle="modal" data-bs-target="#user">
+                        <i class="ti ti-plus"></i>
+                        Utilisateur
+                    </button>
+                    @endcan
+                </x-slot>
+            </x-filter>
         </div>
     </x-slot>
     <thead>
@@ -68,6 +77,43 @@
             <option value="{{ $row->id }}">{{ $row->nom }}</option>
             @endforeach
         </x-select>
+    </x-form>
+</x-modal>
+
+<x-modal lancher="user" title="nouveaux utilisateur">
+    <x-form route="{{ route('user.store') }}">
+        <input type="hidden" value="subdepartement" name="type">
+        <div class="col-md-6">
+            <x-input type="text" name="name" label="Nom complet" place="le nom et prenom de l'utilisateur" />
+        </div>
+
+        <div class="col-md-6">
+            <x-input type="text" name="poste" place="le poste de l'utilisateur" />
+        </div>
+
+        <div class="col-md-12">
+            <x-input type="email" name="email" place="email de l'utilisateur" />
+        </div>
+
+        @if(Auth::user()->isSuperuser())
+        <input type="hidden" name="userable_id" value="{{ Auth::user()->userable_id }}">
+        @else
+        <div class="col-md-12">
+            <x-select name="userable_id" label="Sous Departement">
+                @foreach ($sub as $row)
+                <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        @endif
+        <div class="col-md-12">
+            <x-select name="role" label="Role/Droit d'access">
+                @foreach (App\Enum\RoleEnum::cases() as $row)
+                @continue(!Auth::user()->isSuperuser() and $loop->first)
+                <option value="{{ $row }}">{{ $row }}</option>
+                @endforeach
+            </x-select>
+        </div>
     </x-form>
 </x-modal>
 @endsection

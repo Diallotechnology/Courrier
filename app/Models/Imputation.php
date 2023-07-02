@@ -2,17 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Task;
-use App\Models\User;
-use App\Helper\DateFormat;
-use App\Models\Annotation;
-use App\Models\Departement;
 use App\Enum\ImputationEnum;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Imputation
@@ -61,11 +57,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation byStructure()
+ * @property int $structure_id
+ * @property string|null $numero
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read int|null $departements_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereNumero($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @mixin \Eloquent
  */
 class Imputation extends Model
 {
     use HasFactory, DateFormat;
+
     protected $casts = [
         'etat' => ImputationEnum::class,
     ];
@@ -79,13 +87,11 @@ class Imputation extends Model
         'fin_traitement',
         'observation',
         'delai',
-        'etat'
+        'etat',
     ];
 
     /**
      * Get the courrier that owns the Imputation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function courrier(): BelongsTo
     {
@@ -94,8 +100,6 @@ class Imputation extends Model
 
     /**
      * The departements that belong to the Imputation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function departements(): BelongsToMany
     {
@@ -104,8 +108,6 @@ class Imputation extends Model
 
     /**
      * Get the user that owns the Imputation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -124,8 +126,6 @@ class Imputation extends Model
 
     /**
      * Get all of the task for the Imputation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tasks(): HasMany
     {

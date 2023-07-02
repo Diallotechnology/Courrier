@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Structure;
 use App\Helper\DateFormat;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Journal
@@ -35,6 +33,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read string $date_format
  * @property-read Structure $structure
  * @method static \Illuminate\Database\Eloquent\Builder|Journal byStructure()
+ * @property int $structure_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Journal whereStructureId($value)
  * @mixin \Eloquent
  */
 class Journal extends Model
@@ -46,11 +46,10 @@ class Journal extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id','libelle','structure_id'];
+    protected $fillable = ['user_id', 'libelle', 'structure_id'];
+
     /**
      * Get the user that owns the Journal
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -59,8 +58,6 @@ class Journal extends Model
 
     /**
      * Get the structure that owns the Journal
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {

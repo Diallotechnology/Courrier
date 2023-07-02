@@ -17,10 +17,10 @@ class RapportFactory extends Factory
     public function definition(): array
     {
         return [
-            'structure_id' => rand(1,5),
-            'user_id' => rand(1,5),
+            'structure_id' => rand(1, 5),
+            'user_id' => rand(1, 5),
             'objet' => $this->faker->jobTitle(),
-            'type' => $this->faker->randomElement(['mission','courrier']),
+            'type' => $this->faker->randomElement(['mission', 'courrier']),
             'contenu' => $this->faker->sentence(6),
         ];
     }

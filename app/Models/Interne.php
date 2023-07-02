@@ -2,20 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Nature;
-use App\Models\Reponse;
-use App\Models\Document;
-use App\Helper\DateFormat;
-use Illuminate\Support\Carbon;
 use App\Enum\CourrierInterneEnum;
-use App\Http\Livewire\CourrierInterne;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Interne
@@ -73,13 +67,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
  * @method static \Illuminate\Database\Eloquent\Builder|Interne byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @mixin \Eloquent
  */
 class Interne extends Model
 {
     use HasFactory, DateFormat;
 
-        /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -96,7 +94,7 @@ class Interne extends Model
         'etat',
         'date',
         'delai',
-        'contenu'
+        'contenu',
     ];
 
     protected function getCreatedAtAttribute(string $date): string
@@ -120,8 +118,6 @@ class Interne extends Model
 
     /**
      * Get the expediteur that owns the Interne
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function expediteur(): BelongsTo
     {
@@ -130,8 +126,6 @@ class Interne extends Model
 
     /**
      * Get the destinataire that owns the Interne
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function destinataire(): BelongsTo
     {
@@ -140,8 +134,6 @@ class Interne extends Model
 
     /**
      * Get the user that owns the Interne
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -150,15 +142,13 @@ class Interne extends Model
 
     /**
      * Get all of the reponses for the Interne
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function reponses(): HasMany
     {
         return $this->hasMany(Reponse::class);
     }
 
-            /**
+    /**
      * Get all of the document's Interne.
      */
     public function documents(): MorphMany
@@ -168,14 +158,11 @@ class Interne extends Model
 
     /**
      * Get the nature that owns the Interne
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function nature(): BelongsTo
     {
         return $this->belongsTo(Nature::class);
     }
-
 
     public function Send(): bool
     {
@@ -191,5 +178,4 @@ class Interne extends Model
     {
         return $this->etat == CourrierInterneEnum::READ;
     }
-
 }

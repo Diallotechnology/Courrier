@@ -2,31 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use App\Models\Annotation;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Departement;
+use App\Models\Document;
+use App\Models\Journal;
+use App\Models\Nature;
+use App\Models\Rapport;
+use App\Models\Structure;
+use App\Models\SubDepartement;
 use App\Models\Task;
 use App\Models\User;
-use App\Enum\TaskEnum;
-use App\Models\Nature;
-use App\Models\Journal;
-use App\Models\Rapport;
-use App\Models\Courrier;
-use App\Models\Document;
-use App\Models\Structure;
-use App\Models\Annotation;
-use App\Models\Departement;
-use App\Models\Correspondant;
-use App\Models\Licence;
-use App\Models\SubDepartement;
+use Auth;
 use Illuminate\Contracts\View\View;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\Paginator;
 
 class AdminController extends Controller
 {
     public function nature(): View
     {
-        $typeQuery = Nature::orderBy('nom')->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure());
-        $rows = $typeQuery->latest()->paginate(15);
+        $rows = Nature::orderBy('nom')->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())->latest()->paginate(15);
         return view('nature.index', compact('rows'));
     }
 
@@ -34,14 +31,12 @@ class AdminController extends Controller
     {
         $user = Auth::user();
         $query = Annotation::with('user')->latest();
-
         if ($user->isSuperuser()) {
             $query->where('user_id', $user->id);
         } elseif ($user->isAdmin()) {
             $structureUser = User::StructureUser()->pluck('id');
             $query->whereIn('user_id', $structureUser);
         }
-
         $rows = $query->paginate(15);
 
         return view('annotation.index', compact('rows'));
@@ -50,8 +45,9 @@ class AdminController extends Controller
     public function document(): View
     {
         $rows = Document::with('documentable')
-        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
-        ->latest()->paginate(15);
+            ->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
+            ->latest()->paginate(15);
+
         return view('document.index', compact('rows'));
     }
 
@@ -60,27 +56,28 @@ class AdminController extends Controller
         $user = Auth::user();
         $structure = $user->isSuperadmin() ? Structure::all(['id', 'nom']) : new Collection();
         $correspondantQuery = Correspondant::with('structure')->orderBy('nom')
-        ->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure());
+            ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure());
         $rows = $correspondantQuery->latest()->paginate(15);
+
         return view('correspondant.index', compact('rows', 'structure'));
     }
 
     public function dashboard(): View
     {
-        $arriver = Courrier::when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
-                    ->selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')
-                    ->orderBy('day')->groupBy('day')->pluck('total_arrriver', 'day');
+        $arriver = Courrier::when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
+            ->selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')
+            ->orderBy('day')->groupBy('day')->pluck('total_arrriver', 'day');
         $tasks = Task::where('createur_id', Auth::user()->id)->latest()->take(6)->get();
+
         return view('dashboard', compact('arriver', 'tasks'));
     }
-
 
     public function structure(): View
     {
         $rows = Auth::user()->isSuperadmin() ? Structure::withCount('departements')->latest()->paginate(15) : new Paginator(new Collection(), null, null);
+
         return view('structure.index', compact('rows'));
     }
-
 
     public function user(): View
     {
@@ -99,14 +96,14 @@ class AdminController extends Controller
         }
 
         $rows = $query->paginate(15);
+
         return view('user.index', compact('rows', 'departement'));
     }
-
 
     public function departement(): View
     {
         $user = Auth::user();
-        $query = Departement::withCount('users')->with('structure')->latest();
+        $query = Departement::withCount('users', 'subdepartements')->with('structure')->latest();
 
         if ($user->isSuperadmin()) {
             $query->whereHas('structure');
@@ -126,15 +123,16 @@ class AdminController extends Controller
         $user = Auth::user();
         $query = SubDepartement::withCount('users')->with('departement');
         if ($user->isSuperadmin()) {
-            $departement = Departement::all(['id', 'nom']);
+            $departement = Departement::all();
         } elseif ($user->isAdmin()) {
             $departement = Departement::ByStructure()->get();
-            $query->whereIn('departement_id',$departement->pluck('id'));
+            $query->whereIn('departement_id', $departement->pluck('id'));
         }
         $rows = $query->latest()->paginate(15);
-        return view('subdepartement.index', compact('rows', 'departement'));
-    }
+        $sub = $query->latest()->get();
 
+        return view('subdepartement.index', compact('rows', 'departement', 'sub'));
+    }
 
     public function rapport(): View
     {
@@ -149,7 +147,6 @@ class AdminController extends Controller
         return view('rapport.index', compact('rows'));
     }
 
-
     public function agenda(): View
     {
         $user = Auth::user();
@@ -161,12 +158,14 @@ class AdminController extends Controller
                 'end' => $row->fin,
             ];
         });
+
         return view('agenda', compact('events'));
     }
 
     public function journal(): View
     {
-        $rows = Journal::with('user')->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())->latest()->paginate(15);
+        $rows = Journal::with('user')->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())->latest()->paginate(15);
+
         return view('journal.index', compact('rows'));
     }
 }

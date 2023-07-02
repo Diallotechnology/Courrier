@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Courrier;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class CourrierPolicy
 {
@@ -36,7 +35,7 @@ class CourrierPolicy
         return true;
     }
 
-        /**
+    /**
      * Determine whether the user can trash the model.
      */
     public function trash(User $user): bool
@@ -49,9 +48,9 @@ class CourrierPolicy
      */
     public function update(User $user, Courrier $courrier): bool
     {
-        return ($user->isAdmin() || $user->isSuperuser() && !$courrier->Archive() || $user->isStandard()) &&
+        return ($user->isAdmin() || $user->isSuperuser() && ! $courrier->Archive() || $user->isStandard()) &&
             $user->id === $courrier->user_id &&
-           !$courrier->Archive();
+           ! $courrier->Archive();
     }
 
     /**
@@ -61,7 +60,6 @@ class CourrierPolicy
     {
         return $user->structure() === $courrier->structure_id && ($user->isAdmin() || $user->isSuperuser() || $user->id === $courrier->user_id && $courrier->Archive());
     }
-
 
     /**
      * Determine whether the user can restore the model.
@@ -76,6 +74,6 @@ class CourrierPolicy
      */
     public function forceDelete(User $user, Courrier $courrier): bool
     {
-       return $user->structure() === $courrier->structure_id && $user->isAdmin();
+        return $user->structure() === $courrier->structure_id && $user->isAdmin();
     }
 }

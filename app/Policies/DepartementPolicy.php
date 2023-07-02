@@ -4,11 +4,9 @@ namespace App\Policies;
 
 use App\Models\Departement;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class DepartementPolicy
 {
-
     /**
      * Perform pre-authorization checks.
      */
@@ -50,7 +48,7 @@ class DepartementPolicy
      */
     public function update(User $user, Departement $departement): bool
     {
-        return $user->structure() === $departement->structure_id &&  $user->isAdmin();
+        return $user->structure() === $departement->structure_id && $user->isAdmin();
     }
 
     /**
@@ -58,7 +56,7 @@ class DepartementPolicy
      */
     public function delete(User $user, Departement $departement): bool
     {
-        return $user->structure() === $departement->structure_id &&  $user->isAdmin();
+        return $user->structure() === $departement->structure_id && $user->isAdmin();
     }
 
     /**
@@ -66,7 +64,7 @@ class DepartementPolicy
      */
     public function restore(User $user, Departement $departement): bool
     {
-        return $user->structure() === $departement->structure_id &&  $user->isAdmin();
+        return $user->structure() === $departement->structure_id && $user->isAdmin();
     }
 
     /**
@@ -74,6 +72,6 @@ class DepartementPolicy
      */
     public function forceDelete(User $user, Departement $departement): bool
     {
-        return $user->structure() === $departement->structure_id &&  $user->isAdmin();
+        return $user->structure() === $departement->structure_id && $user->isAdmin();
     }
 }

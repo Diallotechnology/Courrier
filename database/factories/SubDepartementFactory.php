@@ -17,7 +17,7 @@ class SubDepartementFactory extends Factory
     public function definition(): array
     {
         return [
-            'departement_id' => rand(1,5),
+            'departement_id' => rand(1, 5),
             'nom' => $this->faker->company(),
             'code' => $this->faker->companySuffix(),
         ];

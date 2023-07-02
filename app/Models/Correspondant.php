@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-use Auth;
-use App\Models\Depart;
-use App\Models\Courrier;
-use App\Models\Structure;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Correspondant
@@ -58,6 +53,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read string $date_format
  * @method static Builder|Correspondant byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @mixin \Eloquent
  */
 class Correspondant extends Model
@@ -69,13 +68,10 @@ class Correspondant extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom','fonction','contact','email','structure_id'];
-
+    protected $fillable = ['nom', 'fonction', 'contact', 'email', 'structure_id'];
 
     /**
      * Get the structure that owns the Correspondant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {
@@ -84,8 +80,6 @@ class Correspondant extends Model
 
     /**
      * Get all of the courriers for the Correspondant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function courriers(): HasMany
     {
@@ -94,12 +88,9 @@ class Correspondant extends Model
 
     /**
      * The departs that belong to the Correspondant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function departs(): BelongsToMany
     {
         return $this->belongsToMany(Depart::class);
     }
-
 }

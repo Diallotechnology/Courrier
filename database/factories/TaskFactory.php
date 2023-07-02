@@ -18,12 +18,12 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'createur_id' => rand(1,10),
-            'imputation_id' => rand(1,10),
+            'createur_id' => rand(1, 10),
+            'imputation_id' => rand(1, 10),
             'nom' => $this->faker->jobTitle(),
             'description' => $this->faker->sentence(2),
             'etat' => $this->faker->randomElement(TaskEnum::cases()),
-            'type' => $this->faker->randomElement(['imputation','utilisateur']),
+            'type' => $this->faker->randomElement(['imputation', 'utilisateur']),
             'debut' => $this->faker->dateTime(),
             'fin' => $this->faker->dateTime(),
         ];

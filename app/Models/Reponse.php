@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Interne;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Reponse
@@ -41,7 +39,7 @@ class Reponse extends Model
      *
      * @var array
      */
-    protected $fillable = ['interne_id','message','user_id'];
+    protected $fillable = ['interne_id', 'message', 'user_id'];
 
     protected function getCreatedAtAttribute(string $date): string
     {
@@ -50,8 +48,6 @@ class Reponse extends Model
 
     /**
      * Get the interne that owns the Reponse
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function interne(): BelongsTo
     {
@@ -60,8 +56,6 @@ class Reponse extends Model
 
     /**
      * Get the user that owns the Reponse
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {

@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use TCPDF;
-use TCPDF2DBarcode;
-use \setasign\Fpdi\Fpdi;
 use App\Models\Backup;
 use Illuminate\Http\Request;
-use setasign\Fpdi\PdfParser\StreamReader;
 
 class BackupController extends Controller
 {

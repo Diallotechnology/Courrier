@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\Task;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -13,7 +13,7 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return  $this->user()->can('create', Task::class);
+        return $this->user()->can('create', Task::class);
     }
 
     /**
@@ -24,14 +24,14 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'=>'required|string|max:100',
-            'type'=>'string|required|max:50',
-            'description'=>'string|required',
-            'debut'=>'required|date_format:Y-m-d\TH:i',
-            'fin'=>'required|date_format:Y-m-d\TH:i',
-            'createur_id'=>'required|exists:users,id',
-            'imputation_id'=>'nullable|exists:imputations,id',
-            'user_id'=>'nullable|array|exists:users,id',
+            'nom' => 'required|string|max:100',
+            'type' => 'string|required|max:50',
+            'description' => 'string|required',
+            'debut' => 'required|date_format:Y-m-d\TH:i',
+            'fin' => 'required|date_format:Y-m-d\TH:i',
+            'createur_id' => 'required|exists:users,id',
+            'imputation_id' => 'nullable|exists:imputations,id',
+            'user_id' => 'nullable|array|exists:users,id',
         ];
     }
 
@@ -39,6 +39,6 @@ class StoreTaskRequest extends FormRequest
     {
         $this->merge([
             'createur_id' => Auth::user()->id,
-         ]);
+        ]);
     }
 }

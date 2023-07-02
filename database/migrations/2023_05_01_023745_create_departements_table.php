@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('departements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string("nom");
-            $table->string("code");
+            $table->string('nom');
+            $table->string('code');
             $table->timestamps();
             $table->softDeletes();
         });

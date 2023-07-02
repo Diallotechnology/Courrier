@@ -2,8 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Enum\RoleEnum;
+use App\Models\User;
+use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,18 +28,15 @@ class RoleMiddleware
         return abort(403);
     }
 
-
     /**
      * Check if the user has the specified role.
      *
-     * @param  \App\User  $user
-     * @param  string  $role
-     * @return bool
+     * @param  \App\Model\User  $user
      */
-    private function hasRole($user, string $role): bool
+    private function hasRole(User $user, string $role): bool
     {
         // Utilisez les fonctions de la classe User pour vérifier le rôle de l'utilisateur
-        return  match ($role) {
+        return match ($role) {
             RoleEnum::SUPERADMIN->value => $user->isSuperadmin(),
             RoleEnum::ADMIN->value => $user->isAdmin() || $user->isSuperadmin(),
             RoleEnum::SUPERUSER->value => $user->isSuperuser() || $user->isAdmin() || $user->isSuperadmin(),

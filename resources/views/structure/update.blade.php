@@ -3,7 +3,8 @@
 <div class="row">
     <div class="col-8 mx-auto">
         <div class="card p-3">
-            <x-form route="{{ route('structure.update',$structure) }}" type="update" url="{{ route('structure') }}">
+            <x-form route="{{ route('structure.update',$structure) }}" type="update" url="{{ route('structure') }}"
+                enctype="multipart/form-data">
                 <div class="col-md-6">
                     <x-input type="text" name="nom" :value="$structure->nom" place="le nom de la structure" />
                 </div>

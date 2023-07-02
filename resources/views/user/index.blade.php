@@ -76,7 +76,6 @@
 </x-table>
 
 <x-modal title="nouveaux utilisateur">
-
     <x-form route="{{ route('user.store') }}">
         <input type="hidden" value="departement" name="type">
         <div class="col-md-6">

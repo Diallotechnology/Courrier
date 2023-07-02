@@ -4,38 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Models\Task;
 use App\Enum\RoleEnum;
-use App\Models\Depart;
-use App\Models\History;
-use App\Models\Interne;
-use App\Models\Journal;
-use App\Models\Rapport;
-use App\Models\Reponse;
-use App\Models\Courrier;
-use App\Models\Document;
 use App\Helper\DateFormat;
-use App\Models\Annotation;
-use App\Models\Imputation;
-use App\Models\Departement;
-use App\Models\SubDepartement;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
-use Creagia\LaravelSignPad\SignaturePosition;
-use Creagia\LaravelSignPad\Contracts\CanBeSigned;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Creagia\LaravelSignPad\SignatureDocumentTemplate;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Creagia\LaravelSignPad\Concerns\RequiresSignature;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Creagia\LaravelSignPad\Templates\BladeDocumentTemplate;
-use Creagia\LaravelSignPad\Contracts\ShouldGenerateSignatureDocument;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * App\Models\User
@@ -159,6 +138,42 @@ use Creagia\LaravelSignPad\Contracts\ShouldGenerateSignatureDocument;
  * @method static Builder|User structureUser()
  * @method static Builder|User userDepartement()
  * @method static Builder|User userSubDepartement()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $createurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read int|null $departements_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $destinataires
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $expediteurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $pivot_values
+ * @property-read int|null $pivot_values_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $createurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $destinataires
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $expediteurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $pivot_values
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -241,10 +256,11 @@ class User extends Authenticatable
     public function user_structure(): Structure
     {
         $id = $this->userable->structure_id ?? $this->userable->departement->structure_id;
+
         return Structure::findOrFail($id);
     }
 
-        /**
+    /**
      * Check the user parent.
      */
     public function ParentCheck(User $model): bool
@@ -269,7 +285,6 @@ class User extends Authenticatable
         });
     }
 
-
     // protected static function boot()
     // {
     //     parent::boot();
@@ -281,8 +296,6 @@ class User extends Authenticatable
     //         }
     //     });
     // }
-
-
 
     /**
      * Check if the user has the superadmin role.
@@ -316,11 +329,8 @@ class User extends Authenticatable
         return $this->role === RoleEnum::STANDARD;
     }
 
-
     /**
      * Get all of the imputations for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function imputations(): HasMany
     {
@@ -329,8 +339,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the journals for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function journals(): HasMany
     {
@@ -339,8 +347,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the annotations for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function annotations(): HasMany
     {
@@ -349,8 +355,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the rapports for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function rapports(): HasMany
     {
@@ -359,8 +363,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the comments for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function destinataires(): HasMany
     {
@@ -369,19 +371,14 @@ class User extends Authenticatable
 
     /**
      * Get all of the expediteurs for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function expediteurs(): HasMany
     {
         return $this->hasMany(Interne::class, 'expediteur_id');
     }
 
-
     /**
      * Get all of the departs for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function departs(): HasMany
     {
@@ -390,8 +387,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the courriers for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function courriers(): HasMany
     {
@@ -400,19 +395,14 @@ class User extends Authenticatable
 
     /**
      * Get all of the createurs for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function createurs(): HasMany
     {
         return $this->hasMany(Task::class, 'createur_id');
     }
 
-
     /**
      * Get all of the histories for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function histories(): HasMany
     {
@@ -421,8 +411,6 @@ class User extends Authenticatable
 
     /**
      * The departements that belong to the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function departements(): BelongsToMany
     {
@@ -431,8 +419,6 @@ class User extends Authenticatable
 
     /**
      * The tasks that belong to the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tasks(): BelongsToMany
     {
@@ -441,13 +427,11 @@ class User extends Authenticatable
 
     public function pivot_values(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class)->wherePivot('etat',0);
+        return $this->belongsToMany(Task::class)->wherePivot('etat', 0);
     }
 
     /**
      * Get all of the documents for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function documents(): HasMany
     {
@@ -456,8 +440,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the reponses for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function reponses(): HasMany
     {

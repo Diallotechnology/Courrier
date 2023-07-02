@@ -2,21 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Nature;
-use App\Models\Courrier;
-use App\Models\Document;
-use App\Models\Structure;
 use App\Helper\DateFormat;
-use App\Models\Correspondant;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\Models\Depart
@@ -74,12 +66,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read Structure $structure
  * @method static Builder|Depart byStructure()
  * @method static Builder|Depart whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
+ * @property-read int|null $correspondants_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @mixin \Eloquent
  */
 class Depart extends Model
 {
     use HasFactory, DateFormat;
-
 
     /**
      * The attributes that are mass assignable.
@@ -97,21 +93,18 @@ class Depart extends Model
         'confidentiel',
         'observation',
         'etat',
-        'date'
+        'date',
     ];
-
 
     /**
      * Get the user that owns the Depart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-        /**
+    /**
      * Get all of the document's Depart.
      */
     public function documents(): MorphMany
@@ -121,8 +114,6 @@ class Depart extends Model
 
     /**
      * Get the courrier that owns the Depart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function courrier(): BelongsTo
     {
@@ -131,8 +122,6 @@ class Depart extends Model
 
     /**
      * Get the nature that owns the Depart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function nature(): BelongsTo
     {
@@ -141,23 +130,17 @@ class Depart extends Model
 
     /**
      * The correspondants that belong to the Depart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function correspondants(): BelongsToMany
     {
         return $this->belongsToMany(Correspondant::class);
     }
 
-
     /**
      * Get the structure that owns the Depart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {
         return $this->belongsTo(Structure::class);
     }
-
 }

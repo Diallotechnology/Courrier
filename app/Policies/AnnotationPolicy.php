@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Annotation;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class AnnotationPolicy
 {
@@ -28,7 +27,7 @@ class AnnotationPolicy
         return $user->isSuperuser() || $user->isAdmin();
     }
 
-        /**
+    /**
      * Determine whether the user can trash the model.
      */
     public function trash(User $user): bool

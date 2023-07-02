@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Correspondant;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class CorrespondantPolicy
 {
@@ -36,7 +35,7 @@ class CorrespondantPolicy
         return true;
     }
 
-        /**
+    /**
      * Determine whether the user can trash the model.
      */
     public function trash(User $user): bool
@@ -49,7 +48,7 @@ class CorrespondantPolicy
      */
     public function update(User $user, Correspondant $correspondant): bool
     {
-        return  $user->structure() === $correspondant->structure_id;
+        return $user->structure() === $correspondant->structure_id;
     }
 
     /**
@@ -57,7 +56,7 @@ class CorrespondantPolicy
      */
     public function delete(User $user, Correspondant $correspondant): bool
     {
-        return  $user->structure() === $correspondant->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $user->structure() === $correspondant->structure_id && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -65,7 +64,7 @@ class CorrespondantPolicy
      */
     public function restore(User $user, Correspondant $correspondant): bool
     {
-        return  $user->structure() === $correspondant->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $user->structure() === $correspondant->structure_id && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -73,6 +72,6 @@ class CorrespondantPolicy
      */
     public function forceDelete(User $user, Correspondant $correspondant): bool
     {
-        return  $user->structure() === $correspondant->structure_id && $user->isAdmin();
+        return $user->structure() === $correspondant->structure_id && $user->isAdmin();
     }
 }

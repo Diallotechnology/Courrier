@@ -18,14 +18,14 @@ class DepartFactory extends Factory
     {
         return [
             'objet' => $this->faker->sentence(2),
-            'structure_id' => rand(1,5),
-            'nature_id' => rand(1,5),
-            'user_id' => rand(1,5),
+            'structure_id' => rand(1, 5),
+            'nature_id' => rand(1, 5),
+            'user_id' => rand(1, 5),
             'numero' => uniqid(),
-            'priorite' => $this->faker->randomElement(['Normal','Urgent']),
-            'confidentiel' => $this->faker->randomElement(['OUI','NON']),
+            'priorite' => $this->faker->randomElement(['Normal', 'Urgent']),
+            'confidentiel' => $this->faker->randomElement(['OUI', 'NON']),
             'date' => $this->faker->date(),
-            'etat' => "Enregistré",
+            'etat' => 'Enregistré',
         ];
     }
 }

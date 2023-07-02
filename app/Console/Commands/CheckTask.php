@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Task;
 use App\Enum\TaskEnum;
+use App\Models\Task;
 use App\Models\User;
 use App\Notifications\TaskNotification;
 use Illuminate\Console\Command;

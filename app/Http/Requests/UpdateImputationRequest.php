@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateImputationRequest extends FormRequest
 {
@@ -26,17 +26,17 @@ class UpdateImputationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'priorite'=>'required|string|max:6',
-            'observation'=>'string|nullable|max:255',
-            'delai'=>'nullable|date',
-            'courrier_id'=>'required|exists:courriers,id',
-            'departement_id'=>'required|exists:departements,id',
-            'annotation_id'=>'required|array|exists:annotations,id',
+            'priorite' => 'required|string|max:6',
+            'observation' => 'string|nullable|max:255',
+            'delai' => 'nullable|date',
+            'courrier_id' => 'required|exists:courriers,id',
+            'departement_id' => 'required|exists:departements,id',
+            'annotation_id' => 'required|array|exists:annotations,id',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

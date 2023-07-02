@@ -7,9 +7,11 @@ use App\Models\Nature;
 use App\Models\Courrier;
 use App\Models\Document;
 use App\Helper\DeleteAction;
-use Illuminate\Http\Request;
 use App\Models\Correspondant;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreDepartRequest;
 use App\Http\Requests\UpdateDepartRequest;
 
@@ -18,34 +20,27 @@ class DepartController extends Controller
     use DeleteAction;
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDepartRequest $request)
+    public function store(StoreDepartRequest $request): RedirectResponse
     {
 
         $item = Depart::create($request->safe()->except(['correspondant_id']));
         $ref = $item->generateId('CD');
-        if(!empty($request->correspondant_id)) {
+        if (! empty($request->correspondant_id)) {
             $item->correspondants()->attach($request->correspondant_id);
         }
         $this->file_uplode($request, $item);
         $this->journal("Ajout du courrier depart REF N°$ref");
         toastr()->success('Courrier ajouter avec success!');
+
         return back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Depart $depart)
+    public function show(Depart $depart): View
     {
         return view('depart.show', compact('depart'));
     }
@@ -53,94 +48,91 @@ class DepartController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Depart $depart)
+    public function edit(Depart $depart): View
     {
         $this->authorize('update', $depart);
         $user = Auth::user();
         $correspondant = Correspondant::with('structure')->orderBy('nom')
-        ->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())->get();
+            ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->get();
 
-        $type = Nature::orderBy('nom')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())->latest()->get();
+        $type = Nature::orderBy('nom')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->latest()->get();
 
-        $courrier = Courrier::with('nature','correspondant')->when(!$user->isSuperadmin(), fn($query) => $query->ByStructure())
-        ->latest()->get(['id','numero','reference','date']);
-        return view('depart.update', compact('depart','correspondant','type','courrier'));
+        $courrier = Courrier::with('nature', 'correspondant')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
+            ->latest()->get(['id', 'numero', 'reference', 'date']);
+
+        return view('depart.update', compact('depart', 'correspondant', 'type', 'courrier'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDepartRequest $request, Depart $depart)
+    public function update(UpdateDepartRequest $request, Depart $depart): RedirectResponse
     {
         $depart->update($request->safe()->except(['correspondant_id']));
-        if(!empty($request->correspondant_id)) {
+        if (! empty($request->correspondant_id)) {
             $depart->correspondants()->sync($request->correspondant_id);
         }
-        if ($request->hasFile('files')):
-            foreach ($request->file('files') as $key => $row):
-                // renome le document
-                $filename =  $row->hashName();
-                $chemin = $row->storeAs('courrier/depart', $filename, 'public');
-                $data = new Document([
-                    'libelle' => $depart->numero,
-                    'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
-                    'type' => 'Depart',
-                    'chemin' => $chemin,
-                ]);
-                $depart->documents()->save($data);
-            endforeach;
-        endif;
+        $this->file_uplode($request, $depart);
         toastr()->success('Courrier mise à jour avec success!');
+
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $depart)
+    public function destroy(int $depart): JsonResponse
     {
         $delete = Depart::findOrFail($depart);
         $this->journal("Suppression du courrier depart REF N°$delete->numero");
-        return  $this->supp($delete);
+
+        return $this->supp($delete);
     }
 
-    public function trash()
+    public function trash(): View
     {
-        $rows = Depart::with('user','courrier')->onlyTrashed()
-        ->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure())
-        ->latest('id')->paginate(15);
+        $rows = Depart::with('user', 'courrier')->onlyTrashed()
+            ->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
+            ->latest('id')->paginate(15);
+
         return view('depart.trash', compact('rows'));
     }
 
-    public function recover(int $id) {
+    public function recover(int $id): JsonResponse
+    {
 
         $row = Depart::onlyTrashed()->whereId($id)->firstOrFail();
         $this->journal("restauré le courrier depart REF N°$row->numero");
+
         return $this->Restore($row);
     }
 
-    public function force_delete(int $id) {
+    public function force_delete(int $id): JsonResponse
+    {
 
         $row = Depart::onlyTrashed()->whereId($id)->firstOrFail();
-        if($row->documents) {
-            foreach($row->documents as $item) {
+        if ($row->documents) {
+            foreach ($row->documents as $item) {
                 $this->file_delete($item);
             }
         }
         $this->journal("Suppression definitive du courrier depart REF N°$row->numero");
+
         return $this->Remove($row);
     }
 
+    public function all_recover(): RedirectResponse
+    {
 
-    public function all_recover() {
+        $this->journal('Restauré de tous les courriers depart');
 
-        $this->journal("Restauré de tous les courriers depart");
-        return $this->All_restore(Depart::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
+        return $this->All_restore(Depart::onlyTrashed()->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure()));
     }
 
-    public function all_delete() {
-        $this->journal("Vidé la corbeille du courrier depart");
-        return $this->All_remove(Depart::onlyTrashed()->when(!Auth::user()->isSuperadmin(), fn($query) => $query->ByStructure()));
+    public function all_delete(): RedirectResponse
+    {
+        $this->journal('Vidé la corbeille du courrier depart');
+
+        return $this->All_remove(Depart::onlyTrashed()->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure()));
     }
 }

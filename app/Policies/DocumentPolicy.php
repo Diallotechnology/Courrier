@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Document;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class DocumentPolicy
 {
@@ -36,7 +35,7 @@ class DocumentPolicy
         return false;
     }
 
-        /**
+    /**
      * Determine whether the user can trash the model.
      */
     public function trash(User $user): bool

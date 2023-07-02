@@ -2,28 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Task;
-use App\Models\User;
-use App\Models\Depart;
-use App\Models\Nature;
-use App\Models\History;
-use App\Models\Rapport;
-use App\Models\Document;
-use App\Models\Structure;
 use App\Enum\CourrierEnum;
 use App\Helper\DateFormat;
-use App\Models\Imputation;
-use App\Models\Departement;
-use App\Models\Correspondant;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Courrier
@@ -103,6 +89,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier byStructure()
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @mixin \Eloquent
  */
 class Courrier extends Model
@@ -126,9 +122,8 @@ class Courrier extends Model
         'confidentiel',
         'observation',
         'etat',
-        'date'
+        'date',
     ];
-
 
     /**
      * The attributes that should be cast.
@@ -140,7 +135,6 @@ class Courrier extends Model
         'date' => 'date',
     ];
 
-
     /**
      * Get all of the document's Courrier.
      */
@@ -151,8 +145,6 @@ class Courrier extends Model
 
     /**
      * Get the nature that owns the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function nature(): BelongsTo
     {
@@ -161,8 +153,6 @@ class Courrier extends Model
 
     /**
      * Get the user that owns the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -171,8 +161,6 @@ class Courrier extends Model
 
     /**
      * Get all of the rapports for the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function rapports(): HasMany
     {
@@ -181,8 +169,6 @@ class Courrier extends Model
 
     /**
      * Get all of the imputations for the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function imputations(): HasMany
     {
@@ -191,8 +177,6 @@ class Courrier extends Model
 
     /**
      * Get the correspondant that owns the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function correspondant(): BelongsTo
     {
@@ -201,19 +185,14 @@ class Courrier extends Model
 
     /**
      * Get the structure that owns the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {
         return $this->belongsTo(Structure::class);
     }
 
-
     /**
      * Get all of the departs for the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function departs(): HasMany
     {
@@ -222,14 +201,11 @@ class Courrier extends Model
 
     /**
      * Get all of the histories for the Courrier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function histories(): HasMany
     {
         return $this->hasMany(History::class);
     }
-
 
     public function Complet(): bool
     {
@@ -255,5 +231,4 @@ class Courrier extends Model
     {
         return $this->etat == CourrierEnum::ARCHIVE;
     }
-
 }

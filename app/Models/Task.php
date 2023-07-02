@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Enum\TaskEnum;
-use App\Models\Courrier;
 use App\Helper\DateFormat;
-use App\Models\Imputation;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Task
@@ -63,13 +60,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Task byStructure()
+ * @property string|null $numero
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $pivot_values
+ * @property-read int|null $pivot_values_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereNumero($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $pivot_values
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
  */
 class Task extends Model
 {
     use HasFactory, DateFormat;
 
-        /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -84,7 +88,7 @@ class Task extends Model
         'debut',
         'fin',
         'etat',
-        'date'
+        'date',
     ];
 
     /**
@@ -110,8 +114,6 @@ class Task extends Model
 
     /**
      * Get the user that owns the Task
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function imputation(): BelongsTo
     {
@@ -120,8 +122,6 @@ class Task extends Model
 
     /**
      * The users that belong to the Task
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users(): BelongsToMany
     {
@@ -130,34 +130,33 @@ class Task extends Model
 
     public function pivot_values(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->wherePivot('etat',0);
+        return $this->belongsToMany(User::class)->wherePivot('etat', 0);
     }
 
     /**
      * Get the user that owns the Task
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function createur(): BelongsTo
     {
         return $this->belongsTo(User::class, 'createur_id');
     }
 
-    public function Complet()
+    public function Complet(): bool
     {
         return $this->etat == TaskEnum::TERMINE;
     }
-    public function Nocomplet()
+
+    public function Nocomplet(): bool
     {
         return $this->etat == TaskEnum::NON_TERMINE;
     }
 
-    public function Pending()
+    public function Pending(): bool
     {
         return $this->etat == TaskEnum::EN_ATTENTE;
     }
 
-    public function Progress()
+    public function Progress(): bool
     {
         return $this->etat == TaskEnum::EN_COURS;
     }

@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -35,8 +34,8 @@ class ReponseNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -48,7 +47,7 @@ class ReponseNotification extends Notification
     {
         return [
             'message' => $this->message,
-            'type' =>  "Courrier interne",
+            'type' => 'Courrier interne',
         ];
     }
 }

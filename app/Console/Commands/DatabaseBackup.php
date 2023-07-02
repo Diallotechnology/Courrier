@@ -26,9 +26,9 @@ class DatabaseBackup extends Command
     public function handle()
     {
         $backupPath = storage_path('app/backups');
-        $backupFilename = 'backup-' . date('Y-m-d_His') . '.sql';
+        $backupFilename = 'backup-'.date('Y-m-d_His').'.sql';
 
-        if (!file_exists($backupPath)) {
+        if (! file_exists($backupPath)) {
             mkdir($backupPath, 0777, true);
         }
 

@@ -17,7 +17,7 @@ class NatureFactory extends Factory
     public function definition(): array
     {
         return [
-            'structure_id' => rand(1,5),
+            'structure_id' => rand(1, 5),
             'nom' => $this->faker->sentence(1),
         ];
     }

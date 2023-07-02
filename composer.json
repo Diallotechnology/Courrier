@@ -9,7 +9,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "dacastro4/laravel-gmail": "dev-master#48653be4d460ba7d4898ad221b2beb967901636f",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.8",
         "laravel/sanctum": "^3.2",
@@ -17,6 +16,7 @@
         "livewire/livewire": "^2.12",
         "masmerise/livewire-toaster": "^1.1",
         "opcodesio/log-viewer": "^2.4",
+        "pusher/pusher-php-server": "^7.2",
         "yoeunes/toastr": "^2.3"
     },
     "require-dev": {

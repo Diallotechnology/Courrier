@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\DeleteAction;
-use App\Models\Reponse;
 use App\Models\User;
-use App\Notifications\ReponseNotification;
+use App\Models\Reponse;
+use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use App\Notifications\ReponseNotification;
 
 class ReponseController extends Controller
 {
@@ -15,12 +18,12 @@ class ReponseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'message'=>'required|string',
-            'interne_id'=>'required',
-            'expediteur_id'=>'required'
+            'message' => 'required|string',
+            'interne_id' => 'required',
+            'expediteur_id' => 'required',
         ]);
         Reponse::create([
             'message' => $request->message,
@@ -30,47 +33,43 @@ class ReponseController extends Controller
         $user = User::find($request->expediteur_id);
         $user->notify(new ReponseNotification("$user->name a envoyer une reponse"));
         toastr()->success('Reponse envoyé avec success!');
-        return back();
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Reponse $reponse)
-    {
-        //
+        return back();
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reponse $reponse)
+    public function edit(Reponse $reponse): View
     {
         $this->authorize('update', $reponse);
+
         return view('reponse.update', compact('reponse'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Reponse $reponse)
+    public function update(Request $request, Reponse $reponse): RedirectResponse
     {
         $this->authorize('update', $reponse);
         $request->validate([
-            'message'=>'required|string',
+            'message' => 'required|string',
         ]);
-        $reponse->update(['message'=> $request->message]);
+        $reponse->update(['message' => $request->message]);
         toastr()->success('Reponse mise à jour avec success!');
+
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $reponse)
+    public function destroy(int $reponse): JsonResponse
     {
         $delete = Reponse::findOrFail($reponse);
         $this->journal("Suppression de la reponse N°$delete->id");
-        return  $this->supp($delete);
+
+        return $this->supp($delete);
     }
 }

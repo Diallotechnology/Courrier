@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Notification;
-use Faker\Core\Uuid;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +18,8 @@ class NotificationFactory extends Factory
             'id' => $this->faker->uuid(),
             'data' => $this->faker->sentence,
             'notifiable_type' => "App\Models\User",
-            'type' => "imputation",
-            'notifiable_id' => \rand(1,5),
+            'type' => 'imputation',
+            'notifiable_id' => \rand(1, 5),
             // Autres propriétés de votre notification
         ];
     }

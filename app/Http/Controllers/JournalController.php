@@ -2,28 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\DeleteAction;
 use App\Models\Journal;
-use Illuminate\Http\Request;
+use App\Helper\DeleteAction;
+use Illuminate\Http\JsonResponse;
 
 class JournalController extends Controller
 {
     use DeleteAction;
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Journal $journal)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $journal)
+    public function destroy(int $journal): JsonResponse
     {
         $delete = Journal::findOrFail($journal);
-        return  $this->supp($delete);
+
+        return $this->supp($delete);
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Correspondant;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FormeCorrespondantRequest extends FormRequest
 {
@@ -25,16 +25,16 @@ class FormeCorrespondantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'=>'required|string|max:70',
-            'contact'=>'string|nullable|max:11',
-            'fonction'=>'required|string|max:100',
-            'email'=> ['required','email','max:255','unique:correspondants,email',Rule::unique(Correspondant::class,'email')->ignore($this->id)],
-            'structure_id'=>'required|exists:structures,id',
+            'nom' => 'required|string|max:70',
+            'contact' => 'string|nullable|max:11',
+            'fonction' => 'required|string|max:100',
+            'email' => ['required', 'email', 'max:255', 'unique:correspondants,email', Rule::unique(Correspondant::class, 'email')->ignore($this->id)],
+            'structure_id' => 'required|exists:structures,id',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

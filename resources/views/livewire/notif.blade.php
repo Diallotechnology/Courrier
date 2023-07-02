@@ -1,9 +1,7 @@
 <div>
     <div class="card-header">
         <div class="col">
-            <h3 class="card-title">{{ count(Auth::user()->unreadNotifications) }} Notifications
-
-            </h3>
+            <h3 class="card-title">{{ count(Auth::user()->unreadNotifications) }} Notifications</h3>
         </div>
         <div class="col-auto">
             <button wire:click='delete' class="btn btn-danger btn-sm btn-icon">

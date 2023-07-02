@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateDepartRequest extends FormRequest
 {
@@ -25,20 +25,20 @@ class UpdateDepartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'objet'=>'required|string|max:255',
-            'confidentiel'=>'required|string|max:3',
-            'priorite'=>'required|string|max:6',
-            'observation'=>'string|nullable|max:255',
-            'date'=>'required|date',
-            'files'=> 'nullable',
+            'objet' => 'required|string|max:255',
+            'confidentiel' => 'required|string|max:3',
+            'priorite' => 'required|string|max:6',
+            'observation' => 'string|nullable|max:255',
+            'date' => 'required|date',
+            'files' => 'nullable',
             // 'files.*'=> 'mimes:pdf',
-            'nature_id'=>'required|exists:natures,id',
-            'correspondant_id'=>'required|array|exists:correspondants,id',
+            'nature_id' => 'required|exists:natures,id',
+            'correspondant_id' => 'required|array|exists:correspondants,id',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

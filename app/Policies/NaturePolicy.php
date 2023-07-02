@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Nature;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class NaturePolicy
 {
@@ -41,7 +40,7 @@ class NaturePolicy
      */
     public function update(User $user, Nature $nature): bool
     {
-        return  $user->structure() === $nature->structure_id;
+        return $user->structure() === $nature->structure_id;
     }
 
     /**
@@ -49,7 +48,7 @@ class NaturePolicy
      */
     public function delete(User $user, Nature $nature): bool
     {
-        return  $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -57,7 +56,7 @@ class NaturePolicy
      */
     public function restore(User $user, Nature $nature): bool
     {
-        return  $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -65,6 +64,6 @@ class NaturePolicy
      */
     public function forceDelete(User $user, Nature $nature): bool
     {
-        return  $user->structure() === $nature->structure_id && $user->isAdmin();
+        return $user->structure() === $nature->structure_id && $user->isAdmin();
     }
 }

@@ -8,35 +8,39 @@ use Livewire\Component;
 use App\Models\Courrier;
 use Livewire\WithPagination;
 use App\Models\Correspondant;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class CourrierDepart extends Component
 {
-
     use WithPagination;
 
     protected string $paginationTheme = 'bootstrap';
 
     public function ResetFilter(): void
     {
-        $this->reset('privacy','priority','nature','date', 'expediteur','etat');
+        $this->reset('privacy', 'priority', 'nature', 'date', 'expediteur', 'etat');
         $this->resetPage();
     }
 
     public string $privacy = '';
-    public string $priority = '';
-    public string $nature = '';
-    public string $date = '';
-    public string $expediteur = '';
-    public string $etat = '';
-    public array $selectedRows = [];
 
-    public function render()
+    public string $priority = '';
+
+    public string $nature = '';
+
+    public string $date = '';
+
+    public string $expediteur = '';
+
+    public string $etat = '';
+
+    public function render(): View
     {
         $structureId = Auth::user()->structure();
         $isSuperadmin = Auth::user()->isSuperadmin();
         $query = Depart::with('user', 'nature', 'correspondants')
-            ->when(!$isSuperadmin, fn($query) => $query->ByStructure())
+            ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
             })
@@ -60,8 +64,8 @@ class CourrierDepart extends Component
 
         $correspondantQuery = Correspondant::orderBy('nom');
         $typeQuery = Nature::orderBy('nom');
-        $courrierQuery = Courrier::with('nature','correspondant');
-        if (!$isSuperadmin) {
+        $courrierQuery = Courrier::with('nature', 'correspondant');
+        if (! $isSuperadmin) {
             $correspondantQuery->ByStructure();
             $typeQuery->ByStructure();
             $courrierQuery->ByStructure();
@@ -69,8 +73,8 @@ class CourrierDepart extends Component
 
         $correspondant = $correspondantQuery->get();
         $type = $typeQuery->get();
-        $courrier = $courrierQuery->latest()->get(['id','numero','reference','date']);
+        $courrier = $courrierQuery->latest()->get(['id', 'numero', 'reference', 'date']);
 
-        return view('livewire.courrier-depart', compact('rows','correspondant','type','courrier'));
+        return view('livewire.courrier-depart', compact('rows', 'correspondant', 'type', 'courrier'));
     }
 }

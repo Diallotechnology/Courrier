@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Task;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -46,9 +45,10 @@ class TaskNotification extends Notification
     public function toArray(object $notifiable): array
     {
         $ref = $this->task->numero;
+
         return [
-            'message' =>  $this->message,
-            'type' =>  "Tache N° $ref",
+            'message' => $this->message,
+            'type' => "Tache N° $ref",
 
         ];
     }

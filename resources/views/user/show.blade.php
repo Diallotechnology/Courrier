@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="row">
+<div class="row m-1">
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -107,7 +107,7 @@
         </div>
     </div>
 </div>
-<div class="row mx-1 my-3">
+<div class="row my-3">
     <div class="col-md-6 col-xl-3">
         <div class="card card-sm">
             <div class="card-body">
@@ -225,7 +225,7 @@
         </div>
     </div>
 </div>
-<div class="row mx-1 my-3">
+<div class="row my-3">
     <div class="col-md-6 col-xl-3">
         <div class="card card-sm">
             <div class="card-body">
@@ -350,8 +350,7 @@
     </div>
     @endif
 </div>
-
-<div class="row mx-1 my-3">
+<div class="row my-3">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -390,130 +389,143 @@
                 <div class="tab-content">
                     <div class="tab-pane active show" id="tabs-home-9">
                         <h4>Historique des courriers arrivé</h4>
-                        <div class="table-responsive">
-                            <table id="datatable" class="table  text-nowrap datatable">
-                                <thead class="sticky-top">
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Utilisateur</th>
-                                        <th scope="col">Nature</th>
-                                        <th scope="col">Correspondant</th>
-                                        <th scope="col">Reference</th>
-                                        <th scope="col">Priorite</th>
-                                        <th scope="col">Confidential</th>
-                                        <th scope="col">Numero/Date arriver</th>
-                                        <th scope="col">Etat</th>
-                                        <th scope="col">Objet</th>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($user->courriers as $row)
-                                    <tr>
-                                        <td>{{ $row->id }}</td>
-                                        <td>
-                                            <x-user-avatar :row="$row" />
-                                        </td>
-                                        <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
-                                        <td>
-                                            {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
-                                        </td>
-                                        <td>{{ $row->reference }}</td>
-
-                                        <td>
-                                            <x-statut type="prio" :courrier="$row" />
-                                        </td>
-                                        <td>
-                                            <x-statut type="privacy" :courrier="$row" />
-                                        </td>
-                                        <td>
-                                            <div class="d-flex py-1 align-items-center">
-                                                <div class="flex-fill">
-                                                    <div class="font-weight-medium">N° {{ $row->numero }}</div>
-                                                    <div class="text-muted">Date {{ $row->date_format }}</div>
-                                                </div>
+                        <x-table :rows="$courrier">
+                            <x-slot name="header">
+                                <div class="card-body">
+                                    <x-filter url="arriver" />
+                                </div>
+                            </x-slot>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Utilisateur</th>
+                                    <th>Structure</th>
+                                    <th>Nature</th>
+                                    <th>Correspondant</th>
+                                    <th>Reference</th>
+                                    <th>Numero/Date arriver</th>
+                                    <th>Priorite</th>
+                                    <th>Confidential</th>
+                                    <th>Etat</th>
+                                    <th>Objet</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($courrier as $row)
+                                <tr>
+                                    <td>{{ $row->id }}</td>
+                                    <td>
+                                        <x-user-avatar :row="$row" />
+                                    </td>
+                                    <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
+                                    <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+                                    <td>
+                                        {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
+                                    </td>
+                                    <td>{{ $row->reference }}</td>
+                                    <td>
+                                        <div class="d-flex py-1 align-items-center">
+                                            <div class="flex-fill">
+                                                <div class="font-weight-medium">N° {{ $row->numero }}</div>
+                                                <div class="text-muted">Date {{ $row->date_format }}</div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <x-statut type="etat" :courrier="$row" />
-                                        </td>
-                                        <td>
-                                            <p class="text-muted">{{ $row->objet }}</p>
-                                        </td>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <x-statut type="prio" :courrier="$row" />
+                                    </td>
+                                    <td>
+                                        <x-statut type="privacy" :courrier="$row" />
+                                    </td>
 
-                                        <td>{{ $row->created_at }}</td>
-                                        <td>
-                                            <x-button-show :row="$row"
-                                                href="{{ route('arriver.show', ['arriver' => $row]) }}" />
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="8">
-                                            <h2 class="text-center">Aucun element</h2>
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                                    <td>
+                                        <x-statut type="etat" :courrier="$row" />
+                                    </td>
+                                    <td>
+                                        <p class="text-muted">{{ $row->objet }}</p>
+                                    </td>
+                                    <td>{{ $row->created_at }}</td>
+                                    <td>
+                                        <x-button-show :row="$row"
+                                            href="{{ route('arriver.show', ['arriver' => $row]) }}" />
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="10">
+                                        <h2 class="text-center">Aucun element</h2>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+
+                        </x-table>
 
                     </div>
                     <div class="tab-pane" id="tabs-profile-9">
                         <h4>Historique des imputations</h4>
-                        <div class="table-responsive">
-                            <table id="datatable" class="table card-table table-vcenter text-nowrap datatable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Utilisateur</th>
-                                        <th>Reference</th>
-                                        <th>N° du courrier</th>
-                                        <th>Nom du departement</th>
-                                        <th>Priorité</th>
-                                        <th>Etat</th>
-                                        <th>Delai</th>
-                                        <th>Fin de traitement</th>
-                                        <th>Date de creation</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($user->imputations as $row)
-                                    <tr>
-                                        <td>{{ $row->id }}</td>
-                                        <td>
-                                            <x-user-avatar :row="$row" />
-                                        </td>
-                                        <td>{{ $row->numero }}</td>
-                                        <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
-                                        <td>{{ $row->departement ? $row->departement->nom : 'inexistant' }}</td>
-                                        <td>
-                                            <x-statut type="prio" :courrier="$row" />
-                                        </td>
-                                        <td>
-                                            <x-statut-imputation :row="$row" />
-                                        </td>
-                                        <td>{{ $row->delai }}</td>
-                                        <td>{{ $row->fin_traitement }}</td>
-
-                                        <td>{{ $row->created_at }}</td>
-                                        <td>
-                                            <x-button-show :row="$row"
-                                                href="{{ route('imputation.show', ['imputation' => $row]) }}" />
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="8">
-                                            <h2 class="text-center">Aucun element</h2>
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
+                        <x-table :rows="$imputation">
+                            <x-slot name="header">
+                                <div class="card-body">
+                                    <x-filter url="imputation" />
+                                </div>
+                            </x-slot>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Utilisateur</th>
+                                    <th>Reference</th>
+                                    <th>N/A du courrier</th>
+                                    <th>Departement concerné</th>
+                                    <th>Priorité</th>
+                                    <th>Etat</th>
+                                    <th>Delai</th>
+                                    <th>Fin de traitement</th>
+                                    <th>Date de creation</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($imputation as $row)
+                                <tr>
+                                    <td>{{ $row->id }}</td>
+                                    <td>
+                                        <x-user-avatar :row="$row" />
+                                    </td>
+                                    <td>{{ $row->numero }}</td>
+                                    <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
+                                    <td>
+                                        @forelse ($row->departements as $item)
+                                        <div>{{ $item->nom }}</div>
+                                        @empty
+                                        aucun
+                                        @endforelse
+                                    </td>
+                                    <td>
+                                        <x-statut type="prio" :courrier="$row" />
+                                    </td>
+                                    <td>
+                                        <x-statut-imputation :row="$row" />
+                                    </td>
+                                    <td>{{ $row->delai }}</td>
+                                    <td>{{ $row->fin_traitement }}</td>
+                                    <td>{{ $row->created_at }}</td>
+                                    <td>
+                                        <x-button-show :row="$row"
+                                            href="{{ route('imputation.show', ['imputation' => $row]) }}" />
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="8">
+                                        <h2 class="text-center">Aucun element</h2>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </x-table>
                     </div>
                 </div>
             </div>

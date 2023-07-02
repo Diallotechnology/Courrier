@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\Document
@@ -44,6 +43,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
  * @property-read string $date_format
  * @method static \Illuminate\Database\Eloquent\Builder|Document byStructure()
+ * @property int $structure_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereStructureId($value)
  * @mixin \Eloquent
  */
 class Document extends Model
@@ -65,7 +66,6 @@ class Document extends Model
         'chemin',
     ];
 
-
     /**
      * Get the parent documentable model (Courrier or Depart, Interne).
      */
@@ -74,19 +74,17 @@ class Document extends Model
         return $this->morphTo();
     }
 
-    public function DocLink(): string {
+    public function DocLink(): string
+    {
 
         return Storage::url($this->chemin);
     }
 
     /**
      * Get the user that owns the Document
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
 }

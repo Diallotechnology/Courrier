@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('correspondants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string("nom");
-            $table->string("fonction");
-            $table->string("contact")->nullable();
-            $table->string("email")->unique();
+            $table->string('nom');
+            $table->string('fonction');
+            $table->string('contact')->nullable();
+            $table->string('email')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

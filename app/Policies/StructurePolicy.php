@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Structure;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class StructurePolicy
 {
@@ -28,7 +27,7 @@ class StructurePolicy
         return false;
     }
 
-        /**
+    /**
      * Determine whether the user can trash the model.
      */
     public function trash(User $user): bool

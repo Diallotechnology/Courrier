@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Interne;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class InternePolicy
 {
@@ -33,10 +32,10 @@ class InternePolicy
      */
     public function create(User $user): bool
     {
-       return true;
+        return true;
     }
 
-        /**
+    /**
      * Determine whether the user can trash the model.
      */
     public function trash(User $user): bool

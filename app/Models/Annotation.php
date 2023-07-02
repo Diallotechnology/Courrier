@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Helper\DateFormat;
-use App\Models\Imputation;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -38,18 +36,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @mixin \Eloquent
  */
 class Annotation extends Model
 {
     use HasFactory, DateFormat;
 
-    protected $fillable = ['nom','user_id'];
+    protected $fillable = ['nom', 'user_id'];
 
     /**
      * Get the user that owns the Annotation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -58,8 +56,6 @@ class Annotation extends Model
 
     /**
      * The imputations that belong to the Annotation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function imputations(): BelongsToMany
     {

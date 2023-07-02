@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRapportRequest extends FormRequest
 {
@@ -26,16 +26,16 @@ class UpdateRapportRequest extends FormRequest
     {
         return [
 
-            'objet'=>'required|string|max:255',
-            'type'=>'required|string|max:200',
-            'courrier_id'=>'nullable|exists:courriers,id',
-            'contenu'=> 'nullable|string',
-            'files'=> 'nullable|sometimes|array',
+            'objet' => 'required|string|max:255',
+            'type' => 'required|string|max:200',
+            'courrier_id' => 'nullable|exists:courriers,id',
+            'contenu' => 'nullable|string',
+            'files' => 'nullable|sometimes|array',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-       return toastr()->error('la validation a echoué verifiez vos informations!');
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

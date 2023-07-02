@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Helper\DateFormat;
-use App\Models\Departement;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
@@ -41,6 +38,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
  */
 class SubDepartement extends Model
@@ -52,12 +51,10 @@ class SubDepartement extends Model
      *
      * @var array
      */
-    protected $fillable = ['departement_id','nom','code'];
+    protected $fillable = ['departement_id', 'nom', 'code'];
 
     /**
      * Get the departement that owns the SubDepartement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function departement(): BelongsTo
     {
@@ -71,6 +68,6 @@ class SubDepartement extends Model
      */
     public function users(): MorphMany
     {
-        return $this->morphMany(User::class,'userable');
+        return $this->morphMany(User::class, 'userable');
     }
 }

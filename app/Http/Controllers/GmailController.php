@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Google\Client;
-use Google_Client;
-use Google\Service;
 use Google\Service\Gmail;
-use Google_Service_Gmail;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use PulkitJalan\Google\Facades\Google;
 
 class GmailController extends Controller
@@ -20,13 +15,11 @@ class GmailController extends Controller
     {
         $gmail = Google::make('Gmail');
         $authUrl = $gmail->getClient()->createAuthUrl();
+
         return redirect()->away($authUrl);
     }
 
-
-
-
-        /**
+    /**
      * List Gmail messages for the authenticated user.
      */
     public function listMessages()
@@ -52,7 +45,7 @@ class GmailController extends Controller
                 'from' => '',
                 'date' => '',
                 'snippet' => '',
-                'body' => ''
+                'body' => '',
             ];
 
             foreach ($message->getPayload()->getHeaders() as $header) {
@@ -68,17 +61,17 @@ class GmailController extends Controller
         }
 
         $rows = new Collection($messageDetails);
-    //    \dd($rows);
+        //    \dd($rows);
         return view('backup', compact('rows'));
     }
 
-                // Retrieve the body of the message
-            // $parts = $message->getPayload()->getParts();
-            // if (count($parts) > 0 && $parts[0]['body'] && $parts[0]['body']->getData()) {
-            //     $rawData = $parts[0]['body']->getData();
-            //     $sanitizedData = strtr($rawData, '-_', '+/');
-            //     $decodedMessage = base64_decode($sanitizedData);
+    // Retrieve the body of the message
+    // $parts = $message->getPayload()->getParts();
+    // if (count($parts) > 0 && $parts[0]['body'] && $parts[0]['body']->getData()) {
+    //     $rawData = $parts[0]['body']->getData();
+    //     $sanitizedData = strtr($rawData, '-_', '+/');
+    //     $decodedMessage = base64_decode($sanitizedData);
 
-            //     $messageDetail['body'] = $decodedMessage;
-            // }
+    //     $messageDetail['body'] = $decodedMessage;
+    // }
 }

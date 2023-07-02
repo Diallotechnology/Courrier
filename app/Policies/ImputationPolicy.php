@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Imputation;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ImputationPolicy
 {
@@ -49,7 +48,7 @@ class ImputationPolicy
      */
     public function update(User $user, Imputation $imputation): bool
     {
-        return  $user->id === $imputation->user_id && $user->isAdmin() || $user->isSuperuser();
+        return $user->id === $imputation->user_id && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**

@@ -18,7 +18,7 @@ class CorrespondantFactory extends Factory
     {
         return [
             'nom' => $this->faker->firstName(),
-            'structure_id' => rand(1,5),
+            'structure_id' => rand(1, 5),
             'nom' => $this->faker->lastName(),
             'email' => $this->faker->email(),
             'fonction' => $this->faker->jobTitle(),
