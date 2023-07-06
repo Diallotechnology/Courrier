@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Enum\ImputationEnum;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enum\ImputationEnum;
+use App\Models\SubDepartement;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Imputation
@@ -104,6 +105,14 @@ class Imputation extends Model
     public function departements(): BelongsToMany
     {
         return $this->belongsToMany(Departement::class);
+    }
+
+    /**
+     * The departements that belong to the Imputation
+     */
+    public function subdepartements(): BelongsToMany
+    {
+        return $this->belongsToMany(SubDepartement::class);
     }
 
     /**

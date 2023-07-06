@@ -63,6 +63,7 @@ class Document extends Model
         'documentable_id',
         'libelle',
         'type',
+        'extension',
         'chemin',
     ];
 

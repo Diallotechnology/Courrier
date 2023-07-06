@@ -151,7 +151,8 @@
                 <x-input type="date" name="date" label="Date de depart" />
             </div>
             <div class="col-md-6">
-                <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif" :required='false' />
+                <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif"
+                    :required='false' />
             </div>
             <div class="col-md-12">
                 <x-select name="courrier_id" :required='false'

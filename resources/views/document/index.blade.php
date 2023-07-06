@@ -24,6 +24,7 @@
             <th>ID</th>
             <th>Utilisateur</th>
             <th>Libelle</th>
+            <th>extension</th>
             <th>type</th>
             <th>Date de creation</th>
             <th>Action</th>
@@ -37,9 +38,11 @@
                 <x-user-avatar :row="$row" />
             </td>
             <td>{{ $row->libelle }}</td>
+            <td>{{ $row->extension }}</td>
             <td>{{ $row->type }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
+                <x-button-download :row="$row" href="{{ route('document.download', ['document' => $row]) }}" />
                 <x-button-edit :row="$row" href="{{ route('document.edit', ['document' => $row]) }}" />
                 <x-button-show :row="$row" href="{{ route('document.show', ['document' => $row]) }}" target="_blank" />
                 <x-button-delete :row="$row" url="{{ url('document/'.$row->id) }}" />

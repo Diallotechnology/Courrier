@@ -50,6 +50,7 @@
             <th>Reference</th>
             <th>N/A du courrier</th>
             <th>Departement concerné</th>
+            <th>Sous Departement</th>
             <th>Priorité</th>
             <th>Etat</th>
             <th>Delai</th>
@@ -69,6 +70,13 @@
             <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
             <td>
                 @forelse ($row->departements as $item)
+                <div>{{ $item->nom }}</div>
+                @empty
+                aucun
+                @endforelse
+            </td>
+            <td>
+                @forelse ($row->subdepartements as $item)
                 <div>{{ $item->nom }}</div>
                 @empty
                 aucun
@@ -104,39 +112,52 @@
             <div class="col-md-12">
                 <x-select label="Courrier arrivé" name="courrier_id">
                     @foreach ($arriver as $row)
-                    <option value="{{ $row->id }}">Courrier arriver N°{{ $row->numero
-                        }},Date
-                        d'arriver {{
-                        $row->date_format }}
+                    <option value="{{ $row->id }}">
+                        Reférence {{ $row->reference }}, Numero d'arriver {{ $row->numero }},
+                        Date d'arriver {{ $row->date_format }}
                     </option>
                     @endforeach
                 </x-select>
             </div>
             <div class="col-md-6">
-                <x-select label="Departement" name="departement_id[]" multiple>
-                    @foreach ($division as $row)
-                    <option value="{{ $row->id }}"> {{ $row->nom }}</option>
-                    @endforeach
+                <x-select label="Departement concernés" name="departement_id[]" multiple>
+                    <optgroup label="Departement">
+                        @foreach ($division as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        @endforeach
+                    </optgroup>
+
+                </x-select>
+            </div>
+            <div class="col-md-6">
+                <x-select label="Sous Departement concernés" name="subdepartement_id[]" multiple>
+                    <optgroup label="Sous Departement">
+                        @foreach ($division as $row)
+                        @foreach ($row->subdepartements as $item)
+                        <option value="{{ $item->id }}">{{ $item->nom }}</option>
+                        @endforeach
+                        @endforeach
+                    </optgroup>
                 </x-select>
             </div>
 
-            <div class="col-md-6">
-                <x-input type="date" label="Delai" name='delai' :required='false' />
+            <div class="col-md-5">
+                <x-input type="date" label="Delai de traitement facultatif" name='delai' :required='false' />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <x-select name="priorite" label="Priorité">
                     <option value="Normal">Normal</option>
                     <option value="Urgent">Urgent</option>
                 </x-select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <x-select name="notif" label="Notification par email">
                     <option value="1">OUI</option>
                     <option value="0">NON</option>
                 </x-select>
             </div>
 
-            <h2 class="text-center">Annotations et instructions</h2>
+            <h2 class="text-center">Annotations ou instruction de traitement</h2>
             <div class="divide-y">
                 <div class="mb-3">
                     <div class="row">

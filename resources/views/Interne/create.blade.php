@@ -44,7 +44,7 @@
                     <x-input type="date" name="date" label="Delai de traitement facultatif" :required='false' />
                 </div>
                 <div class="col-md-6">
-                    <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif"
+                    <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif"
                         :required='false' />
                 </div>
                 <x-input place="objet du courrier" name="objet" label="Objet du courrier" />

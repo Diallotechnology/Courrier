@@ -22,6 +22,7 @@ class DocumentFactory extends Factory
             'documentable_id' => rand(1, 15),
             'user_id' => rand(1, 10),
             'structure_id' => rand(1, 5),
+            'extension' => $this->faker->randomElement(['pdf', 'png', 'doc']),
             'chemin' => $this->faker->imageUrl(),
             'libelle' => $this->faker->name(),
         ];

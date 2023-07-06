@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DocumentController extends Controller
@@ -28,6 +29,13 @@ class DocumentController extends Controller
         $this->journal("Consulté le document N°$document->id");
 
         return response()->file($filePath);
+    }
+
+    public function download(Document $document)
+    {
+        $filePath = public_path($document->DocLink());
+        $this->journal("telecharger le document N°$document->id");
+        return response()->download($filePath);
     }
 
     /**

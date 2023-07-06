@@ -36,14 +36,14 @@ class DatabaseSeeder extends Seeder
         $test = User::factory()->create(['email' => 'admin@gmail.com', 'role' => RoleEnum::ADMIN]);
         User::factory(25)->create();
         Nature::factory(5)->create();
-        Depart::factory(260)->hasCorrespondants(2)->create();
+        Depart::factory(60)->hasCorrespondants(2)->create();
         Correspondant::factory(35)->create();
-        Annotation::factory(275)->hasUser(25);
+        Annotation::factory(10)->hasUser(5);
         Annotation::factory(6)->hasUser($test)->create();
-        Courrier::factory(260)->create();
-        Interne::factory(260)->create();
-        Document::factory(115)->create();
-        Imputation::factory(115)->hasAnnotations(6)->hasDepartements(6)->create();
+        Courrier::factory(160)->create();
+        Interne::factory(160)->create();
+        Document::factory(95)->create();
+        Imputation::factory(55)->hasAnnotations(5)->hasDepartements(6)->create();
         Rapport::factory(15)->create();
         Task::factory(150)->create();
         // Journal::factory(10)->create()

@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Imputation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\SubDepartement
@@ -59,6 +61,14 @@ class SubDepartement extends Model
     public function departement(): BelongsTo
     {
         return $this->belongsTo(Departement::class);
+    }
+
+    /**
+     * The imputations that belong to the Departement
+     */
+    public function imputations(): BelongsToMany
+    {
+        return $this->belongsToMany(Imputation::class);
     }
 
     /**

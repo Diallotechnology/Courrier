@@ -83,6 +83,7 @@ trait DeleteAction
                 $data = new Document([
                     'libelle' => $model->numero,
                     'type' => $type,
+                    'extension' => $file->extension(),
                     'user_id' => Auth::user()->id,
                     'structure_id' => Auth::user()->structure(),
                     'chemin' => $chemin,

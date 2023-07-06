@@ -36,6 +36,14 @@ class DocumentPolicy
     }
 
     /**
+     * Determine whether the user can download file the model.
+     */
+    public function download(User $user): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can trash the model.
      */
     public function trash(User $user): bool

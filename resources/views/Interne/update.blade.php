@@ -49,7 +49,7 @@
                         :required='false' />
                 </div>
                 <div class="col-md-6">
-                    <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif"
+                    <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif"
                         :required='false' />
                 </div>
                 <x-input place="objet du courrier" :value="$interne->objet" name="objet" label="Objet du courrier" />

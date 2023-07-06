@@ -15,22 +15,41 @@
                     </x-select>
                 </div>
                 <div class="col-md-6">
-                    <x-select label="Departement" multiple name="departement_id[]">
+                    <x-select label="les Departements concernés" multiple name="departement_id[]">
                         @foreach ($departement as $row)
                         <option @selected($imputation->departements->contains('id',$row->id)) value="{{ $row->id }}">
-                            {{ $row->nom }}
+                            Departement {{ $row->nom }}
                         </option>
                         @endforeach
+
                     </x-select>
                 </div>
-
-                <div class="col-md-3">
+                <div class="col-md-6">
+                    <x-select label="les Sous Departement concernés" name="subdepartement_id[]" multiple>
+                        <optgroup label="Sous Departement">
+                            @foreach ($departement as $row)
+                            @foreach ($row->subdepartements as $item)
+                            <option @selected($imputation->subdepartements->contains('id',$item->id)) value="{{
+                                $item->id
+                                }}">{{ $item->nom }}</option>
+                            @endforeach
+                            @endforeach
+                        </optgroup>
+                    </x-select>
+                </div>
+                <div class="col-md-4">
                     <x-input type="date" label="Delai" :value="$imputation->delai" name='delai' :required='false' />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <x-select name="priorite" label="Priorité">
                         <option @selected($imputation->Normal()) value="Normal">Normal</option>
                         <option @selected($imputation->Urgent()) value="Urgent">Urgent</option>
+                    </x-select>
+                </div>
+                <div class="col-md-4">
+                    <x-select name="notif" label="Notification par email">
+                        <option value="1">OUI</option>
+                        <option value="0">NON</option>
                     </x-select>
                 </div>
                 <h2 class="text-center py-3">Annotations et instructions</h2>
@@ -38,7 +57,6 @@
                     <div class="mb-3">
                         <div class="row">
                             @forelse ($imputation->user->annotations as $row)
-
                             <div class="col-md-4">
                                 <label class="form-check">
                                     <input class="form-check-input"
@@ -47,7 +65,6 @@
                                     name="annotation_id[]" type="checkbox">
                                     <span class="form-check-label">{{ $row->nom }}</span>
                                 </label>
-
                             </div>
                             @empty
                             <label class="form-label text-center">Aucune annotation</label>

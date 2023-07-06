@@ -30,7 +30,8 @@ class UpdateImputationRequest extends FormRequest
             'observation' => 'string|nullable|max:255',
             'delai' => 'nullable|date',
             'courrier_id' => 'required|exists:courriers,id',
-            'departement_id' => 'required|exists:departements,id',
+            'departement_id' => 'required|array|exists:departements,id',
+            'subdepartement_id' => 'required|array|exists:sub_departements,id',
             'annotation_id' => 'required|array|exists:annotations,id',
         ];
     }

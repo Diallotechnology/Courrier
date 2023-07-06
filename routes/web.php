@@ -159,6 +159,7 @@ Route::middleware(['auth', 'throttle'])->group(function () {
             Route::get('document/trash', 'trash')->name('document.trash');
             Route::get('document/restore/all', 'all_recover')->name('document.restore');
             Route::get('document/restore/{id}', 'recover')->whereNumber('id');
+            Route::get('document/download/{document}', 'download')->name('document.download');
         });
 
         Route::controller(DepartController::class)->group(function () {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('libelle');
             $table->string('type');
+            $table->string('extension');
             $table->string('chemin');
             $table->timestamps();
             $table->softDeletes();

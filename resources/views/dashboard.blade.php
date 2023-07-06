@@ -430,7 +430,7 @@
         <x-table>
             <x-slot name="header">
                 <div class="card-header">
-                    <h3 class="card-title">Listes des taches</h3>
+                    <h3 class="card-title">Liste des taches</h3>
                 </div>
                 <div class="card-body">
                 </div>

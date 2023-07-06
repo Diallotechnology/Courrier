@@ -16,6 +16,23 @@
                 Tableau de bord
             </span>
         </x-nav-link>
+        <x-nav-link url="search">
+            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-filter-plus" width="24"
+                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                        d="M12 20l-3 1v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v3">
+                    </path>
+                    <path d="M16 19h6"></path>
+                    <path d="M19 16v6"></path>
+                </svg>
+            </span>
+            <span class="nav-link-title">
+                Filtre avancée
+            </span>
+        </x-nav-link>
 
         <x-dropdown title="Courrier">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="24" height="24"
@@ -83,7 +100,7 @@
                 </svg>
             </span>
             <span class="nav-link-title">
-                Annotation
+                Annotations
             </span>
         </x-nav-link>
 
@@ -99,7 +116,7 @@
                 </svg>
             </span>
             <span class="nav-link-title">
-                Document
+                Documents
             </span>
         </x-nav-link>
         <x-nav-link url="rapport">
@@ -139,23 +156,6 @@
                 Utilisateurs
             </span>
         </x-nav-link>
-        <x-nav-link url="search">
-            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-filter-plus" width="24"
-                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path
-                        d="M12 20l-3 1v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v3">
-                    </path>
-                    <path d="M16 19h6"></path>
-                    <path d="M19 16v6"></path>
-                </svg>
-            </span>
-            <span class="nav-link-title">
-                Filtre avancée
-            </span>
-        </x-nav-link>
         <x-dropdown title="Paramètres">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tool" width="24" height="24"
                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -188,7 +188,7 @@
                 </svg>
             </span>
             <span class="nav-link-title">
-                Structure
+                Structures
             </span>
         </x-nav-link>
     </ul>

@@ -20,64 +20,89 @@ use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\StoreImputationRequest;
 use App\Notifications\ImputationNotification;
 use App\Http\Requests\UpdateImputationRequest;
+use App\Models\SubDepartement;
 
 class ImputationController extends Controller
 {
     use DeleteAction;
+
+    private function createTasksForImputation(Imputation $imputation, $delai, array $AnnotationIds): void
+    {
+        $annotations = Annotation::whereIn('id', $AnnotationIds)->get();
+
+        $tasks = $annotations->map(function ($row) use ($delai) {
+            return Task::create([
+                'createur_id' => Auth::user()->id,
+                'nom' => $row->nom,
+                'type' => 'imputation',
+                'description' => $row->nom,
+                'debut' => now()->today(),
+                'fin' => $delai,
+                'etat' => TaskEnum::EN_COURS,
+            ])->generateId('TA');
+        });
+
+        $imputation->tasks()->saveMany($tasks);
+    }
+
+    private function sendImputationNotification(Imputation $imputation, $notif, array $departementIds, array $subDepartementIds): void
+    {
+        $users = User::where(function ($query) use ($departementIds, $subDepartementIds) {
+            $query->whereHasMorph('userable', [Departement::class], function ($subQuery) use ($departementIds) {
+                $subQuery->whereIn('userable_id', $departementIds);
+            })->orWhereHasMorph('userable', [SubDepartement::class], function ($subQuery) use ($subDepartementIds) {
+                $subQuery->whereIn('userable_id', $subDepartementIds);
+            });
+        })->whereRole(RoleEnum::SUPERUSER)->get(['email', 'id']);
+
+        if ($users->isNotEmpty()) {
+            $emails = $users->pluck('email')->toArray();
+            $notification = new ImputationNotification($imputation, "Vous avez été imputé d'un nouveau courrier");
+
+            if ($notif == 1) {
+                Notification::route('mail', $emails)->notify($notification);
+            } else {
+                Notification::send($users, $notification);
+            }
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreImputationRequest $request): RedirectResponse
     {
+        $annotationId = $request->input('annotation_id');
+        $departementIds = $request->input('departement_id');
+        $subdepartementIds = $request->input('subdepartement_id');
+        $notif = $request->input('notif');
 
-        $item = Imputation::create($request->safe()->except(['annotation_id', 'departement_id', 'notif']));
+        $item = Imputation::create($request->except(['annotation_id', 'departement_id', 'subdepartement_id', 'notif']));
         $item->generateId('IMP');
-        // Save departements pivot value
-        $item->departements()->attach($request->departement_id);
-        // Save annotations pivot value
-        $item->annotations()->attach($request->annotation_id);
-        // Update courrier status
-        if ($item->courrier->Register()) {
-            $item->courrier->update(['etat' => CourrierEnum::IMPUTE]);
-        }
-        // Create tasks for imputation
-        if (! empty($request->annotation_id)) {
-            $tache = Annotation::whereIn('id', $request->annotation_id)->get();
-            $tache->map(function ($row) use ($item, $request) {
-                $task = Task::create([
-                    'courrier_id' => $item->courrier->id,
-                    'createur_id' => Auth::user()->id,
-                    'imputation_id' => $item->id,
-                    'nom' => $row->nom,
-                    'type' => 'imputation',
-                    'description' => $row->nom,
-                    'debut' => now()->today(),
-                    'fin' => $request->delai,
-                    'etat' => TaskEnum::EN_COURS,
-                ]);
-                $task->generateId('TA');
+        if (!empty($annotationId)) {
+            // Save departements pivot value
+            $item->departements()->attach($departementIds);
+            $item->subdepartements()->attach($subdepartementIds);
+            // Save annotations pivot value
+            $item->annotations()->attach($annotationId);
+            // Update courrier status
+            if ($item->courrier->Register()) {
+                $item->courrier->update(['etat' => CourrierEnum::IMPUTE]);
+            }
 
-                return $task;
-            });
+            // Create tasks for imputation
+            $this->createTasksForImputation($item, $request->input('delai'), $annotationId);
+            // Get notifiable users' emails
+            $this->sendImputationNotification($item, $notif, $departementIds, $subdepartementIds);
+            $ref = $item->courrier->numero;
+            $this->history($item->courrier->id, 'Impuatation', "Imputé le courrier arrivé le N°$ref");
+            toastr()->success('Imputation ajoutée avec succès!');
         }
-        // Get notifiable users' emails
-        $users = User::whereIn('userable_id', $request->departement_id)->whereRole(RoleEnum::SUPERUSER)->get(['email', 'id']);
-        $emails = $users->pluck('email')->toArray();
-
-        // Send notification
-        $notification = new ImputationNotification($item, "Vous avez été imputé d'un nouveau courrier");
-        if ($request->notif == 1) {
-            Notification::route('mail', $emails)->notify($notification);
-        } else {
-            Notification::send($users, $notification);
-        }
-        $ref = $item->courrier->numero;
-        $this->history($item->courrier->id, 'Impuatation', "Imputé le courrier arrivé le N° $ref");
-        toastr()->success('Imputation ajoutée avec succès!');
 
         return back();
     }
+
 
     /**
      * Display the specified resource.
@@ -99,7 +124,7 @@ class ImputationController extends Controller
         $courrier = Courrier::with('nature')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->latest('id')->get(['id', 'numero', 'reference', 'date']);
         $departement = Departement::with('subdepartements')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
-            ->latest('id')->get();
+            ->orderBy('nom')->get();
 
         return view('imputation.update', compact('imputation', 'courrier', 'departement'));
     }
@@ -109,13 +134,31 @@ class ImputationController extends Controller
      */
     public function update(UpdateImputationRequest $request, Imputation $imputation): RedirectResponse
     {
-        $imputation->update($request->safe()->except(['annotation_id', 'departement_id']));
-        $imputation->annotations()->sync($request->annotation_id);
-        $imputation->departements()->sync($request->departement_id);
-        toastr()->success('Imputation mise à jour avec success!');
+        $imputation->update($request->except(['annotation_id', 'departement_id', 'subdepartement_id']));
+        $imputation->annotations()->sync($request->input('annotation_id'));
+        $imputation->departements()->sync($request->input('departement_id'));
+        $imputation->subdepartements()->sync($request->input('subdepartement_id'));
+
+        $missingAnnotationIds = collect($request->input('annotation_id'))->diff($imputation->annotations->pluck('id'))->toArray();
+        $missingDepartementIds = collect($request->input('departement_id'))->diff($imputation->departements->pluck('id'))->toArray();
+        $missingSubDepartementIds = collect($request->input('subdepartement_id'))->diff($imputation->subdepartements->pluck('id'))->toArray();
+
+        // Create tasks for imputation
+        $this->createTasksForImputation($imputation, $request->input('delai'), $missingAnnotationIds);
+
+        // Get notifiable users' emails
+        $this->sendImputationNotification($imputation, $request->input('notif'), $missingDepartementIds, $missingSubDepartementIds);
+
+        if (!empty($missingDepartementIds)) {
+            $ref = $imputation->numero;
+            $this->history($imputation->courrier->id, 'Impuatation', "ajout de nouveaux départements à l'imputation N°$ref");
+        }
+
+        toastr()->success('Imputation mise à jour avec succès!');
 
         return back();
     }
+
 
     /**
      * Remove the specified resource from storage.

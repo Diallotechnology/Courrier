@@ -46,7 +46,7 @@
                             label="Date d'arriver" />
                     </div>
                     <div class="col-md-3">
-                        <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF) facultatif"
+                        <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif"
                             :required='false' />
                     </div>
                     @if(Auth::user()->isAdmin() || Auth::user()->isSuperadmin())

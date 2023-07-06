@@ -40,6 +40,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation byStructure()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  */
@@ -115,6 +116,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read string $date_format
  * @method static Builder|Correspondant byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @mixin \Eloquent
@@ -208,6 +211,11 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
@@ -278,6 +286,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read int|null $correspondants_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
@@ -332,6 +342,10 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Departement byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
@@ -479,9 +493,14 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereNumero($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
+ * @property-read int|null $subdepartements_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  */
 	class Imputation extends \Eloquent {}
@@ -544,6 +563,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
  * @method static \Illuminate\Database\Eloquent\Builder|Interne byStructure()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @mixin \Eloquent
@@ -621,6 +642,8 @@ namespace App\Models{
  * @property-read Structure $structure
  * @method static Builder|Nature byStructure()
  * @method static Builder|Nature whereStructureId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @mixin \Eloquent
@@ -707,6 +730,7 @@ namespace App\Models{
  * @property string|null $numero
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereNumero($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  */
@@ -815,6 +839,16 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereExpireAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $jourals
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
@@ -862,7 +896,10 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement byStructure()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read int|null $imputations_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  */
 	class SubDepartement extends \Eloquent {}
@@ -924,6 +961,8 @@ namespace App\Models{
  * @property-read int|null $pivot_values_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereNumero($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $pivot_values
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $pivot_values
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -1069,6 +1108,23 @@ namespace App\Models{
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $pivot_values
  * @property-read int|null $pivot_values_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $createurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $destinataires
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Interne> $expediteurs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Journal> $journals
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $pivot_values
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks

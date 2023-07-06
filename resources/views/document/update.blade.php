@@ -9,10 +9,14 @@
                     <x-input type="text" :value="$document->libelle" name="libelle" place="libelle du document" />
                 </div>
                 <div class="col-md-6">
-                    <x-input type="file" name="file" label='Piece jointes ou fichiers PDF' :required="false" />
+                    <x-input type="text" label='extension du fichier' @disabled(true) value="{{ $document->extension }}"
+                        :required="false" />
                 </div>
                 <div class="col-md-6">
-                    <x-select label="Type de courrier">
+                    <x-input type="file" name="file" label='Pièce jointes' :required="false" />
+                </div>
+                <div class="col-md-6">
+                    <x-select label="Type de document">
                         <option selected value="{{ $document->type }}">{{ $document->type
                             }}</option>
                     </x-select>
