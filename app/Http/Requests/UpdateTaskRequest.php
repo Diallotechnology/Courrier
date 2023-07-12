@@ -30,7 +30,8 @@ class UpdateTaskRequest extends FormRequest
             'description' => 'string|required',
             'debut' => 'required|date_format:Y-m-d\TH:i',
             'fin' => 'required|date_format:Y-m-d\TH:i',
-            'user_id' => 'required|array',
+            'imputation_id' => 'nullable|exists:imputations,id|required_if:type,utilisateur',
+            'user_id' => 'required|array|exists:users,id',
         ];
     }
 

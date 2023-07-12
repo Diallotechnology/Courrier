@@ -41,7 +41,7 @@ class Imputation extends Component
     {
 
         $user = Auth::user();
-        $query = ModelsImputation::with('user', 'departements', 'courrier')
+        $query = ModelsImputation::with('user', 'departements','subdepartements', 'courrier')
             ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);

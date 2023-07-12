@@ -192,8 +192,9 @@ class ImputationController extends Controller
 
     public function trash(): View
     {
-        $rows = Imputation::with('user')->onlyTrashed()->latest('id')->paginate(15);
-
+        $rows = Imputation::with('user','subdepartements','departements')->onlyTrashed()
+        ->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
+        ->latest('id')->paginate(15);
         return view('imputation.trash', compact('rows'));
     }
 

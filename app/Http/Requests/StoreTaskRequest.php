@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Task;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -30,8 +31,8 @@ class StoreTaskRequest extends FormRequest
             'debut' => 'required|date_format:Y-m-d\TH:i',
             'fin' => 'required|date_format:Y-m-d\TH:i',
             'createur_id' => 'required|exists:users,id',
-            'imputation_id' => 'nullable|exists:imputations,id',
-            'user_id' => 'nullable|array|exists:users,id',
+            'imputation_id' => 'nullable|exists:imputations,id|required_if:type,utilisateur',
+            'user_id' => 'required|array|exists:users,id',
         ];
     }
 
@@ -40,5 +41,10 @@ class StoreTaskRequest extends FormRequest
         $this->merge([
             'createur_id' => Auth::user()->id,
         ]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        return toastr()->error('la validation a echoué verifiez vos informations!');
     }
 }

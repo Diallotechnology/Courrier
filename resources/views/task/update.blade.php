@@ -9,9 +9,24 @@
                 </div>
                 <div class="col-md-6">
                     <x-select name="type" label="type de tache">
-                        <option @selected(true) value="utilisateur">Utilisateur</option>
+                        <option @selected(Auth::user()->isStandard()) value="utilisateur">Utilisateur</option>
+                        @if(!Auth::user()->isStandard())
+                        <option @selected($task->type == "imputation") value="imputation">Imputation</option>
+                        @endif
                     </x-select>
                 </div>
+                @if(!Auth::user()->isStandard())
+                <h3 class="my-2">Si la tache concerne une imputation</h3>
+                <div class="col-md-12">
+                    <div wire:ignore>
+                        <x-select name="imputation_id" :required="false" label="liste des imputations facultatif">
+                            @foreach ($imp as $item)
+                            <option value="{{ $item->id }}">imputation N°{{ $item->numero }}</option>
+                            @endforeach
+                        </x-select>
+                    </div>
+                </div>
+                @endif
                 <div class="col-md-12">
                     <x-select name="user_id[]" multiple label="liste des Utilisateurs">
                         @foreach ($user as $key => $row)

@@ -105,7 +105,8 @@ class Tache extends Component
         $rows = $query->latest('id')->paginate(15);
         $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())
             ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
-        $imp = Imputation::when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())->orderBy('numero')->get();
+        $imp = Imputation::when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())
+                ->where('user_id',$auth->id)->orderBy('numero')->get();
 
         return view('livewire.tache', compact('user', 'rows', 'imp'));
     }

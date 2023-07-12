@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageNotification;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Imputation;
 use Illuminate\Support\Arr;
 use App\Helper\DeleteAction;
 use Illuminate\Http\JsonResponse;
+use App\Events\MessageNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -64,10 +65,13 @@ class TaskController extends Controller
     public function edit(Task $task): View
     {
         $this->authorize('update', $task);
-        $user = Auth::user()->isSuperadmin() ?
-        User::with('userable')->get()->groupBy('userable.nom') : User::with('userable')->StructureUser()->get()->groupBy('userable.nom');
+        $auth = Auth::user();
+        $user = User::with('userable')->when(!$auth->isSuperadmin(), fn ($query) => $query->StructureUser())
+        ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');;
 
-        return view('task.update', compact('task', 'user'));
+        $imp = Imputation::when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())
+        ->where('user_id',$auth->id)->orderBy('numero')->get();
+        return view('task.update', compact('task', 'user','imp'));
     }
 
     /**
@@ -125,13 +129,13 @@ class TaskController extends Controller
     {
         $this->journal('Restauré de tous les taches');
 
-        return $this->All_restore(Task::onlyTrashed());
+        return $this->All_restore(Task::onlyTrashed()->whereCreateurId(Auth::user()->id));
     }
 
     public function all_delete(): RedirectResponse
     {
         $this->journal('Vidé la corbeille des taches');
 
-        return $this->All_remove(Task::onlyTrashed());
+        return $this->All_remove(Task::onlyTrashed()->whereCreateurId(Auth::user()->id));
     }
 }

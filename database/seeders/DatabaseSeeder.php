@@ -46,18 +46,11 @@ class DatabaseSeeder extends Seeder
         Imputation::factory(55)->hasAnnotations(5)->hasDepartements(6)->create();
         Rapport::factory(15)->create();
         Task::factory(150)->create();
-        // Journal::factory(10)->create()
-        // Générer 10 fausses notifications pour chaque utilisateur
-        // User::all()->each(function ($user) {
-        // Notification::factory()->count(10)->create();
-        // });
 
         User::factory()
             ->has(Courrier::factory()->count(10), 'courriers')
             ->has(Imputation::factory()->count(10), 'imputations')
             ->has(Task::factory()->count(10), 'tasks')
-        // ->has(Journal::factory()->count(5), 'journals')
-        // ->has(Notification::factory()->count(5), 'journals')
             ->create();
     }
 }
