@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use App\Helper\DateFormat;
-use App\Models\Imputation;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\Models\SubDepartement
@@ -23,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read Departement $departement
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
+ *
  * @method static \Database\Factories\SubDepartementFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement newQuery()
@@ -37,11 +37,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement withoutTrashed()
+ *
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|SubDepartement byStructure()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ *
  * @mixin \Eloquent
  */
 class SubDepartement extends Model

@@ -3,8 +3,8 @@
 namespace App\Http\Livewire;
 
 use Auth;
-use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Livewire\Component;
 
 class Notif extends Component
 {

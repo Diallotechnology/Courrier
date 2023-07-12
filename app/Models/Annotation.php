@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\User $user
+ *
  * @method static \Database\Factories\AnnotationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation newQuery()
@@ -31,13 +32,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation withoutTrashed()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
  * @property-read int|null $imputations_count
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Imputation> $imputations
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Annotation byStructure()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
+ *
  * @mixin \Eloquent
  */
 class Annotation extends Model

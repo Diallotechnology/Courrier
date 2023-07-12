@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Correspondant;
+use App\Models\Courrier;
 use App\Models\Depart;
 use App\Models\Nature;
-use Livewire\Component;
-use App\Models\Courrier;
-use Livewire\WithPagination;
-use App\Models\Correspondant;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class CourrierDepart extends Component
 {

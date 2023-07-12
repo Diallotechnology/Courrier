@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
+ *
  * @method static \Database\Factories\BackupFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Backup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Backup newQuery()
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Backup whereNom($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Backup whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Backup whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Backup extends Model

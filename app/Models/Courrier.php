@@ -44,6 +44,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read int|null $tasks_count
  * @property-read User $user
+ *
  * @method static \Database\Factories\CourrierFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier newQuery()
@@ -66,6 +67,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier withoutTrashed()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read string $date_format
@@ -87,8 +89,10 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
  * @property-read Structure $structure
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier byStructure()
  * @method static \Illuminate\Database\Eloquent\Builder|Courrier whereStructureId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
@@ -99,6 +103,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\History> $histories
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
+ *
  * @mixin \Eloquent
  */
 class Courrier extends Model

@@ -26,6 +26,7 @@ use Illuminate\Support\Carbon;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
+ *
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task newQuery()
@@ -44,6 +45,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Task withoutTrashed()
+ *
  * @property-read string $debut_format
  * @property-read string $fin_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
@@ -54,19 +56,26 @@ use Illuminate\Support\Carbon;
  * @property-read User $createur
  * @property-read Imputation|null $imputation
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreateurId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereImputationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereReference($value)
+ *
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Task byStructure()
+ *
  * @property string|null $numero
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $pivot_values
  * @property-read int|null $pivot_values_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereNumero($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $pivot_values
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ *
  * @mixin \Eloquent
  */
 class Task extends Model

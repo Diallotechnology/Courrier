@@ -5,11 +5,11 @@ namespace App\Http\Livewire;
 use App\Enum\TaskEnum;
 use App\Models\Task;
 use App\Models\User;
-use Livewire\Component;
+use App\Notifications\TaskNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\TaskNotification;
 use Illuminate\Support\Facades\Notification;
+use Livewire\Component;
 
 class TaskAssign extends Component
 {

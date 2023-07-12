@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Interne $interne
  * @property-read User $user
+ *
  * @method static \Database\Factories\ReponseFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Reponse newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Reponse newQuery()
@@ -28,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Reponse whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Reponse extends Model

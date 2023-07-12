@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read int|null $courriers_count
  * @property-read Structure $structure
+ *
  * @method static \Database\Factories\CorrespondantFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant newQuery()
@@ -43,20 +44,26 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant withoutTrashed()
+ *
  * @property string|null $contact
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Correspondant whereContact($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read int|null $departs_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read string $date_format
+ *
  * @method static Builder|Correspondant byStructure()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ *
  * @mixin \Eloquent
  */
 class Correspondant extends Model

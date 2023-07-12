@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use App\Helper\DateFormat;
-use App\Models\SubDepartement;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\Structure
@@ -26,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read int|null $correspondants_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
  * @property-read int|null $departements_count
+ *
  * @method static \Database\Factories\StructureFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Structure newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Structure newQuery()
@@ -42,10 +42,13 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Structure withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Structure withoutTrashed()
+ *
  * @property string $adresse
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereAdresse($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Departement> $departements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
@@ -67,7 +70,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read int|null $natures_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Structure byStructure()
+ *
  * @property string $code
  * @property string|null $expire_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
@@ -82,8 +87,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Structure whereExpireAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
@@ -94,6 +101,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Nature> $natures
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ *
  * @mixin \Eloquent
  */
 class Structure extends Model

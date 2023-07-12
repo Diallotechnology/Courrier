@@ -2,19 +2,19 @@
 
 namespace App\Http\Livewire;
 
+use App\Enum\CourrierEnum;
+use App\Enum\ImputationEnum;
+use App\Enum\TaskEnum;
+use App\Helper\DeleteAction;
+use App\Models\Imputation;
 use App\Models\Task;
 use App\Models\User;
-use App\Enum\TaskEnum;
-use Livewire\Component;
-use App\Enum\CourrierEnum;
-use App\Models\Imputation;
-use App\Enum\ImputationEnum;
-use App\Helper\DeleteAction;
-use Livewire\WithPagination;
+use App\Notifications\ImputationNotification;
+use App\Notifications\TaskNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\TaskNotification;
-use App\Notifications\ImputationNotification;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Tache extends Component
 {
@@ -106,7 +106,7 @@ class Tache extends Component
         $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())
             ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
         $imp = Imputation::when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())
-                ->where('user_id',$auth->id)->orderBy('numero')->get();
+            ->where('user_id', $auth->id)->orderBy('numero')->get();
 
         return view('livewire.tache', compact('user', 'rows', 'imp'));
     }

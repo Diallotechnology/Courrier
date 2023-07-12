@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Nature;
-use Livewire\Component;
-use App\Models\Courrier;
 use App\Enum\CourrierEnum;
-use Livewire\WithPagination;
 use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Nature;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Suivie extends Component
 {
@@ -59,8 +59,9 @@ class Suivie extends Component
                 $query->where('etat', $this->etat);
             });
         $rows = $query->whereNot('etat', CourrierEnum::SAVE)->whereNot('etat', CourrierEnum::ARCHIVE)->latest('id')->paginate(15);
-        $correspondant = Correspondant::when(!$isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
-        $type = Nature::when(!$isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
+        $correspondant = Correspondant::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
+        $type = Nature::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
+
         return view('livewire.suivie', compact('rows', 'correspondant', 'type'));
     }
 }

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Structure;
-use App\Models\Departement;
 use App\Helper\DeleteAction;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests\StoreDepartementRequest;
+use App\Models\Departement;
+use App\Models\Structure;
+use Auth;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class DepartementController extends Controller
 {

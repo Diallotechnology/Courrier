@@ -2,16 +2,15 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use App\Models\Courrier;
 use App\Enum\CourrierEnum;
+use App\Models\Courrier;
 use App\Models\Departement;
-use Livewire\WithPagination;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Imputation as ModelsImputation;
 use App\Models\SubDepartement;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Imputation extends Component
 {
@@ -41,7 +40,7 @@ class Imputation extends Component
     {
 
         $user = Auth::user();
-        $query = ModelsImputation::with('user', 'departements','subdepartements', 'courrier')
+        $query = ModelsImputation::with('user', 'departements', 'subdepartements', 'courrier')
             ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);
@@ -59,27 +58,27 @@ class Imputation extends Component
                 $query->where('etat', $this->etat);
             });
         $rows = $query->latest('id')->paginate(15);
-        $arriver = Courrier::whereNot('etat',CourrierEnum::ARCHIVE)
-        ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->latest('numero')->get(['id', 'numero', 'date']);
+        $arriver = Courrier::whereNot('etat', CourrierEnum::ARCHIVE)
+            ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->latest('numero')->get(['id', 'numero', 'date']);
         $id = $user->departements->where('pivot.type', 'division')->pluck('id')->toArray();
         $subid = $user->departements->where('pivot.type', 'sub_division')->pluck('id')->toArray();
         $divisionQuery = Departement::query();
         $sub_divisionQuery = SubDepartement::query();
 
-        if (!empty($id)) {
+        if (! empty($id)) {
             $divisionQuery->whereIn('id', $id);
-        } elseif (!$user->isSuperadmin()) {
+        } elseif (! $user->isSuperadmin()) {
             $divisionQuery->ByStructure();
         }
         $division = $divisionQuery->get();
 
-        if (!empty($subid)) {
+        if (! empty($subid)) {
             $sub_divisionQuery->whereIn('id', $id);
-        } elseif (!$user->isSuperadmin()) {
-            $sub_divisionQuery->whereIn('departement_id',$division->pluck('id'));
+        } elseif (! $user->isSuperadmin()) {
+            $sub_divisionQuery->whereIn('departement_id', $division->pluck('id'));
         }
         $sub_division = $sub_divisionQuery->get();
 
-        return view('livewire.imputation', compact('rows', 'arriver', 'division','sub_division'));
+        return view('livewire.imputation', compact('rows', 'arriver', 'division', 'sub_division'));
     }
 }

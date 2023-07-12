@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Task;
-use App\Models\User;
+use App\Enum\CourrierEnum;
 use App\Enum\RoleEnum;
 use App\Enum\TaskEnum;
-use App\Models\Courrier;
-use App\Enum\CourrierEnum;
-use App\Models\Annotation;
-use App\Models\Imputation;
-use App\Models\Departement;
 use App\Helper\DeleteAction;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\StoreImputationRequest;
-use App\Notifications\ImputationNotification;
 use App\Http\Requests\UpdateImputationRequest;
 use App\Jobs\ImputationMailJob;
+use App\Models\Annotation;
+use App\Models\Courrier;
+use App\Models\Departement;
+use App\Models\Imputation;
 use App\Models\SubDepartement;
+use App\Models\Task;
+use App\Models\User;
+use App\Notifications\ImputationNotification;
+use Auth;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Notification;
 
 class ImputationController extends Controller
 {
@@ -68,7 +68,6 @@ class ImputationController extends Controller
         }
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
@@ -81,7 +80,7 @@ class ImputationController extends Controller
 
         $item = Imputation::create($request->except(['annotation_id', 'departement_id', 'subdepartement_id', 'notif']));
         $item->generateId('IMP');
-        if (!empty($annotationId) &&  !empty($departementIds) && !empty($subdepartementIds)) {
+        if (! empty($annotationId) && ! empty($departementIds) && ! empty($subdepartementIds)) {
             // Save departements pivot value
             $item->departements()->attach($departementIds);
             $item->subdepartements()->attach($subdepartementIds);
@@ -104,7 +103,6 @@ class ImputationController extends Controller
         return back();
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -125,26 +123,26 @@ class ImputationController extends Controller
         $courrier = Courrier::when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->latest('id')->get(['id', 'numero', 'reference', 'date']);
 
-            $id = $user->departements->where('pivot.type', 'division')->pluck('id')->toArray();
-            $subid = $user->departements->where('pivot.type', 'sub_division')->pluck('id')->toArray();
-            $divisionQuery = Departement::query();
-            $sub_divisionQuery = SubDepartement::query();
+        $id = $user->departements->where('pivot.type', 'division')->pluck('id')->toArray();
+        $subid = $user->departements->where('pivot.type', 'sub_division')->pluck('id')->toArray();
+        $divisionQuery = Departement::query();
+        $sub_divisionQuery = SubDepartement::query();
 
-            if (!empty($id)) {
-                $divisionQuery->whereIn('id', $id);
-            } elseif (!$user->isSuperadmin()) {
-                $divisionQuery->ByStructure();
-            }
-            $division = $divisionQuery->get();
+        if (! empty($id)) {
+            $divisionQuery->whereIn('id', $id);
+        } elseif (! $user->isSuperadmin()) {
+            $divisionQuery->ByStructure();
+        }
+        $division = $divisionQuery->get();
 
-            if (!empty($subid)) {
-                $sub_divisionQuery->whereIn('id', $id);
-            } elseif (!$user->isSuperadmin()) {
-                $sub_divisionQuery->whereIn('departement_id',$division->pluck('id'));
-            }
-            $sub_division = $sub_divisionQuery->get();
+        if (! empty($subid)) {
+            $sub_divisionQuery->whereIn('id', $id);
+        } elseif (! $user->isSuperadmin()) {
+            $sub_divisionQuery->whereIn('departement_id', $division->pluck('id'));
+        }
+        $sub_division = $sub_divisionQuery->get();
 
-        return view('imputation.update', compact('imputation', 'courrier', 'division','sub_division'));
+        return view('imputation.update', compact('imputation', 'courrier', 'division', 'sub_division'));
     }
 
     /**
@@ -152,32 +150,32 @@ class ImputationController extends Controller
      */
     public function update(UpdateImputationRequest $request, Imputation $imputation): RedirectResponse
     {
-        if (!empty($request->departement_id) &&  !empty($request->subdepartement_id) && !empty($request->annotation_id)) {
-        $imputation->update($request->except(['annotation_id', 'departement_id', 'subdepartement_id']));
-        $imputation->annotations()->sync($request->input('annotation_id'));
-        $imputation->departements()->sync($request->input('departement_id'));
-        $imputation->subdepartements()->sync($request->input('subdepartement_id'));
+        if (! empty($request->departement_id) && ! empty($request->subdepartement_id) && ! empty($request->annotation_id)) {
+            $imputation->update($request->except(['annotation_id', 'departement_id', 'subdepartement_id']));
+            $imputation->annotations()->sync($request->input('annotation_id'));
+            $imputation->departements()->sync($request->input('departement_id'));
+            $imputation->subdepartements()->sync($request->input('subdepartement_id'));
 
-        $missingAnnotationIds = collect($request->input('annotation_id'))->diff($imputation->annotations->pluck('id'))->toArray();
-        $missingDepartementIds = collect($request->input('departement_id'))->diff($imputation->departements->pluck('id'))->toArray();
-        $missingSubDepartementIds = collect($request->input('subdepartement_id'))->diff($imputation->subdepartements->pluck('id'))->toArray();
+            $missingAnnotationIds = collect($request->input('annotation_id'))->diff($imputation->annotations->pluck('id'))->toArray();
+            $missingDepartementIds = collect($request->input('departement_id'))->diff($imputation->departements->pluck('id'))->toArray();
+            $missingSubDepartementIds = collect($request->input('subdepartement_id'))->diff($imputation->subdepartements->pluck('id'))->toArray();
 
-        // Create tasks for imputation
-        $this->createTasksForImputation($imputation, $request->input('delai'), $missingAnnotationIds);
+            // Create tasks for imputation
+            $this->createTasksForImputation($imputation, $request->input('delai'), $missingAnnotationIds);
 
-        // Get notifiable users' emails
-        $this->sendImputationNotification($imputation, $request->input('notif'), $missingDepartementIds, $missingSubDepartementIds);
+            // Get notifiable users' emails
+            $this->sendImputationNotification($imputation, $request->input('notif'), $missingDepartementIds, $missingSubDepartementIds);
 
-        if (!empty($missingDepartementIds)) {
-            $ref = $imputation->numero;
-            $this->history($imputation->courrier->id, 'Impuatation', "ajout de nouveaux départements à l'imputation N°$ref");
+            if (! empty($missingDepartementIds)) {
+                $ref = $imputation->numero;
+                $this->history($imputation->courrier->id, 'Impuatation', "ajout de nouveaux départements à l'imputation N°$ref");
+            }
+
+            toastr()->success('Imputation mise à jour avec succès!');
         }
 
-        toastr()->success('Imputation mise à jour avec succès!');
-        }
         return back();
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -192,9 +190,10 @@ class ImputationController extends Controller
 
     public function trash(): View
     {
-        $rows = Imputation::with('user','subdepartements','departements')->onlyTrashed()
-        ->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
-        ->latest('id')->paginate(15);
+        $rows = Imputation::with('user', 'subdepartements', 'departements')->onlyTrashed()
+            ->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
+            ->latest('id')->paginate(15);
+
         return view('imputation.trash', compact('rows'));
     }
 

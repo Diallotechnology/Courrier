@@ -24,6 +24,7 @@ class AdminController extends Controller
     public function nature(): View
     {
         $rows = Nature::orderBy('nom')->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())->latest()->paginate(15);
+
         return view('nature.index', compact('rows'));
     }
 

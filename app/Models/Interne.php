@@ -35,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $documents_count
  * @property-read User $expediteur
  * @property-read User $user
+ *
  * @method static \Database\Factories\InterneFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Interne newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Interne newQuery()
@@ -58,6 +59,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Interne whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Interne withoutTrashed()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read string $date_format
@@ -66,11 +68,14 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $reponses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Interne byStructure()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
+ *
  * @mixin \Eloquent
  */
 class Interne extends Model

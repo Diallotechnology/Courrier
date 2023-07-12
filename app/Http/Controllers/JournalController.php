@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Journal;
 use App\Helper\DeleteAction;
+use App\Models\Journal;
 use Illuminate\Http\JsonResponse;
 
 class JournalController extends Controller

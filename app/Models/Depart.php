@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read int|null $documents_count
  * @property-read User $user
+ *
  * @method static \Database\Factories\DepartFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Depart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Depart newQuery()
@@ -56,6 +57,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Depart whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Depart withoutTrashed()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read Correspondant $correspondant
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
@@ -64,13 +66,16 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property int $structure_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read Structure $structure
+ *
  * @method static Builder|Depart byStructure()
  * @method static Builder|Depart whereStructureId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read int|null $correspondants_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Correspondant> $correspondants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ *
  * @mixin \Eloquent
  */
 class Depart extends Model

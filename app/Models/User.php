@@ -6,16 +6,15 @@ namespace App\Models;
 
 use App\Enum\RoleEnum;
 use App\Helper\DateFormat;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
-use App\Notifications\ResetPasswordNotification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * App\Models\User
@@ -53,6 +52,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int|null $tasks_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -74,6 +74,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
@@ -114,11 +115,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $userable
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereChangePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUserableType($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $createurs
@@ -135,10 +138,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ *
  * @method static Builder|User byStructure()
  * @method static Builder|User structureUser()
  * @method static Builder|User userDepartement()
  * @method static Builder|User userSubDepartement()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $createurs
@@ -175,6 +180,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -198,7 +204,6 @@ class User extends Authenticatable
         'userable_id',
         'userable_type',
     ];
-
 
     /**
      * The attributes that should be hidden for serialization.

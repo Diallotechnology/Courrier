@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Str;
-use App\Models\Licence;
-use App\Models\Structure;
 use App\Helper\DeleteAction;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreStructureRequest;
+use App\Models\Structure;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Str;
 
 class StructureController extends Controller
 {

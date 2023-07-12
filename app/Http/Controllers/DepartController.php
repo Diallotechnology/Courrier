@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Depart;
-use App\Models\Nature;
-use App\Models\Courrier;
-use App\Models\Document;
 use App\Helper\DeleteAction;
-use App\Models\Correspondant;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreDepartRequest;
 use App\Http\Requests\UpdateDepartRequest;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Depart;
+use App\Models\Nature;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class DepartController extends Controller
 {

@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Courrier $courrier
  * @property-read User $user
+ *
  * @method static \Database\Factories\RapportFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport newQuery()
@@ -40,22 +41,30 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport withoutTrashed()
+ *
  * @property int $structure_id
  * @property string|null $reference
  * @property string $objet
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read int|null $documents_count
  * @property-read Structure $structure
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereObjet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereReference($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereStructureId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read string $date_format
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport byStructure()
+ *
  * @property string|null $numero
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereNumero($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ *
  * @mixin \Eloquent
  */
 class Rapport extends Model

@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read int|null $tasks_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
+ *
  * @method static \Database\Factories\DepartementFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Departement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Departement newQuery()
@@ -40,11 +41,14 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Departement whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Departement withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Departement withoutTrashed()
+ *
  * @property int $structure_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Departement whereStructureId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, SubDepartement> $subdepartement
  * @property-read int|null $subdepartement_count
@@ -56,7 +60,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read int|null $subdepartements_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Departement byStructure()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
@@ -65,6 +71,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ *
  * @mixin \Eloquent
  */
 class Departement extends Model
@@ -90,8 +97,6 @@ class Departement extends Model
 
     /**
      * The utilisateurs that belong to the Departement
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function utilisateurs(): BelongsToMany
     {

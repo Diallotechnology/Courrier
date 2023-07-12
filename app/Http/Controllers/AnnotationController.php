@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Annotation;
 use App\Helper\DeleteAction;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use App\Models\Annotation;
+use Auth;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AnnotationController extends Controller
 {

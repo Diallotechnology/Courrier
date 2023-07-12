@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use Auth;
-use App\Models\Nature;
 use App\Models\Interne;
+use App\Models\Nature;
+use Auth;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Contracts\View\View;
 
 class CourrierInterne extends Component
 {

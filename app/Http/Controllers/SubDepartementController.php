@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Departement;
 use App\Helper\DeleteAction;
-use App\Models\SubDepartement;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreSubDepartementRequest;
+use App\Models\Departement;
+use App\Models\SubDepartement;
+use Auth;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class SubDepartementController extends Controller
 {

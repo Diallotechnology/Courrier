@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Mail\RegisterMail;
-use App\Models\Departement;
 use App\Helper\DeleteAction;
-use Illuminate\Http\Request;
-use App\Models\SubDepartement;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Jobs\MailJob;
+use App\Models\Departement;
+use App\Models\SubDepartement;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -34,14 +32,15 @@ class UserController extends Controller
         } elseif ($validate['type'] === 'subdepartement') {
             $parent = SubDepartement::findOrFail($validate['userable_id']);
         }
-        $user = $parent->users()->create($request->safe()->except(['userable_id','departement_id','subdepartement_id']));
-        if(!$user->isStandard()) {
-        // user zone imputation
-        $departementIds = !empty($departementIds) ?  $user->departements()->attach($departementIds, ['type' => 'division']) : '';
-        $subdepartementIds = !empty($subdepartementIds) ?  $user->departements()->attach($subdepartementIds, ['type' => 'sub_division']) : '';
+        $user = $parent->users()->create($request->safe()->except(['userable_id', 'departement_id', 'subdepartement_id']));
+        if (! $user->isStandard()) {
+            // user zone imputation
+            $departementIds = ! empty($departementIds) ? $user->departements()->attach($departementIds, ['type' => 'division']) : '';
+            $subdepartementIds = ! empty($subdepartementIds) ? $user->departements()->attach($subdepartementIds, ['type' => 'sub_division']) : '';
         }
         MailJob::dispatch($user);
         toastr()->success('Utilisateur ajouter avec success!');
+
         return back();
     }
 
@@ -77,7 +76,7 @@ class UserController extends Controller
         $validate = $request->validated();
         $departementIds = $request->input('departement_id');
         $subdepartementIds = $request->input('subdepartement_id');
-        if(Auth::user()->isAdmin() || Auth::user()->isSuperadmin()) {
+        if (Auth::user()->isAdmin() || Auth::user()->isSuperadmin()) {
             if ($validate['type'] === 'departement') {
                 $parent = Departement::findOrFail($validate['userable_id']);
             } elseif ($validate['type'] === 'subdepartement') {
@@ -85,10 +84,10 @@ class UserController extends Controller
             }
             $user->userable()->dissociate();
             $user->userable()->associate($parent);
-            if(!$user->isStandard()) {
-            // user zone imputation
-            $departementIds = !empty($departementIds) ?  $user->departements()->syncWithPivotValues($departementIds, ['type' => 'division']) : '';
-            $subdepartementIds = !empty($subdepartementIds) ?  $user->departements()->syncWithPivotValues($subdepartementIds, ['type' => 'sub_division']) : '';
+            if (! $user->isStandard()) {
+                // user zone imputation
+                $departementIds = ! empty($departementIds) ? $user->departements()->syncWithPivotValues($departementIds, ['type' => 'division']) : '';
+                $subdepartementIds = ! empty($subdepartementIds) ? $user->departements()->syncWithPivotValues($subdepartementIds, ['type' => 'sub_division']) : '';
             }
 
         }
@@ -115,6 +114,7 @@ class UserController extends Controller
         $value = $request->two_factor === 'on' ? 1 : 0;
         User::findOrFail($request->id)->updateOrFail(['two_factor_enabled' => $value]);
         toastr()->success(' L’authentification à deux facteurs activé avec success!');
+
         return back();
     }
 

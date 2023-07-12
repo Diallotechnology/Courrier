@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Depart;
-use App\Models\Interne;
-use App\Models\Rapport;
-use App\Models\Courrier;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\Document
@@ -25,6 +21,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Model|\Eloquent $documentable
+ *
  * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
@@ -40,15 +37,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Document withoutTrashed()
+ *
  * @property string $user_id
  * @property string $type
  * @property-read User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUserId($value)
+ *
  * @property-read string $date_format
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Document byStructure()
+ *
  * @property int $structure_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereStructureId($value)
+ *
  * @mixin \Eloquent
  */
 class Document extends Model

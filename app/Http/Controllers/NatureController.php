@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Nature;
 use App\Helper\DeleteAction;
-use Illuminate\Http\Request;
+use App\Models\Nature;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NatureController extends Controller
 {
@@ -45,6 +45,7 @@ class NatureController extends Controller
         $data = $request->validate(['nom' => 'required|string|max:100']);
         $nature->update($data);
         toastr()->success('Nature mise à jour avec success!');
+
         return back();
     }
 

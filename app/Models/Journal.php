@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read User $user
+ *
  * @method static \Database\Factories\JournalFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Journal newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Journal newQuery()
@@ -30,11 +31,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Journal withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Journal withoutTrashed()
+ *
  * @property-read string $date_format
  * @property-read Structure $structure
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Journal byStructure()
+ *
  * @property int $structure_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Journal whereStructureId($value)
+ *
  * @mixin \Eloquent
  */
 class Journal extends Model

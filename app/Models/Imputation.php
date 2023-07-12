@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Helper\DateFormat;
 use App\Enum\ImputationEnum;
-use App\Models\SubDepartement;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Imputation
@@ -27,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Courrier $courrier
  * @property-read Departement $departement
+ *
  * @method static \Database\Factories\ImputationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation newQuery()
@@ -45,6 +45,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation withoutTrashed()
+ *
  * @property int $id
  * @property string $priorite
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
@@ -52,23 +53,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read int|null $tasks_count
  * @property-read User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation wherePriorite($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Annotation> $annotations
  * @property-read string $date_format
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation byStructure()
+ *
  * @property int $structure_id
  * @property string|null $numero
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
  * @property-read int|null $departements_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereNumero($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Imputation whereStructureId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Annotation> $annotations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Departement> $departements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ *
  * @mixin \Eloquent
  */
 class Imputation extends Model

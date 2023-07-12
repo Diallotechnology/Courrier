@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Nature;
-use App\Models\Interne;
-use App\Helper\DeleteAction;
 use App\Enum\CourrierInterneEnum;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
+use App\Helper\DeleteAction;
 use App\Http\Requests\StoreInterneRequest;
 use App\Http\Requests\UpdateInterneRequest;
+use App\Models\Interne;
+use App\Models\Nature;
+use App\Models\User;
 use App\Notifications\CourrierNotification;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
 class InterneController extends Controller
@@ -100,6 +100,7 @@ class InterneController extends Controller
         $interne->update($request->validated());
         $this->file_uplode($request, $interne);
         toastr()->success('Courrier mise à jour avec success!');
+
         return back();
     }
 

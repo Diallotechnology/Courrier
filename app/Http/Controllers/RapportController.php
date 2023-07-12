@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rapport;
-use App\Models\Courrier;
-use Illuminate\Support\Arr;
 use App\Helper\DeleteAction;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreRapportRequest;
 use App\Http\Requests\UpdateRapportRequest;
+use App\Models\Courrier;
+use App\Models\Rapport;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class RapportController extends Controller
 {

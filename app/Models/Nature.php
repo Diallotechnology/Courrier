@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read int|null $courriers_count
+ *
  * @method static \Database\Factories\NatureFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Nature newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Nature newQuery()
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Nature whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Nature withoutTrashed()
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
@@ -40,12 +42,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Depart> $departs
  * @property-read string $date_format
  * @property-read Structure $structure
+ *
  * @method static Builder|Nature byStructure()
  * @method static Builder|Nature whereStructureId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Courrier> $courriers
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $departs
+ *
  * @mixin \Eloquent
  */
 class Nature extends Model

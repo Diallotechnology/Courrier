@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use App\Models\Courrier;
 use App\Enum\CourrierEnum;
+use App\Models\Courrier;
 use Illuminate\Contracts\View\View;
+use Livewire\Component;
 
 class FormSwitch extends Component
 {

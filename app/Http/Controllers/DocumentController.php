@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\DeleteAction;
+use App\Models\Courrier;
 use App\Models\Depart;
+use App\Models\Document;
 use App\Models\Interne;
 use App\Models\Rapport;
-use App\Models\Courrier;
-use App\Models\Document;
-use App\Helper\DeleteAction;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DocumentController extends Controller
@@ -35,6 +34,7 @@ class DocumentController extends Controller
     {
         $filePath = public_path($document->DocLink());
         $this->journal("telecharger le document N°$document->id");
+
         return response()->download($filePath);
     }
 
@@ -105,6 +105,7 @@ class DocumentController extends Controller
 
         $row = Document::onlyTrashed()->whereId($id)->firstOrFail();
         $this->journal("restauré le document N°$row->id");
+
         return $this->Restore($row);
     }
 
@@ -127,6 +128,7 @@ class DocumentController extends Controller
     public function all_delete(): RedirectResponse
     {
         $this->journal('Vider la corbeille  des documents');
+
         return $this->All_remove(Document::onlyTrashed());
     }
 }

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\Nature;
-use App\Models\Courrier;
 use App\Helper\DeleteAction;
-use App\Models\Correspondant;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Nature;
+use App\Models\Task;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class CourrierController extends Controller
 {
@@ -71,7 +71,7 @@ class CourrierController extends Controller
         $arriver->update($request->validated());
         $this->file_uplode($request, $arriver);
         if ($request->hasFile('files')) {
-        $this->history($arriver->id, "Mise à jour de document","Ajoute de nouveau document au courrier arrivé N° $arriver->numero");
+            $this->history($arriver->id, 'Mise à jour de document', "Ajoute de nouveau document au courrier arrivé N° $arriver->numero");
         }
         toastr()->success('Courrier mise à jour avec success!');
 
