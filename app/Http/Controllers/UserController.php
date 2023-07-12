@@ -27,12 +27,19 @@ class UserController extends Controller
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $validate = $request->validated();
+        $departementIds = $request->input('departement_id');
+        $subdepartementIds = $request->input('subdepartement_id');
         if ($validate['type'] === 'departement') {
             $parent = Departement::findOrFail($validate['userable_id']);
         } elseif ($validate['type'] === 'subdepartement') {
             $parent = SubDepartement::findOrFail($validate['userable_id']);
         }
-        $user = $parent->users()->create($request->safe()->except(['userable_id']));
+        $user = $parent->users()->create($request->safe()->except(['userable_id','departement_id','subdepartement_id']));
+        if(!$user->isStandard()) {
+        // user zone imputation
+        $departementIds = !empty($departementIds) ?  $user->departements()->attach($departementIds, ['type' => 'division']) : '';
+        $subdepartementIds = !empty($subdepartementIds) ?  $user->departements()->attach($subdepartementIds, ['type' => 'sub_division']) : '';
+        }
         MailJob::dispatch($user);
         toastr()->success('Utilisateur ajouter avec success!');
         return back();
@@ -67,7 +74,26 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
+        $validate = $request->validated();
+        $departementIds = $request->input('departement_id');
+        $subdepartementIds = $request->input('subdepartement_id');
+        if(Auth::user()->isAdmin() || Auth::user()->isSuperadmin()) {
+            if ($validate['type'] === 'departement') {
+                $parent = Departement::findOrFail($validate['userable_id']);
+            } elseif ($validate['type'] === 'subdepartement') {
+                $parent = SubDepartement::findOrFail($validate['userable_id']);
+            }
+            $user->userable()->dissociate();
+            $user->userable()->associate($parent);
+            if(!$user->isStandard()) {
+            // user zone imputation
+            $departementIds = !empty($departementIds) ?  $user->departements()->syncWithPivotValues($departementIds, ['type' => 'division']) : '';
+            $subdepartementIds = !empty($subdepartementIds) ?  $user->departements()->syncWithPivotValues($subdepartementIds, ['type' => 'sub_division']) : '';
+            }
+
+        }
         $user->update($request->validated());
+
         toastr()->success('Utilisateur mise à jour avec success!');
 
         return back();
@@ -89,13 +115,12 @@ class UserController extends Controller
         $value = $request->two_factor === 'on' ? 1 : 0;
         User::findOrFail($request->id)->updateOrFail(['two_factor_enabled' => $value]);
         toastr()->success(' L’authentification à deux facteurs activé avec success!');
-
         return back();
     }
 
     public function trash(): View
     {
-        $rows = User::with('departement')->withCount('imputations')->onlyTrashed()
+        $rows = User::with('userable')->withCount('imputations')->onlyTrashed()
             ->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->StructureUser())
             ->latest()->paginate(15);
 

@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Depart;
+use App\Models\Interne;
+use App\Models\Rapport;
+use App\Models\Courrier;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Document
@@ -77,8 +81,27 @@ class Document extends Model
 
     public function DocLink(): string
     {
-
         return Storage::url($this->chemin);
+    }
+
+    public function IsCourrier(): bool
+    {
+        return $this->documentable_type === Courrier::class;
+    }
+
+    public function IsInterne(): bool
+    {
+        return $this->documentable_type === Interne::class;
+    }
+
+    public function IsRapport(): bool
+    {
+        return $this->documentable_type === Rapport::class;
+    }
+
+    public function IsDepart(): bool
+    {
+        return $this->documentable_type === Depart::class;
     }
 
     /**

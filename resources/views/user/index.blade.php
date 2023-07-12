@@ -92,6 +92,7 @@
 
         @if(Auth::user()->isSuperuser())
         <input type="hidden" name="userable_id" value="{{ Auth::user()->userable_id }}">
+        <input type="hidden" name="role" value="Standard">
         @else
         <div class="col-md-12">
             <x-select name="userable_id" label="Departement">
@@ -100,7 +101,6 @@
                 @endforeach
             </x-select>
         </div>
-        @endif
         <div class="col-md-12">
             <x-select name="role" label="Role/Droit d'access">
                 @foreach (App\Enum\RoleEnum::cases() as $row)
@@ -109,6 +109,25 @@
                 @endforeach
             </x-select>
         </div>
+
+        <h3>les departements aux quelles ce compte peut imputé un courrier Facultatif</h3>
+        <div class="col-md-6">
+            <x-select name="departement_id[]" :required="false" multiple label="Departement">
+                @foreach ($departement as $row)
+                <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                @endforeach
+            </x-select>
+        </div>
+        <div class="col-md-6">
+            <x-select name="subdepartement_id[]" :required="false" multiple label="sous Departement">
+                @foreach ($departement as $row)
+                @foreach ($row->subdepartements as $item)
+                <option value="{{ $item->id }}">{{ $item->nom }}</option>
+                @endforeach
+                @endforeach
+            </x-select>
+        </div>
+        @endif
     </x-form>
 </x-modal>
 @endsection

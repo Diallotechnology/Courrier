@@ -24,7 +24,14 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document): bool
     {
-        return $user->isAdmin() || $user->isSuperuser() || $user->id === $document->user_id;
+        if($document->IsCourrier()) {
+            // $document->documentable->Register()
+            // $document->documentable->imputations()->where('user_id',$user->id)->exists()
+            dd($document->documentable->imputations()->depar()->exists());
+            return $user->id === $document->user_id || $user->isAdmin() || ($user->isSuperuser() and $document->documentable) ;
+        }
+
+        return false;
     }
 
     /**

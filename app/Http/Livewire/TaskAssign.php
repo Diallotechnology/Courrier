@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enum\TaskEnum;
 use App\Models\Task;
 use App\Models\User;
 use Livewire\Component;
@@ -22,6 +23,7 @@ class TaskAssign extends Component
         $notification = new TaskNotification($this->task, 'une tache vous a été assigner');
         $users = User::whereIn('id', $this->user_id)->get(['email', 'id']);
         Notification::send($users, $notification);
+        $this->task->update(['etat' => TaskEnum::EN_COURS]);
         $this->reset('user_id');
         toastr()->success('utilisateur assigné avec success!');
 

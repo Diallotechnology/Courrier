@@ -23,7 +23,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->id === $model->id || $user->isAdmin() || $user->isSuperuser() and $user->ParentCheck($model);
+        return ($user->isSuperuser() and $user->ParentCheck($model)) || $user->id === $model->id || $user->isAdmin();
     }
 
     /**
@@ -47,7 +47,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->structure() == $model->structure() and $user->isAdmin() || $user->isSuperuser() and $user->ParentCheck($model);
+        return $user->structure() == $model->structure() and $user->isAdmin() || ($user->isSuperuser() and $user->ParentCheck($model));
     }
 
     /**

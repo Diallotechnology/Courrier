@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageNotification;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Arr;
@@ -39,6 +40,8 @@ class TaskController extends Controller
             // $emails = $users->pluck('email')->toArray();
             Notification::send($users, $notification);
         }
+
+        // broadcast(new MessageNotification("hdhshsh"))->toOthers();
         $this->journal("Ajout de la tache N°$ref");
         toastr()->success('Taches ajouter avec success!');
 

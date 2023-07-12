@@ -89,6 +89,16 @@ class Departement extends Model
     }
 
     /**
+     * The utilisateurs that belong to the Departement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function utilisateurs(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withPivot('type');
+    }
+
+    /**
      * Get the structure that owns the Departement
      */
     public function structure(): BelongsTo

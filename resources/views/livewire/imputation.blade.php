@@ -120,22 +120,19 @@
                 </x-select>
             </div>
             <div class="col-md-6">
-                <x-select label="Departement concernés" name="departement_id[]" multiple>
+                <x-select label="Departement concernés" :required='false' name="departement_id[]" multiple>
                     <optgroup label="Departement">
                         @foreach ($division as $row)
                         <option value="{{ $row->id }}">{{ $row->nom }}</option>
                         @endforeach
                     </optgroup>
-
                 </x-select>
             </div>
             <div class="col-md-6">
-                <x-select label="Sous Departement concernés" name="subdepartement_id[]" multiple>
+                <x-select label="Sous Departement concernés" :required='false' name="subdepartement_id[]" multiple>
                     <optgroup label="Sous Departement">
-                        @foreach ($division as $row)
-                        @foreach ($row->subdepartements as $item)
+                        @foreach ($sub_division as $item)
                         <option value="{{ $item->id }}">{{ $item->nom }}</option>
-                        @endforeach
                         @endforeach
                     </optgroup>
                 </x-select>

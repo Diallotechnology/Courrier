@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\StoreImputationRequest;
 use App\Notifications\ImputationNotification;
 use App\Http\Requests\UpdateImputationRequest;
+use App\Jobs\ImputationMailJob;
 use App\Models\SubDepartement;
 
 class ImputationController extends Controller
@@ -38,7 +39,7 @@ class ImputationController extends Controller
                 'description' => $row->nom,
                 'debut' => now()->today(),
                 'fin' => $delai,
-                'etat' => TaskEnum::EN_COURS,
+                'etat' => TaskEnum::EN_ATTENTE,
             ])->generateId('TA');
         });
 
@@ -60,7 +61,7 @@ class ImputationController extends Controller
             $notification = new ImputationNotification($imputation, "Vous avez été imputé d'un nouveau courrier");
 
             if ($notif == 1) {
-                Notification::route('mail', $emails)->notify($notification);
+                ImputationMailJob::dispatch($notification, $emails);
             } else {
                 Notification::send($users, $notification);
             }
@@ -80,7 +81,7 @@ class ImputationController extends Controller
 
         $item = Imputation::create($request->except(['annotation_id', 'departement_id', 'subdepartement_id', 'notif']));
         $item->generateId('IMP');
-        if (!empty($annotationId)) {
+        if (!empty($annotationId) &&  !empty($departementIds) && !empty($subdepartementIds)) {
             // Save departements pivot value
             $item->departements()->attach($departementIds);
             $item->subdepartements()->attach($subdepartementIds);
@@ -121,12 +122,29 @@ class ImputationController extends Controller
     {
         $this->authorize('update', $imputation);
         $user = Auth::user();
-        $courrier = Courrier::with('nature')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
+        $courrier = Courrier::when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->latest('id')->get(['id', 'numero', 'reference', 'date']);
-        $departement = Departement::with('subdepartements')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
-            ->orderBy('nom')->get();
 
-        return view('imputation.update', compact('imputation', 'courrier', 'departement'));
+            $id = $user->departements->where('pivot.type', 'division')->pluck('id')->toArray();
+            $subid = $user->departements->where('pivot.type', 'sub_division')->pluck('id')->toArray();
+            $divisionQuery = Departement::query();
+            $sub_divisionQuery = SubDepartement::query();
+
+            if (!empty($id)) {
+                $divisionQuery->whereIn('id', $id);
+            } elseif (!$user->isSuperadmin()) {
+                $divisionQuery->ByStructure();
+            }
+            $division = $divisionQuery->get();
+
+            if (!empty($subid)) {
+                $sub_divisionQuery->whereIn('id', $id);
+            } elseif (!$user->isSuperadmin()) {
+                $sub_divisionQuery->whereIn('departement_id',$division->pluck('id'));
+            }
+            $sub_division = $sub_divisionQuery->get();
+
+        return view('imputation.update', compact('imputation', 'courrier', 'division','sub_division'));
     }
 
     /**
@@ -134,6 +152,7 @@ class ImputationController extends Controller
      */
     public function update(UpdateImputationRequest $request, Imputation $imputation): RedirectResponse
     {
+        if (!empty($request->departement_id) &&  !empty($request->subdepartement_id) && !empty($request->annotation_id)) {
         $imputation->update($request->except(['annotation_id', 'departement_id', 'subdepartement_id']));
         $imputation->annotations()->sync($request->input('annotation_id'));
         $imputation->departements()->sync($request->input('departement_id'));
@@ -155,7 +174,7 @@ class ImputationController extends Controller
         }
 
         toastr()->success('Imputation mise à jour avec succès!');
-
+        }
         return back();
     }
 

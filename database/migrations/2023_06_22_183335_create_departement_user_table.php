@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('departement_user', function (Blueprint $table) {
             $table->foreignId('departement_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('type');
             $table->primary(['departement_id', 'user_id']);
         });
     }

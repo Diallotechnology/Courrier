@@ -10,7 +10,6 @@
                                 <option value="Depart">Courrier Depart</option>
                             </x-select>
                         </div>
-
                     </div>
                     <div class="mb-3 col-md-4">
                         <x-input type="text" label="Reference du courrier" place="Reference du courrier"
@@ -152,9 +151,9 @@
                 <td>{{ $row->created_at }}</td>
                 <td>
                     @if($model === "Arrive")
-                    <x-button-show href="{{ route('arriver.show', ['arriver' => $row]) }}" />
+                    <x-button-show :row="$row" href="{{ route('arriver.show', ['arriver' => $row]) }}" />
                     @elseif ($model === "Depart")
-                    <x-button-show href="{{ route('depart.show', ['depart' => $row]) }}" />
+                    <x-button-show :row="$row" href="{{ route('depart.show', ['depart' => $row]) }}" />
                     @endif
                 </td>
             </tr>

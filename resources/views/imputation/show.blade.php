@@ -27,6 +27,16 @@
                 </div>
             </div>
             <div class="datagrid-item">
+                <div class="datagrid-title">Sous Departement concerné</div>
+                <div class="datagrid-content">
+                    @forelse ($imputation->subdepartements as $item)
+                    <div>{{ $item->nom }}</div>
+                    @empty
+                    aucun
+                    @endforelse
+                </div>
+            </div>
+            <div class="datagrid-item">
                 <div class="datagrid-title">Priorite</div>
                 <div class="datagrid-content">
                     <x-statut type="prio" :courrier="$imputation" />

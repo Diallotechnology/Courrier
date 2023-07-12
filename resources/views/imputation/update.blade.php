@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-md-6">
                     <x-select label="les Departements concernés" multiple name="departement_id[]">
-                        @foreach ($departement as $row)
+                        @foreach ($division as $row)
                         <option @selected($imputation->departements->contains('id',$row->id)) value="{{ $row->id }}">
                             Departement {{ $row->nom }}
                         </option>
@@ -27,12 +27,10 @@
                 <div class="col-md-6">
                     <x-select label="les Sous Departement concernés" name="subdepartement_id[]" multiple>
                         <optgroup label="Sous Departement">
-                            @foreach ($departement as $row)
-                            @foreach ($row->subdepartements as $item)
+                            @foreach ($sub_division as $item)
                             <option @selected($imputation->subdepartements->contains('id',$item->id)) value="{{
                                 $item->id
                                 }}">{{ $item->nom }}</option>
-                            @endforeach
                             @endforeach
                         </optgroup>
                     </x-select>

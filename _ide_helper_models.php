@@ -355,6 +355,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SubDepartement> $subdepartements
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $utilisateurs
+ * @property-read int|null $utilisateurs_count
  */
 	class Departement extends \Eloquent {}
 }
@@ -397,6 +399,8 @@ namespace App\Models{
  * @property int $structure_id
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereStructureId($value)
  * @mixin \Eloquent
+ * @property string $extension
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereExtension($value)
  */
 	class Document extends \Eloquent {}
 }

@@ -33,6 +33,8 @@ class StoreUserRequest extends FormRequest
             'userable_id' => ['required', 'string'],
             'role' => ['required', new Enum(RoleEnum::class)],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'departement_id' => 'nullable|array|exists:departements,id',
+            'subdepartement_id' => 'nullable|array|exists:sub_departements,id',
         ];
     }
 

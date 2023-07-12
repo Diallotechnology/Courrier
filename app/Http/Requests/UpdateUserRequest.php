@@ -33,8 +33,11 @@ class UpdateUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'poste' => ['required', 'string', 'max:150'],
             'role' => ['required'],
+            'type' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user->id)],
             'userable_id' => ['required', 'exists:departements,id'],
+            'departement_id' => 'nullable|array|exists:departements,id',
+            'subdepartement_id' => 'nullable|array|exists:sub_departements,id',
         ];
     }
 

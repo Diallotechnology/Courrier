@@ -287,18 +287,6 @@ class User extends Authenticatable
         });
     }
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //     static::retrieved(function ($user) {
-    //         if (!$user->isSuperadmin()) {
-    //             dd('f');
-    //             // Gérer le cas où la licence de la structure n'est pas active
-    //             return redirect()->route('licence_expire');
-    //         }
-    //     });
-    // }
-
     /**
      * Check if the user has the superadmin role.
      */
@@ -416,7 +404,12 @@ class User extends Authenticatable
      */
     public function departements(): BelongsToMany
     {
-        return $this->belongsToMany(Departement::class);
+        return $this->belongsToMany(Departement::class)->withPivot('type');
+    }
+
+    public function departement_pivot_value(string $value): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class)->wherePivot('type', $value);
     }
 
     /**

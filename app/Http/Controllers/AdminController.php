@@ -74,7 +74,9 @@ class AdminController extends Controller
 
     public function structure(): View
     {
-        $rows = Auth::user()->isSuperadmin() ? Structure::withCount('departements')->latest()->paginate(15) : new Paginator(new Collection(), null, null);
+        $rows = Auth::user()->isSuperadmin() ?
+        Structure::withCount('departements')->latest()->paginate(15) :
+        new Paginator(new Collection(), null, null);
 
         return view('structure.index', compact('rows'));
     }
