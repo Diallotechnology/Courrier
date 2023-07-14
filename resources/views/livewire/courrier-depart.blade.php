@@ -119,9 +119,9 @@
     <div wire:ignore>
         <x-form route="{{ route('depart.store') }}" enctype="multipart/form-data">
             <div class="col-md-6">
-                <x-select name="nature_id" label="Nature de courrier">
+                <x-select name="nature_id" label="Nature du courrier">
                     @foreach ($type as $row)
-                    <option value="{{ $row->id }}">{{ $row->nom }}
+                    <option @selected(old('nature_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}
                     </option>
                     @endforeach
                 </x-select>
@@ -130,35 +130,33 @@
             <div class="col-md-6">
                 <x-select name="correspondant_id[]" multiple label="Correspondant (Destinateurs)">
                     @foreach ($correspondant as $row)
-                    <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                    <option @selected(old('correspondant_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}</option>
                     @endforeach
                 </x-select>
             </div>
 
             <div class="col-md-6">
                 <x-select name="priorite" label="Priorité">
-                    <option value="Normal">Normal</option>
-                    <option value="Urgent">Urgent</option>
+                    <option @selected(old('priorite')=="Normal" ) value="Normal">Normal</option>
+                    <option @selected(old('priorite')=="Urgent" ) value="Urgent">Urgent</option>
                 </x-select>
             </div>
             <div class="col-md-6">
                 <x-select name="confidentiel" label="confidentiel">
-                    <option value="OUI">OUI</option>
-                    <option value="NON">NON</option>
+                    <option @selected(old('confidentiel')==="OUI" ) value="OUI">OUI</option>
+                    <option @selected(old('confidentiel')==="NON" ) value="NON">NON</option>
                 </x-select>
             </div>
             <div class="col-md-6">
                 <x-input type="date" name="date" label="Date de depart" />
             </div>
             <div class="col-md-6">
-                <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif"
-                    :required='false' />
+                <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif" :required='false' />
             </div>
             <div class="col-md-12">
-                <x-select name="courrier_id" :required='false'
-                    label="Ce courrier depart est la reponse d'un courrier arriver? facultatif">
+                <x-select name="courrier_id" :required='false' label="CE COURRIER SORTANT RÉPOND-T-IL À UN COURRIER Arrivé? FACULTATIF facultatif">
                     @foreach ($courrier as $row)
-                    <option value="{{ $row->id }}">Reference {{ $row->reference }}, N° {{ $row->numero }}, Date
+                    <option @selected(old('courrier_id')==$row->id) value="{{ $row->id }}">Reference {{ $row->reference }}, N° {{ $row->numero }}, Date
                         d'arriver {{
                         $row->date_format }}
                     </option>
@@ -166,22 +164,22 @@
                 </x-select>
             </div>
             <x-input place="objet du courrier" name="objet" label="Objet/Origine du courrier" />
-            <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false'
-                label="observation ou commentaire Facultatif" />
+            <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false' label="observation ou commentaire Facultatif" />
         </x-form>
     </div>
 </x-modal>
 @push('scripts')
 <script>
     $(document).on('livewire:load', function() {
-            $('.select-tags').each(function() {
-                var select = new TomSelect(this, {
-                    onChange: function(value) {
-                        var modelName = $(this.input).attr('wire:model');
-                        @this.set(modelName, value);
-                    }
-                });
+        $('.select-tags').each(function() {
+            var select = new TomSelect(this, {
+                onChange: function(value) {
+                    var modelName = $(this.input).attr('wire:model');
+                    @this.set(modelName, value);
+                }
             });
         });
+    });
+
 </script>
 @endpush

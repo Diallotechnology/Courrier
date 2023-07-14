@@ -8,7 +8,7 @@
         </ol>
     </div>
     <h2 class="page-title">
-        <span class="text-truncate">Liste des annotations ou instructions de courrier</span>
+        <span class="text-truncate">Liste des annotations ou instructions pour le courrier.</span>
     </h2>
 </div>
 @endsection

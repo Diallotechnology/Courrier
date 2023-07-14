@@ -41,8 +41,7 @@
             <td>{{ $row->id }}</td>
             <td>
                 <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2"
-                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')">
+                    <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')">
                         <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
                             true])></span>
                     </span>
@@ -97,7 +96,7 @@
         <div class="col-md-12">
             <x-select name="userable_id" label="Departement">
                 @foreach ($departement as $row)
-                <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                <option @selected(old('userable_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}</option>
                 @endforeach
             </x-select>
         </div>
@@ -110,7 +109,7 @@
             </x-select>
         </div>
 
-        <h3>les departements aux quelles ce compte peut imputé un courrier Facultatif</h3>
+        <h3>les départements auxquels ce compte peut imputer du courrier. Facultatif</h3>
         <div class="col-md-6">
             <x-select name="departement_id[]" :required="false" multiple label="Departement">
                 @foreach ($departement as $row)

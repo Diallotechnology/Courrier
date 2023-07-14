@@ -112,7 +112,7 @@
             <div class="col-md-12">
                 <x-select label="Courrier arrivé" name="courrier_id">
                     @foreach ($arriver as $row)
-                    <option value="{{ $row->id }}">
+                    <option @selected(old('courrier_id')==$row->id) value="{{ $row->id }}">
                         Reférence {{ $row->reference }}, Numero d'arriver {{ $row->numero }},
                         Date d'arriver {{ $row->date_format }}
                     </option>
@@ -143,8 +143,8 @@
             </div>
             <div class="col-md-3">
                 <x-select name="priorite" label="Priorité">
-                    <option value="Normal">Normal</option>
-                    <option value="Urgent">Urgent</option>
+                    <option @selected(old('priorite')=="Normal" ) value="Normal">Normal</option>
+                    <option @selected(old('priorite')=="Urgent" ) value="Urgent">Urgent</option>
                 </x-select>
             </div>
             <div class="col-md-4">
@@ -161,8 +161,7 @@
                         @forelse (Auth::user()->annotations as $row)
                         <div class="col-md-4">
                             <label class="form-check">
-                                <input class="form-check-input" value="{{ $row->id }}" name="annotation_id[]"
-                                    type="checkbox">
+                                <input class="form-check-input" value="{{ $row->id }}" name="annotation_id[]" type="checkbox">
                                 <span class="form-check-label">{{ $row->nom }}</span>
                             </label>
                         </div>
@@ -173,8 +172,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <x-textarea place="observation ou commentaire sur l'imputation" name="observation" :required='false'
-                    label="observation ou commentaire Facultatif" />
+                <x-textarea place="observation ou commentaire sur l'imputation" name="observation" :required='false' label="observation ou commentaire Facultatif" />
             </div>
         </x-form>
     </div>
@@ -182,14 +180,15 @@
 @push('scripts')
 <script>
     $(document).on('livewire:load', function() {
-            $('.select-tags').each(function() {
-                var select = new TomSelect(this, {
-                    onChange: function(value) {
-                        var modelName = $(this.input).attr('wire:model');
-                        @this.set(modelName, value);
-                    }
-                });
+        $('.select-tags').each(function() {
+            var select = new TomSelect(this, {
+                onChange: function(value) {
+                    var modelName = $(this.input).attr('wire:model');
+                    @this.set(modelName, value);
+                }
             });
         });
+    });
+
 </script>
 @endpush

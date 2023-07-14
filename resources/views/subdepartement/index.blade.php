@@ -74,7 +74,7 @@
         <x-input type="text" name="code" place="le code du sous departement" />
         <x-select name='departement_id' label="departement">
             @foreach ($departement as $row)
-            <option value="{{ $row->id }}">{{ $row->nom }}</option>
+            <option @selected(old('departement_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}</option>
             @endforeach
         </x-select>
     </x-form>
@@ -101,7 +101,7 @@
         <div class="col-md-12">
             <x-select name="userable_id" label="Sous Departement">
                 @foreach ($sub as $row)
-                <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                <option @selected(old('userable_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}</option>
                 @endforeach
             </x-select>
         </div>

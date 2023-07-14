@@ -8,10 +8,7 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <span class="bg-primary text-white avatar">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-list-check" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                             <path d="M3.5 5.5l1.5 1.5l2.5 -2.5"></path>
                                             <path d="M3.5 11.5l1.5 1.5l2.5 -2.5"></path>
@@ -40,10 +37,7 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <span class="bg-primary text-white avatar">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-checks" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checks" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                             <path d="M7 12l5 5l10 -10"></path>
                                             <path d="M2 12l5 5m5 -5l5 -5"></path>
@@ -68,10 +62,7 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <span class="bg-primary text-white avatar">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-share" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-share" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                             <path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                                             <path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
@@ -99,14 +90,10 @@
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <span class="bg-primary text-white avatar">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-file-check" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                             <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                            <path
-                                                d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z">
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z">
                                             </path>
                                             <path d="M9 15l2 2l4 -4"></path>
                                         </svg>
@@ -260,16 +247,15 @@
         <div wire:ignore>
             <x-form route="{{ route('arriver.store') }}" enctype="multipart/form-data">
                 <div class="col-md-4">
-                    <x-input type="text" name="reference" place="la reference du courrier"
-                        label="reference du courrier" />
+                    <x-input type="text" name="reference" place="la reference du courrier" label="reference du courrier" />
                 </div>
                 <div class="col-md-4">
                     <x-input type="date" name="date" label="Date d'arriver" />
                 </div>
                 <div class="col-md-4">
-                    <x-select name="nature_id" label="Nature de courrier">
+                    <x-select name="nature_id" label="Nature du courrier">
                         @foreach ($type as $row)
-                        <option value="{{ $row->id }}">{{ $row->nom }}
+                        <option @selected(old('nature_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}
                         </option>
                         @endforeach
                     </x-select>
@@ -278,31 +264,29 @@
                 <div class="col-md-6">
                     <x-select name="correspondant_id" label="Correspondant(Expediteur)">
                         @foreach ($correspondant as $row)
-                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        <option @selected(old('correspondant_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}</option>
                         @endforeach
                     </x-select>
                 </div>
 
                 <div class="col-md-6">
                     <x-select name="priorite" label="Priorité">
-                        <option value="Normal">Normal</option>
-                        <option value="Urgent">Urgent</option>
+                        <option @selected(old('priorite')=="Normal" ) value="Normal">Normal</option>
+                        <option @selected(old('priorite')=="Urgent" ) value="Urgent">Urgent</option>
                     </x-select>
                 </div>
                 <div class="col-md-6">
                     <x-select name="confidentiel" label="confidentiel">
-                        <option value="OUI">OUI</option>
-                        <option value="NON">NON</option>
+                        <option @selected(old('confidentiel')==="OUI" ) value="OUI">OUI</option>
+                        <option @selected(old('confidentiel')==="NON" ) value="NON">NON</option>
                     </x-select>
                 </div>
 
                 <div class="col-md-6">
-                    <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif"
-                        :required='false' />
+                    <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif" :required='false' />
                 </div>
                 <x-textarea place="objet du courrier" name="objet" label="Objet/Origine du courrier" />
-                <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false'
-                    label="observation ou commentaire Facultatif" />
+                <x-textarea place="observation ou commentaire sur le courrier" name="observation" :required='false' label="observation ou commentaire Facultatif" />
             </x-form>
         </div>
     </x-modal>
@@ -318,6 +302,7 @@
                 });
             });
         });
+
     </script>
     @endpush
 </div>

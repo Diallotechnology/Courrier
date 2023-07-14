@@ -271,18 +271,15 @@
     </div>
     <div class="col-5">
         <div class="card card-md">
-            <div class="card-stamp card-stamp-lg">
-                <div class="card-stamp-icon bg-primary">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/ghost -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="24"
-                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
-                        </path>
-                        <path d="M3 7l9 6l9 -6"></path>
-                    </svg>
+            <div class="card-stamp card-stamp-lg" style="opacity: initial;">
+                <div style="text-align:center;padding:1em 0;">
+                    <h3><a style="text-decoration:none;" href="https://www.zeitverschiebung.net/fr/city/2460596">
+                            <span class="text-dark">Heure actuelle</span><br />Bamako, Mali</a></h3> <iframe
+                        src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=fr&size=medium&timezone=Africa%2FBamako"
+                        width="100%" height="115" frameborder="0" seamless></iframe>
                 </div>
+
+
             </div>
 
             <div class="card-body p-3">
