@@ -258,7 +258,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's structure ID.
+     * Get the user's structure MODEL.
      */
     public function user_structure(): Structure
     {

@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let options = {
         selector: "#tinymce-default",
         height: 300,
-        menubar: false,
+        menubar: true,
         statusbar: false,
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",

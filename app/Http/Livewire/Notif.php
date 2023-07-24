@@ -10,7 +10,7 @@ class Notif extends Component
 {
     public function delete(): void
     {
-        Auth::user()->notifications->delete();
+        Auth::user()->notifications()->delete();
         toastr()->success('Toute les notifications ont été effacé!');
     }
 

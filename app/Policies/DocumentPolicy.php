@@ -2,7 +2,9 @@
 
 namespace App\Policies;
 
+use App\Models\Departement;
 use App\Models\Document;
+use App\Models\SubDepartement;
 use App\Models\User;
 
 class DocumentPolicy
@@ -26,8 +28,18 @@ class DocumentPolicy
     {
         if ($document->IsCourrier()) {
             // $document->documentable->Register()
-            // $document->documentable->imputations()->where('user_id',$user->id)->exists()
-            dd($document->documentable->imputations()->depar()->exists());
+            $query = $document->documentable->imputations();
+            if ($user->userable instanceof Departement) {
+               $query->whereRelation('departements','id',$user->userable_id);
+            } elseif($user->userable instanceof SubDepartement) {
+                $query->whereRelation('subdepartements','id',$user->userable_id);
+            }
+            $query->exists();
+
+            // check if user appartient aux departement ou subdepartemnt imputé
+            $appartient = $query->exists();
+            // check if user is imputation author
+            $imp_author = $document->documentable->imputations()->where('user_id',$user->id)->exists();
 
             return $user->id === $document->user_id || $user->isAdmin() || ($user->isSuperuser() and $document->documentable);
         }

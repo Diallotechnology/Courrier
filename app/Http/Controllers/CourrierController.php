@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helper\DeleteAction;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
+use App\Jobs\UplodeJob;
 use App\Models\Correspondant;
 use App\Models\Courrier;
 use App\Models\Nature;
@@ -23,12 +24,10 @@ class CourrierController extends Controller
      */
     public function store(StoreCourrierRequest $request): RedirectResponse
     {
-        // foreach (range(1,15) as $value) {
         $item = Courrier::create($request->validated());
         $ref = $item->generateId('CA');
-        // }
         $this->history($item->id, 'Enregistrement', "Enregistré le courrier arrivé REF N° $item->numero");
-        $this->file_uplode($request, $item);
+        UplodeJob::dispatch($request, $item);
         $this->journal("Ajout du courrier REF N°$ref->numero");
         toastr()->success('Courrier ajouter avec success!');
 
