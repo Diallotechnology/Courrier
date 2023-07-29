@@ -22,6 +22,14 @@ class LicencePolicy
     /**
      * Determine whether the user can view the model.
      */
+    public function review(User $user): bool
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
     public function view(User $user, Licence $licence): bool
     {
         return false;

@@ -12,8 +12,7 @@
     @endif
 
     <div class="text-center mt-4">
-        <button {{ $attributes->merge(['class' => 'btn btn-primary']) }} {{ $attributes->merge(['type' =>
-            'submit']) }}>Valider</button>
+
         @if($type === "update")
         <a href="{{ $url }}" {{ $attributes->merge(['class' => 'btn btn-danger me-auto']) }} {{
             $attributes->merge(['role' => 'button'])
@@ -24,6 +23,7 @@
             'button'])
             }} data-bs-dismiss="modal">Fermer</button>
         @endif
-
+        <button {{ $attributes->merge(['class' => 'btn btn-primary']) }} {{ $attributes->merge(['type' =>
+            'submit']) }}>Valider</button>
     </div>
 </form>

@@ -48,7 +48,7 @@ class DepartPolicy
      */
     public function update(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
+        return $user->structure() === $depart->structure_id && ($user->isAdmin() || $user->id === $depart->user_id || $user->id === $depart->initiateur_id);
     }
 
     /**

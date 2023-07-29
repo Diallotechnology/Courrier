@@ -10,6 +10,7 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ImputationController;
 use App\Http\Controllers\InterneController;
+use App\Http\Controllers\LicenceController;
 use App\Http\Controllers\NatureController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\ReponseController;
@@ -19,9 +20,18 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'throttle'])->group(function () {
+Route::middleware(['role:'.RoleEnum::ADMIN->value,'auth'])->group(function () {
+    Route::controller(LicenceController::class)->group(function () {
+        Route::get('licence/review', 'review')->name('licence.review');
+        Route::patch('licence/active/{structure}', 'licence_review')->name('licence.active');
+    });
+});
+Route::middleware(['auth','licence'])->group(function () {
     Route::middleware('role:'.RoleEnum::SUPERADMIN->value)->group(function () {
         Route::get('structure', [AdminController::class, 'structure'])->name('structure');
+        Route::get('licence', [AdminController::class, 'licence'])->name('licence');
+        Route::resource('licence', LicenceController::class)->except('create','index');
+
         Route::controller(StructureController::class)->group(function () {
             Route::get('structure/trash', 'trash')->name('structure.trash');
             Route::get('structure/restore/all', 'all_recover')->name('structure.restore');

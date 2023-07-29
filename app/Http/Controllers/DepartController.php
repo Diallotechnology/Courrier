@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\DeleteAction;
-use App\Http\Requests\StoreDepartRequest;
-use App\Http\Requests\UpdateDepartRequest;
-use App\Models\Correspondant;
-use App\Models\Courrier;
+use App\Models\User;
 use App\Models\Depart;
 use App\Models\Nature;
-use Illuminate\Contracts\View\View;
+use App\Models\Courrier;
+use App\Helper\DeleteAction;
+use App\Models\Correspondant;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreDepartRequest;
+use App\Http\Requests\UpdateDepartRequest;
 
 class DepartController extends Controller
 {
@@ -50,16 +51,18 @@ class DepartController extends Controller
     public function edit(Depart $depart): View
     {
         $this->authorize('update', $depart);
-        $user = Auth::user();
+        $auth = Auth::user();
         $correspondant = Correspondant::with('structure')->orderBy('nom')
-            ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->get();
+            ->when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())->get();
 
-        $type = Nature::orderBy('nom')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->latest()->get();
+        $type = Nature::orderBy('nom')->when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())->latest()->get();
 
-        $courrier = Courrier::with('nature', 'correspondant')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
+        $courrier = Courrier::with('nature', 'correspondant')->when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->latest()->get(['id', 'numero', 'reference', 'date']);
 
-        return view('depart.update', compact('depart', 'correspondant', 'type', 'courrier'));
+        $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())->get()->groupBy('userable.nom');
+
+        return view('depart.update', compact('depart', 'correspondant', 'type', 'courrier','user'));
     }
 
     /**

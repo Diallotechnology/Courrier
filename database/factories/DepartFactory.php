@@ -21,6 +21,7 @@ class DepartFactory extends Factory
             'structure_id' => rand(1, 5),
             'nature_id' => rand(1, 5),
             'user_id' => rand(1, 5),
+            'initiateur_id' => rand(1, 5),
             'numero' => uniqid(),
             'priorite' => $this->faker->randomElement(['Normal', 'Urgent']),
             'confidentiel' => $this->faker->randomElement(['OUI', 'NON']),

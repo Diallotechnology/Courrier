@@ -36,6 +36,7 @@ class StoreDepartRequest extends FormRequest
             'nature_id' => 'required|exists:natures,id',
             'correspondant_id' => 'required|array|exists:correspondants,id',
             'user_id' => 'required|exists:users,id',
+            'initiateur_id' => 'required|exists:users,id',
             'structure_id' => 'required|exists:structures,id',
         ];
 

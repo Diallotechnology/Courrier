@@ -33,6 +33,7 @@ class UpdateDepartRequest extends FormRequest
             'files' => 'nullable',
             // 'files.*'=> 'mimes:pdf',
             'nature_id' => 'required|exists:natures,id',
+            'initiateur_id' => 'required|exists:users,id',
             'correspondant_id' => 'required|array|exists:correspondants,id',
         ];
     }

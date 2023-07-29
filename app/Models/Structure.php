@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Licence;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\Structure
@@ -180,6 +181,16 @@ class Structure extends Model
     }
 
     /**
+     * Get all of the licences for the Structure
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function licences(): HasMany
+    {
+        return $this->hasMany(Licence::class);
+    }
+
+    /**
      * Get all of the documents for the Structure
      */
     public function documents(): HasMany
@@ -197,7 +208,6 @@ class Structure extends Model
 
     public function DocLink(): string
     {
-
         return Storage::url($this->logo);
     }
 

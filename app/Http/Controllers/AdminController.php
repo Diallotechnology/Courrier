@@ -8,6 +8,7 @@ use App\Models\Courrier;
 use App\Models\Departement;
 use App\Models\Document;
 use App\Models\Journal;
+use App\Models\Licence;
 use App\Models\Nature;
 use App\Models\Rapport;
 use App\Models\Structure;
@@ -170,5 +171,12 @@ class AdminController extends Controller
         $rows = Journal::with('user')->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())->latest()->paginate(15);
 
         return view('journal.index', compact('rows'));
+    }
+
+    public function licence(): View
+    {
+        $rows = Licence::paginate(15);
+        $structure = Structure::all();
+        return view('licence.index', compact('rows','structure'));
     }
 }

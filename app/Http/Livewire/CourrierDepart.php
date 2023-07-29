@@ -2,14 +2,15 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Correspondant;
-use App\Models\Courrier;
+use App\Models\User;
 use App\Models\Depart;
 use App\Models\Nature;
+use Livewire\Component;
+use App\Models\Courrier;
+use Livewire\WithPagination;
+use App\Models\Correspondant;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Livewire\WithPagination;
 
 class CourrierDepart extends Component
 {
@@ -29,6 +30,8 @@ class CourrierDepart extends Component
 
     public string $nature = '';
 
+    public string $initiateur = '';
+
     public string $date = '';
 
     public string $expediteur = '';
@@ -38,9 +41,9 @@ class CourrierDepart extends Component
     public function render(): View
     {
         $structureId = Auth::user()->structure();
-        $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = Depart::with('user', 'nature', 'correspondants')
-            ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
+        $auth = Auth::user();
+        $query = Depart::with('user','initiateur', 'nature', 'correspondants')
+            ->when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
             })
@@ -50,9 +53,9 @@ class CourrierDepart extends Component
             ->when($this->nature, function ($query) {
                 $query->where('nature_id', $this->nature);
             })
-            // ->when($this->expediteur, function ($query) {
-            //     $query->where('correspondant_id', $this->expediteur);
-            // })
+            ->when($this->initiateur, function ($query) {
+                $query->where('initiateur_id', $this->initiateur);
+            })
             ->when($this->date, function ($query) {
                 $query->where('date', $this->date);
             })
@@ -65,7 +68,7 @@ class CourrierDepart extends Component
         $correspondantQuery = Correspondant::orderBy('nom');
         $typeQuery = Nature::orderBy('nom');
         $courrierQuery = Courrier::with('nature', 'correspondant');
-        if (! $isSuperadmin) {
+        if (! $auth->isSuperadmin()) {
             $correspondantQuery->ByStructure();
             $typeQuery->ByStructure();
             $courrierQuery->ByStructure();
@@ -74,7 +77,8 @@ class CourrierDepart extends Component
         $correspondant = $correspondantQuery->get();
         $type = $typeQuery->get();
         $courrier = $courrierQuery->latest()->get(['id', 'numero', 'reference', 'date']);
+        $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())->get()->groupBy('userable.nom');
 
-        return view('livewire.courrier-depart', compact('rows', 'correspondant', 'type', 'courrier'));
+        return view('livewire.courrier-depart', compact('rows', 'correspondant', 'type', 'courrier','user'));
     }
 }

@@ -9639,6 +9639,307 @@
             /**
      * 
      *
+     * @method static \Illuminate\Process\PendingProcess command(array|string $command)
+     * @method static \Illuminate\Process\PendingProcess path(string $path)
+     * @method static \Illuminate\Process\PendingProcess timeout(int $timeout)
+     * @method static \Illuminate\Process\PendingProcess idleTimeout(int $timeout)
+     * @method static \Illuminate\Process\PendingProcess forever()
+     * @method static \Illuminate\Process\PendingProcess env(array $environment)
+     * @method static \Illuminate\Process\PendingProcess input(\Traversable|resource|string|int|float|bool|null $input)
+     * @method static \Illuminate\Process\PendingProcess quietly()
+     * @method static \Illuminate\Process\PendingProcess tty(bool $tty = true)
+     * @method static \Illuminate\Process\PendingProcess options(array $options)
+     * @method static \Illuminate\Contracts\Process\ProcessResult run(array|string|null $command = null, callable|null $output = null)
+     * @method static \Illuminate\Process\InvokedProcess start(array|string|null $command = null, callable $output = null)
+     * @method static \Illuminate\Process\PendingProcess withFakeHandlers(array $fakeHandlers)
+     * @method static \Illuminate\Process\PendingProcess|mixed when(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
+     * @method static \Illuminate\Process\PendingProcess|mixed unless(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
+     * @see \Illuminate\Process\PendingProcess
+     * @see \Illuminate\Process\Factory
+     */ 
+        class Process {
+                    /**
+         * Create a new fake process response for testing purposes.
+         *
+         * @param array|string $output
+         * @param array|string $errorOutput
+         * @param int $exitCode
+         * @return \Illuminate\Process\FakeProcessResult 
+         * @static 
+         */ 
+        public static function result($output = '', $errorOutput = '', $exitCode = 0)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->result($output, $errorOutput, $exitCode);
+        }
+                    /**
+         * Begin describing a fake process lifecycle.
+         *
+         * @return \Illuminate\Process\FakeProcessDescription 
+         * @static 
+         */ 
+        public static function describe()
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->describe();
+        }
+                    /**
+         * Begin describing a fake process sequence.
+         *
+         * @param array $processes
+         * @return \Illuminate\Process\FakeProcessSequence 
+         * @static 
+         */ 
+        public static function sequence($processes = [])
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->sequence($processes);
+        }
+                    /**
+         * Indicate that the process factory should fake processes.
+         *
+         * @param \Closure|array|null $callback
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function fake($callback = null)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->fake($callback);
+        }
+                    /**
+         * Determine if the process factory has fake process handlers and is recording processes.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function isRecording()
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->isRecording();
+        }
+                    /**
+         * Record the given process if processes should be recorded.
+         *
+         * @param \Illuminate\Process\PendingProcess $process
+         * @param \Illuminate\Contracts\Process\ProcessResult $result
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function recordIfRecording($process, $result)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->recordIfRecording($process, $result);
+        }
+                    /**
+         * Record the given process.
+         *
+         * @param \Illuminate\Process\PendingProcess $process
+         * @param \Illuminate\Contracts\Process\ProcessResult $result
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function record($process, $result)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->record($process, $result);
+        }
+                    /**
+         * Indicate that an exception should be thrown if any process is not faked.
+         *
+         * @param bool $prevent
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function preventStrayProcesses($prevent = true)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->preventStrayProcesses($prevent);
+        }
+                    /**
+         * Determine if stray processes are being prevented.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function preventingStrayProcesses()
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->preventingStrayProcesses();
+        }
+                    /**
+         * Assert that a process was recorded matching a given truth test.
+         *
+         * @param \Closure|string $callback
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function assertRan($callback)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->assertRan($callback);
+        }
+                    /**
+         * Assert that a process was recorded a given number of times matching a given truth test.
+         *
+         * @param \Closure|string $callback
+         * @param int $times
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function assertRanTimes($callback, $times = 1)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->assertRanTimes($callback, $times);
+        }
+                    /**
+         * Assert that a process was not recorded matching a given truth test.
+         *
+         * @param \Closure|string $callback
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function assertNotRan($callback)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->assertNotRan($callback);
+        }
+                    /**
+         * Assert that a process was not recorded matching a given truth test.
+         *
+         * @param \Closure|string $callback
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function assertDidntRun($callback)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->assertDidntRun($callback);
+        }
+                    /**
+         * Assert that no processes were recorded.
+         *
+         * @return \Illuminate\Process\Factory 
+         * @static 
+         */ 
+        public static function assertNothingRan()
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->assertNothingRan();
+        }
+                    /**
+         * Start defining a pool of processes.
+         *
+         * @param callable $callback
+         * @return \Illuminate\Process\Pool 
+         * @static 
+         */ 
+        public static function pool($callback)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->pool($callback);
+        }
+                    /**
+         * Start defining a series of piped processes.
+         *
+         * @param callable|array $callback
+         * @return \Illuminate\Contracts\Process\ProcessResult 
+         * @static 
+         */ 
+        public static function pipe($callback, $output = null)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->pipe($callback, $output);
+        }
+                    /**
+         * Run a pool of processes and wait for them to finish executing.
+         *
+         * @param callable $callback
+         * @param callable|null $output
+         * @return \Illuminate\Process\ProcessPoolResults 
+         * @static 
+         */ 
+        public static function concurrently($callback, $output = null)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->concurrently($callback, $output);
+        }
+                    /**
+         * Create a new pending process associated with this factory.
+         *
+         * @return \Illuminate\Process\PendingProcess 
+         * @static 
+         */ 
+        public static function newPendingProcess()
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->newPendingProcess();
+        }
+                    /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @return void 
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+                        \Illuminate\Process\Factory::macro($name, $macro);
+        }
+                    /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void 
+         * @throws \ReflectionException
+         * @static 
+         */ 
+        public static function mixin($mixin, $replace = true)
+        {
+                        \Illuminate\Process\Factory::mixin($mixin, $replace);
+        }
+                    /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+                        return \Illuminate\Process\Factory::hasMacro($name);
+        }
+                    /**
+         * Flush the existing macros.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function flushMacros()
+        {
+                        \Illuminate\Process\Factory::flushMacros();
+        }
+                    /**
+         * Dynamically handle calls to the class.
+         *
+         * @param string $method
+         * @param array $parameters
+         * @return mixed 
+         * @throws \BadMethodCallException
+         * @static 
+         */ 
+        public static function macroCall($method, $parameters)
+        {
+                        /** @var \Illuminate\Process\Factory $instance */
+                        return $instance->macroCall($method, $parameters);
+        }
+         
+    }
+            /**
+     * 
+     *
      * @see \Illuminate\Queue\QueueManager
      * @see \Illuminate\Queue\Queue
      * @see \Illuminate\Support\Testing\Fakes\QueueFake
@@ -18062,216 +18363,7 @@
      
 }
 
-        namespace Native\Laravel\Facades { 
-            /**
-     * 
-     *
-     */ 
-        class Process {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function arch()
-        {
-                        /** @var \Native\Laravel\Process $instance */
-                        return $instance->arch();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function platform()
-        {
-                        /** @var \Native\Laravel\Process $instance */
-                        return $instance->platform();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function uptime()
-        {
-                        /** @var \Native\Laravel\Process $instance */
-                        return $instance->uptime();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function fresh()
-        {
-                        /** @var \Native\Laravel\Process $instance */
-                        return $instance->fresh();
-        }
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class ContextMenu {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function register($menu)
-        {
-                        /** @var \Native\Laravel\ContextMenu $instance */
-                        return $instance->register($menu);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function remove()
-        {
-                        /** @var \Native\Laravel\ContextMenu $instance */
-                        return $instance->remove();
-        }
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class Dock {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function menu($menu)
-        {
-                        /** @var \Native\Laravel\Dock $instance */
-                        return $instance->menu($menu);
-        }
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class Window {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function open($id = 'main')
-        {
-                        /** @var \Native\Laravel\Windows\WindowManager $instance */
-                        return $instance->open($id);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function close($id = null)
-        {
-                        /** @var \Native\Laravel\Windows\WindowManager $instance */
-                        return $instance->close($id);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function current()
-        {
-                        /** @var \Native\Laravel\Windows\WindowManager $instance */
-                        return $instance->current();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function resize($width, $height, $id = null)
-        {
-                        /** @var \Native\Laravel\Windows\WindowManager $instance */
-                        return $instance->resize($width, $height, $id);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function position($x, $y, $animated = false, $id = null)
-        {
-                        /** @var \Native\Laravel\Windows\WindowManager $instance */
-                        return $instance->position($x, $y, $animated, $id);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function alwaysOnTop($alwaysOnTop = true, $id = null)
-        {
-                        /** @var \Native\Laravel\Windows\WindowManager $instance */
-                        return $instance->alwaysOnTop($alwaysOnTop, $id);
-        }
-         
-    }
-            /**
-     * 
-     *
-     */ 
-        class Clipboard {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function clear()
-        {
-                        /** @var \Native\Laravel\Clipboard $instance */
-                        return $instance->clear();
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function text($text = null)
-        {
-                        /** @var \Native\Laravel\Clipboard $instance */
-                        return $instance->text($text);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function html($html = null)
-        {
-                        /** @var \Native\Laravel\Clipboard $instance */
-                        return $instance->html($html);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function image($image = null)
-        {
-                        /** @var \Native\Laravel\Clipboard $instance */
-                        return $instance->image($image);
-        }
-         
-    }
-     
-}
-
-    namespace Barryvdh\Debugbar\Facades { 
+        namespace Barryvdh\Debugbar\Facades { 
             /**
      * 
      *
@@ -19195,89 +19287,6 @@
         {
                         /** @var \Masmerise\Toaster\TestableCollector $instance */
                         return $instance->assertNothingDispatched();
-        }
-         
-    }
-     
-}
-
-    namespace Native\Electron\Facades { 
-            /**
-     * 
-     *
-     */ 
-        class Updater {
-                    /**
-         * Get a updater provider instance by name, wrapped in a repository.
-         *
-         * @param string|null $name
-         * @return \Native\Electron\Updater\Contracts\Updater 
-         * @static 
-         */ 
-        public static function provider($name = null)
-        {
-                        /** @var \Native\Electron\Updater\UpdaterManager $instance */
-                        return $instance->provider($name);
-        }
-                    /**
-         * Get a updater provider instance.
-         *
-         * @param string|null $driver
-         * @return \Native\Electron\Updater\Contracts\Updater 
-         * @static 
-         */ 
-        public static function driver($driver = null)
-        {
-                        /** @var \Native\Electron\Updater\UpdaterManager $instance */
-                        return $instance->driver($driver);
-        }
-                    /**
-         * Resolve the given store.
-         *
-         * @param string $name
-         * @return \Native\Electron\Updater\Contracts\Updater 
-         * @throws \InvalidArgumentException
-         * @static 
-         */ 
-        public static function resolve($name)
-        {
-                        /** @var \Native\Electron\Updater\UpdaterManager $instance */
-                        return $instance->resolve($name);
-        }
-                    /**
-         * Get the default updater driver name.
-         *
-         * @return string 
-         * @static 
-         */ 
-        public static function getDefaultDriver()
-        {
-                        /** @var \Native\Electron\Updater\UpdaterManager $instance */
-                        return $instance->getDefaultDriver();
-        }
-                    /**
-         * Set the default updater driver name.
-         *
-         * @param string $name
-         * @return void 
-         * @static 
-         */ 
-        public static function setDefaultDriver($name)
-        {
-                        /** @var \Native\Electron\Updater\UpdaterManager $instance */
-                        $instance->setDefaultDriver($name);
-        }
-                    /**
-         * Set the application instance used by the manager.
-         *
-         * @param \Illuminate\Contracts\Foundation\Application $app
-         * @return \Native\Electron\Updater\UpdaterManager 
-         * @static 
-         */ 
-        public static function setApplication($app)
-        {
-                        /** @var \Native\Electron\Updater\UpdaterManager $instance */
-                        return $instance->setApplication($app);
         }
          
     }
@@ -24302,7 +24311,7 @@ namespace  {
             class Mail extends \Illuminate\Support\Facades\Mail {}
             class Notification extends \Illuminate\Support\Facades\Notification {}
             class Password extends \Illuminate\Support\Facades\Password {}
-            class Process extends \Native\Laravel\Facades\Process {}
+            class Process extends \Illuminate\Support\Facades\Process {}
             class Queue extends \Illuminate\Support\Facades\Queue {}
             class RateLimiter extends \Illuminate\Support\Facades\RateLimiter {}
             class Redirect extends \Illuminate\Support\Facades\Redirect {}
@@ -24320,11 +24329,6 @@ namespace  {
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
             class Livewire extends \Livewire\Livewire {}
             class Toaster extends \Masmerise\Toaster\Toaster {}
-            class Updater extends \Native\Electron\Facades\Updater {}
-            class ContextMenu extends \Native\Laravel\Facades\ContextMenu {}
-            class Dock extends \Native\Laravel\Facades\Dock {}
-            class Window extends \Native\Laravel\Facades\Window {}
-            class Clipboard extends \Native\Laravel\Facades\Clipboard {}
             class LogViewer extends \Opcodes\LogViewer\Facades\LogViewer {}
             class Flasher extends \Flasher\Laravel\Facade\Flasher {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}

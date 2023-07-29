@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Departement;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Depart
@@ -89,6 +91,7 @@ class Depart extends Model
      */
     protected $fillable = [
         'user_id',
+        'initiateur_id',
         'nature_id',
         'courrier_id',
         'structure_id',
@@ -100,6 +103,16 @@ class Depart extends Model
         'etat',
         'date',
     ];
+
+    /**
+     * Get the initateur that owns the Depart
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function initiateur(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'initiateur_id');
+    }
 
     /**
      * Get the user that owns the Depart

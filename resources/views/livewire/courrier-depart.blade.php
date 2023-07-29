@@ -13,6 +13,19 @@
                 </div>
                 <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
+                        <x-select label="Initiateur" :required='false' wire:model='initiateur'>
+                            @foreach ($user as $key => $row)
+                            <optgroup label="Departement {{ $key }}">
+                                @foreach ($row as $item)
+                                <option data-custom-properties="&lt;span class=&quot;avatar avatar-xs&quot;  style=&quot;background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $item->name }}')&quot;&gt;&lt;/span&gt;" value="{{ $item->id }}">{{ $item->email }}</option>
+                                @endforeach
+                            </optgroup>
+                            @endforeach
+                        </x-select>
+                    </div>
+                </div>
+                <div class="mb-3 col-sm-4 col-md-3">
+                    <div wire:ignore>
                         <x-select label="Correspondant" :required='false' wire:model='expediteur'>
                             @foreach ($correspondant as $row)
                             <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
@@ -52,6 +65,7 @@
             <th>Utilisateur</th>
             <th>Structure</th>
             <th>Numero depart</th>
+            <th>Initiateur</th>
             <th>Date depart</th>
             <th>Nature</th>
             <th>Correspondant</th>
@@ -74,6 +88,21 @@
             <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
             <td>{{ $row->numero }}</td>
             <td>
+                @if($row->initiateur)
+                <div class="d-flex py-1 align-items-center">
+                    <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->initiateur->name }}')"></span>
+                    <div class="flex-fill">
+                        <div class="font-weight-medium">{{ $row->initiateur->name }}</div>
+                        <div class="text-muted">
+                            <p class="text-reset">{{ $row->initiateur->email }}</p>
+                        </div>
+                    </div>
+                </div>
+                @else
+                inexistant
+                @endif
+            </td>
+            <td>
                 {{ $row->date_format }}
             </td>
             <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
@@ -84,6 +113,7 @@
                 aucun
                 @endforelse
             </td>
+
             <td>{{ $row->courrier ? 'Courrier N°'. $row->courrier->numero : 'pas de response' }}</td>
 
             <td>
@@ -128,23 +158,34 @@
             </div>
 
             <div class="col-md-6">
-                <x-select name="correspondant_id[]" multiple label="Correspondant (Destinateurs)">
+                <x-select name="correspondant_id[]" multiple label="Correspondants (Destinateurs)">
                     @foreach ($correspondant as $row)
                     <option @selected(old('correspondant_id')==$row->id) value="{{ $row->id }}">{{ $row->nom }}</option>
                     @endforeach
                 </x-select>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <x-select name="priorite" label="Priorité">
                     <option @selected(old('priorite')=="Normal" ) value="Normal">Normal</option>
                     <option @selected(old('priorite')=="Urgent" ) value="Urgent">Urgent</option>
                 </x-select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <x-select name="confidentiel" label="confidentiel">
                     <option @selected(old('confidentiel')==="OUI" ) value="OUI">OUI</option>
                     <option @selected(old('confidentiel')==="NON" ) value="NON">NON</option>
+                </x-select>
+            </div>
+            <div class="col-md-6">
+                <x-select name="initiateur_id" label="Personne Initiateur">
+                    @foreach ($user as $key => $row)
+                    <optgroup label="Departement {{ $key }}">
+                        @foreach ($row as $item)
+                        <option @selected(old('initiateur_id')==$item->id) data-custom-properties="&lt;span class=&quot;avatar avatar-xs&quot; style=&quot;background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $item->name }}')&quot;&gt;&lt;/span&gt;" value="{{ $item->id }}">{{ $item->email }}</option>
+                        @endforeach
+                    </optgroup>
+                    @endforeach
                 </x-select>
             </div>
             <div class="col-md-6">

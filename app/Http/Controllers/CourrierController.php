@@ -27,7 +27,7 @@ class CourrierController extends Controller
         $item = Courrier::create($request->validated());
         $ref = $item->generateId('CA');
         $this->history($item->id, 'Enregistrement', "Enregistré le courrier arrivé REF N° $item->numero");
-        UplodeJob::dispatch($request, $item);
+        $this->file_uplode($request, $item);
         $this->journal("Ajout du courrier REF N°$ref->numero");
         toastr()->success('Courrier ajouter avec success!');
 
@@ -41,7 +41,6 @@ class CourrierController extends Controller
     {
         $this->authorize('view', $arriver);
         $task = Task::with('users')->whereIn('imputation_id', $arriver->imputations()->pluck('id'))->get();
-
         return view('arriver.show', compact('arriver', 'task'));
     }
 
