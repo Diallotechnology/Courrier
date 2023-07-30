@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\StructureTypeEnum;
 use App\Models\Licence;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
@@ -114,7 +115,16 @@ class Structure extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom', 'code', 'email', 'logo', 'contact', 'description', 'adresse', 'expire_at'];
+    protected $fillable = ['nom', 'code', 'email', 'logo', 'contact', 'description', 'adresse','type', 'expire_at'];
+
+        /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'type' => StructureTypeEnum::class,
+    ];
 
     /**
      * Get all of the correspondants for the Structure

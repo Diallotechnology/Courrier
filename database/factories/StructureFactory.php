@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\StructureTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +19,7 @@ class StructureFactory extends Factory
     {
         return [
             'nom' => $this->faker->company(),
+            'type' => $this->faker->randomElement(StructureTypeEnum::cases()),
             'code' => $this->faker->companySuffix(),
             'logo' => $this->faker->imageUrl(),
             'email' => $this->faker->companyEmail(),

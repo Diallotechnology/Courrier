@@ -8,7 +8,7 @@
         </ol>
     </div>
     <h2 class="page-title">
-        <span class="text-truncate">Liste des actions des utilisateurs</span>
+        <span class="text-truncate">Liste des actions utilisateurs</span>
     </h2>
 </div>
 @endsection

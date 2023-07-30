@@ -12,6 +12,7 @@ use App\Http\Controllers\ImputationController;
 use App\Http\Controllers\InterneController;
 use App\Http\Controllers\LicenceController;
 use App\Http\Controllers\NatureController;
+use App\Http\Controllers\PriceController;
 use App\Http\Controllers\RapportController;
 use App\Http\Controllers\ReponseController;
 use App\Http\Controllers\StructureController;
@@ -24,13 +25,17 @@ Route::middleware(['role:'.RoleEnum::ADMIN->value,'auth'])->group(function () {
     Route::controller(LicenceController::class)->group(function () {
         Route::get('licence/review', 'review')->name('licence.review');
         Route::patch('licence/active/{structure}', 'licence_review')->name('licence.active');
+        Route::get('valid/{id}', 'valid')->whereNumber('id')->name('valid');
+        Route::get('cancel/{id}', 'cancel')->whereNumber('id')->name('cancel');
     });
 });
 Route::middleware(['auth','licence'])->group(function () {
     Route::middleware('role:'.RoleEnum::SUPERADMIN->value)->group(function () {
         Route::get('structure', [AdminController::class, 'structure'])->name('structure');
         Route::get('licence', [AdminController::class, 'licence'])->name('licence');
+        Route::get('price', [AdminController::class, 'price'])->name('price');
         Route::resource('licence', LicenceController::class)->except('create','index');
+        Route::resource('price', PriceController::class)->except('create','index');
 
         Route::controller(StructureController::class)->group(function () {
             Route::get('structure/trash', 'trash')->name('structure.trash');

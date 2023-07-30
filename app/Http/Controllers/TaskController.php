@@ -30,7 +30,8 @@ class TaskController extends Controller
         $data = Arr::except($request->validated(), ['user_id']);
         // create task
         $task = Task::create($data);
-        $ref = $task->generateId('TA');
+        $task->generateId('TA');
+        $ref = $task->numero;
         // Send notification
         $notification = new TaskNotification($task, ' vous avez été assigner');
         if (! empty($request->user_id)) {

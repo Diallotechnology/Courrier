@@ -80,6 +80,7 @@ class ImputationController extends Controller
 
         $item = Imputation::create($request->except(['annotation_id', 'departement_id', 'subdepartement_id', 'notif']));
         $item->generateId('IMP');
+        $ref = $item->numero;
         if (! empty($annotationId) && ! empty($departementIds) && ! empty($subdepartementIds)) {
             // Save departements pivot value
             $item->departements()->attach($departementIds);

@@ -26,7 +26,8 @@ class DepartController extends Controller
     {
 
         $item = Depart::create($request->safe()->except(['correspondant_id']));
-        $ref = $item->generateId('CD');
+        $item->generateId('CD');
+        $ref = $item->numero;
         if (! empty($request->correspondant_id)) {
             $item->correspondants()->attach($request->correspondant_id);
         }

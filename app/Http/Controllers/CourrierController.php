@@ -25,10 +25,11 @@ class CourrierController extends Controller
     public function store(StoreCourrierRequest $request): RedirectResponse
     {
         $item = Courrier::create($request->validated());
-        $ref = $item->generateId('CA');
-        $this->history($item->id, 'Enregistrement', "Enregistré le courrier arrivé REF N° $item->numero");
+        $item->generateId('CA');
+        $ref = $item->numero;
+        $this->history($item->id, 'Enregistrement', "Enregistré le courrier arrivé REF N° $ref");
         $this->file_uplode($request, $item);
-        $this->journal("Ajout du courrier REF N°$ref->numero");
+        $this->journal("Ajout du courrier REF N°.$ref");
         toastr()->success('Courrier ajouter avec success!');
 
         return back();

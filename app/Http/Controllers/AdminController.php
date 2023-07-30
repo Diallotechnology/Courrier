@@ -10,6 +10,7 @@ use App\Models\Document;
 use App\Models\Journal;
 use App\Models\Licence;
 use App\Models\Nature;
+use App\Models\Price;
 use App\Models\Rapport;
 use App\Models\Structure;
 use App\Models\SubDepartement;
@@ -178,5 +179,11 @@ class AdminController extends Controller
         $rows = Licence::paginate(15);
         $structure = Structure::all();
         return view('licence.index', compact('rows','structure'));
+    }
+
+    public function price(): View
+    {
+        $rows = Price::paginate(15);
+        return view('price.index', compact('rows'));
     }
 }

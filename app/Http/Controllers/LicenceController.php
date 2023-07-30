@@ -7,6 +7,7 @@ use App\Models\Licence;
 use App\Enum\LicenceEnum;
 use App\Models\Structure;
 use App\Helper\LicenceCode;
+use App\Helper\OrderAPI;
 use App\Jobs\LicenceMailJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ use App\Http\Requests\ReviewLicenceRequest;
 
 class LicenceController extends Controller
 {
-    use LicenceCode;
+    use OrderAPI;
 
         /**
      * Display the specified resource.
@@ -36,12 +37,60 @@ class LicenceController extends Controller
                 'fin' => $temp,
             ]);
         $structure->updateOrFail(['expire_at' => $temp]);
-        $notif = new LicenceNotification();
-        LicenceMailJob::dispatch($notif, Auth::user());
+        // $url = $this->create_order($order->id, $order->montant);
+        // $order->update(['token' => $url['token']]);
+
+        // return redirect($url['response_text']);
+        // $notif = new LicenceNotification();
+        // LicenceMailJob::dispatch($notif, Auth::user());
         toastr()->success('Licence renouvelé avec succès!');
         });
+
         return to_route('dashboard');
     }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function valid(int $id)
+    {
+        // $order = Order::findOrFail($id);
+        // // verfiy paiement statut
+        // $etat = $this->order_etat($order->token);
+        // if ($etat['status'] === 'completed') {
+        //     $order->update([
+        //         'trans_etat' => 'completed', 'mode' => $etat->operator_name,
+        //         'contact' => $etat->customer,
+        //         'trans_id' => $etat->transaction_id,
+        //     ]);
+
+        //     return view('order.valide', compact(['order']));
+        // } else {
+        //     return view('order.cancel');
+        // }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel(int $id)
+    {
+        // $order = Order::with('orderable')->whereNotNull('token')->where('id', $id)->where('token', $_GET['token']);
+        // // update order etat
+        // $etat = $order->update(['trans_etat' => 'notcompleted', 'etat' => 'Annulé']);
+        // // update appart etat
+        // $item = $order->first();
+        // $item->orderable->update(['etat' => AppartementEnum::DISPONIBLE]);
+
+        // return view('order.cancel');
+
+    }
+
     /**
      * Store a newly created resource in storage.
      */
