@@ -59,6 +59,7 @@
             }}>
             <i class="ti ti-trash-x"></i>Corbeille</a>
         @endcan
+
         @endempty
         {{ $btn }}
 

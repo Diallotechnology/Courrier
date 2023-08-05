@@ -170,7 +170,15 @@
                     <div class="mb-3 col-sm-4 col-md-2">
                         <x-input type="date" label="Date d'arriver" wire:model='date' :required='false' />
                     </div>
-                    <x-slot name="btn"></x-slot>
+                    <x-slot name="btn">
+                            <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="ti ti-database-export"></i>
+                              Exporté
+                            </button>
+                            <div class="dropdown-menu" style="">
+                              <button wire:click='export' class="dropdown-item">Excel</button>
+                            </div>
+                    </x-slot>
                 </x-filter>
             </div>
         </x-slot>

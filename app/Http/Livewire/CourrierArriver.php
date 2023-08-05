@@ -9,8 +9,10 @@ use App\Enum\CourrierEnum;
 use App\Helper\WithFilter;
 use Livewire\WithPagination;
 use App\Models\Correspondant;
+use App\Exports\CourrierExport;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CourrierArriver extends Component
 {
@@ -20,11 +22,20 @@ class CourrierArriver extends Component
 
     public string $archive = '';
 
+
+
     public function ResetFilter(): void
     {
         $this->reset('privacy', 'priority', 'nature', 'date', 'expediteur', 'etat');
         $this->resetPage();
 
+    }
+
+    public function export()
+    {
+        return new CourrierExport;
+        // (new CourrierExport)->queue('courrier_arriver.xlsx');
+        // return toastr()->success('Courrier exporté avec success!');
     }
 
     public function test(Courrier $row)
