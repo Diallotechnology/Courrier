@@ -28,7 +28,7 @@
                 </div>
                 @endif
                 <div class="col-md-12">
-                    <x-select name="user_id[]" multiple label="liste des Utilisateurs">
+                    <x-select name="user_id[]" multiple label="liste des Utilisateurs exécuteur">
                         @foreach ($user as $key => $row)
                         <optgroup label="Departement {{ $key }}">
                             @foreach ($row as $item)

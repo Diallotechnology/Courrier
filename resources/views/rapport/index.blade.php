@@ -31,8 +31,8 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Utilisateur</th>
             <th>Structure</th>
+            <th>Utilisateur</th>
             <th>reference</th>
             <th>type</th>
             <th>objet</th>
@@ -44,10 +44,10 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
+            <td>{{ $row->structure_view() }}</td>
             <td>
                 <x-user-avatar :row="$row" />
             </td>
-            <td>{{ $row->structure->nom }}</td>
             <td>{{ $row->numero }}</td>
             <td>{{ $row->type }}</td>
             <td>{{ $row->objet }}</td>

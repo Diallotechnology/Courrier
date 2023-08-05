@@ -28,14 +28,13 @@
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Correspondant du courrier</div>
-                <div class="datagrid-content"> {{ $arriver->correspondant ? $arriver->correspondant->nom : 'inexistant'
-                    }}
+                <div class="datagrid-content"> {{ $arriver->correspondant_view()}}
                 </div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Nature du courrier</div>
                 <div class="datagrid-content">
-                    {{ $arriver->nature ? $arriver->nature->nom : 'inexistant' }}
+                    {{ $arriver->nature_view() }}
                 </div>
             </div>
             <div class="datagrid-item">

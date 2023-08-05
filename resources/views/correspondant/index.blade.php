@@ -36,7 +36,7 @@
         @foreach ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
+            <td>{{ $row->structure_view() }}</td>
             <td>{{ $row->nom }}</td>
             <td>{{ $row->fonction }}</td>
             <td>{{ $row->email }}</td>

@@ -28,6 +28,7 @@
         <tr>
             <th>ID</th>
             <th>Nom</th>
+            <th>Sexe</th>
             <th>Poste</th>
             <th>Department</th>
             <th>Role</th>
@@ -51,6 +52,7 @@
                     </div>
                 </div>
             </td>
+            <td>{{ $row->sexe }}</td>
             <td>{{ $row->poste }}</td>
             <td data-label="Title">
                 <div> {{ $row->userable->nom }}</div>
@@ -85,8 +87,14 @@
             <x-input type="text" name="poste" place="le poste de l'utilisateur" />
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-6">
             <x-input type="email" name="email" place="email de l'utilisateur" />
+        </div>
+        <div class="col-md-6">
+            <x-select name="sexe" label="Sexe">
+              <option value="Homme">Homme</option>
+              <option value="Femme">Fomme</option>
+            </x-select>
         </div>
 
         @if(Auth::user()->isSuperuser())

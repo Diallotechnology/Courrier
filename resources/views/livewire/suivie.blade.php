@@ -1,8 +1,13 @@
 <div>
     <x-table :rows="$rows">
         <x-slot name="header">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <br> NB: La suppression d'un courrier entrainera la suppression de ses imputations
+                </h3>
+            </div>
             <div class="card-body">
-                <x-filter url="arriver" :create="false">
+                <x-filter url="arriver">
                     <div class="mb-3 col-sm-4 col-md-2">
                         <div wire:ignore>
                             <x-select label="Nature de courrier" :required='false' wire:model='nature'>
@@ -10,13 +15,14 @@
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
                             </x-select>
+
                         </div>
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
                         <div wire:ignore>
                             <x-select label="Correspondant" :required='false' wire:model='expediteur'>
                                 @foreach ($correspondant as $row)
-                                <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
+                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
                             </x-select>
                         </div>
@@ -41,7 +47,6 @@
                         <div wire:ignore>
                             <x-select label="Etat" :required='false' wire:model='etat'>
                                 @foreach (App\Enum\CourrierEnum::cases() as $row)
-                                @continue($loop->first)
                                 <option value="{{ $row }}">{{ $row }}</option>
                                 @endforeach
                             </x-select>
@@ -50,21 +55,21 @@
                     <div class="mb-3 col-sm-4 col-md-2">
                         <x-input type="date" label="Date d'arriver" wire:model='date' :required='false' />
                     </div>
-                    <x-slot name="btn">
-                    </x-slot>
+                    <x-slot name="btn"></x-slot>
                 </x-filter>
             </div>
         </x-slot>
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Structure</th>
                 <th>Utilisateur</th>
                 <th>Nature</th>
                 <th>Correspondant</th>
                 <th>Reference</th>
+                <th>Numero/Date arriver</th>
                 <th>Priorite</th>
                 <th>Confidential</th>
-                <th>Numero/Date arriver</th>
                 <th>Etat</th>
                 <th>Objet</th>
                 <th>Date</th>
@@ -75,21 +80,11 @@
             @forelse ($rows as $row)
             <tr>
                 <td>{{ $row->id }}</td>
-                <td>
-                    <x-user-avatar :row="$row" />
-                </td>
-                <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
-                <td>
-                    {{ $row->correspondant ? $row->correspondant->prenom.' '.$row->correspondant->nom : 'inexistant' }}
-                </td>
+                <td>{{ $row->structure_view() }}</td>
+                <td><x-user-avatar :row="$row" /></td>
+                <td>{{ $row->nature_view() }}</td>
+                <td>{{ $row->correspondant_view() }}</td>
                 <td>{{ $row->reference }}</td>
-
-                <td>
-                    <x-statut type="prio" :courrier="$row" />
-                </td>
-                <td>
-                    <x-statut type="privacy" :courrier="$row" />
-                </td>
                 <td>
                     <div class="d-flex py-1 align-items-center">
                         <div class="flex-fill">
@@ -98,13 +93,12 @@
                         </div>
                     </div>
                 </td>
-                <td>
-                    <x-statut type="etat" :courrier="$row" />
-                </td>
+                <td><x-statut type="prio" :courrier="$row" /></td>
+                <td><x-statut type="privacy" :courrier="$row" /></td>
+                <td><x-statut type="etat" :courrier="$row" /></td>
                 <td>
                     <p class="text-muted">{{ $row->objet }}</p>
                 </td>
-
                 <td>{{ $row->created_at }}</td>
                 <td>
                     <x-button-show :row="$row" href="{{ route('arriver.show', ['arriver' => $row]) }}" />
@@ -112,7 +106,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="8">
+                <td colspan="10">
                     <h2 class="text-center">Aucun element</h2>
                 </td>
             </tr>

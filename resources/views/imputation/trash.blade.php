@@ -26,13 +26,14 @@
             <th>ID</th>
             <th>Utilisateur</th>
             <th>Reference</th>
-            <th>N° du courrier</th>
-            <th>Nom du departement</th>
+            <th>N/A du courrier</th>
+            <th>Departement concerné</th>
+            <th>Sous Departement</th>
             <th>Priorité</th>
             <th>Etat</th>
             <th>Delai</th>
             <th>Fin de traitement</th>
-            <th>Date de creation</th>
+            <th>Date de suppression</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -43,10 +44,17 @@
             <td>
                 <x-user-avatar :row="$row" />
             </td>
-            <td>{{ $row->reference }}</td>
+            <td>{{ $row->numero }}</td>
             <td>{{ $row->courrier ? $row->courrier->numero : 'inexistant' }}</td>
             <td>
                 @forelse ($row->departements as $item)
+                <div>{{ $item->nom }}</div>
+                @empty
+                aucun
+                @endforelse
+            </td>
+            <td>
+                @forelse ($row->subdepartements as $item)
                 <div>{{ $item->nom }}</div>
                 @empty
                 aucun

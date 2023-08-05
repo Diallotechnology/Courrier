@@ -110,7 +110,7 @@
     <div wire:ignore>
         <x-form route="{{ route('imputation.store') }}">
             <div class="col-md-12">
-                <x-select label="Courrier arrivé" name="courrier_id">
+                <x-select label="liste des Courriers arrivés" name="courrier_id">
                     @foreach ($arriver as $row)
                     <option @selected(old('courrier_id')==$row->id) value="{{ $row->id }}">
                         Reférence {{ $row->reference }}, Numero d'arriver {{ $row->numero }},

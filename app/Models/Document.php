@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Structure;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Document
@@ -81,6 +82,16 @@ class Document extends Model
     public function documentable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get the structure that owns the Document
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
     }
 
     public function DocLink(): string

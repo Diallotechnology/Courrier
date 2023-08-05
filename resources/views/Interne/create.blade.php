@@ -6,7 +6,7 @@
             <h2 class="mb-3 text-center">Formulaire de nouveau courrier interne</h2>
             <x-form route="{{ route('interne.store') }}" enctype="multipart/form-data">
                 <div class="col-md-6">
-                    <x-select name="nature_id" label="Nature de courrier">
+                    <x-select name="nature_id" label="Nature du courrier">
                         @foreach ($type as $row)
                         <option value="{{ $row->id }}">{{ $row->nom }}
                         </option>

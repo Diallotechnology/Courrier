@@ -22,6 +22,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'userable_type' => $this->faker->randomElement(['App\Models\Departement', 'App\Models\SubDepartement']),
             'userable_id' => rand(1, 5),
+            'sexe' => $this->faker->randomElement(['Homme', 'Femme']),
             'poste' => $this->faker->jobTitle(),
             'role' => $this->faker->randomElement(RoleEnum::cases()),
             'email' => fake()->safeEmail(),

@@ -38,7 +38,7 @@
         @endcan
         @empty(!$trash)
         <a href="{{ route($trash) }}" {{ $attributes->merge(['class' => 'btn btn-primary']) }} aria-label="Button">
-            <i class="ti ti-list"></i>Liste</a>
+            <i class="ti ti-list"></i>Retour</a>
 
         <button {{ $attributes->merge(['class' => 'btn btn-red']) }} onclick="trash_delete('delete')"
             data-bs-toggle="modal" data-bs-target="#modal-danger" aria-label="Button">

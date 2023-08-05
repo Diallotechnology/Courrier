@@ -7,6 +7,7 @@ use App\Models\Depart;
 use App\Models\Nature;
 use Livewire\Component;
 use App\Models\Courrier;
+use App\Helper\WithFilter;
 use Livewire\WithPagination;
 use App\Models\Correspondant;
 use Illuminate\Contracts\View\View;
@@ -14,9 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CourrierDepart extends Component
 {
-    use WithPagination;
-
-    protected string $paginationTheme = 'bootstrap';
+    use WithPagination, WithFilter;
 
     public function ResetFilter(): void
     {
@@ -24,19 +23,7 @@ class CourrierDepart extends Component
         $this->resetPage();
     }
 
-    public string $privacy = '';
-
-    public string $priority = '';
-
-    public string $nature = '';
-
     public string $initiateur = '';
-
-    public string $date = '';
-
-    public string $expediteur = '';
-
-    public string $etat = '';
 
     public function render(): View
     {

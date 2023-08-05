@@ -24,6 +24,7 @@
         <tr>
             <th>ID</th>
             <th>Nom</th>
+            <th>Sexe</th>
             <th>Poste</th>
             <th>Department</th>
             <th>Role</th>
@@ -37,18 +38,20 @@
             <td>{{ $row->id }}</td>
             <td>
                 <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)"></span>
+                    <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')">
+                        <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
+                            true])></span>
+                    </span>
                     <div class="flex-fill">
                         <div class="font-weight-medium">{{ $row->name }}</div>
                         <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}</a></div>
-                        <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
-                            true])></span> {{ $row->etat == true ? 'En ligne' : 'Pas ligne' }}
                     </div>
                 </div>
             </td>
+            <td>{{ $row->sexe }}</td>
             <td>{{ $row->poste }}</td>
             <td data-label="Title">
-                <div>{{ $row->departement->nom }}</div>
+                <div> {{ $row->userable->nom }}</div>
                 <div class="text-muted">{{ $row->imputations_count }} Imputations</div>
             </td>
             <td>{{ $row->role }}</td>

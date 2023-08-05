@@ -177,8 +177,8 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Utilisateur</th>
                 <th>Structure</th>
+                <th>Utilisateur</th>
                 <th>Nature</th>
                 <th>Correspondant</th>
                 <th>Reference</th>
@@ -195,14 +195,10 @@
             @forelse ($rows as $row)
             <tr>
                 <td>{{ $row->id }}</td>
-                <td>
-                    <x-user-avatar :row="$row" />
-                </td>
-                <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
-                <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
-                <td>
-                    {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
-                </td>
+                <td>{{ $row->structure_view() }}</td>
+                <td><x-user-avatar :row="$row" /></td>
+                <td>{{ $row->nature_view() }}</td>
+                <td>{{ $row->correspondant_view() }}</td>
                 <td>{{ $row->reference }}</td>
                 <td>
                     <div class="d-flex py-1 align-items-center">
@@ -212,16 +208,9 @@
                         </div>
                     </div>
                 </td>
-                <td>
-                    <x-statut type="prio" :courrier="$row" />
-                </td>
-                <td>
-                    <x-statut type="privacy" :courrier="$row" />
-                </td>
-
-                <td>
-                    <x-statut type="etat" :courrier="$row" />
-                </td>
+                <td><x-statut type="prio" :courrier="$row" /></td>
+                <td><x-statut type="privacy" :courrier="$row" /></td>
+                <td><x-statut type="etat" :courrier="$row" /></td>
                 <td>
                     <p class="text-muted">{{ $row->objet }}</p>
                 </td>

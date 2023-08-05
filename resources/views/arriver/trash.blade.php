@@ -24,41 +24,29 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Utilisateur</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Debut de la tache</th>
-            <th>Fin de la tache</th>
-            <th>Etat</th>
-            <th>Date de suppression</th>
-            <th>Action</th>
+                <th>Structure</th>
+                <th>Utilisateur</th>
+                <th>Nature</th>
+                <th>Correspondant</th>
+                <th>Reference</th>
+                <th>Numero/Date arriver</th>
+                <th>Priorite</th>
+                <th>Confidential</th>
+                <th>Etat</th>
+                <th>Objet</th>
+                <th>Date de suppression</th>
+                <th>Action</th>
         </tr>
     </thead>
     <tbody>
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>
-                <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url(./static/avatars/006m.jpg)"></span>
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $row->user->name }}</div>
-                        <div class="text-muted"><a href="#" class="text-reset">{{ $row->user->email }}</a></div>
-                    </div>
-                </div>
-            </td>
-            <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
-            <td>
-                {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
-            </td>
+            <td>{{ $row->structure_view() }}</td>
+            <td><x-user-avatar :row="$row" /></td>
+            <td>{{ $row->nature_view() }}</td>
+            <td>{{ $row->correspondant_view() }}</td>
             <td>{{ $row->reference }}</td>
-
-            <td>
-                <x-statut type="prio" :courrier="$row" />
-            </td>
-            <td>
-                <x-statut type="privacy" :courrier="$row" />
-            </td>
             <td>
                 <div class="d-flex py-1 align-items-center">
                     <div class="flex-fill">
@@ -67,13 +55,12 @@
                     </div>
                 </div>
             </td>
-            <td>
-                <x-statut type="etat" :courrier="$row" />
-            </td>
+            <td><x-statut type="prio" :courrier="$row" /></td>
+            <td><x-statut type="privacy" :courrier="$row" /></td>
+            <td><x-statut type="etat" :courrier="$row" /></td>
             <td>
                 <p class="text-muted">{{ $row->objet }}</p>
             </td>
-
             <td>{{ $row->deleted_at }}</td>
             <td>
                 <x-button-restore :row="$row" url="{{ url('arriver/restore/'.$row->id) }}" />
@@ -84,7 +71,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="8">
+            <td colspan="11">
                 <h2 class="text-center">Aucun element</h2>
             </td>
         </tr>

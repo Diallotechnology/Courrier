@@ -269,7 +269,7 @@
             </div>
         </div>
     </div>
-    <div class="col-5">
+    <div class="col-md-5">
         <div class="card card-md">
             <div class="card-stamp card-stamp-lg" style="opacity: initial;">
                 <div style="text-align:center;padding:1em 0;">
@@ -278,10 +278,7 @@
                         src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=fr&size=medium&timezone=Africa%2FBamako"
                         width="100%" height="115" frameborder="0" seamless></iframe>
                 </div>
-
-
             </div>
-
             <div class="card-body p-3">
                 <div class="row align-items-center">
                     <div class="col-10">
@@ -366,9 +363,9 @@
             </div>
         </div>
     </div>
-    <div class="col-7">
+    <div class="col-md-7">
         <div class="row row-cards">
-            <div class="col-12">
+            <div class="col-md-12">
                 <div class="card" style="height: 15rem">
                     <div class="card-header bg-primary text-white">
                         <h3 class="card-title">
@@ -421,7 +418,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <img src="{{ asset('/img/Mail-bro.svg') }}" class="" height="300" alt="">
+        <img src="{{ asset('img/Mail-bro.svg') }}" class="" height="300" alt="image">
     </div>
     <div class="col-md-12">
         <x-table>

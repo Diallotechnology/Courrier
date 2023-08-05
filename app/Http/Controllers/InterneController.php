@@ -118,7 +118,7 @@ class InterneController extends Controller
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
         $userId = Auth::user()->id;
-        $rows = Interne::with('creat', 'nature', 'destinataire', 'expediteur')->onlyTrashed()
+        $rows = Interne::with('nature', 'destinataire', 'expediteur')->onlyTrashed()
             ->when(! $isSuperadmin, function ($query) use ($userId) {
                 $query->where(function ($query) use ($userId) {
                     $query->where('destinataire_id', $userId)

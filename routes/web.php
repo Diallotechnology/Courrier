@@ -65,11 +65,6 @@ Route::middleware(['auth','licence'])->group(function () {
             Route::delete('departement/delete/{id}', 'force_delete')->whereNumber('id');
         });
 
-        Route::controller(UserController::class)->group(function () {
-            Route::get('user/delete/all', 'all_delete')->name('user.delete');
-            Route::delete('user/delete/{id}', 'force_delete')->whereNumber('id');
-        });
-
         Route::controller(DocumentController::class)->group(function () {
             Route::get('document/delete/all', 'all_delete')->name('document.delete');
             Route::delete('document/delete/{id}', 'force_delete')->whereNumber('id');
@@ -219,6 +214,7 @@ Route::middleware(['auth','licence'])->group(function () {
         Route::view('licence_expire', 'licence_expire')->name('licence_expire');
         Route::post('user/active/two_factor', [UserController::class, 'active_2fa'])->name('user.active_2fa');
         Route::delete('rapport/delete/{id}', [RapportController::class, 'force_delete'])->whereNumber('id');
+        Route::get('document/{model}/list', [DocumentController::class, 'list'])->name('document.list');
         Route::controller(TaskController::class)->group(function () {
             Route::get('task/trash', 'trash')->name('task.trash');
             Route::get('task/restore/all', 'all_recover')->name('task.restore');

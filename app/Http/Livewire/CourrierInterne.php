@@ -2,18 +2,17 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Interne;
-use App\Models\Nature;
 use Auth;
-use Illuminate\Contracts\View\View;
+use App\Models\Nature;
+use App\Models\Interne;
 use Livewire\Component;
+use App\Helper\WithFilter;
 use Livewire\WithPagination;
+use Illuminate\Contracts\View\View;
 
 class CourrierInterne extends Component
 {
-    use WithPagination;
-
-    protected string $paginationTheme = 'bootstrap';
+    use WithPagination, WithFilter;
 
     public function ResetFilter(): void
     {
@@ -21,15 +20,7 @@ class CourrierInterne extends Component
         $this->resetPage();
     }
 
-    public string $privacy = '';
-
-    public string $priority = '';
-
-    public string $nature = '';
-
     public string $destinataire = '';
-
-    public string $etat = '';
 
     public function render(): View
     {

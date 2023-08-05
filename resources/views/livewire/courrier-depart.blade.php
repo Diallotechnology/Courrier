@@ -33,7 +33,7 @@
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-2">
+                <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
                         <x-select label="Priorite" :required='false' wire:model='priority'>
                             <option value="Urgent">Urgent</option>
@@ -41,7 +41,7 @@
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-2">
+                <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
                         <x-select label="Confidentialité" :required='false' wire:model='privacy'>
                             <option value="OUI">OUI</option>
@@ -49,7 +49,7 @@
                         </x-select>
                     </div>
                 </div>
-                <div class="mb-3 col-sm-4 col-md-2">
+                <div class="mb-3 col-sm-4 col-md-3">
                     <x-input type="date" label="Date depart" wire:model='date' :required='false' />
                 </div>
 
@@ -62,8 +62,8 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Utilisateur</th>
             <th>Structure</th>
+            <th>Utilisateur</th>
             <th>Numero depart</th>
             <th>Initiateur</th>
             <th>Date depart</th>
@@ -82,10 +82,8 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>
-                <x-user-avatar :row="$row" />
-            </td>
-            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
+            <td>{{ $row->structure_view() }}</td>
+            <td><x-user-avatar :row="$row" /></td>
             <td>{{ $row->numero }}</td>
             <td>
                 @if($row->initiateur)
@@ -105,7 +103,7 @@
             <td>
                 {{ $row->date_format }}
             </td>
-            <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+            <td>{{ $row->nature_view() }}</td>
             <td>
                 @forelse ($row->correspondants as $item)
                 <div> {{ $item->nom }}</div>
@@ -114,7 +112,7 @@
                 @endforelse
             </td>
 
-            <td>{{ $row->courrier ? 'Courrier N°'. $row->courrier->numero : 'pas de response' }}</td>
+            <td>{{ $row->courrier ? 'Courrier N°'. $row->courrier->numero : 'pas de reponse' }}</td>
 
             <td>
                 <x-statut type="prio" :courrier="$row" />
@@ -195,7 +193,7 @@
                 <x-input type="file" multiple name="files[]" label="Pièces jointe (PDF,DOC,IMAGE) facultatif" :required='false' />
             </div>
             <div class="col-md-12">
-                <x-select name="courrier_id" :required='false' label="CE COURRIER SORTANT RÉPOND-T-IL À UN COURRIER Arrivé? FACULTATIF facultatif">
+                <x-select name="courrier_id" :required='false' label="CE COURRIER SORTANT RÉPOND-T-IL À UN COURRIER Arrivé? FACULTATIF">
                     @foreach ($courrier as $row)
                     <option @selected(old('courrier_id')==$row->id) value="{{ $row->id }}">Reference {{ $row->reference }}, N° {{ $row->numero }}, Date
                         d'arriver {{

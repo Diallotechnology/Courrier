@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Enum\CourrierEnum;
+use App\Helper\WithFilter;
 use App\Models\Courrier;
 use App\Models\Departement;
 use App\Models\Imputation as ModelsImputation;
@@ -14,11 +15,7 @@ use Livewire\WithPagination;
 
 class Imputation extends Component
 {
-    use WithPagination;
-
-    protected string $paginationTheme = 'bootstrap';
-
-    public string $priority = '';
+    use WithPagination, WithFilter;
 
     public string $delai = '';
 
@@ -28,7 +25,6 @@ class Imputation extends Component
 
     public string $departement = '';
 
-    public string $etat = '';
 
     public function ResetFilter(): void
     {

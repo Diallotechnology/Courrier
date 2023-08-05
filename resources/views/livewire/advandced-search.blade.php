@@ -11,9 +11,9 @@
                             </x-select>
                         </div>
                     </div>
-                    <div class="mb-3 col-md-4">
+                    <div @class(['mb-3 col-md-4', 'd-none' => $model === "Depart"]) >
                         <x-input type="text" label="Reference du courrier" place="Reference du courrier"
-                            wire:model="reference" :required="false" />
+                        wire:model="reference" :required="false" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <x-input type="text" label="numero arriver/depart" place="numero arriver ou depart"
@@ -21,7 +21,7 @@
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Nature de courrier" :required="false" wire:model="nature">
+                            <x-select label="Nature du courrier" :required="false" wire:model="nature">
                                 @foreach ($type as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="mb-3 col-md-4">
-                        <x-input type="date" label="Date d'arriver" wire:model="date" :required="false" />
+                        <x-input type="date" label="Date d'arriver/départ" wire:model="date" :required="false" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
@@ -56,7 +56,7 @@
                             </x-select>
                         </div>
                     </div>
-                    <div class="mb-3 col-md-4">
+                    <div @class(['mb-3 col-md-4', 'd-none' => $model === "Depart"])>
                         <div wire:ignore>
                             <x-select label="Etat" :required="false" wire:model="etat">
                                 @foreach (App\Enum\CourrierEnum::cases() as $row)
@@ -65,14 +65,11 @@
                             </x-select>
                         </div>
                     </div>
-                    @if($model === "Arrive")
-                    <div class="mb-3 col-md-4 col-md-4">
+                    <div @class(['mb-3 col-md-4', 'd-none' => $model === "Depart"])>
                         <x-input type="date" label="Date de fin traitement" wire:model="fin" :required="false" />
                     </div>
-                    @endif
                     <div class="mb-3 col-md-4">
                         <x-input type="date" label="Date d'enregistrement" wire:model="create" :required="false" />
-
                     </div>
                     <div>
                         <button wire:click='ResetFilter' class="btn btn-danger mx-2" type="button">
@@ -88,7 +85,10 @@
     <x-table :rows="$rows">
         <x-slot name="header">
             <div class="card-header">
-                <h3 class="card-title"> {{ $rows }} resultats trouvés
+                <h3 class="card-title">
+                    @if ($rows->isNotEmpty())
+                    {{ $rows->total() }} resultats trouvés
+                    @endif
                 </h3>
             </div>
             <div class="card-body">
@@ -107,7 +107,6 @@
                 <th>Confidential</th>
                 <th>Numero/Date arriver</th>
                 <th>Etat</th>
-                <th>Objet</th>
                 <th>Date</th>
                 <th>Action</th>
             </tr>
@@ -119,10 +118,19 @@
                 <td>
                     <x-user-avatar :row="$row" />
                 </td>
-                <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
-                <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+                <td>{{ $row->structure_view() }}</td>
+                <td>{{ $row->nature_view() }}</td>
                 <td>
-                    {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
+                    @if ($model === "Arrive")
+                    {{ $row->correspondant_view() }}
+                    @endif
+                    @if ($model === "Depart")
+                    @forelse ($row->correspondants as $item)
+                    <div> {{ $item->nom }}</div>
+                    @empty
+                    aucun
+                    @endforelse
+                    @endif
                 </td>
                 <td>{{ $row->reference }}</td>
                 <td>
@@ -144,10 +152,6 @@
                     <x-statut type="etat" :courrier="$row" />
                     @endif
                 </td>
-                <td>
-                    <p class="text-muted">{{ $row->objet }}</p>
-                </td>
-
                 <td>{{ $row->created_at }}</td>
                 <td>
                     @if($model === "Arrive")

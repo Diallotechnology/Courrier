@@ -14,8 +14,14 @@
                     <x-input type="text" name="poste" :value="$user->poste" place="le poste de l'utilisateur" />
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <x-input type="email" name="email" :value="$user->email" place="email de l'utilisateur" />
+                </div>
+                <div class="col-md-6">
+                    <x-select name="sexe" label="Sexe">
+                      <option @selected($user->sexe === "Homme") value="Homme">Homme</option>
+                      <option @selected($user->sexe === "Femme") value="Femme">Fomme</option>
+                    </x-select>
                 </div>
 
                 @if(Auth::user()->isSuperuser())

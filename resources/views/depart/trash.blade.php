@@ -23,18 +23,19 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Utilisateur</th>
             <th>Structure</th>
+            <th>Utilisateur</th>
+            <th>Numero depart</th>
+            <th>Initiateur</th>
+            <th>Date depart</th>
             <th>Nature</th>
             <th>Correspondant</th>
-            <th>Reference</th>
             <th>En Reponse</th>
             <th>Priorite</th>
             <th>Confidential</th>
-            <th>Numero/Date depart</th>
             <th>Etat</th>
             <th>Objet</th>
-            <th>Date</th>
+            <th>Date de suppression</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -42,16 +43,37 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
+            <td>{{ $row->structure_view() }}</td>
+            <td><x-user-avatar :row="$row" /></td>
+            <td>{{ $row->numero }}</td>
             <td>
-                <x-user-avatar :row="$row" />
+                @if($row->initiateur)
+                <div class="d-flex py-1 align-items-center">
+                    <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->initiateur->name }}')"></span>
+                    <div class="flex-fill">
+                        <div class="font-weight-medium">{{ $row->initiateur->name }}</div>
+                        <div class="text-muted">
+                            <p class="text-reset">{{ $row->initiateur->email }}</p>
+                        </div>
+                    </div>
+                </div>
+                @else
+                inexistant
+                @endif
             </td>
-            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
-            <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
             <td>
-                {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
+                {{ $row->date_format }}
             </td>
-            <td>{{ $row->reference }}</td>
-            <td>{{ $row->courrier ? 'Courrier arriver N°'. $row->courrier->numero : 'pas de response' }}</td>
+            <td>{{ $row->nature_view() }}</td>
+            <td>
+                @forelse ($row->correspondants as $item)
+                <div> {{ $item->nom }}</div>
+                @empty
+                aucun
+                @endforelse
+            </td>
+
+            <td>{{ $row->courrier ? 'Courrier N°'. $row->courrier->numero : 'pas de reponse' }}</td>
 
             <td>
                 <x-statut type="prio" :courrier="$row" />
@@ -60,17 +82,7 @@
                 <x-statut type="privacy" :courrier="$row" />
             </td>
             <td>
-                <div class="d-flex py-1 align-items-center">
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">N° {{ $row->numero }}</div>
-                        <div class="text-muted">Date {{ $row->date_format }}</div>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <span @class(['status status-success'])>
-                    {{ $row->etat }}
-                </span>
+                <span @class(['status status-success'])>{{ $row->etat }}</span>
             </td>
             <td>
                 <p class="text-muted">{{ $row->objet }}</p>
@@ -83,7 +95,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="8">
+            <td colspan="11">
                 <h2 class="text-center">Aucun element</h2>
             </td>
         </tr>

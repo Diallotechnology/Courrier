@@ -2,7 +2,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Informations du departementement {{ $departement->nom }}</h3>
+        <h3 class="card-title">Informations du departement {{ $departement->nom }}</h3>
     </div>
     <div class="card-body">
         <div class="datagrid">

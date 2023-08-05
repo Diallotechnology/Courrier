@@ -29,8 +29,8 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
-            <td>{{ $row->reference }}</td>
-            <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+            <td>{{ $row->numero }}</td>
+            <td>{{ $row->nature_view() }}</td>
             <td>
                 @if($row->expediteur)
                 <div class="d-flex py-1 align-items-center">

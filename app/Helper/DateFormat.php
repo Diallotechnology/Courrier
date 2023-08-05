@@ -31,6 +31,21 @@ trait DateFormat
         return Carbon::parse($this->date)->format('d/m/Y');
     }
 
+    public function nature_view(): string
+    {
+        return $this->nature ? $this->nature->nom : 'inexistant';
+    }
+
+    public function structure_view(): string
+    {
+        return $this->structure ? $this->structure->nom : 'inexistant';
+    }
+
+    public function correspondant_view(): string
+    {
+        return $this->correspondant ? $this->correspondant->nom : 'inexistant';
+    }
+
     public function Normal(): bool
     {
         return $this->priorite === 'Normal';

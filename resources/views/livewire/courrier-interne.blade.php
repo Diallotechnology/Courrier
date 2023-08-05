@@ -1,11 +1,5 @@
 <x-table :rows="$rows">
     <x-slot name="header">
-        <div class="card-header">
-            <h3 class="card-title">
-                <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
-            </h3>
-
-        </div>
         <div class="card-body">
             <x-filter url="interne" :create="false">
                 <div class="mb-3  col-md-3">
@@ -44,7 +38,7 @@
                     </div>
                 </div>
                 <div class="mb-3  col-md-3">
-                    <x-input type="date" label="Date" wire:model='date' :required='false' />
+                    <x-input type="date" label="Date d'envoi" wire:model='date' :required='false' />
                 </div>
 
                 <x-slot name="btn">
@@ -62,7 +56,6 @@
         <tr>
             <th>ID</th>
             <th>Reference</th>
-            <th>Structure</th>
             <th>Nature</th>
             <th>Expéditeur</th>
             <th>Destinateur</th>
@@ -79,8 +72,7 @@
         <tr>
             <td>{{ $row->id }}</td>
             <td>{{ $row->numero }}</td>
-            <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
-            <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+            <td>{{ $row->nature_view() }}</td>
             <td>
                 @if($row->expediteur)
                 <div class="d-flex py-1 align-items-center">

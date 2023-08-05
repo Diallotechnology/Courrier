@@ -31,6 +31,7 @@ class StoreUserRequest extends FormRequest
             'poste' => ['required', 'string', 'max:150'],
             'type' => ['required', 'string', 'max:50', Rule::in(['departement', 'subdepartement'])],
             'userable_id' => ['required', 'string'],
+            'sexe' => ['required', 'string'],
             'role' => ['required', new Enum(RoleEnum::class)],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'departement_id' => 'nullable|array|exists:departements,id',

@@ -20,8 +20,12 @@ class NatureController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
-        $data = $request->validate(['nom' => 'required|string|max:50']);
-        $item = Nature::create($data);
+        $request->validate(['nom' => 'required|string|max:50']);
+        $structureId = Auth::user()->userable->structure_id ?: Auth::user()->userable->departement->structure_id;
+        $item = Nature::create([
+            'nom' => $request->nom,
+            'structure_id' => $structureId,
+        ]);
         $this->journal("Ajout de la nature de courrier N°$item->id");
         toastr()->success('Nature ajouter avec success!');
 
