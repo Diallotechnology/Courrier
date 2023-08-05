@@ -115,7 +115,7 @@ class Structure extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom', 'code', 'email', 'logo', 'contact', 'description', 'adresse','type', 'expire_at'];
+    protected $fillable = ['nom', 'code', 'email', 'logo', 'contact', 'description', 'adresse'];
 
         /**
      * The attributes that should be cast.
