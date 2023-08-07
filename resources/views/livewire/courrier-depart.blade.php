@@ -84,22 +84,8 @@
             <td>{{ $row->id }}</td>
             <td>{{ $row->structure_view() }}</td>
             <td><x-user-avatar :row="$row" /></td>
+            <td><x-custom-avatar :row="$row->initiateur" /></td>
             <td>{{ $row->numero }}</td>
-            <td>
-                @if($row->initiateur)
-                <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->initiateur->name }}')"></span>
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $row->initiateur->name }}</div>
-                        <div class="text-muted">
-                            <p class="text-reset">{{ $row->initiateur->email }}</p>
-                        </div>
-                    </div>
-                </div>
-                @else
-                inexistant
-                @endif
-            </td>
             <td>
                 {{ $row->date_format }}
             </td>

@@ -8,7 +8,12 @@
                     <div class="text-center">
                         <div class="mb-3">
                             <span class="avatar avatar-lg rounded"
-                                style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $user->name }}')"></span>
+                            @if ($user->sexe === "Homme")
+                            style="background-image: url('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown')"
+                            @elseif ($user->sexe === "Femme")
+                            style="background-image: url('https://avataaars.io/?avatarStyle=Transparent&topType=LongHairCurly&accessoriesType=Round&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Blue02&eyeType=Surprised&eyebrowType=Default&mouthType=Default&skinColor=DarkBrown')"
+                            @endif
+                                ></span>
                         </div>
                         <div class="card-title mb-1"> {{ $user->name }}</div>
                         <div class="card-title mb-1"> {{ $user->email }}</div>

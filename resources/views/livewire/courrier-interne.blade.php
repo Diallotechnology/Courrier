@@ -74,37 +74,10 @@
             <td>{{ $row->numero }}</td>
             <td>{{ $row->nature_view() }}</td>
             <td>
-                @if($row->expediteur)
-                <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2"
-                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->expediteur->name }}')"></span>
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $row->expediteur->name }}</div>
-                        <div class="text-muted">
-                            <p class="text-reset">{{ $row->expediteur->email }}</p>
-                        </div>
-                    </div>
-                </div>
-                @else
-                inexistant
-                @endif
+                <x-custom-avatar :row="$row->expediteur" />
             </td>
             <td>
-                @if($row->destinataire)
-                <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2"
-                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->destinataire->name }}')"></span>
-
-                    <div class="flex-fill">
-                        <div class="font-weight-medium">{{ $row->destinataire->name }}</div>
-                        <div class="text-muted">
-                            <p class="text-reset">{{ $row->destinataire->email }}</p>
-                        </div>
-                    </div>
-                </div>
-                @else
-                inexistant
-                @endif
+                <x-custom-avatar :row="$row->destinataire" />
             </td>
             <td>
                 <x-statut type="prio" :courrier="$row" />
