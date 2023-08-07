@@ -59,7 +59,7 @@ function deleteConfirmation(url) {
     );
 }
 
-function restore(url, title, message, confirmText, cancelText) {
+function restore(url) {
     swal.fire({
         title: "Restaurer?",
         icon: "question",
