@@ -13,11 +13,5 @@
 </div>
 @endsection
 @section('content')
-<div class="row py-2">
-    @foreach ($folder->documents as $row)
-    <div class="col-md-3">
-        <x-card-document :row="$row" />
-    </div>
-    @endforeach
-</div>
+@livewire('document', ['folder' => $folder])
 @endsection

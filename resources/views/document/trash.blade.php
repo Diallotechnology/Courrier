@@ -9,7 +9,7 @@
         </ol>
     </div>
     <h2 class="page-title">
-        <span class="text-truncate">Corbeille des documents de courrier</span>
+        <span class="text-truncate">Corbeille des documents</span>
     </h2>
 </div>
 @endsection
@@ -23,9 +23,10 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>Utilisateur</th>
+            <th>nom du Dossier</th>
             <th>Libelle</th>
-            <th>type</th>
-            <th>Chemin</th>
+            <th>extension</th>
             <th>Date de suppression</th>
             <th>Action</th>
         </tr>
@@ -34,9 +35,12 @@
         @foreach ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
+            <td>
+                <x-user-avatar :row="$row" />
+            </td>
+            <td>{{ $row->folder->nom }}</td>
             <td>{{ $row->libelle }}</td>
-            <td>{{ $row->type }}</td>
-            <td>{{ $row->chemin }}</td>
+            <td>{{ $row->extension }}</td>
             <td>{{ $row->deleted_at }}</td>
             <td>
                 <x-button-restore :row="$row" url="{{ url('document/restore/'.$row->id) }}" />

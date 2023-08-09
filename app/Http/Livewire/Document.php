@@ -9,15 +9,24 @@ use Illuminate\Support\Facades\Auth;
 
 class Document extends Component
 {
-    public string $search = "";
+    public Folder $folder;
+    public string $type = "";
+    public string $date = "";
+
+    public function ResetFilter(): void
+    {
+        $this->reset('type','date');
+    }
 
     public function render()
     {
-        $rows = Folder::withCount('documents','folderable')->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
-        ->when($this->search, function ($query) {
-            $query->where('nom', 'like','%'.$this->search.'%');
+        $rows = $this->folder->documents()
+        ->when($this->type, function ($query) {
+            $query->where('extension',$this->type);
         })
-        ->orderBy('nom')->paginate(15);
+        ->when($this->date, function ($query) {
+            $query->orderBy('id',$this->date);
+        })->get();
         return view('livewire.document', compact('rows'));
     }
 }

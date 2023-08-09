@@ -12,6 +12,11 @@ class Dossier extends Component
     public string $type = "";
     public string $date = "";
 
+    public function ResetFilter(): void
+    {
+        $this->reset('type','date');
+    }
+
     public function render()
     {
         $query = Folder::withCount('documents')->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())

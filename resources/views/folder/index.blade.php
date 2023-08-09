@@ -4,11 +4,11 @@
     <div class="mb-1">
         <ol class="breadcrumb" aria-label="breadcrumbs">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><a href="#">Nature</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Dossier</a></li>
         </ol>
     </div>
     <h2 class="page-title">
-        <span class="text-truncate">Liste des natures de courrier</span>
+        <span class="text-truncate">Liste des dossiers</span>
     </h2>
 </div>
 @endsection

@@ -9,6 +9,7 @@ use App\Models\Correspondant;
 use App\Models\Courrier;
 use App\Models\Depart;
 use App\Models\Departement;
+use App\Models\Folder;
 use App\Models\Imputation;
 use App\Models\Interne;
 use App\Models\Nature;
@@ -23,6 +24,7 @@ use App\Policies\CorrespondantPolicy;
 use App\Policies\CourrierPolicy;
 use App\Policies\DepartementPolicy;
 use App\Policies\DepartPolicy;
+use App\Policies\FolderPolicy;
 use App\Policies\ImputationPolicy;
 use App\Policies\InternePolicy;
 use App\Policies\NaturePolicy;
@@ -56,6 +58,7 @@ class AuthServiceProvider extends ServiceProvider
         Nature::class => NaturePolicy::class,
         Correspondant::class => CorrespondantPolicy::class,
         Reponse::class => ReponsePolicy::class,
+        Folder::class => FolderPolicy::class,
     ];
 
     /**
