@@ -178,20 +178,7 @@
             @forelse ($rows as $row)
             <tr>
                 <td>{{ $row->id }}</td>
-                <td>
-                    @if($row->createur)
-                    <div class="d-flex py-1 align-items-center">
-                        <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->createur->name }}')"></span>
-                        <div class="flex-fill">
-                            <div class="font-weight-medium">{{ $row->createur->name }}</div>
-                            <div class="text-muted"><a href="#" class="text-reset">{{ $row->createur->email }}</a>
-                            </div>
-                        </div>
-                    </div>
-                    @else
-                    inexistant
-                    @endif
-                </td>
+                <td><x-custom-avatar :row="$row->createur" /></td>
                 <td>{{ $row->numero }}</td>
                 <td>{{ $row->type }}</td>
                 <td>
@@ -203,48 +190,47 @@
                         {{ $item->email }}
                     </div>
                     {{-- <div class="mb-2">Departement {{ $item->userable->nom }}
-</div> --}}
-@empty
-@if($row->type === "imputation")
+                    </div> --}}
+                    @empty
+                @if($row->type === "imputation")
+                <a role="button" href="{{ route('task.show', ['task' => $row]) }}" class="btn btn-indigo ">
+                    <i class="ti ti-user"></i> assigner
+                </a>
+                @endif
+                @endforelse
+                </td>
+                <td>
+                    {{ $row->nom }}
+                </td>
 
-<a role="button" href="{{ route('task.show', ['task' => $row]) }}" class="btn btn-indigo ">
-    <i class="ti ti-user"></i> assigner
-</a>
-@endif
-@endforelse
-</td>
-<td>
-    {{ $row->nom }}
-</td>
+                <td>{{ $row->debut_format }}</td>
+                <td>{{ $row->fin_format }}</td>
+                <td>
+                    <x-statut-task :task="$row" />
+                </td>
+                <td>{{ $row->created_at }}</td>
+                <td>
 
-<td>{{ $row->debut_format }}</td>
-<td>{{ $row->fin_format }}</td>
-<td>
-    <x-statut-task :task="$row" />
-</td>
-<td>{{ $row->created_at }}</td>
-<td>
-
-    @if(!$row->Pending() && !$row->Complet() && auth()->user()->tasks->contains($row) &&
-    auth()->user()->pivot_values->contains($row))
-    <button type="button" wire:click="ValidTask({{ $row->id }})" class="btn btn-indigo btn-icon">
-        <i class="ti ti-checks"></i>
-    </button>
-    @endif
-    <x-button-edit :row="$row" href="{{ route('task.edit', ['task' => $row]) }}" />
-    <x-button-show :row="$row" href="{{ route('task.show', ['task' => $row]) }}" />
-    <x-button-delete :row="$row" url="{{ url('task/'.$row->id) }}" />
-</td>
-</tr>
-@empty
-<tr>
-    <td colspan="11">
-        <h2 class="text-center">Aucun element</h2>
-    </td>
-</tr>
-@endforelse
-</tbody>
-</x-table>
+                    @if(!$row->Pending() && !$row->Complet() && auth()->user()->tasks->contains($row) &&
+                    auth()->user()->pivot_values->contains($row))
+                    <button type="button" wire:click="ValidTask({{ $row->id }})" class="btn btn-indigo btn-icon">
+                        <i class="ti ti-checks"></i>
+                    </button>
+                    @endif
+                    <x-button-edit :row="$row" href="{{ route('task.edit', ['task' => $row]) }}" />
+                    <x-button-show :row="$row" href="{{ route('task.show', ['task' => $row]) }}" />
+                    <x-button-delete :row="$row" url="{{ url('task/'.$row->id) }}" />
+                </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="11">
+                        <h2 class="text-center">Aucun element</h2>
+                    </td>
+                </tr>
+                @endforelse
+                </tbody>
+                </x-table>
 <x-modal title="nouvelle tache">
     <div wire:ignore>
         <x-form route="{{ route('task.store') }}">

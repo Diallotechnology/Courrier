@@ -8,6 +8,7 @@ use App\Http\Controllers\CourrierController;
 use App\Http\Controllers\DepartController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\FolderController;
 use App\Http\Controllers\ImputationController;
 use App\Http\Controllers\InterneController;
 use App\Http\Controllers\LicenceController;
@@ -209,12 +210,14 @@ Route::middleware(['auth','licence'])->group(function () {
         Route::view('courrier/interne', 'interne.index')->name('interne');
         Route::view('courrier/suivie', 'suivie')->name('suivie');
         Route::view('imputation', 'imputation.index')->name('imputation');
+        Route::view('dossier', 'folder.index')->name('folder');
+        Route::view('document', 'document.index')->name('document');
         Route::view('tache', 'task.index')->name('task');
         Route::view('search', 'search')->name('search');
         Route::view('licence_expire', 'licence_expire')->name('licence_expire');
         Route::post('user/active/two_factor', [UserController::class, 'active_2fa'])->name('user.active_2fa');
         Route::delete('rapport/delete/{id}', [RapportController::class, 'force_delete'])->whereNumber('id');
-        Route::get('document/{model}/list', [DocumentController::class, 'list'])->name('document.list');
+        // Route::get('fol/{model}/list', [DocumentController::class, 'list'])->name('document.list');
         Route::controller(TaskController::class)->group(function () {
             Route::get('task/trash', 'trash')->name('task.trash');
             Route::get('task/restore/all', 'all_recover')->name('task.restore');
@@ -247,6 +250,7 @@ Route::middleware(['auth','licence'])->group(function () {
         Route::resource('rapport', RapportController::class)->except('index');
         Route::resource('task', TaskController::class)->except('index');
         Route::resource('reponse', ReponseController::class)->except('index', 'show', 'create');
+        Route::resource('folder', FolderController::class)->except('index','create');
         Route::resource('user', UserController::class)->only('show');
     });
 });

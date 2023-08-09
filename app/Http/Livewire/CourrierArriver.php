@@ -42,13 +42,12 @@ class CourrierArriver extends Component
     {
         $row->update(['etat' => CourrierEnum::ARCHIVE]);
         toastr()->success('Courrier archiver avec success!');
-        // \dd($row);
     }
 
     public function render(): View
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = Courrier::with('user', 'nature', 'correspondant', 'structure')
+        $query = Courrier::with('user', 'nature', 'correspondant', 'structure','folder')
             ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);

@@ -2,27 +2,24 @@
 
 namespace App\Exports;
 
-use Throwable;
-use App\Models\Courrier;
 use Maatwebsite\Excel\Excel;
-use Illuminate\Contracts\View\View;
+use App\Models\Correspondant;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Contracts\Support\Responsable;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeadings
+class CorrespondantExport implements FromQuery, Responsable, WithMapping, WithHeadings
 {
     use Exportable;
     /**
     * It's required to define the fileName within
     * the export class when making use of Responsable.
     */
-    private $fileName = 'courrier_arriver.xlsx';
+    private $fileName = 'correspondant.xlsx';
 
     /**
     * Optional Writer Type
@@ -38,14 +35,13 @@ class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeading
 
     public function failed()
     {
-        return toastr()->error('Exportation à echoué!');
+        return toastr()->error("L'exportation à echoué!");
     }
-
 
     public function query()
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
-        return Courrier::query()->when(! $isSuperadmin, fn ($query) => $query->ByStructure());
+        return Correspondant::query()->when(! $isSuperadmin, fn ($query) => $query->ByStructure());
     }
 
     /**
@@ -55,17 +51,10 @@ class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeading
     {
         return [
             $data->id,
-            $data->user->name,
-            $data->user->email,
-            $data->reference,
-            $data->numero,
-            $data->date_format,
-            $data->nature_view(),
-            $data->correspondant_view(),
-            $data->priorite,
-            $data->confidentiel,
-            $data->objet,
-            $data->etat->value,
+            $data->nom,
+            $data->fonction,
+            $data->email,
+            $data->contact,
             $data->created_at,
         ];
     }
@@ -74,22 +63,11 @@ class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeading
     {
         return [
             'id',
-            'Utilisateur',
-            'email',
-            'Reference',
-            'Numero arrivé',
-            'Date arrivé',
-            'Nature',
-            'Correspondant',
-            'Priorité',
-            'Confidentiel',
-            'Objet',
-            'Etat',
+            'Nom',
+            'Fonction',
+            'Email',
+            'Contact',
             'Date de creation',
         ];
     }
-
-
-
-
 }

@@ -22,10 +22,6 @@
     @livewireStyles
 
     <style>
-        /* :root {
-            --tblr-font-sans-serif: 'Inter';
-        } */
-
         @import url('https://rsms.me/inter/inter.css');
 
         /* :root {

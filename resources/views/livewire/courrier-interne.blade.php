@@ -106,6 +106,9 @@
                 </a>
                 @endif
                 @endcan
+                @if ($row->folder)
+                <x-button-folder href="{{ route('folder.show', ['folder' => $row->folder]) }}" />
+                @endif
                 <x-button-edit :row="$row" href="{{ route('interne.edit', ['interne' => $row]) }}" />
                 <x-button-show :row="$row" href="{{ route('interne.show', ['interne' => $row]) }}" />
                 <x-button-delete :row="$row" url="{{ url('courrier/interne/'.$row->id) }}" />

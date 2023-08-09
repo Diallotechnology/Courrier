@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\Enum\CourrierInterneEnum;
+use App\Models\Folder;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
+use App\Enum\CourrierInterneEnum;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Interne
@@ -154,11 +156,11 @@ class Interne extends Model
     }
 
     /**
-     * Get all of the document's Interne.
+     * Get the interne's folder.
      */
-    public function documents(): MorphMany
+    public function folder(): MorphOne
     {
-        return $this->morphMany(Document::class, 'documentable');
+        return $this->morphOne(Folder::class, 'folderable');
     }
 
     /**

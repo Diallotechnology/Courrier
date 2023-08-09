@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Folder;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Rapport
@@ -118,11 +120,11 @@ class Rapport extends Model
     }
 
     /**
-     * Get all of the document's Rapport.
+     * Get the rapport's folder.
      */
-    public function documents(): MorphMany
+    public function folder(): MorphOne
     {
-        return $this->morphMany(Document::class, 'documentable');
+        return $this->morphOne(Folder::class, 'folderable');
     }
 
     /**

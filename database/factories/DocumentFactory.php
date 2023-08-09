@@ -17,11 +17,8 @@ class DocumentFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => $this->faker->randomElement(['Arrivé', 'Depart', 'Interne', 'Rapport']),
-            'documentable_type' => $this->faker->randomElement(['App\Models\Courrier', 'App\Models\Depart', 'App\Models\Interne', 'App\Models\Rapport']),
-            'documentable_id' => rand(1, 15),
             'user_id' => rand(1, 10),
-            'structure_id' => rand(1, 5),
+            'folder_id' => rand(1, 10),
             'extension' => $this->faker->randomElement(['pdf', 'png', 'doc']),
             'chemin' => $this->faker->imageUrl(),
             'libelle' => $this->faker->name(),

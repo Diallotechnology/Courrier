@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('folders', function (Blueprint $table) {
             $table->id();
-            $table->morphs('documentable');
-            $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->morphs('folderable');
             $table->foreignId('structure_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('libelle');
+            $table->string('nom');
             $table->string('type');
-            $table->string('extension');
-            $table->string('chemin');
+            $table->string('tag')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('folders');
     }
 };

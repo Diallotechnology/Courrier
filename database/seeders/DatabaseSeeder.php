@@ -11,6 +11,7 @@ use App\Models\Courrier;
 use App\Models\Depart;
 use App\Models\Departement;
 use App\Models\Document;
+use App\Models\Folder;
 use App\Models\Imputation;
 use App\Models\Interne;
 use App\Models\Nature;
@@ -40,6 +41,7 @@ class DatabaseSeeder extends Seeder
         Annotation::factory(6)->hasUser($test)->create();
         Courrier::factory(260)->create();
         Interne::factory(160)->create();
+        Folder::factory(15)->create();
         Document::factory(95)->create();
         Imputation::factory(55)->hasAnnotations(5)->hasDepartements(6)->create();
         Rapport::factory(15)->create();

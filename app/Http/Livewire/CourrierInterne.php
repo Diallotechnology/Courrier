@@ -27,7 +27,7 @@ class CourrierInterne extends Component
         $isSuperadmin = Auth::user()->isSuperadmin();
         $userId = Auth::user()->id;
 
-        $query = Interne::with('nature', 'destinataire', 'expediteur', 'reponses')
+        $query = Interne::with('nature', 'destinataire', 'expediteur', 'reponses','folder')
             ->when(! $isSuperadmin, function ($query) use ($userId) {
                 $query->where(function ($query) use ($userId) {
                     $query->where('destinataire_id', $userId)

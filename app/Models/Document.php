@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Folder;
 use App\Models\Structure;
 use App\Helper\DateFormat;
 use Illuminate\Database\Eloquent\Model;
@@ -67,56 +68,22 @@ class Document extends Model
      */
     protected $fillable = [
         'user_id',
-        'structure_id',
-        'documentable_type',
-        'documentable_id',
+        'folder_id',
         'libelle',
-        'type',
         'extension',
         'chemin',
     ];
 
-    /**
-     * Get the parent documentable model (Courrier or Depart, Interne).
-     */
-    public function documentable(): MorphTo
-    {
-        return $this->morphTo();
-    }
+
 
     /**
-     * Get the structure that owns the Document
+     * Get the folder that owns the Document
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function structure(): BelongsTo
+    public function folder(): BelongsTo
     {
-        return $this->belongsTo(Structure::class);
-    }
-
-    public function DocLink(): string
-    {
-        return Storage::url($this->chemin);
-    }
-
-    public function IsCourrier(): bool
-    {
-        return $this->documentable_type === Courrier::class;
-    }
-
-    public function IsInterne(): bool
-    {
-        return $this->documentable_type === Interne::class;
-    }
-
-    public function IsRapport(): bool
-    {
-        return $this->documentable_type === Rapport::class;
-    }
-
-    public function IsDepart(): bool
-    {
-        return $this->documentable_type === Depart::class;
+        return $this->belongsTo(Folder::class);
     }
 
     /**
@@ -126,4 +93,11 @@ class Document extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function DocLink(): string
+    {
+        return Storage::url($this->chemin);
+    }
+
+
 }

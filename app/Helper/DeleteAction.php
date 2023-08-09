@@ -5,6 +5,7 @@ namespace App\Helper;
 use App\Models\Courrier;
 use App\Models\Depart;
 use App\Models\Document;
+use App\Models\Folder;
 use App\Models\History;
 use App\Models\Interne;
 use App\Models\Journal;
@@ -63,7 +64,7 @@ trait DeleteAction
         $path = '';
 
         if ($model instanceof Interne) {
-            $type = 'Interne';
+            $type = 'Courrier Interne';
             $path = 'courrier/interne';
         } elseif ($model instanceof Courrier) {
             $type = 'Courrier Arrivé';
@@ -80,15 +81,19 @@ trait DeleteAction
             foreach ($request->file('files') as $key => $file) {
                 $filename = $file->hashName();
                 $chemin = $file->storeAs($path, $filename, 'public');
-                $data = new Document([
-                    'libelle' => $model->numero,
+                $folder = new Folder([
+                    'nom' => $model->numero,
                     'type' => $type,
+                    'structure_id' => Auth::user()->structure(),
+                ]);
+                $model->folder()->save($folder);
+                Document::create([
+                    'libelle' => $model->numero,
                     'extension' => $file->extension(),
                     'user_id' => Auth::user()->id,
-                    'structure_id' => Auth::user()->structure(),
+                    'folder_id' => $folder->id,
                     'chemin' => $chemin,
                 ]);
-                $model->documents()->save($data);
             }
         }
     }

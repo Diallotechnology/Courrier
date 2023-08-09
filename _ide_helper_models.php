@@ -214,6 +214,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Imputation> $imputations
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $rapports
  * @mixin \Eloquent
+ * @property-read \App\Models\Folder|null $folder
  */
 	class Courrier extends \Eloquent {}
 }
@@ -282,6 +283,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @mixin \Eloquent
  * @property int $initiateur_id
+ * @property-read \App\Models\Folder|null $folder
  * @property-read \App\Models\User $initiateur
  * @method static \Illuminate\Database\Eloquent\Builder|Depart whereInitiateurId($value)
  */
@@ -388,11 +390,54 @@ namespace App\Models{
  * @property int $structure_id
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereStructureId($value)
  * @mixin \Eloquent
+ * @property int $folder_id
  * @property string $extension
- * @property-read \App\Models\Structure $structure
+ * @property-read \App\Models\Folder $folder
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereExtension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereFolderId($value)
  */
 	class Document extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Folder
+ *
+ * @property int $id
+ * @property string $folderable_type
+ * @property int $folderable_id
+ * @property int $structure_id
+ * @property string $nom
+ * @property string $type
+ * @property string|null $tag
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $folderable
+ * @property-read string $date_format
+ * @property-read \App\Models\Structure $structure
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder byStructure()
+ * @method static \Database\Factories\FolderFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereFolderableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereFolderableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereNom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereStructureId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereTag($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Folder withoutTrashed()
+ */
+	class Folder extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -559,6 +604,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reponse> $reponses
  * @mixin \Eloquent
+ * @property-read \App\Models\Folder|null $folder
  */
 	class Interne extends \Eloquent {}
 }
@@ -744,6 +790,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Rapport whereNumero($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @mixin \Eloquent
+ * @property-read \App\Models\Folder|null $folder
  */
 	class Rapport extends \Eloquent {}
 }
@@ -1132,8 +1179,10 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @mixin \Eloquent
+ * @property string $sexe
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $initiateurs
  * @property-read int|null $initiateurs_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSexe($value)
  */
 	class User extends \Eloquent {}
 }

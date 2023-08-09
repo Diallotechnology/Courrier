@@ -45,15 +45,6 @@ class AdminController extends Controller
         return view('annotation.index', compact('rows'));
     }
 
-    public function document(): View
-    {
-        $rows = Document::with('documentable')
-            ->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->ByStructure())
-            ->latest()->paginate(15);
-
-        return view('document.index', compact('rows'));
-    }
-
     public function correspondant(): View
     {
         $user = Auth::user();
