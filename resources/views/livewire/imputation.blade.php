@@ -39,7 +39,16 @@
                 <div class="mb-3  col-md-3">
                     <x-input type="date" label="Date de fin traitement" wire:model='fin' :required='false' />
                 </div>
-                <x-slot name="btn"></x-slot>
+                <x-slot name="btn">
+                    <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="ti ti-database-export"></i>
+                        Exporté
+                    </button>
+                    <div class="dropdown-menu" style="">
+                        <button wire:click='export' class="dropdown-item">Excel</button>
+                    </div>
+                </x-slot>
             </x-filter>
         </div>
     </x-slot>
@@ -161,7 +170,8 @@
                         @forelse (Auth::user()->annotations as $row)
                         <div class="col-md-4">
                             <label class="form-check">
-                                <input class="form-check-input" value="{{ $row->id }}" name="annotation_id[]" type="checkbox">
+                                <input class="form-check-input" value="{{ $row->id }}" name="annotation_id[]"
+                                    type="checkbox">
                                 <span class="form-check-label">{{ $row->nom }}</span>
                             </label>
                         </div>
@@ -172,7 +182,8 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <x-textarea place="observation ou commentaire sur l'imputation" name="observation" :required='false' label="observation ou commentaire Facultatif" />
+                <x-textarea place="observation ou commentaire sur l'imputation" name="observation" :required='false'
+                    label="observation ou commentaire Facultatif" />
             </div>
         </x-form>
     </div>

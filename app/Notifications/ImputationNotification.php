@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use App\Models\Imputation;
-use Illuminate\Broadcasting\BroadcastManager;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -28,7 +27,7 @@ class ImputationNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database','broadcast'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -61,7 +60,7 @@ class ImputationNotification extends Notification
     {
 
         return new BroadcastMessage([
-            'type' => "gggg",
+            'type' => 'gggg',
         ]);
     }
 }

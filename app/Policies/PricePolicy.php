@@ -4,14 +4,13 @@ namespace App\Policies;
 
 use App\Models\Price;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class PricePolicy
 {
     /**
      * Perform pre-authorization checks.
      */
-    public function before(User $user, string $ability): bool|null
+    public function before(User $user, string $ability): ?bool
     {
         if ($user->isSuperadmin()) {
             return true;
@@ -19,7 +18,6 @@ class PricePolicy
 
         return null;
     }
-
 
     /**
      * Determine whether the user can create models.
@@ -44,5 +42,4 @@ class PricePolicy
     {
         return false;
     }
-
 }

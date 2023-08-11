@@ -2,9 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Departement;
 use App\Models\Document;
-use App\Models\SubDepartement;
 use App\Models\User;
 
 class DocumentPolicy
@@ -12,7 +10,7 @@ class DocumentPolicy
     /**
      * Perform pre-authorization checks.
      */
-    public function before(User $user, string $ability): bool|null
+    public function before(User $user, string $ability): ?bool
     {
         if ($user->isSuperadmin()) {
             return true;

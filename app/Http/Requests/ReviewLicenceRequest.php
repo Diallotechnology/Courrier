@@ -23,7 +23,7 @@ class ReviewLicenceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'temps' => 'required|integer|in:3,6,12'
+            'temps' => 'required|integer|in:3,6,12',
         ];
     }
 }

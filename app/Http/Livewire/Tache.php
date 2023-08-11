@@ -84,8 +84,8 @@ class Tache extends Component
     {
         $auth = Auth::user();
         $query = Task::with('createur', 'users')
-        ->when(! $auth->isAdmin(), fn ($query) => $query->where('createur_id', $auth->id)
-        ->orWhereHas('users', fn ($query) => $query->where('user_id', $auth->id)))
+            ->when(! $auth->isAdmin(), fn ($query) => $query->where('createur_id', $auth->id)
+                ->orWhereHas('users', fn ($query) => $query->where('user_id', $auth->id)))
             ->when($this->imputation, function ($query) {
                 $query->where('imputation_id', $this->imputation);
             })

@@ -22,7 +22,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['role:'.RoleEnum::ADMIN->value,'auth'])->group(function () {
+Route::middleware(['role:'.RoleEnum::ADMIN->value, 'auth'])->group(function () {
     Route::controller(LicenceController::class)->group(function () {
         Route::get('licence/review', 'review')->name('licence.review');
         Route::patch('licence/active/{structure}', 'licence_review')->name('licence.active');
@@ -30,13 +30,13 @@ Route::middleware(['role:'.RoleEnum::ADMIN->value,'auth'])->group(function () {
         Route::get('cancel/{id}', 'cancel')->whereNumber('id')->name('cancel');
     });
 });
-Route::middleware(['auth','licence'])->group(function () {
+Route::middleware(['auth', 'licence'])->group(function () {
     Route::middleware('role:'.RoleEnum::SUPERADMIN->value)->group(function () {
         Route::get('structure', [AdminController::class, 'structure'])->name('structure');
         Route::get('licence', [AdminController::class, 'licence'])->name('licence');
         Route::get('price', [AdminController::class, 'price'])->name('price');
-        Route::resource('licence', LicenceController::class)->except('create','index');
-        Route::resource('price', PriceController::class)->except('create','index');
+        Route::resource('licence', LicenceController::class)->except('create', 'index');
+        Route::resource('price', PriceController::class)->except('create', 'index');
 
         Route::controller(StructureController::class)->group(function () {
             Route::get('structure/trash', 'trash')->name('structure.trash');
@@ -250,7 +250,7 @@ Route::middleware(['auth','licence'])->group(function () {
         Route::resource('rapport', RapportController::class)->except('index');
         Route::resource('task', TaskController::class)->except('index');
         Route::resource('reponse', ReponseController::class)->except('index', 'show', 'create');
-        Route::resource('folder', FolderController::class)->except('index','create');
+        Route::resource('folder', FolderController::class)->except('index', 'create');
         Route::resource('user', UserController::class)->only('show');
     });
 });

@@ -2,18 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Depart;
-use App\Models\Interne;
-use App\Models\Rapport;
-use App\Models\Courrier;
-use App\Models\Document;
-use App\Models\Structure;
 use App\Helper\DateFormat;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Folder extends Model
 {
@@ -24,7 +18,7 @@ class Folder extends Model
      *
      * @var array
      */
-    protected $fillable = ['nom','type','structure_id','folderable_id','folderable_type'];
+    protected $fillable = ['nom', 'type', 'structure_id', 'folderable_id', 'folderable_type'];
 
     /**
      * Get the parent folderable model (Courrier or Depart, Interne).
@@ -36,8 +30,6 @@ class Folder extends Model
 
     /**
      * Get the structure that owns the Document
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {
@@ -46,8 +38,6 @@ class Folder extends Model
 
     /**
      * Get all of the documents for the Folder
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function documents(): HasMany
     {

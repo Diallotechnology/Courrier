@@ -56,7 +56,14 @@
                 </div>
 
                 <x-slot name="btn">
-
+                    <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="ti ti-database-export"></i>
+                        Exporté
+                    </button>
+                    <div class="dropdown-menu" style="">
+                        <button wire:click='export' class="dropdown-item">Excel</button>
+                    </div>
                 </x-slot>
             </x-filter>
         </div>

@@ -17,7 +17,7 @@ trait DateFormat
         return Carbon::parse($date)->format('d/m/Y');
     }
 
-    protected function getDeletedAtAttribute(string|null $date): string|null
+    protected function getDeletedAtAttribute(?string $date): ?string
     {
         if ($date === null) {
             return null;

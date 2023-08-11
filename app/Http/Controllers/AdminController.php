@@ -6,7 +6,6 @@ use App\Models\Annotation;
 use App\Models\Correspondant;
 use App\Models\Courrier;
 use App\Models\Departement;
-use App\Models\Document;
 use App\Models\Journal;
 use App\Models\Licence;
 use App\Models\Nature;
@@ -169,12 +168,14 @@ class AdminController extends Controller
     {
         $rows = Licence::paginate(15);
         $structure = Structure::all();
-        return view('licence.index', compact('rows','structure'));
+
+        return view('licence.index', compact('rows', 'structure'));
     }
 
     public function price(): View
     {
         $rows = Price::paginate(15);
+
         return view('price.index', compact('rows'));
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use App\Enum\StructureTypeEnum;
-use App\Models\Licence;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\Structure
@@ -117,7 +116,7 @@ class Structure extends Model
      */
     protected $fillable = ['nom', 'code', 'email', 'logo', 'contact', 'description', 'adresse'];
 
-        /**
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -192,8 +191,6 @@ class Structure extends Model
 
     /**
      * Get all of the licences for the Structure
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function licences(): HasMany
     {

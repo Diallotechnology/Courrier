@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -35,9 +34,9 @@ class LicenceNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('Votre licence a été activé avec success.')
-                    ->action('Telechargé la fature', url('/'))
-                    ->line('Merci!');
+            ->line('Votre licence a été activé avec success.')
+            ->action('Telechargé la fature', url('/'))
+            ->line('Merci!');
     }
 
     /**

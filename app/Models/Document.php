@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Folder;
-use App\Models\Structure;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\Document
@@ -74,12 +71,8 @@ class Document extends Model
         'chemin',
     ];
 
-
-
     /**
      * Get the folder that owns the Document
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function folder(): BelongsTo
     {
@@ -98,6 +91,4 @@ class Document extends Model
     {
         return Storage::url($this->chemin);
     }
-
-
 }

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Depart;
-use App\Models\Nature;
-use App\Models\Courrier;
 use App\Helper\DeleteAction;
-use App\Models\Correspondant;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreDepartRequest;
 use App\Http\Requests\UpdateDepartRequest;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Depart;
+use App\Models\Nature;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class DepartController extends Controller
 {
@@ -63,7 +63,7 @@ class DepartController extends Controller
 
         $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())->get()->groupBy('userable.nom');
 
-        return view('depart.update', compact('depart', 'correspondant', 'type', 'courrier','user'));
+        return view('depart.update', compact('depart', 'correspondant', 'type', 'courrier', 'user'));
     }
 
     /**

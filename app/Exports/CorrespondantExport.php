@@ -2,42 +2,19 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Excel;
+use App\Helper\WithExportAction;
 use App\Models\Correspondant;
-use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Contracts\Support\Responsable;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Excel;
 
 class CorrespondantExport implements FromQuery, Responsable, WithMapping, WithHeadings
 {
     use Exportable;
-    /**
-    * It's required to define the fileName within
-    * the export class when making use of Responsable.
-    */
-    private $fileName = 'correspondant.xlsx';
-
-    /**
-    * Optional Writer Type
-    */
-    private $writerType = Excel::XLSX;
-
-    /**
-    * Optional headers
-    */
-    private $headers = [
-        'Content-Type' => 'text/csv',
-    ];
-
-    public function failed()
-    {
-        return toastr()->error("L'exportation à echoué!");
-    }
-
     public function query()
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
@@ -45,8 +22,8 @@ class CorrespondantExport implements FromQuery, Responsable, WithMapping, WithHe
     }
 
     /**
-    * @var Courrier $data
-    */
+     * @var Courrier
+     */
     public function map($data): array
     {
         return [

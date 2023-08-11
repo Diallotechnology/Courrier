@@ -2,16 +2,18 @@
 
 namespace App\Http\Livewire;
 
-use App\Enum\CourrierEnum;
-use App\Helper\WithFilter;
+use Livewire\Component;
 use App\Models\Courrier;
+use App\Enum\CourrierEnum;
+use App\Exports\ImputationExport;
+use App\Helper\WithFilter;
 use App\Models\Departement;
-use App\Models\Imputation as ModelsImputation;
+use Livewire\WithPagination;
 use App\Models\SubDepartement;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Imputation as ModelsImputation;
 
 class Imputation extends Component
 {
@@ -25,11 +27,15 @@ class Imputation extends Component
 
     public string $departement = '';
 
-
     public function ResetFilter(): void
     {
         $this->reset('delai', 'priority', 'fin', 'courrier', 'departement', 'etat');
         $this->resetPage();
+    }
+
+    public function export()
+    {
+        return Excel::download(new ImputationExport, 'imputation.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 
     public function render(): View
@@ -38,6 +44,7 @@ class Imputation extends Component
         $user = Auth::user();
         $query = ModelsImputation::with('user', 'departements', 'subdepartements', 'courrier')
             ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
+            ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id',$user->id))
             ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);
             })

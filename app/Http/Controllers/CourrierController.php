@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\CourrierExport;
-use App\Models\Task;
-use App\Models\Nature;
-use App\Jobs\UplodeJob;
-use App\Models\Courrier;
 use App\Helper\DeleteAction;
-use App\Models\Correspondant;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Nature;
+use App\Models\Task;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class CourrierController extends Controller
 {
@@ -44,6 +41,7 @@ class CourrierController extends Controller
     {
         $this->authorize('view', $arriver);
         $task = Task::with('users')->whereIn('imputation_id', $arriver->imputations()->pluck('id'))->get();
+
         return view('arriver.show', compact('arriver', 'task'));
     }
 

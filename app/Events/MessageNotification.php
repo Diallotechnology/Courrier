@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,21 +17,21 @@ class MessageNotification implements ShouldBroadcast
      */
     public function __construct(public string $message)
     {
-        //
+        $message = $this->message;
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return ['public'];
+        return new Channel('notif-channel');
     }
 
     public function broadcastAs(): string
     {
-        return 'chat';
+        return 'user-notif';
     }
 }

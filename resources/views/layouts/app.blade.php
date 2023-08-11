@@ -17,8 +17,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.17.0/tabler-icons.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.30.0/tabler-icons.min.css">
     @livewireStyles
 
     <style>
@@ -68,7 +69,6 @@
         .file-list:hover .file-action {
             display: inline;
         }
-
     </style>
 
 </head>
@@ -78,12 +78,14 @@
         <!-- Sidebar -->
         <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+                    aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('/img/logo/logo_white2.png') }}" style="height: 3rem;" alt="logo" class="navbar-brand-image">
+                        <img src="{{ asset('/img/logo/logo_white2.png') }}" style="height: 3rem;" alt="logo"
+                            class="navbar-brand-image">
                     </a>
                 </h1>
                 <div class="navbar-nav flex-row d-lg-none">
@@ -99,7 +101,8 @@
         <!-- Navbar -->
         <header class="navbar navbar-expand-md navbar-light d-none d-lg-flex d-print-none">
             <div class="container-xl">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
+                    aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-nav flex-row order-md-last">
@@ -143,22 +146,28 @@
             </div>
         </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.base.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
     {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> --}}
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     @livewireScripts
-    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     <script>
+        Pusher.logToConsole = true;
+        var pusher = new Pusher('5a62d678ac4e6ca06a81', {
+        cluster: 'eu'
+        });
 
-// Echo.private(`App.Models.User.${userId}`).notification((notification) => {
-        // window.User = {
-        //     id: {{ optional(auth()->user())->id }}
-        // }
+        var channel = pusher.subscribe('notif-channel');
+        channel.bind('user-notif', function(data) {
+            // toastr()->info(JSON.stringify(data).message);
+        alert(JSON.stringify(data));
+        });
     </script>
     @yield('js')
 </body>

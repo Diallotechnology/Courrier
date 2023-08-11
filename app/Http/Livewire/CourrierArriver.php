@@ -2,27 +2,20 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Nature;
-use Livewire\Component;
-use App\Models\Courrier;
-use App\Enum\CourrierEnum;
-use App\Helper\WithFilter;
-use Livewire\WithPagination;
-use App\Models\Correspondant;
 use App\Exports\CourrierExport;
+use App\Helper\WithFilter;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Nature;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class CourrierArriver extends Component
 {
     use WithPagination, WithFilter;
-
-    protected string $paginationTheme = 'bootstrap';
-
-    public string $archive = '';
-
-
 
     public function ResetFilter(): void
     {
@@ -33,21 +26,15 @@ class CourrierArriver extends Component
 
     public function export()
     {
-        return new CourrierExport;
+        return new CourrierExport();
         // (new CourrierExport)->queue('courrier_arriver.xlsx');
         // return toastr()->success('Courrier exporté avec success!');
-    }
-
-    public function test(Courrier $row)
-    {
-        $row->update(['etat' => CourrierEnum::ARCHIVE]);
-        toastr()->success('Courrier archiver avec success!');
     }
 
     public function render(): View
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = Courrier::with('user', 'nature', 'correspondant', 'structure','folder')
+        $query = Courrier::with('user', 'nature', 'correspondant', 'structure', 'folder')
             ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
@@ -70,7 +57,6 @@ class CourrierArriver extends Component
         $rows = $query->latest('id')->paginate(15);
         $correspondant = Correspondant::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
         $type = Nature::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
-
         return view('livewire.courrier-arriver', compact('rows', 'correspondant', 'type'));
     }
 }

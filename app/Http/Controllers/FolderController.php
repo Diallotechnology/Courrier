@@ -37,6 +37,7 @@ class FolderController extends Controller
     public function show(Folder $folder)
     {
         $folder = $folder->load('documents');
+
         return view('folder.show', compact('folder'));
     }
 

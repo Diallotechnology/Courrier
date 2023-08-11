@@ -2,55 +2,30 @@
 
 namespace App\Exports;
 
-use Throwable;
+use App\Helper\WithExportAction;
 use App\Models\Courrier;
-use Maatwebsite\Excel\Excel;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Illuminate\Contracts\Support\Responsable;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Excel;
 
 class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeadings
 {
     use Exportable;
-    /**
-    * It's required to define the fileName within
-    * the export class when making use of Responsable.
-    */
-    private $fileName = 'courrier_arriver.xlsx';
-
-    /**
-    * Optional Writer Type
-    */
-    private $writerType = Excel::XLSX;
-
-    /**
-    * Optional headers
-    */
-    private $headers = [
-        'Content-Type' => 'text/csv',
-    ];
-
-    public function failed()
-    {
-        return toastr()->error('Exportation à echoué!');
-    }
-
 
     public function query()
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
-        return Courrier::query()->when(! $isSuperadmin, fn ($query) => $query->ByStructure());
+        return Courrier::query()->when(!$isSuperadmin, fn ($query) => $query->ByStructure());
     }
 
     /**
-    * @var Courrier $data
-    */
+     * @var Courrier
+     */
     public function map($data): array
     {
         return [
@@ -65,7 +40,7 @@ class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeading
             $data->priorite,
             $data->confidentiel,
             $data->objet,
-            $data->etat->value,
+            $data->etat,
             $data->created_at,
         ];
     }
@@ -88,8 +63,4 @@ class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeading
             'Date de creation',
         ];
     }
-
-
-
-
 }

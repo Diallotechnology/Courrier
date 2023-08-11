@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Enum\RoleEnum;
+use App\Enum\StructureTypeEnum;
 use App\Models\Annotation;
 use App\Models\Correspondant;
 use App\Models\Courrier;
@@ -15,6 +16,7 @@ use App\Models\Folder;
 use App\Models\Imputation;
 use App\Models\Interne;
 use App\Models\Nature;
+use App\Models\Price;
 use App\Models\Rapport;
 use App\Models\Structure;
 use App\Models\SubDepartement;
@@ -33,12 +35,13 @@ class DatabaseSeeder extends Seeder
         Departement::factory(5)->create();
         SubDepartement::factory(5)->create();
         $test = User::factory()->create(['email' => 'admin@gmail.com', 'role' => RoleEnum::ADMIN]);
+
         User::factory(25)->create();
         Nature::factory(5)->create();
         Depart::factory(60)->hasCorrespondants(2)->create();
         Correspondant::factory(35)->create();
         Annotation::factory(10)->hasUser(5);
-        Annotation::factory(6)->hasUser($test)->create();
+        Annotation::factory(3)->hasUser($test)->create();
         Courrier::factory(260)->create();
         Interne::factory(160)->create();
         Folder::factory(15)->create();
@@ -52,5 +55,21 @@ class DatabaseSeeder extends Seeder
             ->has(Imputation::factory()->count(10), 'imputations')
             ->has(Task::factory()->count(10), 'tasks')
             ->create();
+
+        Price::factory()->create([
+            'type' => StructureTypeEnum::SMALL,
+            'temps' => 3,
+            'montant' => 150000,
+            ]);
+        Price::factory()->create([
+            'type' => StructureTypeEnum::SMALL,
+            'temps' => 6,
+            'montant' => 300000,
+        ]);
+        Price::factory()->create([
+            'type' => StructureTypeEnum::SMALL,
+            'temps' => 12,
+            'montant' => 600000,
+        ]);
     }
 }

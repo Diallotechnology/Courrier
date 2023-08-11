@@ -2,17 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Folder;
 use App\Helper\DateFormat;
-use App\Models\Departement;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * App\Models\Depart
@@ -108,12 +104,10 @@ class Depart extends Model
 
     /**
      * Get the initateur that owns the Depart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function initiateur(): BelongsTo
     {
-        return $this->belongsTo(User::class,'initiateur_id');
+        return $this->belongsTo(User::class, 'initiateur_id');
     }
 
     /**

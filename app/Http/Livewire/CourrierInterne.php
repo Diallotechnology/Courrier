@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use Auth;
-use App\Models\Nature;
-use App\Models\Interne;
-use Livewire\Component;
 use App\Helper\WithFilter;
-use Livewire\WithPagination;
+use App\Models\Interne;
+use App\Models\Nature;
+use Auth;
 use Illuminate\Contracts\View\View;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class CourrierInterne extends Component
 {
@@ -27,7 +27,7 @@ class CourrierInterne extends Component
         $isSuperadmin = Auth::user()->isSuperadmin();
         $userId = Auth::user()->id;
 
-        $query = Interne::with('nature', 'destinataire', 'expediteur', 'reponses','folder')
+        $query = Interne::with('nature', 'destinataire', 'expediteur', 'reponses', 'folder')
             ->when(! $isSuperadmin, function ($query) use ($userId) {
                 $query->where(function ($query) use ($userId) {
                     $query->where('destinataire_id', $userId)

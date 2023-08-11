@@ -9,5 +9,5 @@ class Price extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'temps','montant'];
+    protected $fillable = ['type', 'temps', 'montant'];
 }

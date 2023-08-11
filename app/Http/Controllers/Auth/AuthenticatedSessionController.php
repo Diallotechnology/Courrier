@@ -18,6 +18,7 @@ use Illuminate\View\View;
 class AuthenticatedSessionController extends Controller
 {
     use DeleteAction;
+
     /**
      * Display the login view.
      */
@@ -103,7 +104,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(RouteServiceProvider::DFA)->with('success', 'Le code de vérification a été envoyé à votre adresse e-mail.');
         } else {
             $request->session()->regenerate();
-            $this->journal("Connexion");
+            $this->journal('Connexion');
+
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
@@ -114,7 +116,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $this->journal("Deconnexion");
+        $this->journal('Deconnexion');
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

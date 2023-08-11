@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Licence;
 use App\Enum\LicenceEnum;
-use App\Models\Structure;
-use App\Helper\LicenceCode;
 use App\Helper\OrderAPI;
+use App\Http\Requests\ReviewLicenceRequest;
 use App\Jobs\LicenceMailJob;
+use App\Models\Licence;
+use App\Models\Price;
+use App\Models\Structure;
+use App\Notifications\LicenceNotification;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
-use App\Notifications\LicenceNotification;
-use App\Http\Requests\ReviewLicenceRequest;
 
 class LicenceController extends Controller
 {
     use OrderAPI;
 
-        /**
+    /**
      * Display the specified resource.
      */
     public function review()
@@ -27,28 +27,32 @@ class LicenceController extends Controller
         return view('licence.review');
     }
 
-    public function licence_review(ReviewLicenceRequest $request, Structure $structure) {
+    public function licence_review(ReviewLicenceRequest $request, Structure $structure)
+    {
 
         DB::transaction(function () use ($structure, $request) {
-        $temp = now()->addMonth($request->temps);
-        $structure->licences()->create([
+            $temp = now()->addMonth($request->temps);
+            $structure->licences()->create([
                 'temps' => $request->temps,
                 'debut' => now(),
                 'fin' => $temp,
             ]);
-        $structure->updateOrFail(['expire_at' => $temp]);
-        // $url = $this->create_order($order->id, $order->montant);
-        // $order->update(['token' => $url['token']]);
+            $structure->updateOrFail(['expire_at' => $temp]);
+            $price = Price::where('type', $structure->type->value)->where('temps',$temp)->get();
+            // dd($structure);
+            dd($price);
+            // $url = $this->create_order($order->id, $order->montant);
+            // $order->update(['token' => $url['token']]);
 
-        // return redirect($url['response_text']);
-        // $notif = new LicenceNotification();
-        // LicenceMailJob::dispatch($notif, Auth::user());
-        toastr()->success('Licence renouvelé avec succès!');
+            // return redirect($url['response_text']);
+            // $notif = new LicenceNotification();
+            // LicenceMailJob::dispatch($notif, Auth::user());
+            toastr()->success('Licence renouvelé avec succès!');
+            return to_route('dashboard');
         });
 
-        return to_route('dashboard');
+        return back();
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -97,8 +101,8 @@ class LicenceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'version' => ['required',new Enum(LicenceEnum::class)],
-            'structure_id'=>'required|exists:structures,id',
+            'version' => ['required', new Enum(LicenceEnum::class)],
+            'structure_id' => 'required|exists:structures,id',
         ]);
 
         if ($request->version == LicenceEnum::TRIAL->value) {
@@ -110,7 +114,7 @@ class LicenceController extends Controller
                 'fin' => now()->addDays(15),
                 'active' => true,
             ]);
-        } elseif($request->version === LicenceEnum::LICENCE->value) {
+        } elseif ($request->version === LicenceEnum::LICENCE->value) {
             Licence::create([
                 'structure_id' => $request->structure_id,
                 'version' => $request->version,
@@ -123,6 +127,7 @@ class LicenceController extends Controller
         }
 
         toastr()->success('Licence ajouter avec succès!');
+
         return back();
     }
 
@@ -140,7 +145,8 @@ class LicenceController extends Controller
     public function edit(Licence $licence)
     {
         $structure = Structure::all();
-        return view('licence.update', compact('licence','structure'));
+
+        return view('licence.update', compact('licence', 'structure'));
     }
 
     /**

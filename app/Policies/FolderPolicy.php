@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Folder;
 use App\Models\Departement;
+use App\Models\Folder;
 use App\Models\SubDepartement;
-use Illuminate\Auth\Access\Response;
+use App\Models\User;
 
 class FolderPolicy
 {
@@ -26,22 +25,22 @@ class FolderPolicy
         if ($folder->IsCourrier()) {
             $query = $folder->folderable->imputations();
             if ($user->userable instanceof Departement) {
-               $query->whereRelation('departements','id',$user->userable_id);
-            } elseif($user->userable instanceof SubDepartement) {
-                $query->whereRelation('subdepartements','id',$user->userable_id);
+                $query->whereRelation('departements', 'id', $user->userable_id);
+            } elseif ($user->userable instanceof SubDepartement) {
+                $query->whereRelation('subdepartements', 'id', $user->userable_id);
             }
             $query->exists();
 
             // check if user appartient aux departement ou subdepartemnt imputé
             $appartient = $query->exists();
             // check if user is imputation author
-            $imp_author = $folder->folderable->imputations()->where('user_id',$user->id)->exists();
+            $imp_author = $folder->folderable->imputations()->where('user_id', $user->id)->exists();
 
             return $user->id === $folder->user_id || $user->isAdmin() || $appartient || $imp_author;
         }
 
         if ($folder->IsInterne()) {
-            return $user->isAdmin() || $user->id === $folder->folderable->destinataire_id || $user->id === $folder->folderable->expediteur_id;;
+            return $user->isAdmin() || $user->id === $folder->folderable->destinataire_id || $user->id === $folder->folderable->expediteur_id;
         }
 
         return true;
@@ -63,22 +62,22 @@ class FolderPolicy
         if ($folder->IsCourrier()) {
             $query = $folder->folderable->imputations();
             if ($user->userable instanceof Departement) {
-               $query->whereRelation('departements','id',$user->userable_id);
-            } elseif($user->userable instanceof SubDepartement) {
-                $query->whereRelation('subdepartements','id',$user->userable_id);
+                $query->whereRelation('departements', 'id', $user->userable_id);
+            } elseif ($user->userable instanceof SubDepartement) {
+                $query->whereRelation('subdepartements', 'id', $user->userable_id);
             }
             $query->exists();
 
             // check if user appartient aux departement ou subdepartemnt imputé
             $appartient = $query->exists();
             // check if user is imputation author
-            $imp_author = $folder->folderable->imputations()->where('user_id',$user->id)->exists();
+            $imp_author = $folder->folderable->imputations()->where('user_id', $user->id)->exists();
 
             return $user->id === $folder->user_id || $user->isAdmin() || $appartient || $imp_author;
         }
 
         if ($folder->IsInterne()) {
-            return $user->isAdmin() || $user->id === $folder->folderable->destinataire_id || $user->id === $folder->folderable->expediteur_id;;
+            return $user->isAdmin() || $user->id === $folder->folderable->destinataire_id || $user->id === $folder->folderable->expediteur_id;
         }
 
         return true;

@@ -9,13 +9,16 @@ use Livewire\Component;
 use App\Models\Courrier;
 use App\Helper\WithFilter;
 use Livewire\WithPagination;
+use App\Exports\DepartExport;
 use App\Models\Correspondant;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CourrierDepart extends Component
 {
     use WithPagination, WithFilter;
+    public string $initiateur = '';
 
     public function ResetFilter(): void
     {
@@ -23,13 +26,16 @@ class CourrierDepart extends Component
         $this->resetPage();
     }
 
-    public string $initiateur = '';
+    public function export()
+    {
+        return Excel::download(new DepartExport, 'courrier_depart.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }
 
     public function render(): View
     {
         $structureId = Auth::user()->structure();
         $auth = Auth::user();
-        $query = Depart::with('user','initiateur', 'nature', 'correspondants','folder')
+        $query = Depart::with('user', 'initiateur', 'nature', 'correspondants', 'folder')
             ->when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
@@ -66,6 +72,6 @@ class CourrierDepart extends Component
         $courrier = $courrierQuery->latest()->get(['id', 'numero', 'reference', 'date']);
         $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())->get()->groupBy('userable.nom');
 
-        return view('livewire.courrier-depart', compact('rows', 'correspondant', 'type', 'courrier','user'));
+        return view('livewire.courrier-depart', compact('rows', 'correspondant', 'type', 'courrier', 'user'));
     }
 }

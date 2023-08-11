@@ -4,8 +4,8 @@ namespace App\Http\Requests;
 
 use App\Enum\StructureTypeEnum;
 use App\Models\Price;
-use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StorePriceRequest extends FormRequest
 {
@@ -17,6 +17,7 @@ class StorePriceRequest extends FormRequest
         if ($this->route()->getName() === 'price.update') {
             return $this->user()->can('update', $this->route('price'));
         }
+
         return $this->user()->can('create', Price::class);
     }
 
@@ -28,7 +29,7 @@ class StorePriceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required',new Enum(StructureTypeEnum::class)],
+            'type' => ['required', new Enum(StructureTypeEnum::class)],
             'temps' => 'required|integer|in:3,6,12',
             'montant' => 'required|integer',
         ];

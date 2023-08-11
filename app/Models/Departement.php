@@ -111,7 +111,6 @@ class Departement extends Model
         return $this->belongsTo(Structure::class);
     }
 
-
     /**
      * Get all of the subdepartement for the Departement
      */

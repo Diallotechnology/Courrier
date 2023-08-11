@@ -27,6 +27,8 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request): RedirectResponse
     {
 
+        // event(new MessageNotification('nxnnxnnx'));
+        // dd('dd');
         $data = Arr::except($request->validated(), ['user_id']);
         // create task
         $task = Task::create($data);
@@ -42,8 +44,6 @@ class TaskController extends Controller
             // $emails = $users->pluck('email')->toArray();
             Notification::send($users, $notification);
         }
-
-        // broadcast(new MessageNotification("hdhshsh"))->toOthers();
         $this->journal("Ajout de la tache N°$ref");
         toastr()->success('Taches ajouter avec success!');
 

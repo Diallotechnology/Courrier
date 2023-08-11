@@ -63,7 +63,7 @@ class AdvandcedSearch extends Component
                 ->when($this->privacy, fn ($query) => $query->where('confidentiel', $this->privacy))
                 ->when($this->priority, fn ($query) => $query->where('priorite', $this->priority))
                 ->when($this->nature, fn ($query) => $query->where('nature_id', $this->nature))
-                ->when($this->expediteur, fn ($query) => $query->whereRelation('correspondants','id', $this->expediteur))
+                ->when($this->expediteur, fn ($query) => $query->whereRelation('correspondants', 'id', $this->expediteur))
                 ->when($this->date, fn ($query) => $query->where('date', $this->date))
                 ->when($this->etat, fn ($query) => $query->where('etat', $this->etat))
                 ->when($this->create, function ($query) {

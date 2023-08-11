@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helper\DeleteAction;
 use App\Http\Requests\StorePriceRequest;
 use App\Models\Price;
-use Illuminate\Http\Request;
 
 class PriceController extends Controller
 {
@@ -18,6 +17,7 @@ class PriceController extends Controller
     {
         Price::create($request->validated());
         toastr()->success('Price ajouter avec success!');
+
         return back();
     }
 
@@ -36,6 +36,7 @@ class PriceController extends Controller
     {
         $price->update($request->validated());
         toastr()->success('Prix mise à jour avec success!');
+
         return back();
     }
 
@@ -45,6 +46,7 @@ class PriceController extends Controller
     public function destroy(int $price)
     {
         $delete = Price::findOrFail($price);
+
         return $this->supp($delete);
     }
 }

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Enum\LicenceEnum;
 use App\Helper\LicenceCode;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Licence extends Model
 {
@@ -18,7 +18,7 @@ class Licence extends Model
      *
      * @var array
      */
-    protected $fillable = ['structure_id','debut','fin', 'temps', 'active'];
+    protected $fillable = ['structure_id', 'debut', 'fin', 'temps', 'active'];
 
     /**
      * The attributes that should be cast.
@@ -32,8 +32,6 @@ class Licence extends Model
 
     /**
      * Get the structure that owns the Licence
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function structure(): BelongsTo
     {
@@ -63,14 +61,14 @@ class Licence extends Model
                 'version' => LicenceEnum::LICENCE,
                 'active' => 1,
                 'debut' => now(),
-                'fin' => now()->addMonth($temps)
+                'fin' => now()->addMonth($temps),
             ]);
         });
     }
 
     public function isTrialVersion()
     {
-        return $this->version === "trial" && $this->code == null;
+        return $this->version === 'trial' && $this->code == null;
     }
 
     public function isExpired()

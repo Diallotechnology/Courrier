@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Helper\DateFormat;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Journal
@@ -54,7 +54,6 @@ class Journal extends Model
      * @var array
      */
     protected $fillable = ['user_id', 'libelle', 'structure_id'];
-
 
     protected function getCreatedAtAttribute(string $date): string
     {
