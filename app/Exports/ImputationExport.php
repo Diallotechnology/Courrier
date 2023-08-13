@@ -2,29 +2,25 @@
 
 namespace App\Exports;
 
-use App\Models\Depart;
 use App\Models\Imputation;
-use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Contracts\Support\Responsable;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class ImputationExport implements FromQuery, Responsable, WithMapping, WithHeadings
 {
-
     use Exportable;
-
 
     public function query()
     {
         $user = Auth::user();
 
         return Imputation::query()->with('user')
-        ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
-        ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id',$user->id));
+            ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
+            ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id', $user->id));
     }
 
     public function failed()

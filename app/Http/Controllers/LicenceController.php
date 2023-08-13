@@ -38,7 +38,7 @@ class LicenceController extends Controller
                 'fin' => $temp,
             ]);
             $structure->updateOrFail(['expire_at' => $temp]);
-            $price = Price::where('type', $structure->type->value)->where('temps',$temp)->get();
+            $price = Price::where('type', $structure->type->value)->where('temps', $temp)->get();
             // dd($structure);
             dd($price);
             // $url = $this->create_order($order->id, $order->montant);
@@ -48,6 +48,7 @@ class LicenceController extends Controller
             // $notif = new LicenceNotification();
             // LicenceMailJob::dispatch($notif, Auth::user());
             toastr()->success('Licence renouvelé avec succès!');
+
             return to_route('dashboard');
         });
 

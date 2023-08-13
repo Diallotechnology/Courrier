@@ -2,18 +2,18 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use App\Models\Courrier;
 use App\Enum\CourrierEnum;
 use App\Exports\ImputationExport;
 use App\Helper\WithFilter;
+use App\Models\Courrier;
 use App\Models\Departement;
-use Livewire\WithPagination;
+use App\Models\Imputation as ModelsImputation;
 use App\Models\SubDepartement;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Imputation as ModelsImputation;
 
 class Imputation extends Component
 {
@@ -44,7 +44,7 @@ class Imputation extends Component
         $user = Auth::user();
         $query = ModelsImputation::with('user', 'departements', 'subdepartements', 'courrier')
             ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
-            ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id',$user->id))
+            ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id', $user->id))
             ->when($this->priority, function ($query) {
                 $query->where('priorite', $this->priority);
             })

@@ -2,22 +2,23 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\User;
+use App\Exports\DepartExport;
+use App\Helper\WithFilter;
+use App\Models\Correspondant;
+use App\Models\Courrier;
 use App\Models\Depart;
 use App\Models\Nature;
-use Livewire\Component;
-use App\Models\Courrier;
-use App\Helper\WithFilter;
-use Livewire\WithPagination;
-use App\Exports\DepartExport;
-use App\Models\Correspondant;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CourrierDepart extends Component
 {
     use WithPagination, WithFilter;
+
     public string $initiateur = '';
 
     public function ResetFilter(): void

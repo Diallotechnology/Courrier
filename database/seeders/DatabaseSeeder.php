@@ -56,20 +56,21 @@ class DatabaseSeeder extends Seeder
             ->has(Task::factory()->count(10), 'tasks')
             ->create();
 
-        Price::factory()->create([
-            'type' => StructureTypeEnum::SMALL,
-            'temps' => 3,
-            'montant' => 150000,
+        $priceData = [
+            ['type' => StructureTypeEnum::SMALL, 'temps' => 3, 'montant' => 150000],
+            ['type' => StructureTypeEnum::SMALL, 'temps' => 6, 'montant' => 300000],
+            ['type' => StructureTypeEnum::SMALL, 'temps' => 12, 'montant' => 600000],
+            ['type' => StructureTypeEnum::MOYEN, 'temps' => 3, 'montant' => 300000],
+            ['type' => StructureTypeEnum::MOYEN, 'temps' => 6, 'montant' => 600000],
+            ['type' => StructureTypeEnum::MOYEN, 'temps' => 12, 'montant' => 1100000],
+        ];
+
+        foreach ($priceData as $data) {
+            Price::factory()->create([
+                'type' => $data['type'],
+                'temps' => $data['temps'],
+                'montant' => $data['montant'],
             ]);
-        Price::factory()->create([
-            'type' => StructureTypeEnum::SMALL,
-            'temps' => 6,
-            'montant' => 300000,
-        ]);
-        Price::factory()->create([
-            'type' => StructureTypeEnum::SMALL,
-            'temps' => 12,
-            'montant' => 600000,
-        ]);
+        }
     }
 }
