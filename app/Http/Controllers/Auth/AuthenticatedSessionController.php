@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helper\DeleteAction;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Mail\VerificationCodeMail;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
+use App\Helper\DeleteAction;
 use Illuminate\Http\Request;
+use App\Mail\VerificationCodeMail;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
-use Illuminate\View\View;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,6 +36,7 @@ class AuthenticatedSessionController extends Controller
     {
         return view('auth.2fa');
     }
+
 
     public function verifyTwoFactor(Request $request)
     {
@@ -52,7 +58,6 @@ class AuthenticatedSessionController extends Controller
 
             return redirect()->intended(RouteServiceProvider::HOME);
         } else {
-
             throw ValidationException::withMessages([
                 'code' => 'Le code de vérification est incorrect.',
             ]);
@@ -87,25 +92,21 @@ class AuthenticatedSessionController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if ($user && $user->two_factor_enabled == true) {
+        if ($user->two_factor_enabled) {
             Auth::logout();
-            session()->put('two_factor:user_id', $user->id);
-            $verificationCode = '';
-            $length = 6;
-
-            for ($i = 0; $i < $length; $i++) {
-                $verificationCode .= mt_rand(0, 9);
-            }
+            $verificationCode = (string) random_int(100000, 999999);
             $user->two_factor_code = $verificationCode;
             $user->save();
-            // Envoyez l'e-mail contenant le code de vérification
+            session()->put('two_factor:user_id', $user->id);
             Mail::to($user->email)->send(new VerificationCodeMail($verificationCode));
 
             return redirect()->intended(RouteServiceProvider::DFA)->with('success', 'Le code de vérification a été envoyé à votre adresse e-mail.');
+        } elseif (!$user->change_password) {
+            Auth::logout();
+            return redirect()->route('change.password', ['email' => $user->email]);
         } else {
             $request->session()->regenerate();
             $this->journal('Connexion');
-
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 

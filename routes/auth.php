@@ -29,6 +29,9 @@ Route::middleware('guest')->group(function () {
     Route::get('dfa', [AuthenticatedSessionController::class, 'form_2fa'])->name('2fa_verify.form');
     Route::post('2fa/verify', [AuthenticatedSessionController::class, 'verifyTwoFactor'])->name('2fa_verify');
     Route::get('2fa/verify/send', [AuthenticatedSessionController::class, 'SendVerificationCode'])->name('2fa_verify_code');
+
+    Route::get('password/change/{email}', [NewPasswordController::class, 'form_change_password'])->name('change.password');
+    Route::post('password/change', [NewPasswordController::class, 'change_password'])->name('change_password');
 });
 
 Route::middleware('auth')->group(function () {

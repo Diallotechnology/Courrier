@@ -3,11 +3,8 @@
         <div class="text-center mb-4">
             <x-logo />
         </div>
-        <form class="card card-md needs-validation" action="{{ route('password.store') }}" method="post"
+        <form class="card card-md needs-validation" action="{{ route('change_password') }}" method="post"
             autocomplete="off" novalidate>
-            <!-- Password Reset Token -->
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
-
             @error('email')
             <div class="alert alert-important alert-danger alert-dismissible" role="alert">
                 <div class="d-flex">
@@ -34,17 +31,17 @@
                 <x-auth-session-status class="mb-4" :status="session('status')" />
                 <div class="col-12">
                     <div class="card-body">
-                        <h2 class=" text-center mb-4">Nouveau mot de passe</h2>
-
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" value="{{  $request->email }}" autofocus
-                                autocomplete="username" required class="form-control" placeholder="Entrez votre email">
-                            <div class="valid-feedback"></div>
-                            <div class="invalid-feedback">Ce champ est obligatoire.</div>
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                        </div>
-
+                        <h3 class=" text-center mb-4">Changement de Mot de Passe Requis</h3>
+                        <p>
+                            Lors de votre première connexion, veuillez changer votre mot de passe pour des raisons de
+                            sécurité. Suivez les critères ci-dessus et soumettez le formulaire. Votre compte sera
+                            accessible avec le nouveau mot de passe.
+                        </p>
+                        <h4>
+                            NB: Utilisez au moins huit (8) caractères, mélangez majuscules, minuscules, chiffres et
+                            caractères spéciaux.
+                        </h4>
+                        <input type="hidden" name="email" value="{{ $email }}">
                         <div class="mb-3">
                             <label class="form-label">Mot de passe</label>
                             <input type="password" name="password" autocomplete="new-password" required
@@ -62,17 +59,11 @@
                             <div class="invalid-feedback">Ce champ est obligatoire.</div>
                             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                         </div>
-
                     </div>
                 </div>
                 <div class="form-footer">
                     <button type="submit" class="btn btn-primary w-100">Valider</button>
                 </div>
-                @if (Session::has('two_factor:user_id'))
-                <div class="text-center text-muted mt-3">
-                    <a href="{{ route('2fa_verify_code') }}">Envoyez-moi un nouveau code</a>
-                </div>
-                @endif
             </div>
         </form>
     </div>

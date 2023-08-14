@@ -150,7 +150,6 @@ class UserController extends Controller
 
     public function all_delete(): RedirectResponse
     {
-
         return $this->All_remove(User::onlyTrashed()->when(! Auth::user()->isSuperadmin(), fn ($query) => $query->StructureUser()));
     }
 }
