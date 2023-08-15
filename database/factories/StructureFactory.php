@@ -24,6 +24,7 @@ class StructureFactory extends Factory
             'logo' => $this->faker->imageUrl(),
             'email' => $this->faker->companyEmail(),
             'adresse' => $this->faker->address(),
+            'expire_at' => now()->addMonth(),
             'contact' => $this->faker->phoneNumber(),
             'description' => $this->faker->sentence(2),
         ];

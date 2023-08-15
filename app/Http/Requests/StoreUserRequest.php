@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:100'],
             'poste' => ['required', 'string', 'max:150'],
             'type' => ['required', 'string', 'max:50', Rule::in(['departement', 'subdepartement'])],
             'userable_id' => ['required', 'string'],

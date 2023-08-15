@@ -50,12 +50,10 @@ class AuthenticatedSessionController extends Controller
         }
         $user = User::findOrFail($userId);
 
-        if ($request->code == $user->two_factor_code) {
+        if ($request->code === $user->two_factor_code) {
             Auth::login($user);
-            $user->two_factor_code = null;
-            $user->save();
+            $user->update(['two_factor_code' => null,'etat' => true]);
             session()->forget('two_factor:user_id');
-
             return redirect()->intended(RouteServiceProvider::HOME);
         } else {
             throw ValidationException::withMessages([
@@ -94,12 +92,10 @@ class AuthenticatedSessionController extends Controller
 
         if ($user->two_factor_enabled) {
             Auth::logout();
-            $verificationCode = (string) random_int(100000, 999999);
-            $user->two_factor_code = $verificationCode;
-            $user->save();
+            $verificationCode = (int) random_int(100000, 999999);
+            $user->update(['two_factor_code' => $verificationCode]);
             session()->put('two_factor:user_id', $user->id);
             Mail::to($user->email)->send(new VerificationCodeMail($verificationCode));
-
             return redirect()->intended(RouteServiceProvider::DFA)->with('success', 'Le code de vérification a été envoyé à votre adresse e-mail.');
         } elseif (!$user->change_password) {
             Auth::logout();
@@ -107,6 +103,7 @@ class AuthenticatedSessionController extends Controller
         } else {
             $request->session()->regenerate();
             $this->journal('Connexion');
+            $user->update(['etat' => true]);
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
@@ -118,6 +115,7 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $this->journal('Deconnexion');
+        $request->user()->update(['etat' => false]);
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

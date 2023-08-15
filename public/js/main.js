@@ -100,7 +100,10 @@ function restore(url) {
     );
 }
 
-// boostrap validation js function
+const loginButton = document.getElementById("loginButton");
+const loader = document.getElementById("loader");
+const loginForm = document.getElementById("loginForm");
+
 (() => {
     "use strict";
 
@@ -113,8 +116,15 @@ function restore(url) {
             "submit",
             (event) => {
                 if (!form.checkValidity()) {
-                    event.preventDefault();
+                    event.preventDefault(); // Prevent default form submission only if validation fails
                     event.stopPropagation();
+                } else {
+                    const submitButton = form.querySelector('[type="submit"]');
+                    const loader = form.querySelector(".loader");
+
+                    // Disable submit button and show loader
+                    submitButton.setAttribute("disabled", "disabled");
+                    loader.style.display = "block";
                 }
 
                 form.classList.add("was-validated");

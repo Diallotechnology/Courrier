@@ -25,13 +25,28 @@
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
-        /* :root {
-            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        .loader {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #206bc4;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        body {
-            font-feature-settings: "cv03", "cv04", "cv11";
-        } */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
         .file,
         .file-list {
@@ -158,16 +173,16 @@
     <script src="{{ asset('js/main.js') }}"></script>
     @livewireScripts
     <script>
-        Pusher.logToConsole = true;
-        var pusher = new Pusher('5a62d678ac4e6ca06a81', {
-        cluster: 'eu'
-        });
+        // Pusher.logToConsole = true;
+        // var pusher = new Pusher('5a62d678ac4e6ca06a81', {
+        // cluster: 'eu'
+        // });
 
-        var channel = pusher.subscribe('notif-channel');
-        channel.bind('user-notif', function(data) {
-            // toastr()->info(JSON.stringify(data).message);
-        alert(JSON.stringify(data));
-        });
+        // var channel = pusher.subscribe('notif-channel');
+        // channel.bind('user-notif', function(data) {
+        //     // toastr()->info(JSON.stringify(data).message);
+        // alert(JSON.stringify(data));
+        // });
     </script>
     @yield('js')
 </body>

@@ -23,7 +23,6 @@ class AnnotationController extends Controller
         $request->validate(['nom' => 'required|string|max:150']);
         Annotation::create(['nom' => $request->nom, 'user_id' => Auth::user()->id]);
         toastr()->success('Annotation ajouter avec success!');
-
         return back();
     }
 

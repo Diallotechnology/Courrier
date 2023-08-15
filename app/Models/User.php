@@ -203,6 +203,7 @@ class User extends Authenticatable
         'role',
         'two_factor_enabled',
         'two_factor_code',
+        'change_password',
         'userable_id',
         'userable_type',
     ];

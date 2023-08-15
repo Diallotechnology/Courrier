@@ -27,6 +27,9 @@
     <thead>
         <tr>
             <th>ID</th>
+            @if (Auth::user()->isSuperadmin())
+            <th>Structure</th>
+            @endif
             <th>Nom</th>
             <th>Sexe</th>
             <th>Poste</th>
@@ -40,9 +43,20 @@
         @forelse ($rows as $row)
         <tr>
             <td>{{ $row->id }}</td>
+            @if (Auth::user()->isSuperadmin())
+            <td>{{ $row->user_structure()->nom }}</td>
+            @endif
             <td>
                 <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')">
+                    <span class="avatar me-2"
+                    @if ($row->sexe === "Homme")
+                    style="background-image:
+                    url('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown')"
+                    @elseif ($row->sexe === "Femme")
+                    style="background-image:
+                    url('https://avataaars.io/?avatarStyle=Transparent&topType=LongHairCurly&accessoriesType=Round&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Blue02&eyeType=Surprised&eyebrowType=Default&mouthType=Default&skinColor=DarkBrown')"
+                    @endif
+                    >
                         <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
                             true])></span>
                     </span>
@@ -51,6 +65,8 @@
                         <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}</a></div>
                     </div>
                 </div>
+                {{-- <x-custom-avatar :row="$row" /> --}}
+            </td>
             </td>
             <td>{{ $row->sexe }}</td>
             <td>{{ $row->poste }}</td>
@@ -92,8 +108,8 @@
         </div>
         <div class="col-md-6">
             <x-select name="sexe" label="Sexe">
-              <option value="Homme">Homme</option>
-              <option value="Femme">Fomme</option>
+                <option value="Homme">Homme</option>
+                <option value="Femme">Fomme</option>
             </x-select>
         </div>
 

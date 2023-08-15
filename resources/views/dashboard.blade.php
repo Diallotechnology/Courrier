@@ -271,17 +271,17 @@
     </div>
     <div class="col-md-5">
         <div class="card card-md">
-            <div class="card-stamp card-stamp-lg" style="opacity: initial;">
+            {{-- <div class="card-stamp card-stamp-lg" style="opacity: initial;">
                 <div style="text-align:center;padding:1em 0;">
                     <h3><a style="text-decoration:none;" href="https://www.zeitverschiebung.net/fr/city/2460596">
                             <span class="text-dark">Heure actuelle</span><br />Bamako, Mali</a></h3> <iframe
                         src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=fr&size=medium&timezone=Africa%2FBamako"
                         width="100%" height="115" frameborder="0" seamless></iframe>
                 </div>
-            </div>
-            <div class="card-body p-3">
+            </div> --}}
+            <div class="card-body px-3 py-2">
                 <div class="row align-items-center">
-                    <div class="col-10">
+                    <div class="col-md-7">
                         <h3 class="h1">
                             {{ Auth::user()->name }}
                         </h3>
@@ -311,6 +311,22 @@
                                 <path d="M16.27 19l-1.3 .75"></path>
                                 <path d="M14.97 16.25l1.3 .75"></path>
                                 <path d="M19.733 19l1.3 .75"></path>
+                            </svg>
+                            Structure: {{ Auth::user()->user_structure()->nom }}
+                        </div>
+                        <div class="h4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M3 21l18 0"></path>
+                                <path d="M9 8l1 0"></path>
+                                <path d="M9 12l1 0"></path>
+                                <path d="M9 16l1 0"></path>
+                                <path d="M14 8l1 0"></path>
+                                <path d="M14 12l1 0"></path>
+                                <path d="M14 16l1 0"></path>
+                                <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16"></path>
                             </svg>
                             Departement: {{ Auth::user()->userable->nom }}
                         </div>
@@ -359,6 +375,15 @@
                             </span> En ligne
                         </div>
                     </div>
+                    <div class="col-md-5">
+                        <div style="text-align:center;padding:1em 0;">
+                            <h3><a style="text-decoration:none;"
+                                    href="https://www.zeitverschiebung.net/fr/city/2460596">
+                                    <span class="text-dark">Heure actuelle</span><br />Bamako, Mali</a></h3> <iframe
+                                src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=fr&size=medium&timezone=Africa%2FBamako"
+                                width="100%" height="auto" frameborder="0" seamless></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -366,7 +391,7 @@
     <div class="col-md-7">
         <div class="row row-cards">
             <div class="col-md-12">
-                <div class="card" style="height: 15rem">
+                <div class="card" style="height: 17rem">
                     <div class="card-header bg-primary text-white">
                         <h3 class="card-title">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -448,19 +473,7 @@
                 <tr>
                     <td>{{ $row->id }}</td>
                     <td>
-                        @if($row->createur)
-                        <div class="d-flex py-1 align-items-center">
-                            <span class="avatar me-2"
-                                style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->createur->name }}')"></span>
-                            <div class="flex-fill">
-                                <div class="font-weight-medium">{{ $row->createur->name }}</div>
-                                <div class="text-muted"><a href="#" class="text-reset">{{ $row->createur->email }}</a>
-                                </div>
-                            </div>
-                        </div>
-                        @else
-                        inexistant
-                        @endif
+                    <x-custom-avatar :row="$row->createur" />
                     </td>
                     <td>{{ $row->numero }}</td>
                     <td>{{ $row->type }}</td>
