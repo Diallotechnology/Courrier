@@ -65,7 +65,6 @@ class ImputationController extends Controller
             } else {
                 Notification::send($users, $notification);
             }
-            dd('hh');
         }
     }
 

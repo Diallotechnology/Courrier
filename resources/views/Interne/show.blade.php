@@ -89,11 +89,13 @@
 </div>
 @endempty
 <div class="row mt-2">
-    @foreach ($interne->documents as $row)
-    <div class="col-md-3">
-        <x-card-document :row="$row" />
-    </div>
-    @endforeach
+    @if ($interne->folder)
+          @foreach ($interne->folder->documents as $row)
+            <div class="col-md-3">
+                <x-card-document :row="$row" />
+            </div>
+        @endforeach
+    @endif
 </div>
 @can('create',$interne)
 <div class="col-12">

@@ -38,7 +38,7 @@ class CourrierExport implements FromQuery, Responsable, WithMapping, WithHeading
             $data->priorite,
             $data->confidentiel,
             $data->objet,
-            $data->etat,
+            $data->etat->value,
             $data->created_at,
         ];
     }

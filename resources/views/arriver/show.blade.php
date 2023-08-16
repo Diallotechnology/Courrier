@@ -2,11 +2,13 @@
 @section('content')
 <x-courrier-step :courrier="$arriver" />
 <div class="row py-2">
-    @foreach ($arriver->documents as $row)
-    <div class="col-md-3">
-        <x-card-document :row="$row" />
-    </div>
-    @endforeach
+    @if ($arriver->folder)
+          @foreach ($arriver->folder->documents as $row)
+            <div class="col-md-3">
+                <x-card-document :row="$row" />
+            </div>
+        @endforeach
+    @endif
 </div>
 <div class="card">
     <div class="card-header">
@@ -55,12 +57,7 @@
                     <x-statut type="etat" :courrier="$arriver" />
                 </div>
             </div>
-            <div class="datagrid-item">
-                <div class="datagrid-title">Archivé ce courrier</div>
-                <div class="datagrid-content">
-                    <livewire:form-switch :courrier="$arriver">
-                </div>
-            </div>
+
             <div class="datagrid-item">
                 <div class="datagrid-title">Date de creation</div>
                 <div class="datagrid-content">{{ $arriver->created_at }}</div>

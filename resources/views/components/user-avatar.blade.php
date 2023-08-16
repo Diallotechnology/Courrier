@@ -13,9 +13,6 @@
         $row->user->name }}')" --}}
 
         >
-            <span @class(['badge me-1', 'bg-red'=> $row->user->etat == false,
-        'bg-success'=> $row->user->etat ==
-        true])></span>
         </span>
 
     <div class="flex-fill">

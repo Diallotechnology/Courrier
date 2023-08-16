@@ -72,10 +72,12 @@
     </div>
 </div>
 <div class="row">
-    @foreach ($depart->documents as $row)
-    <div class="col-md-3">
-        <x-card-document :row="$row" />
-    </div>
-    @endforeach
+    @if ($depart->folder)
+          @foreach ($depart->folder->documents as $row)
+            <div class="col-md-3">
+                <x-card-document :row="$row" />
+            </div>
+        @endforeach
+    @endif
 </div>
 @endsection

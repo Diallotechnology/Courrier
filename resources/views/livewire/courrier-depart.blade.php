@@ -73,8 +73,8 @@
             <th>ID</th>
             <th>Structure</th>
             <th>Utilisateur</th>
-            <th>Numero depart</th>
             <th>Initiateur</th>
+            <th>Numero depart</th>
             <th>Date depart</th>
             <th>Nature</th>
             <th>Correspondant</th>

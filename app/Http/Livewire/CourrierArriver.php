@@ -2,15 +2,16 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\CourrierExport;
-use App\Helper\WithFilter;
-use App\Models\Correspondant;
-use App\Models\Courrier;
 use App\Models\Nature;
+use Livewire\Component;
+use App\Models\Courrier;
+use App\Helper\WithFilter;
+use Livewire\WithPagination;
+use App\Models\Correspondant;
+use App\Exports\CourrierExport;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CourrierArriver extends Component
 {
@@ -25,7 +26,7 @@ class CourrierArriver extends Component
 
     public function export()
     {
-        return new CourrierExport();
+        return Excel::download(new CourrierExport, 'courrier_arriver.xlsx', \Maatwebsite\Excel\Excel::XLSX);
         // (new CourrierExport)->queue('courrier_arriver.xlsx');
         // return toastr()->success('Courrier exporté avec success!');
     }
