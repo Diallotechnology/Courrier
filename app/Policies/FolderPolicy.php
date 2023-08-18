@@ -10,11 +10,15 @@ use App\Models\User;
 class FolderPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Perform pre-authorization checks.
      */
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): ?bool
     {
-        //
+        if ($user->isSuperadmin()) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
@@ -51,7 +55,7 @@ class FolderPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -88,7 +92,7 @@ class FolderPolicy
      */
     public function delete(User $user, Folder $folder): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -96,7 +100,7 @@ class FolderPolicy
      */
     public function restore(User $user, Folder $folder): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -104,6 +108,6 @@ class FolderPolicy
      */
     public function forceDelete(User $user, Folder $folder): bool
     {
-        //
+        return false;
     }
 }

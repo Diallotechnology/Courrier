@@ -33,11 +33,13 @@
 </div>
 
 <div class="row mt-2">
-    @foreach ($rapport->documents as $row)
-    <div class="col-md-3">
-        <x-card-document :row="$row" />
-    </div>
-    @endforeach
+    @if ($rapport->folder)
+          @foreach ($rapport->folder->documents as $row)
+            <div class="col-md-3">
+                <x-card-document :row="$row" />
+            </div>
+        @endforeach
+    @endif
 </div>
 
 @empty(!$rapport->contenu)

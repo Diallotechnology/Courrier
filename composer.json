@@ -14,11 +14,11 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.8",
         "laravel/sanctum": "^3.2",
+        "laravel/telescope": "^4.16",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.12",
         "maatwebsite/excel": "^3.1",
         "masmerise/livewire-toaster": "^1.1",
-        "opcodesio/log-viewer": "^2.4",
         "pusher/pusher-php-server": "^7.2",
         "yoeunes/toastr": "^2.3"
     },
@@ -62,7 +62,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "config": {

@@ -31,6 +31,8 @@ class DepartExport implements FromQuery, Responsable, WithMapping, WithHeadings
      */
     public function map($data): array
     {
+        $correspondents = $data->correspondants->pluck('nom')->implode(', ');
+
         return [
             $data->id,
             $data->user->name,
@@ -38,7 +40,7 @@ class DepartExport implements FromQuery, Responsable, WithMapping, WithHeadings
             $data->numero,
             $data->date_format,
             $data->nature_view(),
-            $data->correspondants,
+            $correspondents,
             $data->priorite,
             $data->confidentiel,
             $data->objet,

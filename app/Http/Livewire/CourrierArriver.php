@@ -1,16 +1,18 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Livewire;
 
-use App\Models\Nature;
-use Livewire\Component;
-use App\Models\Courrier;
-use App\Helper\WithFilter;
-use Livewire\WithPagination;
-use App\Models\Correspondant;
 use App\Exports\CourrierExport;
+use App\Helper\WithFilter;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Nature;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CourrierArriver extends Component

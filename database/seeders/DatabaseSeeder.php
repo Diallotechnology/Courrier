@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
         Annotation::factory(3)->hasUser($test)->create();
         Courrier::factory(260)->create();
         Interne::factory(160)->create();
-        Folder::factory(15)->create();
+        Folder::factory(100)->create();
         Document::factory(95)->create();
         Imputation::factory(55)->hasAnnotations(5)->hasDepartements(6)->create();
         Rapport::factory(15)->create();

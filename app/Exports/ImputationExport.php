@@ -33,12 +33,17 @@ class ImputationExport implements FromQuery, Responsable, WithMapping, WithHeadi
      */
     public function map($data): array
     {
+        $departements = $data->departements->pluck('nom')->implode(', ');
+        $subdepartements = $data->subdepartements->pluck('nom')->implode(', ');
+
         return [
             $data->id,
             $data->user->name,
             $data->user->email,
             $data->numero,
             $data->courrier ? $data->courrier->numero : 'inexistant',
+            $departements,
+            $subdepartements,
             $data->delai_format,
             $data->fin_traitement_format,
             $data->priorite,
@@ -56,6 +61,8 @@ class ImputationExport implements FromQuery, Responsable, WithMapping, WithHeadi
             'email',
             'Reference',
             'Courrier',
+            'Departement',
+            'Sous Departement',
             'Delai',
             'Date fin traitement',
             'Priorité',

@@ -18673,6 +18673,58 @@
      
 }
 
+    namespace Abordage\LaravelHtmlMin\Facades { 
+            /**
+     * 
+     *
+     * @see \Abordage\LaravelHtmlMin\HtmlMin
+     */ 
+        class HtmlMin {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function minify($html)
+        {
+                        /** @var \Abordage\LaravelHtmlMin\HtmlMin $instance */
+                        return $instance->minify($html);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function findDoctypeInDocument($enable = true)
+        {            //Method inherited from \Abordage\HtmlMin\HtmlMin         
+                        /** @var \Abordage\LaravelHtmlMin\HtmlMin $instance */
+                        return $instance->findDoctypeInDocument($enable);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function removeBlankLinesInScriptElements($enable = true)
+        {            //Method inherited from \Abordage\HtmlMin\HtmlMin         
+                        /** @var \Abordage\LaravelHtmlMin\HtmlMin $instance */
+                        return $instance->removeBlankLinesInScriptElements($enable);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function removeWhitespaceBetweenTags($enable = true)
+        {            //Method inherited from \Abordage\HtmlMin\HtmlMin         
+                        /** @var \Abordage\LaravelHtmlMin\HtmlMin $instance */
+                        return $instance->removeWhitespaceBetweenTags($enable);
+        }
+         
+    }
+     
+}
+
     namespace Barryvdh\Debugbar\Facades { 
             /**
      * 
@@ -24637,6 +24689,7 @@ namespace  {
             class View extends \Illuminate\Support\Facades\View {}
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class Excel extends \Maatwebsite\Excel\Facades\Excel {}
+            class HtmlMin extends \Abordage\LaravelHtmlMin\Facades\HtmlMin {}
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
             class Livewire extends \Livewire\Livewire {}
             class Toaster extends \Masmerise\Toaster\Toaster {}

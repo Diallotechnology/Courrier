@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\View\View;
-use Illuminate\Support\Str;
 use App\Helper\DeleteAction;
-use Illuminate\Http\Request;
-use App\Mail\VerificationCodeMail;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Mail\VerificationCodeMail;
+use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\RedirectResponse;
-use App\Providers\RouteServiceProvider;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
-use App\Notifications\ResetPasswordNotification;
-use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -37,7 +32,6 @@ class AuthenticatedSessionController extends Controller
         return view('auth.2fa');
     }
 
-
     public function verifyTwoFactor(Request $request)
     {
         $request->validate([
@@ -52,8 +46,9 @@ class AuthenticatedSessionController extends Controller
 
         if ($request->code === $user->two_factor_code) {
             Auth::login($user);
-            $user->update(['two_factor_code' => null,'etat' => true]);
+            $user->update(['two_factor_code' => null, 'etat' => true]);
             session()->forget('two_factor:user_id');
+
             return redirect()->intended(RouteServiceProvider::HOME);
         } else {
             throw ValidationException::withMessages([
@@ -96,14 +91,17 @@ class AuthenticatedSessionController extends Controller
             $user->update(['two_factor_code' => $verificationCode]);
             session()->put('two_factor:user_id', $user->id);
             Mail::to($user->email)->send(new VerificationCodeMail($verificationCode));
+
             return redirect()->intended(RouteServiceProvider::DFA)->with('success', 'Le code de vérification a été envoyé à votre adresse e-mail.');
-        } elseif (!$user->change_password) {
+        } elseif (! $user->change_password) {
             Auth::logout();
+
             return redirect()->route('change.password', ['email' => $user->email]);
         } else {
             $request->session()->regenerate();
             $this->journal('Connexion');
             $user->update(['etat' => true]);
+
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
