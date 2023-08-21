@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enum\ImputationEnum;
+use App\Enum\TaskEnum;
 use App\Models\Annotation;
 use App\Models\Correspondant;
 use App\Models\Courrier;
 use App\Models\Departement;
+use App\Models\Imputation;
 use App\Models\Journal;
 use App\Models\Licence;
 use App\Models\Nature;
@@ -63,7 +66,10 @@ class AdminController extends Controller
             ->selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')
             ->orderBy('day')->groupBy('day')->pluck('total_arrriver', 'day');
         $tasks = Task::where('createur_id', Auth::user()->id)->latest()->take(6)->get();
-
+        // $query = Imputation::with('tasks')->where('etat', ImputationEnum::EN_COURS)
+        // ->whereRelation('tasks','etat',TaskEnum::NON_TERMINE)->get();
+        // dd($query);
+        // ->update(['etat' => ImputationEnum::EXPIRE]);
         return view('dashboard', compact('arriver', 'tasks'));
     }
 

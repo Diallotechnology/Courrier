@@ -142,7 +142,10 @@
                 </div>
             </div>
             <div class="page-body ps-3">
+            <div class="container-fluid">
                 @yield('content')
+
+            </div>
             </div>
         </div>
         <footer class="footer footer-transparent d-print-none">

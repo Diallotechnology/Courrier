@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Enum\ImputationEnum;
+use App\Enum\TaskEnum;
+use App\Models\Imputation;
 use Illuminate\Console\Command;
 
 class CheckImputation extends Command
@@ -25,6 +28,8 @@ class CheckImputation extends Command
      */
     public function handle()
     {
-        //
+        $query = Imputation::with('tasks')
+            ->whereRelation('tasks', 'etat', TaskEnum::NON_TERMINE)->update(['etat' => ImputationEnum::EXPIRE]);
+
     }
 }

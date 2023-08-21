@@ -32,15 +32,15 @@ class CheckTask extends Command
     {
         $currentTime = now();
         // Tâches en attente qui ont déjà commencé
-        $debut = Task::where('etat', TaskEnum::EN_ATTENTE)->where('debut', '<=', $currentTime);
+        $debut = Task::with('users')->where('etat', TaskEnum::EN_ATTENTE)->where('debut', '<=', $currentTime);
 
         $debut->update(['etat' => TaskEnum::EN_COURS]);
 
         // Utilisateurs liés aux tâches en cours
-        $usersEnCours = User::whereIn('id', $debut->users->pluck('user_id'))->get(['id', 'email']);
+        $usersEnCours = User::whereIn('id', $debut->users->pluck('id'))->get(['id', 'email']);
 
         // Envoi de la notification pour les tâches en cours
-        Notification::send($usersEnCours, new TaskNotification(null, 'Vous avez de nouvelles tâches en cours'));
+        Notification::send($usersEnCours, new TaskNotification(null, 'Vous avez de nouvelle tâche en cours'));
 
         // Tâches en cours qui sont déjà terminées
         $fin = Task::where('etat', TaskEnum::EN_COURS)->where('fin', '<=', $currentTime);

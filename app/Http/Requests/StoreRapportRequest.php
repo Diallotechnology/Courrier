@@ -39,6 +39,7 @@ class StoreRapportRequest extends FormRequest
     {
         $this->merge([
             'user_id' => Auth::user()->id,
+            'structure_id' => Auth::user()->structure(),
         ]);
     }
 
