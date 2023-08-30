@@ -24,7 +24,6 @@
 
     <style>
         @import url('https://rsms.me/inter/inter.css');
-
         .loader {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-left: 4px solid #206bc4;
@@ -144,7 +143,6 @@
             <div class="page-body ps-3">
             <div class="container-fluid">
                 @yield('content')
-
             </div>
             </div>
         </div>
@@ -172,7 +170,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
     {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> --}}
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
     <script src="{{ asset('js/main.js') }}"></script>
     @livewireScripts
     <script>

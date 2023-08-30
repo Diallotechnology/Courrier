@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Helper\DeleteAction;
-use App\Http\Requests\StoreDepartRequest;
-use App\Http\Requests\UpdateDepartRequest;
-use App\Models\Correspondant;
-use App\Models\Courrier;
+use App\Models\User;
 use App\Models\Depart;
 use App\Models\Nature;
-use App\Models\User;
-use Illuminate\Contracts\View\View;
+use App\Models\Courrier;
+use App\Jobs\DepartMailJob;
+use App\Helper\DeleteAction;
+use App\Models\Correspondant;
+use App\Mail\CourrierDepartMail;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreDepartRequest;
+use App\Http\Requests\UpdateDepartRequest;
 
 class DepartController extends Controller
 {
@@ -34,6 +37,8 @@ class DepartController extends Controller
             $item->correspondants()->attach($request->correspondant_id);
         }
         $this->file_uplode($request, $item);
+        // send correspondant mail notification
+        DepartMailJob::dispatch($request->correspondant_id, $item->id);
         $this->journal("Ajout du courrier depart REF N°$ref");
         toastr()->success('Courrier ajouter avec success!');
 
