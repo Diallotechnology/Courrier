@@ -39,13 +39,7 @@
                         </div>
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Etat" :required='false' wire:model='etat'>
-                                @foreach (App\Enum\CourrierEnum::cases() as $row)
-                                <option value="{{ $row }}">{{ $row }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
+                        <x-input type="date" label="Date d'archivage" wire:model='archive' :required='false' />
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
                         <x-input type="date" label="Date d'arriver" wire:model='date' :required='false' />
@@ -66,8 +60,8 @@
                 <th>Priorite</th>
                 <th>Confidential</th>
                 <th>Etat</th>
-                <th>Objet</th>
-                <th>Date</th>
+                <th>Archivé le</th>
+                <th>Date de création</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -99,9 +93,7 @@
                 <td>
                     <x-statut type="etat" :courrier="$row" />
                 </td>
-                <td>
-                    <p class="text-muted">{{ $row->objet }}</p>
-                </td>
+                <td>{{ $row->archived_at }}</td>
                 <td>{{ $row->created_at }}</td>
                 <td>
                     <x-button-show :row="$row" href="{{ route('arriver.show', ['arriver' => $row]) }}" />

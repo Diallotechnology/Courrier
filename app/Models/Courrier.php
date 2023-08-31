@@ -128,6 +128,7 @@ class Courrier extends Model
         'observation',
         'etat',
         'date',
+        'archived_at',
     ];
 
     /**

@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('auth:clear-resets')->daily();
         $schedule->command('app:check-imputation')->daily();
         $schedule->command('app:check-task')->daily();
+        $schedule->command('app:check-depart-mail')->daily();
     }
 
     /**

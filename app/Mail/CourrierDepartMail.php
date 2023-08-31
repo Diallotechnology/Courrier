@@ -18,7 +18,7 @@ class CourrierDepartMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private Depart $depart)
+    public function __construct(public Depart $depart)
     {
         $depart = $this->depart;
     }
@@ -30,7 +30,7 @@ class CourrierDepartMail extends Mailable
     {
         return new Envelope(
             subject: 'Courrier Depart',
-            from: new Address('couribox@example.com', 'Couribox'),
+            from: new Address($this->depart->structure->email, $this->depart->structure->nom),
         );
     }
 
@@ -40,7 +40,7 @@ class CourrierDepartMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'email.courrier_depart',
         );
     }
 

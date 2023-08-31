@@ -38,7 +38,7 @@ class DepartController extends Controller
         }
         $this->file_uplode($request, $item);
         // send correspondant mail notification
-        DepartMailJob::dispatch($request->correspondant_id, $item->id);
+        // DepartMailJob::dispatch($request->correspondant_id, $item->id);
         $this->journal("Ajout du courrier depart REF N°$ref");
         toastr()->success('Courrier ajouter avec success!');
 

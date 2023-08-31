@@ -12,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Support\Collection;
 
 class DepartMailJob implements ShouldQueue
 {
@@ -20,7 +21,7 @@ class DepartMailJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private array $correspondants,private int $id)
+    public function __construct(private Collection $correspondants,private Depart $depart)
     {
         //
     }
@@ -30,8 +31,9 @@ class DepartMailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $correspondantEmails = Correspondant::whereIn('id', $this->correspondants)->pluck('email');
-        $depart = Depart::findOrFail($this->id);
+        $depart = $this->depart;
+        // $correspondantEmails = Correspondant::whereIn('id', $this->correspondants)->pluck('email');
+        $correspondantEmails = $this->correspondants;
         $correspondantEmails->each(function ($email) use($depart) {
             Mail::to($email)->send(new CourrierDepartMail($depart));
         });

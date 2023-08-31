@@ -4,14 +4,14 @@
     <div class="mb-1">
         <ol class="breadcrumb" aria-label="breadcrumbs">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><a href="#">Suivie</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">Archive</a></li>
         </ol>
     </div>
     <h2 class="page-title">
-        <span class="text-truncate">Liste des courriers arrivés en cours de traitement</span>
+        <span class="text-truncate">Liste des courriers archivés</span>
     </h2>
 </div>
 @endsection
 @section('content')
-@livewire('suivie')
+@livewire('archive')
 @endsection

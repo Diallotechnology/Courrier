@@ -271,14 +271,6 @@
     </div>
     <div class="col-md-5">
         <div class="card card-md">
-            {{-- <div class="card-stamp card-stamp-lg" style="opacity: initial;">
-                <div style="text-align:center;padding:1em 0;">
-                    <h3><a style="text-decoration:none;" href="https://www.zeitverschiebung.net/fr/city/2460596">
-                            <span class="text-dark">Heure actuelle</span><br />Bamako, Mali</a></h3> <iframe
-                        src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=fr&size=medium&timezone=Africa%2FBamako"
-                        width="100%" height="115" frameborder="0" seamless></iframe>
-                </div>
-            </div> --}}
             <div class="card-body px-3 py-2">
                 <div class="row align-items-center">
                     <div class="col-md-7">
@@ -473,7 +465,7 @@
                 <tr>
                     <td>{{ $row->id }}</td>
                     <td>
-                    <x-custom-avatar :row="$row->createur" />
+                        <x-custom-avatar :row="$row->createur" />
                     </td>
                     <td>{{ $row->numero }}</td>
                     <td>{{ $row->type }}</td>

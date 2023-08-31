@@ -28,8 +28,7 @@ class CheckImputation extends Command
      */
     public function handle()
     {
-        $query = Imputation::with('tasks')
-            ->whereRelation('tasks', 'etat', TaskEnum::NON_TERMINE)->update(['etat' => ImputationEnum::EXPIRE]);
+        Imputation::with('tasks')->whereRelation('tasks', 'etat', TaskEnum::NON_TERMINE)->update(['etat' => ImputationEnum::EXPIRE]);
 
     }
 }

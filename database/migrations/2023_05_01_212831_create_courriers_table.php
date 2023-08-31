@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('observation')->nullable();
             $table->string('etat')->default(CourrierEnum::SAVE->value);
             $table->date('date');
+            $table->dateTime('archived_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
