@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enum\CourrierEnum;
-use App\Enum\RoleEnum;
-use App\Enum\TaskEnum;
-use App\Helper\DeleteAction;
-use App\Http\Requests\StoreImputationRequest;
-use App\Http\Requests\UpdateImputationRequest;
-use App\Jobs\ImputationMailJob;
-use App\Models\Annotation;
-use App\Models\Courrier;
-use App\Models\Departement;
-use App\Models\Imputation;
-use App\Models\SubDepartement;
+use Auth;
 use App\Models\Task;
 use App\Models\User;
-use App\Notifications\ImputationNotification;
-use Auth;
-use Illuminate\Contracts\View\View;
+use App\Enum\RoleEnum;
+use App\Enum\TaskEnum;
+use App\Models\Courrier;
+use App\Enum\CourrierEnum;
+use App\Models\Annotation;
+use App\Models\Imputation;
+use App\Models\Departement;
+use App\Helper\DeleteAction;
+use App\Mail\ImputationMail;
+use App\Models\SubDepartement;
+use App\Jobs\ImputationMailJob;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Requests\StoreImputationRequest;
+use App\Notifications\ImputationNotification;
+use App\Http\Requests\UpdateImputationRequest;
+use App\Notifications\ImputationMailNotification;
 
 class ImputationController extends Controller
 {
@@ -59,14 +62,14 @@ class ImputationController extends Controller
         })->whereRole(RoleEnum::SUPERUSER)->get(['email', 'id']);
 
         if ($users->isNotEmpty()) {
-            $emails = $users->pluck('email')->toArray();
-            $notification = new ImputationNotification($imputation, "Vous avez été imputé d'un nouveau courrier");
 
+            $notification = new ImputationNotification($imputation, "Vous avez été imputé d'un nouveau courrier");
+            Notification::send($users, $notification);
             if ($notif == 1) {
-                ImputationMailJob::dispatch($notification, $emails);
-            } else {
-                Notification::send($users, $notification);
+                $notification = new ImputationMail($imputation, "Vous avez été imputé d'un nouveau courrier");
+                ImputationMailJob::dispatch($notification,$users)->afterCommit();
             }
+
         }
     }
 
@@ -109,10 +112,9 @@ class ImputationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Imputation $imputation): View
+    public function show(Imputation $imputation)
     {
         $this->authorize('view', $imputation);
-
         return view('imputation.show', compact('imputation'));
     }
 

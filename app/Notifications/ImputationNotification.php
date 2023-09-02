@@ -4,20 +4,21 @@ namespace App\Notifications;
 
 use App\Models\Imputation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class ImputationNotification extends Notification
+class ImputationNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private Imputation $imputation, private string $message)
+    public function __construct(public Imputation $imputation, public string $message)
     {
-        //
+
     }
 
     /**
@@ -27,19 +28,9 @@ class ImputationNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
+        return ['database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-            ->line($this->message)
-            ->action("Voir l'imputation", route('imputation.show', $this->imputation))
-            ->line('Merci!');
-    }
 
     /**
      * Get the array representation of the notification.
@@ -54,13 +45,5 @@ class ImputationNotification extends Notification
             'message' => $this->message,
             'type' => "imputation N°$ref",
         ];
-    }
-
-    public function toBroadcast(object $notifiable)
-    {
-
-        return new BroadcastMessage([
-            'type' => 'gggg',
-        ]);
     }
 }

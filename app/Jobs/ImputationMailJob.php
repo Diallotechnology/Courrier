@@ -2,13 +2,17 @@
 
 namespace App\Jobs;
 
-use App\Notifications\ImputationNotification;
+use App\Mail\ImputationMail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
+use App\Notifications\ImputationNotification;
+use App\Notifications\ImputationMailNotification;
 
 class ImputationMailJob implements ShouldQueue
 {
@@ -17,7 +21,7 @@ class ImputationMailJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public ImputationNotification $notification, public array $emails)
+    public function __construct(public ImputationMail $notification, public Collection $users)
     {
         //
     }
@@ -27,6 +31,8 @@ class ImputationMailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Notification::route('mail', $this->emails)->notify($this->notification);
+        foreach($this->users as $row) :
+            Mail::to($row->email)->send($this->notification);
+        endforeach;
     }
 }

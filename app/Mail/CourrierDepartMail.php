@@ -5,10 +5,13 @@ namespace App\Mail;
 use App\Models\Depart;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\File;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CourrierDepartMail extends Mailable
@@ -20,7 +23,7 @@ class CourrierDepartMail extends Mailable
      */
     public function __construct(public Depart $depart)
     {
-        $depart = $this->depart;
+
     }
 
     /**
@@ -29,7 +32,7 @@ class CourrierDepartMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Courrier Depart',
+            subject: 'Nouveau Courrier Depart',
             from: new Address($this->depart->structure->email, $this->depart->structure->nom),
         );
     }
@@ -44,6 +47,23 @@ class CourrierDepartMail extends Mailable
         );
     }
 
+    public function build()
+    {
+        $pdfFilePath = asset('img/bg_login.png');
+
+        // Generate a temporary URL for the PDF file
+        // $pdfUrl = Storage::disk('local')->url($pdfFilePath);
+
+        return $this->markdown('email.courrier_depart')
+            ->attach(
+                $pdfFilePath,
+                [
+                    'as' => 'laravelia.pdf',
+                    'mime' => 'application/pdf'
+                ]
+            );
+    }
+
     /**
      * Get the attachments for the message.
      *
@@ -51,6 +71,7 @@ class CourrierDepartMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        // dd($this->depart->folder->documents->pluck('chemin'));
+            return [];
     }
 }
