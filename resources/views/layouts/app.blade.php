@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name') }}</title>
+    <meta name="description" content="géré plus facilement vos courrier">
 
     <!-- CSS files -->
 
@@ -24,6 +25,7 @@
 
     <style>
         @import url('https://rsms.me/inter/inter.css');
+
         .loader {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-left: 4px solid #206bc4;
@@ -141,9 +143,9 @@
                 </div>
             </div>
             <div class="page-body ps-3">
-            <div class="container-fluid">
-                @yield('content')
-            </div>
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
             </div>
         </div>
         <footer class="footer footer-transparent d-print-none">

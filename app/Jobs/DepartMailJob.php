@@ -32,7 +32,6 @@ class DepartMailJob implements ShouldQueue
     public function handle(): void
     {
         $depart = $this->depart;
-        // $correspondantEmails = Correspondant::whereIn('id', $this->correspondants)->pluck('email');
         $correspondantEmails = $this->correspondants;
         $correspondantEmails->each(function ($email) use($depart) {
             Mail::to($email)->send(new CourrierDepartMail($depart));

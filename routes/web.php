@@ -219,7 +219,7 @@ Route::middleware(['auth', 'licence'])->group(function () {
         Route::view('licence_expire', 'licence_expire')->name('licence_expire');
         Route::post('user/active/two_factor', [UserController::class, 'active_2fa'])->name('user.active_2fa');
         Route::delete('rapport/delete/{id}', [RapportController::class, 'force_delete'])->whereNumber('id');
-        // Route::get('fol/{model}/list', [DocumentController::class, 'list'])->name('document.list');
+
         Route::controller(TaskController::class)->group(function () {
             Route::get('task/trash', 'trash')->name('task.trash');
             Route::get('task/restore/all', 'all_recover')->name('task.restore');

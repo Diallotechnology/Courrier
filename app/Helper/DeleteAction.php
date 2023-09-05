@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
-use App\Models\Courrier;
+use Exception;
 use App\Models\Depart;
-use App\Models\Document;
 use App\Models\Folder;
+use App\Jobs\UplodeJob;
 use App\Models\History;
 use App\Models\Interne;
 use App\Models\Journal;
 use App\Models\Rapport;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Courrier;
+use App\Models\Document;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 trait DeleteAction
 {
@@ -60,8 +62,9 @@ trait DeleteAction
         return $fileDeleted;
     }
 
-    public function file_uplode($request, Model $model)
+    public function file_uplode($request, Model $model): void
     {
+        try {
         $type = '';
         $path = '';
 
@@ -78,25 +81,29 @@ trait DeleteAction
             $type = 'Courrier Depart';
             $path = 'courrier/depart';
         }
+        $folder = new Folder([
+            'nom' => $model->numero,
+            'type' => $type,
+            'structure_id' => Auth::user()->structure(),
+        ]);
+        $model->folder()->save($folder);
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $key => $file) {
                 $filename = $file->hashName();
                 $chemin = $file->storeAs($path, $filename, 'public');
-                $folder = new Folder([
-                    'nom' => $model->numero,
-                    'type' => $type,
-                    'structure_id' => Auth::user()->structure(),
-                ]);
-                $model->folder()->save($folder);
                 Document::create([
-                    'libelle' => $model->numero,
+                    'libelle' => $file->getClientOriginalName(),
                     'extension' => $file->extension(),
                     'user_id' => Auth::user()->id,
                     'folder_id' => $folder->id,
                     'chemin' => $chemin,
                 ]);
             }
+        }
+        }
+        catch (\Throwable $th) {
+            new Exception("file uplode error");
         }
     }
 
