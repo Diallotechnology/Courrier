@@ -9,23 +9,14 @@ use App\Models\Nature;
 use App\Models\Interne;
 use App\Helper\DeleteAction;
 use App\Enum\CourrierInterneEnum;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreInterneRequest;
 use App\Http\Requests\UpdateInterneRequest;
 use App\Notifications\CourrierNotification;
-<<<<<<< HEAD
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-=======
-use Illuminate\Support\Facades\Notification;
->>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
 
 class InterneController extends Controller
 {
@@ -50,7 +41,6 @@ class InterneController extends Controller
      */
     public function store(StoreInterneRequest $request): RedirectResponse
     {
-<<<<<<< HEAD
         DB::transaction(function () use ($request) {
             $item = Interne::create($request->validated());
             $item->generateId('CI');
@@ -61,17 +51,6 @@ class InterneController extends Controller
             toastr()->success('Courrier envoyé avec succès!');
         });
 
-=======
-        DB::transaction(function () use($request) {
-        $item = Interne::create($request->validated());
-        $item->generateId('CI');
-        $user = User::findOrFail($request->destinataire_id);
-        $notification = new CourrierNotification($item, 'Vous avez reçu un nouveau courrier interne');
-        $user->notify($notification);
-        $this->file_uplode($request, $item);
-        toastr()->success('Courrier envoyé avec succès!');
-        });
->>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
         return back();
     }
 

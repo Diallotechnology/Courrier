@@ -28,11 +28,7 @@ class CourrierNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-<<<<<<< HEAD
         return ['database', 'mail'];
-=======
-        return ['database','mail'];
->>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
     }
 
 

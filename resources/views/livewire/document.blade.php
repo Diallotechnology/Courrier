@@ -5,7 +5,7 @@
                 <x-filter url="document" :create="App\Models\Document::class">
                     <div class="col-md-4 mb-3">
                         <div wire:ignore>
-                            <select class="form-select select-tags" wire:model.live='type'>
+                            <select class="form-select select-tags" wire:model='type'>
                                 <option selected disabled value="">Trier par type</option>
                                 <option value="pdf">pdf</option>
                                 <option value="png">png</option>
@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <div wire:ignore>
-                            <select class="form-select select-tags" wire:model.live='date' value="">
+                            <select class="form-select select-tags" wire:model='date'>
                                 <option selected disabled value="">Trier par date</option>
                                 <option value="desc">le plus recent</option>
                                 <option value="asc">le plus ancien</option>

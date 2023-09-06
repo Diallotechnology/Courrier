@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Rapport
@@ -131,5 +133,15 @@ class Rapport extends Model
     public function structure(): BelongsTo
     {
         return $this->belongsTo(Structure::class);
+    }
+
+    /**
+     * The utilisateurs that belong to the Rapport
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function utilisateurs(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

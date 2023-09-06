@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire;
+namespace App\Http\Livewire;
 
 use Auth;
 use Illuminate\Contracts\View\View;

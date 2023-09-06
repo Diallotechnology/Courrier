@@ -4,7 +4,7 @@
             <x-filter url="interne" :create="false">
                 <div class="mb-3  col-md-3">
                     <div wire:ignore>
-                        <x-select label="Nature de courrier" :required='false' wire:model.live='nature'>
+                        <x-select label="Nature de courrier" wire:model='nature'>
                             @foreach ($type as $row)
                             <option value="{{ $row->id }}">{{ $row->nom }}</option>
                             @endforeach
@@ -14,7 +14,7 @@
                 </div>
                 <div class="mb-3  col-md-3">
                     <div wire:ignore>
-                        <x-select label="Priorite" :required='false' wire:model.live='priority'>
+                        <x-select label="Priorite" wire:model='priority'>
                             <option value="Urgent">Urgent</option>
                             <option value="Normal">Normal</option>
                         </x-select>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="mb-3  col-md-3">
                     <div wire:ignore>
-                        <x-select label="Confidentialité" :required='false' wire:model.live='privacy'>
+                        <x-select label="Confidentialité" wire:model='privacy'>
                             <option value="OUI">OUI</option>
                             <option value="NON">NON</option>
                         </x-select>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="mb-3  col-md-3">
                     <div wire:ignore>
-                        <x-select label="Etat" :required='false' wire:model.live='etat'>
+                        <x-select label="Etat" wire:model='etat'>
                             @foreach (App\Enum\CourrierInterneEnum::cases() as $row)
                             <option value="{{ $row }}">{{ $row }}</option>
                             @endforeach
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="mb-3  col-md-3">
-                    <x-input type="date" label="Date d'envoi" wire:model.live='date' :required='false' />
+                    <x-input type="date" label="Date d'envoi" wire:model='date' />
                 </div>
 
                 <x-slot name="btn">
@@ -131,7 +131,7 @@
             $('.select-tags').each(function() {
                 var select = new TomSelect(this, {
                     onChange: function(value) {
-                        var modelName = $(this.input).attr('wire:model.live');
+                        var modelName = $(this.input).attr('wire:model');
                         @this.set(modelName, value);
                     }
                 });

@@ -5,23 +5,23 @@
                 <div class="row row-cards">
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Type de courrier" :required="false" wire:model.live="model">
+                            <x-select label="Type de courrier" wire:model="model">
                                 <option value="Arrive">Courrier Arrivé</option>
                                 <option value="Depart">Courrier Depart</option>
                             </x-select>
                         </div>
                     </div>
-                    <div @class(['mb-3 col-md-4', 'd-none' => $model === "Depart"]) >
+                    <div @class(['mb-3 col-md-4', 'd-none'=> $model === "Depart"]) >
                         <x-input type="text" label="Reference du courrier" place="Reference du courrier"
-                        wire:model.live="reference" :required="false" />
+                            wire:model="reference" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <x-input type="text" label="numero arriver/depart" place="numero arriver ou depart"
-                            wire:model.live="numero" :required="false" />
+                            wire:model="numero" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Nature du courrier" :required="false" wire:model.live="nature">
+                            <x-select label="Nature du courrier" wire:model="nature">
                                 @foreach ($type as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
@@ -30,7 +30,7 @@
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Correspondant" :required="false" wire:model.live="expediteur">
+                            <x-select label="Correspondant" wire:model="expediteur">
                                 @foreach ($correspondant as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
@@ -39,37 +39,37 @@
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Confidentialité" :required="false" wire:model.live="privacy">
+                            <x-select label="Confidentialité" wire:model="privacy">
                                 <option value="OUI">OUI</option>
                                 <option value="NON">NON</option>
                             </x-select>
                         </div>
                     </div>
                     <div class="mb-3 col-md-4">
-                        <x-input type="date" label="Date d'arriver/départ" wire:model.live="date" :required="false" />
+                        <x-input type="date" label="Date d'arriver/départ" wire:model="date" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Priorite" :required="false" wire:model.live="priority">
+                            <x-select label="Priorite" wire:model="priority">
                                 <option value="Urgent">Urgent</option>
                                 <option value="Normal">Normal</option>
                             </x-select>
                         </div>
                     </div>
-                    <div @class(['mb-3 col-md-4', 'd-none' => $model === "Depart"])>
+                    <div @class(['mb-3 col-md-4', 'd-none'=> $model === "Depart"])>
                         <div wire:ignore>
-                            <x-select label="Etat" :required="false" wire:model.live="etat">
+                            <x-select label="Etat" wire:model="etat">
                                 @foreach (App\Enum\CourrierEnum::cases() as $row)
                                 <option value="{{ $row }}">{{ $row }}</option>
                                 @endforeach
                             </x-select>
                         </div>
                     </div>
-                    <div @class(['mb-3 col-md-4', 'd-none' => $model === "Depart"])>
-                        <x-input type="date" label="Date de fin traitement" wire:model.live="fin" :required="false" />
+                    <div @class(['mb-3 col-md-4', 'd-none'=> $model === "Depart"])>
+                        <x-input type="date" label="Date de fin traitement" wire:model="fin" />
                     </div>
                     <div class="mb-3 col-md-4">
-                        <x-input type="date" label="Date d'enregistrement" wire:model.live="create" :required="false" />
+                        <x-input type="date" label="Date d'enregistrement" wire:model="create" />
                     </div>
                     <div>
                         <button wire:click='ResetFilter' class="btn btn-danger mx-2" type="button">
@@ -176,7 +176,7 @@
         $('.select-tags').each(function() {
                     var select = new TomSelect(this, {
                         onChange: function(value) {
-                            var modelName = $(this.input).attr('wire:model.live');
+                            var modelName = $(this.input).attr('wire:model');
                             @this.set(modelName, value);
                             console.log(value);
                         }

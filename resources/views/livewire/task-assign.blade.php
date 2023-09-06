@@ -4,7 +4,7 @@
         <div class="row m-3">
             <div class="col">
                 <div wire:ignore>
-                    <x-select wire:model.live="user_id" multiple label="liste des Utilisateurs exécuteur">
+                    <x-select wire:model="user_id" multiple label="liste des Utilisateurs exécuteur">
                         @foreach ($user as $key => $row)
                         <optgroup label="Departement {{ $key }}">
                             @foreach ($row as $item)

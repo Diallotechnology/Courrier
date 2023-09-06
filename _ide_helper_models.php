@@ -766,6 +766,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
  * @mixin \Eloquent
  * @property-read \App\Models\Folder|null $folder
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $utilisateurs
+ * @property-read int|null $utilisateurs_count
  */
 	class Rapport extends \Eloquent {}
 }
@@ -1157,6 +1159,8 @@ namespace App\Models{
  * @property string $sexe
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Depart> $initiateurs
  * @property-read int|null $initiateurs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rapport> $reports
+ * @property-read int|null $reports_count
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSexe($value)
  */
 	class User extends \Eloquent {}

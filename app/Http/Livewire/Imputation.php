@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire;
+namespace App\Http\Livewire;
 
 use App\Enum\CourrierEnum;
 use App\Exports\ImputationExport;

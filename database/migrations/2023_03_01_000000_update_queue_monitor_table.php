@@ -37,11 +37,7 @@ class UpdateQueueMonitorTable extends Migration
                 /** @phpstan-ignore-next-line */
                 if ($monitor->failed) {
                     $matrix[MonitorStatus::FAILED][] = $monitor;
-<<<<<<< HEAD
                 } elseif ($monitor->finished_at !== null) {
-=======
-                } elseif (null !== $monitor->finished_at) {
->>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
                     $matrix[MonitorStatus::SUCCEEDED][] = $monitor;
                 } else {
                     $matrix[MonitorStatus::RUNNING][] = $monitor;
