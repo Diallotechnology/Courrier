@@ -2,24 +2,25 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
-use App\Mail\RegisterMail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Notifications\CourrierNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
-class MailJob implements ShouldQueue
+class CourrierMailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(public User $user)
+    public function __construct(protected CourrierNotification $notification, protected Collection $users)
     {
         //
     }
@@ -29,6 +30,6 @@ class MailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->user->email)->send(new RegisterMail($this->user));
+        Notification::send($this->users, $this->notification);
     }
 }

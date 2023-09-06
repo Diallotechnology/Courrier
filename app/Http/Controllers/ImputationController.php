@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Auth;
+use Exception;
 use App\Models\Task;
 use App\Models\User;
 use App\Enum\RoleEnum;
@@ -19,6 +20,7 @@ use App\Mail\ImputationMail;
 use App\Models\SubDepartement;
 use App\Jobs\ImputationMailJob;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
@@ -78,6 +80,7 @@ class ImputationController extends Controller
      */
     public function store(StoreImputationRequest $request): RedirectResponse
     {
+        DB::transaction(function () use($request) {
         $annotationId = $request->input('annotation_id');
         $departementIds = $request->input('departement_id');
         $subdepartementIds = $request->input('subdepartement_id');
@@ -96,7 +99,6 @@ class ImputationController extends Controller
             if ($item->courrier->Register()) {
                 $item->courrier->update(['etat' => CourrierEnum::IMPUTE]);
             }
-
             // Create tasks for imputation
             $this->createTasksForImputation($item, $request->input('delai'), $annotationId);
             // Get notifiable users' emails
@@ -105,7 +107,7 @@ class ImputationController extends Controller
             $this->history($item->courrier->id, 'Impuatation', "Imputé le courrier arrivé le N°$ref");
             toastr()->success('Imputation ajoutée avec succès!');
         }
-
+        });
         return back();
     }
 
@@ -124,6 +126,7 @@ class ImputationController extends Controller
     public function edit(Imputation $imputation): View
     {
         $this->authorize('update', $imputation);
+
         $user = Auth::user();
         $courrier = Courrier::when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->latest('id')->get(['id', 'numero', 'reference', 'date']);
@@ -155,6 +158,7 @@ class ImputationController extends Controller
      */
     public function update(UpdateImputationRequest $request, Imputation $imputation): RedirectResponse
     {
+        DB::transaction(function () use($request, $imputation) {
         if (! empty($request->departement_id) && ! empty($request->subdepartement_id) && ! empty($request->annotation_id)) {
             $imputation->update($request->except(['annotation_id', 'departement_id', 'subdepartement_id']));
             $imputation->annotations()->sync($request->input('annotation_id'));
@@ -178,7 +182,7 @@ class ImputationController extends Controller
 
             toastr()->success('Imputation mise à jour avec succès!');
         }
-
+    });
         return back();
     }
 

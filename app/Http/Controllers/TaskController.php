@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageNotification;
-use App\Helper\DeleteAction;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
-use App\Models\Imputation;
 use App\Models\Task;
 use App\Models\User;
-use App\Notifications\TaskNotification;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Imputation;
 use Illuminate\Support\Arr;
+use App\Helper\DeleteAction;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use App\Events\MessageNotification;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreTaskRequest;
+use App\Notifications\TaskNotification;
+use App\Http\Requests\UpdateTaskRequest;
 use Illuminate\Support\Facades\Notification;
 
 class TaskController extends Controller
@@ -29,8 +30,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request): RedirectResponse
     {
 
-        // event(new MessageNotification('nxnnxnnx'));
-        // dd('dd');
+        DB::transaction(function () use($request) {
         $data = Arr::except($request->validated(), ['user_id']);
         // create task
         $task = Task::create($data);
@@ -48,7 +48,7 @@ class TaskController extends Controller
         }
         $this->journal("Ajout de la tache N°$ref");
         toastr()->success('Taches ajouter avec success!');
-
+        });
         return back();
     }
 

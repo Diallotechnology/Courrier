@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
-use App\Enum\CourrierEnum;
-use App\Enum\ImputationEnum;
-use App\Enum\TaskEnum;
-use App\Helper\DeleteAction;
-use App\Models\Imputation;
 use App\Models\Task;
 use App\Models\User;
-use App\Notifications\ImputationNotification;
-use App\Notifications\TaskNotification;
+use App\Enum\TaskEnum;
+use Livewire\Component;
+use App\Enum\CourrierEnum;
+use App\Models\Imputation;
+use App\Enum\ImputationEnum;
+use App\Helper\DeleteAction;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Notifications\TaskNotification;
+use App\Notifications\ImputationNotification;
 
 class Tache extends Component
 {
@@ -42,6 +43,7 @@ class Tache extends Component
 
     public function ValidTask(int $id): void
     {
+        DB::transaction(function () use($id) {
         // get task
         $task = Task::with('imputation', 'users')->findOrFail($id);
         // update user pivot etat
@@ -80,6 +82,8 @@ class Tache extends Component
             $task->createur->notify($notification);
         }
         toastr()->success('Tache validé avec succès!');
+
+    });
     }
 
     public function render(): View

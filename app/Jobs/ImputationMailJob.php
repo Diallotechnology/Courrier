@@ -12,16 +12,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ImputationNotification;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 use App\Notifications\ImputationMailNotification;
 
 class ImputationMailJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(public ImputationMail $notification, public Collection $users)
+    public function __construct(protected ImputationMail $notification, protected Collection $users)
     {
         //
     }

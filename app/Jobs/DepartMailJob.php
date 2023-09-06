@@ -2,21 +2,22 @@
 
 namespace App\Jobs;
 
-use App\Mail\CourrierDepartMail;
-use App\Models\Correspondant;
 use App\Models\Depart;
+use App\Models\Correspondant;
 use Illuminate\Bus\Queueable;
+use App\Mail\CourrierDepartMail;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Support\Collection;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class DepartMailJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.

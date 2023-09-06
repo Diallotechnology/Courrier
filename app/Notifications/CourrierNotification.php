@@ -28,8 +28,9 @@ class CourrierNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database','mail'];
     }
+
 
     /**
      * Get the mail representation of the notification.
@@ -45,7 +46,7 @@ class CourrierNotification extends Notification
         if ($this->courrier instanceof Courrier) {
             return (new MailMessage)
                 ->line($this->message)
-                ->action('Voir le courrier', route('courrier.show', $this->courrier))
+                ->action('Voir le courrier', route('arriver.show', $this->courrier))
                 ->line('Merci!');
         }
 

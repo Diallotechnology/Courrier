@@ -4,7 +4,7 @@
             <x-filter url="depart" :create="App\Models\Depart::class">
                 <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
-                        <x-select label="Nature de courrier" :required='false' wire:model='nature'>
+                        <x-select label="Nature de courrier" :required='false' wire:model.live='nature'>
                             @foreach ($type as $row)
                             <option value="{{ $row->id }}">{{ $row->nom }}</option>
                             @endforeach
@@ -13,7 +13,7 @@
                 </div>
                 <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
-                        <x-select label="Initiateur" :required='false' wire:model='initiateur'>
+                        <x-select label="Initiateur" :required='false' wire:model.live='initiateur'>
                             @foreach ($user as $key => $row)
                             <optgroup label="Departement {{ $key }}">
                                 @foreach ($row as $item)
@@ -28,7 +28,7 @@
                 </div>
                 <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
-                        <x-select label="Correspondant" :required='false' wire:model='expediteur'>
+                        <x-select label="Correspondant" :required='false' wire:model.live='expediteur'>
                             @foreach ($correspondant as $row)
                             <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
                             @endforeach
@@ -37,7 +37,7 @@
                 </div>
                 <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
-                        <x-select label="Priorite" :required='false' wire:model='priority'>
+                        <x-select label="Priorite" :required='false' wire:model.live='priority'>
                             <option value="Urgent">Urgent</option>
                             <option value="Normal">Normal</option>
                         </x-select>
@@ -45,14 +45,14 @@
                 </div>
                 <div class="mb-3 col-sm-4 col-md-3">
                     <div wire:ignore>
-                        <x-select label="Confidentialité" :required='false' wire:model='privacy'>
+                        <x-select label="Confidentialité" :required='false' wire:model.live='privacy'>
                             <option value="OUI">OUI</option>
                             <option value="NON">NON</option>
                         </x-select>
                     </div>
                 </div>
                 <div class="mb-3 col-sm-4 col-md-3">
-                    <x-input type="date" label="Date depart" wire:model='date' :required='false' />
+                    <x-input type="date" label="Date depart" wire:model.live='date' :required='false' />
                 </div>
 
                 <x-slot name="btn">
@@ -218,11 +218,11 @@
 </x-modal>
 @push('scripts')
 <script>
-    $(document).on('livewire:load', function() {
+    $(document).on('livewire:init', function() {
         $('.select-tags').each(function() {
             var select = new TomSelect(this, {
                 onChange: function(value) {
-                    var modelName = $(this.input).attr('wire:model');
+                    var modelName = $(this.input).attr('wire:model.live');
                     @this.set(modelName, value);
                 }
             });

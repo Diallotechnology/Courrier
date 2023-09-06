@@ -6,7 +6,6 @@ namespace App\Helper;
 
 trait WithFilter
 {
-    protected string $paginationTheme = 'bootstrap';
 
     public string $privacy = '';
 
