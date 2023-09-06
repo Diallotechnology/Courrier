@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Enum\RoleEnum;
 use App\Helper\DeleteAction;
 use App\Http\Requests\StoreCourrierRequest;
@@ -16,10 +17,30 @@ use App\Models\Task;
 use App\Models\User;
 use App\Notifications\CourrierNotification;
 use Illuminate\Contracts\View\View;
+=======
+use Exception;
+use App\Models\Task;
+use App\Models\User;
+use App\Enum\RoleEnum;
+use App\Models\Nature;
+use App\Models\Courrier;
+use App\Helper\DeleteAction;
+use App\Models\Correspondant;
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+<<<<<<< HEAD
+use Illuminate\Support\Facades\DB;
+=======
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreCourrierRequest;
+use App\Notifications\CourrierNotification;
+use App\Http\Requests\UpdateCourrierRequest;
+use App\Jobs\CourrierMailJob;
+use Illuminate\Support\Facades\Notification;
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
 
 class CourrierController extends Controller
 {
@@ -30,6 +51,7 @@ class CourrierController extends Controller
      */
     public function store(StoreCourrierRequest $request): RedirectResponse
     {
+<<<<<<< HEAD
         DB::transaction(function () use ($request) {
             $item = Courrier::create($request->validated());
             $item->generateId('CA');
@@ -44,6 +66,21 @@ class CourrierController extends Controller
         });
 
         return back();
+=======
+            DB::transaction(function () use ($request) {
+                $item = Courrier::create($request->validated());
+                $item->generateId('CA');
+                $ref = $item->numero;
+                $this->history($item->id, 'Enregistrement', "Enregistré le courrier arrivé REF N° $ref");
+                $this->file_uplode($request, $item);
+                $this->journal("Ajout du courrier REF N°.$ref");
+                $users = User::structureUser()->where('role',RoleEnum::SUPERUSER)->get(['id','email']);
+                $notification = new CourrierNotification($item, 'Vous avez reçu un nouveau courrier arriver');
+                CourrierMailJob::dispatch($notification, $users);
+                toastr()->success('Courrier ajouter avec success!');
+            });
+            return back();
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
     }
 
     /**

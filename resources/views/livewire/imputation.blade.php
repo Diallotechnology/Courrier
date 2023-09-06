@@ -9,7 +9,11 @@
             <x-filter url="imputation" :create="App\Models\Imputation::class">
                 <div class="mb-3  col-md-3">
                     <div wire:ignore>
+<<<<<<< HEAD
                         <x-select label="Courrier arrivé" wire:model.live='courrier'>
+=======
+                        <x-select label="Courrier arrivé" :required='false' wire:model.live='courrier'>
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
                             @foreach ($arriver as $row)
                             <option value="{{ $row->id }}">N/A {{ $row->reference }}</option>
                             @endforeach
@@ -18,7 +22,11 @@
                 </div>
                 <div class="mb-3  col-md-3">
                     <div wire:ignore>
+<<<<<<< HEAD
                         <x-select label="Priorite" wire:model.live='priority'>
+=======
+                        <x-select label="Priorite" :required='false' wire:model.live='priority'>
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
                             <option value="Urgent">Urgent</option>
                             <option value="Normal">Normal</option>
                         </x-select>
@@ -26,7 +34,11 @@
                 </div>
                 <div class="mb-3  col-md-3">
                     <div wire:ignore>
+<<<<<<< HEAD
                         <x-select label="Etat" wire:model.live='etat'>
+=======
+                        <x-select label="Etat" :required='false' wire:model.live='etat'>
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
                             @foreach (App\Enum\ImputationEnum::cases() as $row)
                             <option value="{{ $row }}">{{ $row }}</option>
                             @endforeach
@@ -34,10 +46,17 @@
                     </div>
                 </div>
                 <div class="mb-3  col-md-3">
+<<<<<<< HEAD
                     <x-input type="date" label="Delai de traitement" wire:model.live='delai' />
                 </div>
                 <div class="mb-3  col-md-3">
                     <x-input type="date" label="Date de fin traitement" wire:model.live='fin' />
+=======
+                    <x-input type="date" label="Delai de traitement" wire:model.live='delai' :required='false' />
+                </div>
+                <div class="mb-3  col-md-3">
+                    <x-input type="date" label="Date de fin traitement" wire:model.live='fin' :required='false' />
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
                 </div>
                 <x-slot name="btn">
                     <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"

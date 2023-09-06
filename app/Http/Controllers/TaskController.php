@@ -4,19 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Helper\DeleteAction;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Imputation;
+=======
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
 use App\Models\Task;
 use App\Models\User;
-use App\Notifications\TaskNotification;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Imputation;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
+use App\Helper\DeleteAction;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Events\MessageNotification;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+<<<<<<< HEAD
+use Illuminate\Support\Facades\DB;
+=======
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreTaskRequest;
+use App\Notifications\TaskNotification;
+use App\Http\Requests\UpdateTaskRequest;
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
 use Illuminate\Support\Facades\Notification;
 
 class TaskController extends Controller
@@ -29,6 +41,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request): RedirectResponse
     {
 
+<<<<<<< HEAD
         DB::transaction(function () use ($request) {
             $data = Arr::except($request->validated(), ['user_id']);
             // create task
@@ -49,6 +62,27 @@ class TaskController extends Controller
             toastr()->success('Taches ajouter avec success!');
         });
 
+=======
+        DB::transaction(function () use($request) {
+        $data = Arr::except($request->validated(), ['user_id']);
+        // create task
+        $task = Task::create($data);
+        $task->generateId('TA');
+        $ref = $task->numero;
+        // Send notification
+        $notification = new TaskNotification($task, ' vous avez été assigner');
+        if (! empty($request->user_id)) {
+            // create task user pivot data
+            $task->users()->attach($request->user_id);
+            // Get notifiable users' emails
+            $users = User::whereIn('id', $request->user_id)->get(['email', 'id']);
+            // $emails = $users->pluck('email')->toArray();
+            Notification::send($users, $notification);
+        }
+        $this->journal("Ajout de la tache N°$ref");
+        toastr()->success('Taches ajouter avec success!');
+        });
+>>>>>>> fce45b969ec21c06ebf7063d5c926e44705ccd16
         return back();
     }
 
