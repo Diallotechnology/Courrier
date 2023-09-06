@@ -25,7 +25,7 @@ return [
         // Accepts route group configuration
         'route' => [
             'prefix' => 'jobs',
-            // 'middleware' => ''
+            // 'middleware' => 'web'
         ],
 
         // Set the monitored jobs count to be displayed per page.

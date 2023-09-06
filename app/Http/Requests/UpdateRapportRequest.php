@@ -30,6 +30,7 @@ class UpdateRapportRequest extends FormRequest
             'type' => 'required|string|max:200',
             'courrier_id' => 'nullable|exists:courriers,id',
             'contenu' => 'nullable|string',
+            'personne_id' => 'required|array|exists:users,id',
             'files' => 'nullable|sometimes|array',
         ];
     }

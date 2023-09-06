@@ -31,6 +31,7 @@ class StoreRapportRequest extends FormRequest
             'courrier_id' => 'nullable|exists:courriers,id',
             'structure_id' => 'required|exists:structures,id',
             'contenu' => 'nullable|string',
+            'personne_id' => 'required|array|exists:users,id',
             'files' => 'nullable|sometimes|array',
         ];
     }

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Rapport;
+use App\Models\Courrier;
+use Illuminate\Support\Arr;
 use App\Helper\DeleteAction;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreRapportRequest;
 use App\Http\Requests\UpdateRapportRequest;
-use App\Models\Courrier;
-use App\Models\Rapport;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 
 class RapportController extends Controller
 {
@@ -25,12 +27,13 @@ class RapportController extends Controller
     public function create(): View
     {
         Auth::user()->can('create', Rapport::class);
-        $user = Auth::user();
-        $courrierQuery = Courrier::with('nature')->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure());
+        $auth = Auth::user();
+        $courrierQuery = Courrier::with('nature')->when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure());
         $courrier = $courrierQuery->latest()->get();
         $type = Rapport::TYPE;
-
-        return view('rapport.create', \compact('courrier', 'type'));
+        $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())
+        ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
+        return view('rapport.create', \compact('courrier', 'type','user'));
     }
 
     /**
@@ -38,13 +41,17 @@ class RapportController extends Controller
      */
     public function store(StoreRapportRequest $request): RedirectResponse
     {
-        $data = Arr::except($request->validated(), ['files']);
+        DB::transaction(function () use ($request) {
+        $data = Arr::except($request->validated(), ['files','personne_id']);
         $rapport = Rapport::create($data);
+        if(!empty($request->input('personne_id'))) {
+            $rapport->utilisateurs()->attach($request->input('personne_id'));
+        }
         $ref = $rapport->generateId('RA');
         $this->file_uplode($request, $rapport);
         $this->journal("Ajout du rapport REF N°$ref");
         toastr()->success('Rapport ajouter avec success!');
-
+        });
         return back();
     }
 
@@ -64,10 +71,12 @@ class RapportController extends Controller
     public function edit(Rapport $rapport): View
     {
         $this->authorize('update', $rapport);
+        $auth = Auth::user();
         $courrier = Courrier::all();
         $type = Rapport::TYPE;
-
-        return view('rapport.update', compact('rapport', 'courrier', 'type'));
+        $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())
+        ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
+        return view('rapport.update', compact('rapport', 'courrier', 'type','user'));
     }
 
     /**
@@ -75,10 +84,15 @@ class RapportController extends Controller
      */
     public function update(UpdateRapportRequest $request, Rapport $rapport): RedirectResponse
     {
-        $rapport->update($request->validated());
+        DB::transaction(function () use ($request, $rapport) {
+        $data = Arr::except($request->validated(), ['files','personne_id']);
+        $rapport->update($data);
+        if(!empty($request->input('personne_id'))) {
+            $rapport->utilisateurs()->sync($request->input('personne_id'));
+        }
         $this->file_uplode($request, $rapport);
         toastr()->success('Rapport mise à jour avec success!');
-
+        });
         return back();
     }
 

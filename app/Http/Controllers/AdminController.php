@@ -66,11 +66,6 @@ class AdminController extends Controller
             ->selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')
             ->orderBy('day')->groupBy('day')->pluck('total_arrriver', 'day');
         $tasks = Task::where('createur_id', Auth::user()->id)->latest()->take(6)->get();
-
-        // $query = Imputation::with('tasks')->where('etat', ImputationEnum::EN_COURS)
-        // ->whereRelation('tasks','etat',TaskEnum::NON_TERMINE)->get();
-        // dd($query);
-        // ->update(['etat' => ImputationEnum::EXPIRE]);
         return view('dashboard', compact('arriver', 'tasks'));
     }
 
@@ -141,12 +136,14 @@ class AdminController extends Controller
     public function rapport(): View
     {
         $user = Auth::user();
-        $structureId = $user->isSuperadmin() ? null : $user->structure();
-        $rows = Rapport::with('structure')->when($user->isSuperadmin(), function ($query) {
-            $query->latest();
-        })->when($structureId, function ($query) {
+        $rows = Rapport::with('structure','user','utilisateurs')
+        ->when(!$user->isSuperadmin(), function ($query) {
             $query->ByStructure();
-        })->latest()->paginate(15);
+         })
+         ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id', $user->id)
+         ->orWhereHas('utilisateurs', fn ($query) => $query->where('user_id', $user->id))
+         )
+         ->latest()->paginate(15);
 
         return view('rapport.index', compact('rows'));
     }

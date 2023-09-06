@@ -24,7 +24,7 @@ class RapportPolicy
      */
     public function view(User $user, Rapport $rapport): bool
     {
-        return true;
+        return $rapport->utilisateurs->contains('id',$user->id) || $user->id === $rapport->user_id;
     }
 
     /**
