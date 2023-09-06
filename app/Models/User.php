@@ -6,16 +6,15 @@ namespace App\Models;
 
 use App\Enum\RoleEnum;
 use App\Helper\DateFormat;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * App\Models\User
@@ -186,7 +185,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, DateFormat;
+    use DateFormat, HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -227,7 +226,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'role' => RoleEnum::class,
     ];
-
 
     /**
      * Get the parent documentable model (Department or SubDepartment).
@@ -276,7 +274,7 @@ class User extends Authenticatable
      */
     public function ParentCheck(User $model): bool
     {
-        return Auth::user()->userable_id === $model->userable_id and Auth::user()->userable_type === $model->userable_type;
+        return $model->userable_id === Auth::user()->userable_id and $model->userable_type === Auth::user()->userable_type;
     }
 
     /**

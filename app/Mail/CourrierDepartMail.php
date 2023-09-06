@@ -5,14 +5,12 @@ namespace App\Mail;
 use App\Models\Depart;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\File;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Mail\Mailables\Attachment;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CourrierDepartMail extends Mailable
 {
@@ -59,7 +57,7 @@ class CourrierDepartMail extends Mailable
                 $pdfFilePath,
                 [
                     'as' => 'laravelia.pdf',
-                    'mime' => 'application/pdf'
+                    'mime' => 'application/pdf',
                 ]
             );
     }
@@ -72,6 +70,6 @@ class CourrierDepartMail extends Mailable
     public function attachments(): array
     {
         // dd($this->depart->folder->documents->pluck('chemin'));
-            return [];
+        return [];
     }
 }

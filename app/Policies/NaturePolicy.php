@@ -40,7 +40,7 @@ class NaturePolicy
      */
     public function update(User $user, Nature $nature): bool
     {
-        return $user->structure() === $nature->structure_id;
+        return $nature->structure_id === $user->structure();
     }
 
     /**
@@ -48,7 +48,7 @@ class NaturePolicy
      */
     public function delete(User $user, Nature $nature): bool
     {
-        return $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $nature->structure_id === $user->structure() && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -56,7 +56,7 @@ class NaturePolicy
      */
     public function restore(User $user, Nature $nature): bool
     {
-        return $user->structure() === $nature->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $nature->structure_id === $user->structure() && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -64,6 +64,6 @@ class NaturePolicy
      */
     public function forceDelete(User $user, Nature $nature): bool
     {
-        return $user->structure() === $nature->structure_id && $user->isAdmin();
+        return $nature->structure_id === $user->structure() && $user->isAdmin();
     }
 }

@@ -47,7 +47,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class History extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     /**
      * The attributes that are mass assignable.

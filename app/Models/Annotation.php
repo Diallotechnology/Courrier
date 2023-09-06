@@ -47,7 +47,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Annotation extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     protected $fillable = ['nom', 'user_id'];
 

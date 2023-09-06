@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Exports\CourrierExport;
 use App\Helper\WithFilter;
@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CourrierArriver extends Component
 {
-    use WithPagination, WithFilter;
+    use WithFilter, WithPagination;
 
     public function ResetFilter(): void
     {

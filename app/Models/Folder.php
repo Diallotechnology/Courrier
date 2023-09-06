@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Folder extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     /**
      * The attributes that are mass assignable.

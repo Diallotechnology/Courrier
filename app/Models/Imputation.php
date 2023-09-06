@@ -81,7 +81,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Imputation extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     protected $casts = [
         'etat' => ImputationEnum::class,

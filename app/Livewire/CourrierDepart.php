@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Exports\DepartExport;
 use App\Helper\WithFilter;
@@ -19,7 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CourrierDepart extends Component
 {
-    use WithPagination, WithFilter;
+    use WithFilter, WithPagination;
 
     public string $initiateur = '';
 

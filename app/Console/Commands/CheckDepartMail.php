@@ -28,8 +28,8 @@ class CheckDepartMail extends Command
     public function handle()
     {
         $currentTime = now();
-        $depart = Depart::with('correspondants','nature','initiateur','courrier','structure')->where('date', '<=', $currentTime)->get();
-        $depart->each(function ($row)  {
+        $depart = Depart::with('correspondants', 'nature', 'initiateur', 'courrier', 'structure')->where('date', '<=', $currentTime)->get();
+        $depart->each(function ($row) {
             // send correspondant mail notification
             DepartMailJob::dispatch($row->correspondants->pluck('email'), $row);
         });

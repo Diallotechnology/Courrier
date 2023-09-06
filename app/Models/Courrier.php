@@ -108,7 +108,7 @@ use Illuminate\Support\Carbon;
  */
 class Courrier extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     /**
      * The attributes that are mass assignable.

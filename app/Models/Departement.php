@@ -76,7 +76,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class Departement extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     /**
      * The attributes that are mass assignable.

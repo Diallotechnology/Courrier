@@ -24,7 +24,7 @@ class SubDepartementPolicy
      */
     public function view(User $user, SubDepartement $subDepartement): bool
     {
-        return $user->structure() === $subDepartement->departement->structure_id && $user->isAdmin();
+        return $subDepartement->departement->structure_id === $user->structure() && $user->isAdmin();
     }
 
     /**
@@ -48,7 +48,7 @@ class SubDepartementPolicy
      */
     public function update(User $user, SubDepartement $subDepartement): bool
     {
-        return $user->structure() === $subDepartement->departement->structure_id && $user->isAdmin();
+        return $subDepartement->departement->structure_id === $user->structure() && $user->isAdmin();
     }
 
     /**
@@ -56,7 +56,7 @@ class SubDepartementPolicy
      */
     public function delete(User $user, SubDepartement $subDepartement): bool
     {
-        return $user->structure() === $subDepartement->departement->structure_id && $user->isAdmin();
+        return $subDepartement->departement->structure_id === $user->structure() && $user->isAdmin();
     }
 
     /**
@@ -64,7 +64,7 @@ class SubDepartementPolicy
      */
     public function restore(User $user, SubDepartement $subDepartement): bool
     {
-        return $user->structure() === $subDepartement->departement->structure_id && $user->isAdmin();
+        return $subDepartement->departement->structure_id === $user->structure() && $user->isAdmin();
     }
 
     /**
@@ -72,6 +72,6 @@ class SubDepartementPolicy
      */
     public function forceDelete(User $user, SubDepartement $subDepartement): bool
     {
-        return $user->structure() === $subDepartement->departement->structure_id && $user->isAdmin();
+        return $subDepartement->departement->structure_id === $user->structure() && $user->isAdmin();
     }
 }

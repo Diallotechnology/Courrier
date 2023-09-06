@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Helper\DeleteAction;
 use App\Http\Requests\StoreDepartementRequest;
-use App\Jobs\DepartMailJob;
 use App\Models\Departement;
 use App\Models\Structure;
 use Auth;

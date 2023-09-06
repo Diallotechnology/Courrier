@@ -55,7 +55,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Nature extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     protected $fillable = ['nom', 'structure_id'];
 

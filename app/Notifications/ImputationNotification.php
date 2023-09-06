@@ -4,10 +4,8 @@ namespace App\Notifications;
 
 use App\Models\Imputation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Notification;
 
 class ImputationNotification extends Notification implements ShouldQueue
 {
@@ -30,7 +28,6 @@ class ImputationNotification extends Notification implements ShouldQueue
     {
         return ['database'];
     }
-
 
     /**
      * Get the array representation of the notification.

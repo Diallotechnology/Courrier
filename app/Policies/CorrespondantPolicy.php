@@ -48,7 +48,7 @@ class CorrespondantPolicy
      */
     public function update(User $user, Correspondant $correspondant): bool
     {
-        return $user->structure() === $correspondant->structure_id;
+        return $correspondant->structure_id === $user->structure();
     }
 
     /**
@@ -56,7 +56,7 @@ class CorrespondantPolicy
      */
     public function delete(User $user, Correspondant $correspondant): bool
     {
-        return $user->structure() === $correspondant->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $correspondant->structure_id === $user->structure() && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -64,7 +64,7 @@ class CorrespondantPolicy
      */
     public function restore(User $user, Correspondant $correspondant): bool
     {
-        return $user->structure() === $correspondant->structure_id && $user->isAdmin() || $user->isSuperuser();
+        return $correspondant->structure_id === $user->structure() && $user->isAdmin() || $user->isSuperuser();
     }
 
     /**
@@ -72,6 +72,6 @@ class CorrespondantPolicy
      */
     public function forceDelete(User $user, Correspondant $correspondant): bool
     {
-        return $user->structure() === $correspondant->structure_id && $user->isAdmin();
+        return $correspondant->structure_id === $user->structure() && $user->isAdmin();
     }
 }

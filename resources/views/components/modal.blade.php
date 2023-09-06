@@ -1,4 +1,4 @@
-@props(['title', 'lancher' => 'modal', 'size' => '',])
+@props(['title', 'lancher' => 'modal', 'size' => ''])
 
 <div {{ $attributes->merge(['class' => 'modal modal-blur fade']) }} id="{{ $lancher }}" tabindex="-1" role="dialog"
     aria-hidden="true" data-bs-backdrop="static">

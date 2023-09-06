@@ -80,7 +80,7 @@ use Illuminate\Support\Carbon;
  */
 class Task extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     /**
      * The attributes that are mass assignable.

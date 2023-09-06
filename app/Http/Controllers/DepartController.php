@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Depart;
-use App\Models\Nature;
-use App\Models\Courrier;
-use App\Jobs\DepartMailJob;
 use App\Helper\DeleteAction;
-use App\Models\Correspondant;
-use App\Mail\CourrierDepartMail;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreDepartRequest;
 use App\Http\Requests\UpdateDepartRequest;
+use App\Jobs\DepartMailJob;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Depart;
+use App\Models\Nature;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class DepartController extends Controller
 {

@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class CorrespondantExport implements FromQuery, Responsable, WithMapping, WithHeadings
+class CorrespondantExport implements FromQuery, Responsable, WithHeadings, WithMapping
 {
     use Exportable;
 

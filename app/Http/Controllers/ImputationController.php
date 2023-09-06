@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Task;
-use App\Models\User;
+use App\Enum\CourrierEnum;
 use App\Enum\RoleEnum;
 use App\Enum\TaskEnum;
-use App\Models\Courrier;
-use App\Enum\CourrierEnum;
-use App\Models\Annotation;
-use App\Models\Imputation;
-use App\Models\Departement;
 use App\Helper\DeleteAction;
-use App\Mail\ImputationMail;
-use App\Models\SubDepartement;
-use App\Jobs\ImputationMailJob;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\StoreImputationRequest;
-use App\Notifications\ImputationNotification;
 use App\Http\Requests\UpdateImputationRequest;
-use App\Notifications\ImputationMailNotification;
+use App\Jobs\ImputationMailJob;
+use App\Mail\ImputationMail;
+use App\Models\Annotation;
+use App\Models\Courrier;
+use App\Models\Departement;
+use App\Models\Imputation;
+use App\Models\SubDepartement;
+use App\Models\Task;
+use App\Models\User;
+use App\Notifications\ImputationNotification;
+use Auth;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class ImputationController extends Controller
 {
@@ -67,7 +66,7 @@ class ImputationController extends Controller
             Notification::send($users, $notification);
             if ($notif == 1) {
                 $notification = new ImputationMail($imputation, "Vous avez été imputé d'un nouveau courrier");
-                ImputationMailJob::dispatch($notification,$users)->afterCommit();
+                ImputationMailJob::dispatch($notification, $users)->afterCommit();
             }
 
         }
@@ -78,33 +77,34 @@ class ImputationController extends Controller
      */
     public function store(StoreImputationRequest $request): RedirectResponse
     {
-        $annotationId = $request->input('annotation_id');
-        $departementIds = $request->input('departement_id');
-        $subdepartementIds = $request->input('subdepartement_id');
-        $notif = $request->input('notif');
+        DB::transaction(function () use ($request) {
+            $annotationId = $request->input('annotation_id');
+            $departementIds = $request->input('departement_id');
+            $subdepartementIds = $request->input('subdepartement_id');
+            $notif = $request->input('notif');
 
-        $item = Imputation::create($request->except(['annotation_id', 'departement_id', 'subdepartement_id', 'notif']));
-        $item->generateId('IMP');
-        $ref = $item->numero;
-        if (! empty($annotationId) && ! empty($departementIds) && ! empty($subdepartementIds)) {
-            // Save departements pivot value
-            $item->departements()->attach($departementIds);
-            $item->subdepartements()->attach($subdepartementIds);
-            // Save annotations pivot value
-            $item->annotations()->attach($annotationId);
-            // Update courrier status
-            if ($item->courrier->Register()) {
-                $item->courrier->update(['etat' => CourrierEnum::IMPUTE]);
+            $item = Imputation::create($request->except(['annotation_id', 'departement_id', 'subdepartement_id', 'notif']));
+            $item->generateId('IMP');
+            $ref = $item->numero;
+            if (! empty($annotationId) && ! empty($departementIds) && ! empty($subdepartementIds)) {
+                // Save departements pivot value
+                $item->departements()->attach($departementIds);
+                $item->subdepartements()->attach($subdepartementIds);
+                // Save annotations pivot value
+                $item->annotations()->attach($annotationId);
+                // Update courrier status
+                if ($item->courrier->Register()) {
+                    $item->courrier->update(['etat' => CourrierEnum::IMPUTE]);
+                }
+                // Create tasks for imputation
+                $this->createTasksForImputation($item, $request->input('delai'), $annotationId);
+                // Get notifiable users' emails
+                $this->sendImputationNotification($item, $notif, $departementIds, $subdepartementIds);
+                $ref = $item->courrier->numero;
+                $this->history($item->courrier->id, 'Impuatation', "Imputé le courrier arrivé le N°$ref");
+                toastr()->success('Imputation ajoutée avec succès!');
             }
-
-            // Create tasks for imputation
-            $this->createTasksForImputation($item, $request->input('delai'), $annotationId);
-            // Get notifiable users' emails
-            $this->sendImputationNotification($item, $notif, $departementIds, $subdepartementIds);
-            $ref = $item->courrier->numero;
-            $this->history($item->courrier->id, 'Impuatation', "Imputé le courrier arrivé le N°$ref");
-            toastr()->success('Imputation ajoutée avec succès!');
-        }
+        });
 
         return back();
     }
@@ -115,6 +115,7 @@ class ImputationController extends Controller
     public function show(Imputation $imputation)
     {
         $this->authorize('view', $imputation);
+
         return view('imputation.show', compact('imputation'));
     }
 
@@ -124,6 +125,7 @@ class ImputationController extends Controller
     public function edit(Imputation $imputation): View
     {
         $this->authorize('update', $imputation);
+
         $user = Auth::user();
         $courrier = Courrier::when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->latest('id')->get(['id', 'numero', 'reference', 'date']);
@@ -155,29 +157,31 @@ class ImputationController extends Controller
      */
     public function update(UpdateImputationRequest $request, Imputation $imputation): RedirectResponse
     {
-        if (! empty($request->departement_id) && ! empty($request->subdepartement_id) && ! empty($request->annotation_id)) {
-            $imputation->update($request->except(['annotation_id', 'departement_id', 'subdepartement_id']));
-            $imputation->annotations()->sync($request->input('annotation_id'));
-            $imputation->departements()->sync($request->input('departement_id'));
-            $imputation->subdepartements()->sync($request->input('subdepartement_id'));
+        DB::transaction(function () use ($request, $imputation) {
+            if (! empty($request->departement_id) && ! empty($request->subdepartement_id) && ! empty($request->annotation_id)) {
+                $imputation->update($request->except(['annotation_id', 'departement_id', 'subdepartement_id']));
+                $imputation->annotations()->sync($request->input('annotation_id'));
+                $imputation->departements()->sync($request->input('departement_id'));
+                $imputation->subdepartements()->sync($request->input('subdepartement_id'));
 
-            $missingAnnotationIds = collect($request->input('annotation_id'))->diff($imputation->annotations->pluck('id'))->toArray();
-            $missingDepartementIds = collect($request->input('departement_id'))->diff($imputation->departements->pluck('id'))->toArray();
-            $missingSubDepartementIds = collect($request->input('subdepartement_id'))->diff($imputation->subdepartements->pluck('id'))->toArray();
+                $missingAnnotationIds = collect($request->input('annotation_id'))->diff($imputation->annotations->pluck('id'))->toArray();
+                $missingDepartementIds = collect($request->input('departement_id'))->diff($imputation->departements->pluck('id'))->toArray();
+                $missingSubDepartementIds = collect($request->input('subdepartement_id'))->diff($imputation->subdepartements->pluck('id'))->toArray();
 
-            // Create tasks for imputation
-            $this->createTasksForImputation($imputation, $request->input('delai'), $missingAnnotationIds);
+                // Create tasks for imputation
+                $this->createTasksForImputation($imputation, $request->input('delai'), $missingAnnotationIds);
 
-            // Get notifiable users' emails
-            $this->sendImputationNotification($imputation, $request->input('notif'), $missingDepartementIds, $missingSubDepartementIds);
+                // Get notifiable users' emails
+                $this->sendImputationNotification($imputation, $request->input('notif'), $missingDepartementIds, $missingSubDepartementIds);
 
-            if (! empty($missingDepartementIds)) {
-                $ref = $imputation->numero;
-                $this->history($imputation->courrier->id, 'Impuatation', "ajout de nouveaux départements à l'imputation N°$ref");
+                if (! empty($missingDepartementIds)) {
+                    $ref = $imputation->numero;
+                    $this->history($imputation->courrier->id, 'Impuatation', "ajout de nouveaux départements à l'imputation N°$ref");
+                }
+
+                toastr()->success('Imputation mise à jour avec succès!');
             }
-
-            toastr()->success('Imputation mise à jour avec succès!');
-        }
+        });
 
         return back();
     }

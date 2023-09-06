@@ -16,7 +16,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\DB;
 
 class InterneController extends Controller
 {
@@ -41,29 +41,15 @@ class InterneController extends Controller
      */
     public function store(StoreInterneRequest $request): RedirectResponse
     {
-        // foreach ($request->destinataire_id as $value) {
-        // $itemData = [
-        //     "objet" => $request->objet,
-        //     "confidentiel" => $request->confidentiel,
-        //     "priorite" => $request->priorite,
-        //     "contenu" => $request->contenu,
-        //     "etat" => $request->etat,
-        //     "nature_id" => $request->nature_id,
-        //     "user_id" => $request->user_id,
-        //     "destinataire_id" => $value,
-        //     "expediteur_id" => $request->expediteur_id,
-        // ];
-
-        $item = Interne::create($request->validated());
-        $item->generateId('CI');
-        $user = User::findOrFail($request->destinataire_id);
-        $notification = new CourrierNotification($item, 'Vous avez reçu un nouveau courrier interne');
-        // Notification::route('mail', $emails)->notify($notification);
-        $user->notify($notification);
-        // }
-
-        $this->file_uplode($request, $item);
-        toastr()->success('Courrier envoyé avec succès!');
+        DB::transaction(function () use ($request) {
+            $item = Interne::create($request->validated());
+            $item->generateId('CI');
+            $user = User::findOrFail($request->destinataire_id);
+            $notification = new CourrierNotification($item, 'Vous avez reçu un nouveau courrier interne');
+            $user->notify($notification);
+            $this->file_uplode($request, $item);
+            toastr()->success('Courrier envoyé avec succès!');
+        });
 
         return back();
     }

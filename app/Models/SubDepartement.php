@@ -50,7 +50,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class SubDepartement extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     /**
      * The attributes that are mass assignable.

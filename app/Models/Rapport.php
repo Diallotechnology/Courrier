@@ -69,7 +69,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  */
 class Rapport extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     const TYPE = [
         "Rapport d'activité",

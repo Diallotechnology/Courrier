@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
-use Exception;
+use App\Models\Courrier;
 use App\Models\Depart;
+use App\Models\Document;
 use App\Models\Folder;
-use App\Jobs\UplodeJob;
 use App\Models\History;
 use App\Models\Interne;
 use App\Models\Journal;
 use App\Models\Rapport;
-use App\Models\Courrier;
-use App\Models\Document;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 trait DeleteAction
 {
@@ -65,45 +64,44 @@ trait DeleteAction
     public function file_uplode($request, Model $model): void
     {
         try {
-        $type = '';
-        $path = '';
+            $type = '';
+            $path = '';
 
-        if ($model instanceof Interne) {
-            $type = 'Courrier Interne';
-            $path = 'courrier/interne';
-        } elseif ($model instanceof Courrier) {
-            $type = 'Courrier Arrivé';
-            $path = 'courrier/arrive';
-        } elseif ($model instanceof Rapport) {
-            $type = 'Rapport';
-            $path = 'rapport';
-        } elseif ($model instanceof Depart) {
-            $type = 'Courrier Depart';
-            $path = 'courrier/depart';
-        }
-        $folder = new Folder([
-            'nom' => $model->numero,
-            'type' => $type,
-            'structure_id' => Auth::user()->structure(),
-        ]);
-        $model->folder()->save($folder);
-
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $key => $file) {
-                $filename = $file->hashName();
-                $chemin = $file->storeAs($path, $filename, 'public');
-                Document::create([
-                    'libelle' => $file->getClientOriginalName(),
-                    'extension' => $file->extension(),
-                    'user_id' => Auth::user()->id,
-                    'folder_id' => $folder->id,
-                    'chemin' => $chemin,
-                ]);
+            if ($model instanceof Interne) {
+                $type = 'Courrier Interne';
+                $path = 'courrier/interne';
+            } elseif ($model instanceof Courrier) {
+                $type = 'Courrier Arrivé';
+                $path = 'courrier/arrive';
+            } elseif ($model instanceof Rapport) {
+                $type = 'Rapport';
+                $path = 'rapport';
+            } elseif ($model instanceof Depart) {
+                $type = 'Courrier Depart';
+                $path = 'courrier/depart';
             }
-        }
-        }
-        catch (\Throwable $th) {
-            new Exception("file uplode error");
+            $folder = new Folder([
+                'nom' => $model->numero,
+                'type' => $type,
+                'structure_id' => Auth::user()->structure(),
+            ]);
+            $model->folder()->save($folder);
+
+            if ($request->hasFile('files')) {
+                foreach ($request->file('files') as $key => $file) {
+                    $filename = $file->hashName();
+                    $chemin = $file->storeAs($path, $filename, 'public');
+                    Document::create([
+                        'libelle' => $file->getClientOriginalName(),
+                        'extension' => $file->extension(),
+                        'user_id' => Auth::user()->id,
+                        'folder_id' => $folder->id,
+                        'chemin' => $chemin,
+                    ]);
+                }
+            }
+        } catch (\Throwable $th) {
+            new Exception('file uplode error');
         }
     }
 

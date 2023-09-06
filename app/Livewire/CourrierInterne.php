@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Helper\WithFilter;
 use App\Models\Interne;
@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 
 class CourrierInterne extends Component
 {
-    use WithPagination, WithFilter;
+    use WithFilter, WithPagination;
 
     public function ResetFilter(): void
     {

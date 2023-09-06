@@ -26,7 +26,7 @@ class DepartFactory extends Factory
             'priorite' => $this->faker->randomElement(['Normal', 'Urgent']),
             'confidentiel' => $this->faker->randomElement(['OUI', 'NON']),
             'date' => $this->faker->date(),
-            'etat' => 'Enregistré',
+            'etat' => $this->faker->randomElement(['Enregistré', 'Envoyé']),
         ];
     }
 }

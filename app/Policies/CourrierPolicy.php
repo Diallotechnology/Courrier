@@ -58,7 +58,7 @@ class CourrierPolicy
      */
     public function delete(User $user, Courrier $courrier): bool
     {
-        return $user->structure() === $courrier->structure_id && ($user->isAdmin() || $user->isSuperuser() || $user->id === $courrier->user_id && $courrier->Archive());
+        return $courrier->structure_id === $user->structure() && ($user->isAdmin() || $user->isSuperuser() || $user->id === $courrier->user_id && $courrier->Archive());
     }
 
     /**
@@ -66,7 +66,7 @@ class CourrierPolicy
      */
     public function restore(User $user, Courrier $courrier): bool
     {
-        return $user->structure() === $courrier->structure_id && ($user->isAdmin() || $user->isSuperuser());
+        return $courrier->structure_id === $user->structure() && ($user->isAdmin() || $user->isSuperuser());
     }
 
     /**
@@ -74,6 +74,6 @@ class CourrierPolicy
      */
     public function forceDelete(User $user, Courrier $courrier): bool
     {
-        return $user->structure() === $courrier->structure_id && $user->isAdmin();
+        return $courrier->structure_id === $user->structure() && $user->isAdmin();
     }
 }

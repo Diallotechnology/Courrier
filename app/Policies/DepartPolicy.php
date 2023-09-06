@@ -24,7 +24,7 @@ class DepartPolicy
      */
     public function view(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id;
+        return $depart->structure_id === $user->structure();
     }
 
     /**
@@ -48,7 +48,7 @@ class DepartPolicy
      */
     public function update(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id && ($user->isAdmin() || $user->id === $depart->user_id || $user->id === $depart->initiateur_id);
+        return $depart->structure_id === $user->structure() && ($user->isAdmin() || $user->id === $depart->user_id || $user->id === $depart->initiateur_id);
     }
 
     /**
@@ -56,7 +56,7 @@ class DepartPolicy
      */
     public function delete(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
+        return $depart->structure_id === $user->structure() && $user->isAdmin() || $user->id === $depart->user_id;
     }
 
     /**
@@ -64,7 +64,7 @@ class DepartPolicy
      */
     public function restore(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
+        return $depart->structure_id === $user->structure() && $user->isAdmin() || $user->id === $depart->user_id;
     }
 
     /**
@@ -72,6 +72,6 @@ class DepartPolicy
      */
     public function forceDelete(User $user, Depart $depart): bool
     {
-        return $user->structure() === $depart->structure_id && $user->isAdmin() || $user->id === $depart->user_id;
+        return $depart->structure_id === $user->structure() && $user->isAdmin() || $user->id === $depart->user_id;
     }
 }

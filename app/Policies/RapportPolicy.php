@@ -48,7 +48,7 @@ class RapportPolicy
      */
     public function update(User $user, Rapport $rapport): bool
     {
-        return $user->structure() === $rapport->structure_id && $user->id === $rapport->user_id;
+        return $rapport->structure_id === $user->structure() && $user->id === $rapport->user_id;
     }
 
     /**
@@ -56,7 +56,7 @@ class RapportPolicy
      */
     public function delete(User $user, Rapport $rapport): bool
     {
-        return $user->structure() === $rapport->structure_id && $user->id === $rapport->user_id;
+        return $rapport->structure_id === $user->structure() && $user->id === $rapport->user_id;
     }
 
     /**
@@ -64,7 +64,7 @@ class RapportPolicy
      */
     public function restore(User $user, Rapport $rapport): bool
     {
-        return $user->structure() === $rapport->structure_id && $user->id === $rapport->user_id;
+        return $rapport->structure_id === $user->structure() && $user->id === $rapport->user_id;
     }
 
     /**

@@ -123,7 +123,7 @@
                 <x-filter url="task" :create="App\Models\Task::class">
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
-                            <x-select label="imputation" :required='false' wire:model='imputation'>
+                            <x-select label="imputation" :required='false' wire:model.live='imputation'>
                                 @foreach ($imp as $row)
                                 <option value="{{ $row->id }}">Reference {{ $row->numero }}</option>
                                 @endforeach
@@ -132,21 +132,21 @@
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
-                            <x-select label="Type de tache" :required='false' wire:model='type'>
+                            <x-select label="Type de tache" :required='false' wire:model.live='type'>
                                 <option value="utilisateur">Utilisateur</option>
                                 <option value="imputation">Imputation</option>
                             </x-select>
                         </div>
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
-                        <x-input type="date" label="Date de debut" wire:model='debut' :required='false' />
+                        <x-input type="date" label="Date de debut" wire:model.live='debut' :required='false' />
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
-                        <x-input type="date" label="Date de fin" wire:model='fin' :required='false' />
+                        <x-input type="date" label="Date de fin" wire:model.live='fin' :required='false' />
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
-                            <x-select label="Etat" :required='false' wire:model='etat'>
+                            <x-select label="Etat" :required='false' wire:model.live='etat'>
                                 @foreach (App\Enum\TaskEnum::cases() as $row)
                                 <option value="{{ $row }}">{{ $row }}</option>
                                 @endforeach
@@ -285,11 +285,11 @@
 </div>
 @push('scripts')
 <script>
-    $(document).on('livewire:load', function() {
+    $(document).on('livewire:init', function() {
         $('.select-tags').each(function() {
             var select = new TomSelect(this, {
                 onChange: function(value) {
-                    var modelName = $(this.input).attr('wire:model');
+                    var modelName = $(this.input).attr('wire:model.live');
                     @this.set(modelName, value);
 
                 }

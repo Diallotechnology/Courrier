@@ -66,6 +66,7 @@ class AdminController extends Controller
             ->selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')
             ->orderBy('day')->groupBy('day')->pluck('total_arrriver', 'day');
         $tasks = Task::where('createur_id', Auth::user()->id)->latest()->take(6)->get();
+
         // $query = Imputation::with('tasks')->where('etat', ImputationEnum::EN_COURS)
         // ->whereRelation('tasks','etat',TaskEnum::NON_TERMINE)->get();
         // dd($query);

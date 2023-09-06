@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use App\Helper\DateFormat;
-use App\Models\Correspondant;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * App\Models\Depart
@@ -81,7 +80,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Depart extends Model
 {
-    use HasFactory, DateFormat;
+    use DateFormat, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -157,5 +156,15 @@ class Depart extends Model
     public function structure(): BelongsTo
     {
         return $this->belongsTo(Structure::class);
+    }
+
+    public function Register(): bool
+    {
+        return $this->etat === 'Enregistré';
+    }
+
+    public function Send(): bool
+    {
+        return $this->etat === 'Envoyé';
     }
 }
