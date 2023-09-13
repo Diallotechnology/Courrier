@@ -170,22 +170,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
-    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> --}}
     {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
+    @vite(['resources/js/app.js'])
     <script src="{{ asset('js/main.js') }}"></script>
-    @livewireScripts
-    <script>
-        // Pusher.logToConsole = true;
-        // var pusher = new Pusher('5a62d678ac4e6ca06a81', {
-        // cluster: 'eu'
-        // });
 
-        // var channel = pusher.subscribe('notif-channel');
-        // channel.bind('user-notif', function(data) {
-        //     // toastr()->info(JSON.stringify(data).message);
-        // alert(JSON.stringify(data));
-        // });
-    </script>
+    {{-- <script>
+        window.User = {
+           id: {{ optional(auth()->user())->id }}
+        }
+    </script> --}}
+    @livewireScripts
     @yield('js')
 </body>
 

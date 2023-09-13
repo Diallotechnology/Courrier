@@ -20,6 +20,7 @@
                 <div class="datagrid-title">Type de rapport</div>
                 <div class="datagrid-content">{{ $rapport->type }}</div>
             </div>
+
             <div class="datagrid-item">
                 <div class="datagrid-title">Objet du rapport</div>
                 <div class="datagrid-content">{{ $rapport->objet }}</div>
@@ -28,17 +29,27 @@
                 <div class="datagrid-title">Date de creation</div>
                 <div class="datagrid-content">{{ $rapport->created_at }}</div>
             </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Utilisateurs concernés</div>
+                <div class="datagrid-content">
+                    @forelse ($rapport->utilisateurs as $row)
+                    <x-custom-avatar :row="$row" />
+                    @empty
+                    Tout le monde
+                    @endforelse
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="row mt-2">
     @if ($rapport->folder)
-          @foreach ($rapport->folder->documents as $row)
-            <div class="col-md-3">
-                <x-card-document :row="$row" />
-            </div>
-        @endforeach
+    @foreach ($rapport->folder->documents as $row)
+    <div class="col-md-3">
+        <x-card-document :row="$row" />
+    </div>
+    @endforeach
     @endif
 </div>
 

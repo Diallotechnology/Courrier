@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Enum\CourrierEnum;
 use App\Models\Nature;
 use Livewire\Component;
 use App\Models\Courrier;
@@ -31,14 +32,12 @@ class CourrierArriver extends Component
     public function export()
     {
         return Excel::download(new CourrierExport, 'courrier_arriver.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-        // (new CourrierExport)->queue('courrier_arriver.xlsx');
-        // return toastr()->success('Courrier exporté avec success!');
     }
 
     public function render(): View
     {
         $isSuperadmin = Auth::user()->isSuperadmin();
-        $query = Courrier::with('user', 'nature', 'correspondant', 'structure', 'folder')
+        $query = Courrier::query()->with('user', 'nature', 'correspondant', 'structure', 'folder')
             ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);
@@ -58,10 +57,18 @@ class CourrierArriver extends Component
             ->when($this->etat, function ($query) {
                 $query->where('etat', $this->etat);
             });
+
+            $counts = Courrier::selectRaw('etat, COUNT(*) as count')->where('etat','!=',CourrierEnum::SAVE)
+            ->groupBy('etat')->pluck('count', 'etat');
+            $archive = $counts->get('Archivé');
+            $termine = $counts->get('Terminé');
+            $impute = $counts->get('Imputé');
+
         $rows = $query->latest('id')->paginate(15);
         $correspondant = Correspondant::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
         $type = Nature::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
 
-        return view('livewire.courrier-arriver', compact('rows', 'correspondant', 'type'));
+
+        return view('livewire.courrier-arriver', compact('rows', 'correspondant', 'type','archive','termine','impute'));
     }
 }

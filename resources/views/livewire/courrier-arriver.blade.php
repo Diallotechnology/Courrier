@@ -55,7 +55,7 @@
                                         Total Courrier Traité
                                     </div>
                                     <div class="text-muted">
-                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::TERMINE)) }}
+                                        {{ $termine }}
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                         Total Courrier Imputé
                                     </div>
                                     <div class="text-muted">
-                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::IMPUTE)) }}
+                                        {{ $impute }}
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                                         Total courrier Archivé
                                     </div>
                                     <div class="text-muted">
-                                        {{ count($rows->where('etat',App\Enum\CourrierEnum::ARCHIVE)) }}
+                                        {{ $archive }}
                                     </div>
                                 </div>
                             </div>

@@ -43,7 +43,7 @@ class AdvandcedSearch extends Component
         $rows = new Paginator(new Collection(), null, null);
 
         if ($this->model === 'Arrive') {
-            $rows = Courrier::with('user', 'nature', 'correspondant')
+            $rows = Courrier::with('user', 'nature', 'correspondant','structure')
                 ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
                 ->when($this->reference, fn ($query) => $query->where('reference', $this->reference))
                 ->when($this->numero, fn ($query) => $query->where('numero', $this->numero))
@@ -59,7 +59,7 @@ class AdvandcedSearch extends Component
         }
 
         if ($this->model === 'Depart') {
-            $rows = Depart::with('user', 'nature', 'correspondants')
+            $rows = Depart::with('user', 'nature', 'correspondants','structure')
                 ->when(! $isSuperadmin, fn ($query) => $query->ByStructure())
                 ->when($this->numero, fn ($query) => $query->where('numero', $this->numero))
                 ->when($this->privacy, fn ($query) => $query->where('confidentiel', $this->privacy))

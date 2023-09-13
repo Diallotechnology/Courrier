@@ -14,29 +14,13 @@
             <div class="datagrid-item">
                 <div class="datagrid-title">Expéditeur du courrier</div>
                 <div class="datagrid-content">
-                    <div class="d-flex py-1 align-items-center">
-                        <span class="avatar me-2"
-                            style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $interne->expediteur->name }}')"></span>
-                        <div class="flex-fill">
-                            <div class="font-weight-medium">{{ $interne->expediteur->name }}</div>
-                            <div class="text-muted"><a href="#" class="text-reset">{{ $interne->expediteur->email
-                                    }}</a></div>
-                        </div>
-                    </div>
+                    <x-custom-avatar :row="$interne->expediteur" />
                 </div>
             </div>
             <div class="datagrid-item">
                 <div class="datagrid-title">Destinataire du courrier</div>
                 <div class="datagrid-content">
-                    <div class="d-flex py-1 align-items-center">
-                        <span class="avatar me-2"
-                            style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $interne->destinataire->name }}')"></span>
-                        <div class="flex-fill">
-                            <div class="font-weight-medium">{{ $interne->destinataire->name }}</div>
-                            <div class="text-muted"><a href="#" class="text-reset">{{ $interne->destinataire->email
-                                    }}</a></div>
-                        </div>
-                    </div>
+                    <x-custom-avatar :row="$interne->destinataire" />
                 </div>
             </div>
             <div class="datagrid-item">
@@ -90,11 +74,11 @@
 @endempty
 <div class="row mt-2">
     @if ($interne->folder)
-          @foreach ($interne->folder->documents as $row)
-            <div class="col-md-3">
-                <x-card-document :row="$row" />
-            </div>
-        @endforeach
+    @foreach ($interne->folder->documents as $row)
+    <div class="col-md-3">
+        <x-card-document :row="$row" />
+    </div>
+    @endforeach
     @endif
 </div>
 @can('create',$interne)

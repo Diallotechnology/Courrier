@@ -4,26 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enum\ImputationEnum;
-use App\Enum\TaskEnum;
-use App\Models\Annotation;
-use App\Models\Correspondant;
-use App\Models\Courrier;
-use App\Models\Departement;
-use App\Models\Imputation;
-use App\Models\Journal;
-use App\Models\Licence;
-use App\Models\Nature;
-use App\Models\Price;
-use App\Models\Rapport;
-use App\Models\Structure;
-use App\Models\SubDepartement;
+use Auth;
 use App\Models\Task;
 use App\Models\User;
-use Auth;
+use App\Models\Price;
+use App\Enum\TaskEnum;
+use App\Models\Nature;
+use App\Models\Journal;
+use App\Models\Licence;
+use App\Models\Rapport;
+use App\Models\Courrier;
+use App\Models\Structure;
+use App\Models\Annotation;
+use App\Models\Imputation;
+use App\Models\Departement;
+use App\Enum\ImputationEnum;
+use App\Models\Correspondant;
+use App\Models\SubDepartement;
+use App\Events\RealTimeMessage;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
+use App\Events\RealTimeNotification;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class AdminController extends Controller
 {

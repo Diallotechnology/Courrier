@@ -2,23 +2,25 @@
 
 namespace App\Notifications;
 
-use App\Models\Courrier;
 use App\Models\Interne;
+use App\Models\Courrier;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class CourrierNotification extends Notification
+class CourrierNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private Model $courrier, private string $message)
+    public function __construct(public Model $courrier, public string $message)
     {
-        //
+
     }
 
     /**
@@ -28,7 +30,17 @@ class CourrierNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return ['broadcast','database','mail'];
+    }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     */
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'message' => $this->message
+        ]);
     }
 
 

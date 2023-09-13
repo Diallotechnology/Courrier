@@ -60,6 +60,8 @@ class InterneController extends Controller
     public function show(Interne $interne): View
     {
         $this->authorize('view', $interne);
+        $notification = new CourrierNotification($interne, 'Vous avez reçu un nouveau courrier interne');
+        // User::find(28)->notify($notification);
         if ($interne->Recu()) {
             $interne->update(['etat' => CourrierInterneEnum::READ]);
         }

@@ -2,23 +2,14 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Informations de la tache N° {{ $task->reference }}</h3>
+        <h3 class="card-title">Informations de la tache N° {{ $task->numero }}</h3>
     </div>
     <div class="card-body">
         <div class="datagrid">
             <div class="datagrid-item">
                 <div class="datagrid-title">Utilisateur Initiateur</div>
                 <div class="datagrid-content">
-                    <div class="d-flex py-1 align-items-center">
-                        <span class="avatar me-2"
-                            style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $task->createur->name }}')"></span>
-                        <div class="flex-fill">
-
-                            <div class="font-weight-medium">{{ $task->createur->name }}</div>
-                            <div class="text-muted text-reset">{{ $task->createur->email }}
-                            </div>
-                        </div>
-                    </div>
+                    <x-custom-avatar :row="$task->createur" />
                 </div>
             </div>
             <div class="datagrid-item">

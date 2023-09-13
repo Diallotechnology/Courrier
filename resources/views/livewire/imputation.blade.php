@@ -1,3 +1,132 @@
+<div class="row row-deck row-cards mb-3">
+    <div class="col-12">
+        <div class="row row-cards">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-list-check" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3.5 5.5l1.5 1.5l2.5 -2.5"></path>
+                                        <path d="M3.5 11.5l1.5 1.5l2.5 -2.5"></path>
+                                        <path d="M3.5 17.5l1.5 1.5l2.5 -2.5"></path>
+                                        <path d="M11 6l9 0"></path>
+                                        <path d="M11 12l9 0"></path>
+                                        <path d="M11 18l9 0"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Total Imputations
+                                </div>
+                                <div class="text-muted">
+                                    {{ $rows->total() }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checks"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M7 12l5 5l10 -10"></path>
+                                        <path d="M2 12l5 5m5 -5l5 -5"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Total Imputation Traitée
+                                </div>
+                                <div class="text-muted">
+                                    {{ $termine }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ban"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                        <path d="M5.7 5.7l12.6 12.6"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Total Imputation Expire
+                                </div>
+                                <div class="text-muted">
+                                    {{ $expire }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-loader"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 6l0 -3"></path>
+                                        <path d="M16.25 7.75l2.15 -2.15"></path>
+                                        <path d="M18 12l3 0"></path>
+                                        <path d="M16.25 16.25l2.15 2.15"></path>
+                                        <path d="M12 18l0 3"></path>
+                                        <path d="M7.75 16.25l-2.15 2.15"></path>
+                                        <path d="M6 12l-3 0"></path>
+                                        <path d="M7.75 7.75l-2.15 -2.15"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    Total Imputation en cours
+                                </div>
+                                <div class="text-muted">
+                                    {{ $process }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <x-table :rows="$rows">
     <x-slot name="header">
         <div class="card-header">

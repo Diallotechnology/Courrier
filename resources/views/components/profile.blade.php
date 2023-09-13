@@ -3,11 +3,9 @@
         aria-label="Open user menu">
         <span {{ $attributes->merge(['class' => 'avatar avatar-sm']) }}
             @if (Auth::user()->sexe === "Homme")
-            style="background-image:
-            url('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown')"
+            style="background-image: url('/img/h.svg');"
             @elseif (Auth::user()->sexe === "Femme")
-            style="background-image:
-            url('https://avataaars.io/?avatarStyle=Transparent&topType=LongHairCurly&accessoriesType=Round&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Blue02&eyeType=Surprised&eyebrowType=Default&mouthType=Default&skinColor=DarkBrown')"
+            style="background-image: url('/img/f.svg');"
             @endif
             ></span>
         <div {{ $attributes->merge(['class' => 'd-none d-xl-block ps-2']) }} >

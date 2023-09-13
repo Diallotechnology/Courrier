@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Enum\ImputationEnum;
+use App\Models\Structure;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enum\ImputationEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Imputation
@@ -99,6 +100,15 @@ class Imputation extends Model
         'etat',
     ];
 
+    /**
+     * Get the structure that owns the Imputation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function structure(): BelongsTo
+    {
+        return $this->belongsTo(Structure::class);
+    }
     /**
      * Get the courrier that owns the Imputation
      */
