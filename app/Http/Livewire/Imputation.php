@@ -64,7 +64,7 @@ class Imputation extends Component
             });
         $rows = $query->latest('id')->paginate(15);
         $arriver = Courrier::whereNot('etat', CourrierEnum::ARCHIVE)
-            ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->latest('numero')->get(['id', 'numero', 'date']);
+            ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())->latest('id')->get(['id', 'numero', 'date']);
         $id = $user->departements->where('pivot.type', 'division')->pluck('id')->toArray();
         $subid = $user->departements->where('pivot.type', 'sub_division')->pluck('id')->toArray();
         $divisionQuery = Departement::query();

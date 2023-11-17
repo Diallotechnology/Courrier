@@ -101,7 +101,7 @@ class Rapport extends Model
      *
      * @var array
      */
-    protected $fillable = ['objet', 'user_id', 'type', 'contenu', 'courrier_id', 'structure_id'];
+    protected $fillable = ['objet', 'user_id', 'type', 'contenu', 'courrier_id', 'structure_id','numero'];
 
     /**
      * Get the user that owns the Rapport

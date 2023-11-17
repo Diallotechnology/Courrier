@@ -47,7 +47,8 @@ class RapportController extends Controller
         if(!empty($request->input('personne_id'))) {
             $rapport->utilisateurs()->attach($request->input('personne_id'));
         }
-        $ref = $rapport->generateId('RA');
+        $rapport->generateId('RA');
+        $ref = $rapport->numero;
         $this->file_uplode($request, $rapport);
         $this->journal("Ajout du rapport REF N°$ref");
         toastr()->success('Rapport ajouter avec success!');

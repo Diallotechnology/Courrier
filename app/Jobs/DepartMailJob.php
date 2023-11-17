@@ -21,7 +21,7 @@ class DepartMailJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private Collection $correspondants, private Depart $depart)
+    public function __construct(private array $correspondants, private Depart $depart)
     {
         //
     }
@@ -32,7 +32,8 @@ class DepartMailJob implements ShouldQueue
     public function handle(): void
     {
         $depart = $this->depart;
-        $correspondantEmails = $this->correspondants;
+        $test = new Collection($this->correspondants);
+        $correspondantEmails = $test;
         $correspondantEmails->each(function ($email) use ($depart) {
             Mail::to($email)->send(new CourrierDepartMail($depart));
         });

@@ -100,7 +100,7 @@ class ImputationController extends Controller
                 // Get notifiable users' emails
                 $this->sendImputationNotification($item, $notif, $departementIds, $subdepartementIds);
                 $ref = $item->courrier->numero;
-                $this->history($item->courrier->id, 'Impuatation', "Imputé le courrier arrivé le N°$ref");
+                $this->history($item->courrier->id, 'Imputation', "Imputé le courrier arrivé le N°$ref");
                 toastr()->success('Imputation ajoutée avec succès!');
             }
         });

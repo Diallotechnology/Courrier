@@ -104,7 +104,6 @@
                     </a>
                 </h1>
                 <div class="navbar-nav flex-row d-lg-none">
-
                     <div class="d-none d-lg-flex">
                         <x-notification />
                     </div>
@@ -128,7 +127,6 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <div>
-
                     </div>
                 </div>
             </div>
@@ -170,15 +168,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
-    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
-    @vite(['resources/js/app.js'])
     <script src="{{ asset('js/main.js') }}"></script>
-
-    {{-- <script>
-        window.User = {
-           id: {{ optional(auth()->user())->id }}
-        }
-    </script> --}}
     @livewireScripts
     @yield('js')
 </body>
