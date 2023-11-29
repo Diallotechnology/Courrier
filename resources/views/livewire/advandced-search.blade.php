@@ -29,13 +29,14 @@
                         </div>
                     </div>
                     <div class="mb-3 col-md-4">
-                        <div wire:ignore>
+                        {{-- <div wire:ignore> --}}
                             <x-select label="Correspondant" wire:model="expediteur">
                                 @foreach ($correspondant as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
                             </x-select>
-                        </div>
+                            {{--
+                        </div> --}}
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
