@@ -5,7 +5,7 @@
                 <x-filter url="document" :create="App\Models\Document::class">
                     <div class="col-md-4 mb-3">
                         <div wire:ignore>
-                            <select class="form-select select-tags" wire:model='type'>
+                            <select class="form-select select-tags" wire:model.live='type'>
                                 <option selected disabled value="">Trier par type</option>
                                 <option value="pdf">pdf</option>
                                 <option value="png">png</option>
@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <div wire:ignore>
-                            <select class="form-select select-tags" wire:model='date'>
+                            <select class="form-select select-tags" wire:model.live='date'>
                                 <option selected disabled value="">Trier par date</option>
                                 <option value="desc">le plus recent</option>
                                 <option value="asc">le plus ancien</option>
@@ -41,7 +41,7 @@
         </thead>
         <tbody>
             @foreach ($rows as $row)
-            <tr>
+            <tr wire:key="{{ $row->id }}">
                 <td>{{ $row->id }}</td>
                 <td>
                     <x-user-avatar :row="$row" />

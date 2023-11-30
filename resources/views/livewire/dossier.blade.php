@@ -14,7 +14,7 @@
                                 <path d="M21 21l-6 -6" />
                             </svg>
                         </span>
-                        <input class="form-control" type="text" wire:model.debounce='search' id="search-input"
+                        <input class="form-control" type="text" wire:model.live.debounce='search' id="search-input"
                             placeholder="Recherche…" aria-label="Search in website">
                     </div>
 
@@ -22,7 +22,7 @@
             </div>
             <div wire:ignore>
                 <div class="mx-2">
-                    <select class="form-select select-tags" wire:model='type' value="">
+                    <select class="form-select select-tags" wire:model.live='type' value="">
                         <option selected disabled value="">Trier par type de dossier</option>
                         <option value="Courrier Arrivé">Courrier Arrivé</option>
                         <option value="Courrier Depart">Courrier Depart</option>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div wire:ignore>
-                <select class="form-select select-tags" wire:model='date' value="">
+                <select class="form-select select-tags" wire:model.live='date' value="">
                     <option selected disabled value="">Trier par date</option>
                     <option value="desc">le plus recent</option>
                     <option value="asc">le plus ancien</option>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             @forelse ($rows as $row)
-            <div class="col-md-3">
+            <div wire:key="{{ $row->id }}" class="col-md-3">
                 <a class="nav-link" style="display: initial;" href="{{ route('folder.show', ['folder' => $row]) }}">
                     <div class="card text-center mb-2 shadow">
                         <div class="card-body file">

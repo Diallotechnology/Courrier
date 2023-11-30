@@ -11,7 +11,6 @@
     <meta name="description" content="géré plus facilement vos courrier">
 
     <!-- CSS files -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 
@@ -21,7 +20,6 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.30.0/tabler-icons.min.css">
-    @livewireStyles
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -169,8 +167,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/tinymce/tinymce.min.js" defer>
     </script>
     <script src="{{ asset('js/main.js') }}"></script>
-    @livewireScripts
-    @yield('js')
 </body>
 
 </html>

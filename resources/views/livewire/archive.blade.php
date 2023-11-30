@@ -5,7 +5,7 @@
                 <x-filter url="arriver">
                     <div class="mb-3 col-sm-4 col-md-2">
                         <div wire:ignore>
-                            <x-select label="Nature de courrier" wire:model='nature'>
+                            <x-select label="Nature de courrier" wire:model.live='nature'>
                                 @foreach ($type as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
@@ -15,7 +15,7 @@
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
                         <div wire:ignore>
-                            <x-select label="Correspondant" wire:model='expediteur'>
+                            <x-select label="Correspondant" wire:model.live='expediteur'>
                                 @foreach ($correspondant as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
@@ -24,7 +24,7 @@
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
                         <div wire:ignore>
-                            <x-select label="Priorite" wire:model='priority'>
+                            <x-select label="Priorite" wire:model.live='priority'>
                                 <option value="Urgent">Urgent</option>
                                 <option value="Normal">Normal</option>
                             </x-select>
@@ -32,17 +32,17 @@
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
                         <div wire:ignore>
-                            <x-select label="Confidentialité" wire:model='privacy'>
+                            <x-select label="Confidentialité" wire:model.live='privacy'>
                                 <option value="OUI">OUI</option>
                                 <option value="NON">NON</option>
                             </x-select>
                         </div>
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
-                        <x-input type="date" label="Date d'archivage" wire:model='archive' />
+                        <x-input type="date" label="Date d'archivage" wire:model.live='archive' />
                     </div>
                     <div class="mb-3 col-sm-4 col-md-2">
-                        <x-input type="date" label="Date d'arriver" wire:model='date' />
+                        <x-input type="date" label="Date d'arriver" wire:model.live='date' />
                     </div>
                     <x-slot name="btn"></x-slot>
                 </x-filter>
@@ -67,7 +67,7 @@
         </thead>
         <tbody>
             @forelse ($rows as $row)
-            <tr>
+            <tr wire:key="{{ $row->id }}">
                 <td>{{ $row->id }}</td>
                 <td>{{ $row->structure_view() }}</td>
                 <td>
@@ -109,19 +109,18 @@
         </tbody>
 
     </x-table>
-    @push('scripts')
-    <script>
-        $(document).on('livewire:init', function() {
-                $('.select-tags').each(function() {
-                    var select = new TomSelect(this, {
-                        onChange: function(value) {
-                            var modelName = $(this.input).attr('wire:model');
-                            @this.set(modelName, value);
-                        }
-                    });
-                });
-            });
-    </script>
-    @endpush
-
 </div>
+@script
+<script>
+    document.addEventListener('livewire:init', function () {
+        document.querySelectorAll('.select-tags').forEach(function (select) {
+            var tomSelect = new TomSelect(select, {
+                onChange: function (value) {
+                    var modelName = select.getAttribute('wire:model.live');
+                    @this.set(modelName, value);
+                }
+            });
+        });
+    });
+</script>
+@endscript

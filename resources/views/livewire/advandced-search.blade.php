@@ -5,7 +5,7 @@
                 <div class="row row-cards">
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Type de courrier" wire:model="model">
+                            <x-select label="Type de courrier" wire:model.live="model">
                                 <option value="Arrive">Courrier Arrivé</option>
                                 <option value="Depart">Courrier Depart</option>
                             </x-select>
@@ -13,15 +13,15 @@
                     </div>
                     <div @class(['mb-3 col-md-4', 'd-none'=> $model === "Depart"]) >
                         <x-input type="text" label="Reference du courrier" place="Reference du courrier"
-                            wire:model="reference" />
+                            wire:model.live="reference" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <x-input type="text" label="numero arriver/depart" place="numero arriver ou depart"
-                            wire:model="numero" />
+                            wire:model.live="numero" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Nature du courrier" wire:model="nature">
+                            <x-select label="Nature du courrier" wire:model.live="nature">
                                 @foreach ($type as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
@@ -29,29 +29,28 @@
                         </div>
                     </div>
                     <div class="mb-3 col-md-4">
-                        {{-- <div wire:ignore> --}}
-                            <x-select label="Correspondant" wire:model="expediteur">
+                        <div wire:ignore>
+                            <x-select label="Correspondant" wire:model.live="expediteur">
                                 @foreach ($correspondant as $row)
                                 <option value="{{ $row->id }}">{{ $row->nom }}</option>
                                 @endforeach
                             </x-select>
-                            {{--
-                        </div> --}}
+                        </div>
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Confidentialité" wire:model="privacy">
+                            <x-select label="Confidentialité" wire:model.live="privacy">
                                 <option value="OUI">OUI</option>
                                 <option value="NON">NON</option>
                             </x-select>
                         </div>
                     </div>
                     <div class="mb-3 col-md-4">
-                        <x-input type="date" label="Date d'arriver/départ" wire:model="date" />
+                        <x-input type="date" label="Date d'arriver/départ" wire:model.live="date" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <div wire:ignore>
-                            <x-select label="Priorite" wire:model="priority">
+                            <x-select label="Priorite" wire:model.live="priority">
                                 <option value="Urgent">Urgent</option>
                                 <option value="Normal">Normal</option>
                             </x-select>
@@ -59,7 +58,7 @@
                     </div>
                     <div @class(['mb-3 col-md-4', 'd-none'=> $model === "Depart"])>
                         <div wire:ignore>
-                            <x-select label="Etat" wire:model="etat">
+                            <x-select label="Etat" wire:model.live="etat">
                                 @foreach (App\Enum\CourrierEnum::cases() as $row)
                                 <option value="{{ $row }}">{{ $row }}</option>
                                 @endforeach
@@ -67,10 +66,10 @@
                         </div>
                     </div>
                     <div @class(['mb-3 col-md-4', 'd-none'=> $model === "Depart"])>
-                        <x-input type="date" label="Date de fin traitement" wire:model="fin" />
+                        <x-input type="date" label="Date de fin traitement" wire:model.live="fin" />
                     </div>
                     <div class="mb-3 col-md-4">
-                        <x-input type="date" label="Date d'enregistrement" wire:model="create" />
+                        <x-input type="date" label="Date d'enregistrement" wire:model.live="create" />
                     </div>
                     <div>
                         <button wire:click='ResetFilter' class="btn btn-danger mx-2" type="button">
@@ -114,7 +113,7 @@
         </thead>
         <tbody>
             @forelse ($rows as $row)
-            <tr>
+            <tr wire:key="{{ $row->id }}">
                 <td>{{ $row->id }}</td>
                 <td>
                     <x-user-avatar :row="$row" />
@@ -127,7 +126,7 @@
                     @endif
                     @if ($model === "Depart")
                     @forelse ($row->correspondants as $item)
-                    <div> {{ $item->nom }}</div>
+                    <div wire:key="{{ $item->id }}"> {{ $item->nom }}</div>
                     @empty
                     aucun
                     @endforelse
@@ -172,17 +171,17 @@
         </tbody>
 
     </x-table>
-    @push('scripts')
-    <script>
-        $('.select-tags').each(function() {
-                    var select = new TomSelect(this, {
-                        onChange: function(value) {
-                            var modelName = $(this.input).attr('wire:model');
-                            @this.set(modelName, value);
-                            console.log(value);
-                        }
-                    });
-                });
-    </script>
-    @endpush
 </div>
+@script
+<script>
+    $('.select-tags').each(function() {
+                var select = new TomSelect(this, {
+                    onChange: function(value) {
+                        var modelName = $(this.input).attr('wire:model.live');
+                        @this.set(modelName, value);
+                        console.log(value);
+                    }
+                });
+            });
+</script>
+@endscript

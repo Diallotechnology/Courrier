@@ -26,11 +26,11 @@
                 <path d="M3 7l9 6l9 -6"></path>
             </svg>
             <x-slot name="link">
-                <a class="dropdown-item" href="{{ route('arriver') }}">Arriver</a>
-                <a class="dropdown-item" href="{{ route('depart') }}">Depart</a>
-                <a class="dropdown-item" href="{{ route('interne') }}">Interne</a>
-                <a class="dropdown-item" href="{{ route('suivie') }}">Suivie</a>
-                <a class="dropdown-item" href="{{ route('archive') }}">Archive</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('arriver') }}">Arriver</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('depart') }}">Depart</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('interne') }}">Interne</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('suivie') }}">Suivie</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('archive') }}">Archive</a>
             </x-slot>
         </x-dropdown>
 
@@ -166,11 +166,11 @@
                 <path d="M7 10h3v-3l-3.5 -3.5a6 6 0 0 1 8 8l6 6a2 2 0 0 1 -3 3l-6 -6a6 6 0 0 1 -8 -8l3.5 3.5"></path>
             </svg>
             <x-slot name="link">
-                <a class="dropdown-item" href="{{ route('departement') }}"> Departement</a>
-                <a class="dropdown-item" href="{{ route('subdepartement') }}">Sous departement</a>
-                <a class="dropdown-item" href="{{ route('nature') }}"> Nature</a>
-                <a class="dropdown-item" href="{{ route('correspondant') }}">Correspondant</a>
-                <a class="dropdown-item" href="{{ route('journal') }}">Journal</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('departement') }}"> Departement</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('subdepartement') }}">Sous departement</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('nature') }}"> Nature</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('correspondant') }}">Correspondant</a>
+                <a wire:navigate class="dropdown-item" href="{{ route('journal') }}">Journal</a>
             </x-slot>
         </x-dropdown>
         @if (Auth::user()->isSuperadmin())

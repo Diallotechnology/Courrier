@@ -135,7 +135,7 @@
                 <x-filter url="task" :create="App\Models\Task::class">
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
-                            <x-select label="imputation" wire:model='imputation'>
+                            <x-select label="imputation" wire:model.live='imputation'>
                                 @foreach ($imp as $row)
                                 <option value="{{ $row->id }}">Reference {{ $row->numero }}</option>
                                 @endforeach
@@ -144,21 +144,21 @@
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
-                            <x-select label="Type de tache" wire:model='type'>
+                            <x-select wire:ignore label="Type de tache" wire:model.live='type'>
                                 <option value="utilisateur">Utilisateur</option>
                                 <option value="imputation">Imputation</option>
                             </x-select>
                         </div>
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
-                        <x-input type="date" label="Date de debut" wire:model='debut' />
+                        <x-input type="date" label="Date de debut" wire:model.live='debut' />
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
-                        <x-input type="date" label="Date de fin" wire:model='fin' />
+                        <x-input type="date" label="Date de fin" wire:model.live='fin' />
                     </div>
                     <div class="mb-3 col-sm-4 col-md-3">
                         <div wire:ignore>
-                            <x-select label="Etat" wire:model='etat'>
+                            <x-select label="Etat" wire:model.live='etat'>
                                 @foreach (App\Enum\TaskEnum::cases() as $row)
                                 <option value="{{ $row }}">{{ $row }}</option>
                                 @endforeach
@@ -188,7 +188,7 @@
         </thead>
         <tbody>
             @forelse ($rows as $row)
-            <tr>
+            <tr wire:key='{{ $row->id }}'>
                 <td>{{ $row->id }}</td>
                 <td>
                     <x-custom-avatar :row="$row->createur" />
@@ -301,20 +301,18 @@
         </div>
     </x-modal>
 </div>
-@push('scripts')
+@script
 <script>
     $(document).on('livewire:init', function() {
         $('.select-tags').each(function() {
             var select = new TomSelect(this, {
                 onChange: function(value) {
-                    var modelName = $(this.input).attr('wire:model');
+                    var modelName = $(this.input).attr('wire:model.live');
                     @this.set(modelName, value);
 
                 }
             });
         });
-
     });
-
 </script>
-@endpush
+@endscript

@@ -13,7 +13,6 @@
                     datatable']) }}>
                     {{ $slot }}
                     <h3 id="no-results" class="text-center " style="display:none;">Aucun resultat trouvé.</h3>
-
                 </table>
             </div>
         </div>

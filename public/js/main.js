@@ -100,10 +100,6 @@ function restore(url) {
     );
 }
 
-const loginButton = document.getElementById("loginButton");
-const loader = document.getElementById("loader");
-const loginForm = document.getElementById("loginForm");
-
 (() => {
     "use strict";
 
@@ -116,15 +112,8 @@ const loginForm = document.getElementById("loginForm");
             "submit",
             (event) => {
                 if (!form.checkValidity()) {
-                    event.preventDefault(); // Prevent default form submission only if validation fails
+                    event.preventDefault();
                     event.stopPropagation();
-                } else {
-                    const submitButton = form.querySelector('[type="submit"]');
-                    const loader = form.querySelector(".loader");
-
-                    // Disable submit button and show loader
-                    submitButton.setAttribute("disabled", "disabled");
-                    loader.style.display = "block";
                 }
 
                 form.classList.add("was-validated");
@@ -135,43 +124,43 @@ const loginForm = document.getElementById("loginForm");
 })();
 
 // tom select function
-document.addEventListener("DOMContentLoaded", function () {
-    var el = document.querySelectorAll(".select-tags").forEach((el) => {
-        window.TomSelect &&
-            new TomSelect(el, {
-                copyClassesToDropdown: false,
-                dropdownClass: "dropdown-menu ts-dropdown",
-                optionClass: "dropdown-item",
-                controlInput: "<input>",
-                render: {
-                    item: function (data, escape) {
-                        if (data.customProperties) {
-                            return (
-                                '<div><span class="dropdown-item-indicator">' +
-                                data.customProperties +
-                                "</span>" +
-                                escape(data.text) +
-                                "</div>"
-                            );
-                        }
-                        return "<div>" + escape(data.text) + "</div>";
-                    },
-                    option: function (data, escape) {
-                        if (data.customProperties) {
-                            return (
-                                '<div><span class="dropdown-item-indicator">' +
-                                data.customProperties +
-                                "</span>" +
-                                escape(data.text) +
-                                "</div>"
-                            );
-                        }
-                        return "<div>" + escape(data.text) + "</div>";
-                    },
-                },
-            });
-    });
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//     var el = document.querySelectorAll(".select-tags").forEach((el) => {
+//         window.TomSelect &&
+//             new TomSelect(el, {
+//                 copyClassesToDropdown: false,
+//                 dropdownClass: "dropdown-menu ts-dropdown",
+//                 optionClass: "dropdown-item",
+//                 controlInput: "<input>",
+//                 render: {
+//                     item: function (data, escape) {
+//                         if (data.customProperties) {
+//                             return (
+//                                 '<div><span class="dropdown-item-indicator">' +
+//                                 data.customProperties +
+//                                 "</span>" +
+//                                 escape(data.text) +
+//                                 "</div>"
+//                             );
+//                         }
+//                         return "<div>" + escape(data.text) + "</div>";
+//                     },
+//                     option: function (data, escape) {
+//                         if (data.customProperties) {
+//                             return (
+//                                 '<div><span class="dropdown-item-indicator">' +
+//                                 data.customProperties +
+//                                 "</span>" +
+//                                 escape(data.text) +
+//                                 "</div>"
+//                             );
+//                         }
+//                         return "<div>" + escape(data.text) + "</div>";
+//                     },
+//                 },
+//             });
+//     });
+// });
 
 // datatable search function
 $(document).ready(function () {
