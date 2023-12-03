@@ -13,26 +13,15 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
+<x-table :rows="$rows" url="subdepartement" :create="App\Models\SubDepartement::class">
     <x-slot name="header">
         <div class="card-header">
             <h3 class="card-title">
                 <br> NB: La suppression d'un sous departement entrainera la suppression de ses utlisateurs
             </h3>
         </div>
-        <div class="card-body">
-            <x-filter url="subdepartement" :btn_filter='false' :create="App\Models\SubDepartement::class">
-                <x-slot name="btn">
-                    @can('create',App\Models\SubDepartement::class)
-                    <button class="btn btn-blue" type="button" data-bs-toggle="modal" data-bs-target="#user">
-                        <i class="ti ti-plus"></i>
-                        Utilisateur
-                    </button>
-                    @endcan
-                </x-slot>
-            </x-filter>
-        </div>
     </x-slot>
+
     <thead>
         <tr>
             <th>ID</th>

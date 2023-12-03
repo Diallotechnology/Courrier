@@ -13,15 +13,12 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
+<x-table :rows="$rows" url="user" :create="App\Models\User::class">
     <x-slot name="header">
         <div class="card-header">
             <h3 class="card-title">
                 <br> NB: La suppression d'un utilisateur entrainera la suppression de ses courriers et imputations
             </h3>
-        </div>
-        <div class="card-body border-bottom py-3">
-            <x-filter url="user" :create="App\Models\User::class" />
         </div>
     </x-slot>
     <thead>
@@ -48,15 +45,14 @@
             @endif
             <td>
                 <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2"
-                    @if ($row->sexe === "Homme")
-                    style="background-image:
-                    url('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown')"
-                    @elseif ($row->sexe === "Femme")
-                    style="background-image:
-                    url('https://avataaars.io/?avatarStyle=Transparent&topType=LongHairCurly&accessoriesType=Round&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Blue02&eyeType=Surprised&eyebrowType=Default&mouthType=Default&skinColor=DarkBrown')"
-                    @endif
-                    >
+                    <span class="avatar me-2" @if ($row->sexe === "Homme")
+                        style="background-image:
+                        url('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown')"
+                        @elseif ($row->sexe === "Femme")
+                        style="background-image:
+                        url('https://avataaars.io/?avatarStyle=Transparent&topType=LongHairCurly&accessoriesType=Round&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Blue02&eyeType=Surprised&eyebrowType=Default&mouthType=Default&skinColor=DarkBrown')"
+                        @endif
+                        >
                         <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
                             true])></span>
                     </span>
@@ -65,7 +61,8 @@
                         <div class="text-muted"><a href="#" class="text-reset">{{ $row->email }}</a></div>
                     </div>
                 </div>
-                {{-- <x-custom-avatar :row="$row" /> --}}
+                {{--
+                <x-custom-avatar :row="$row" /> --}}
             </td>
             </td>
             <td>{{ $row->sexe }}</td>

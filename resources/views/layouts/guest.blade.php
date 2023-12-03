@@ -36,7 +36,7 @@
         </div>
         <!-- Libs JS -->
     </body>
-    <script>
+    {{-- <script>
         // boostrap validation js function
 (() => {
     "use strict";
@@ -60,7 +60,7 @@
         );
     });
 })();
-    </script>
+    </script> --}}
 </body>
 
 </html>

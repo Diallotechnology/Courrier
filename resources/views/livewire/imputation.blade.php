@@ -127,63 +127,57 @@
             </div>
         </div>
     </div>
-    <x-table :rows="$rows">
+    <x-table :rows="$rows" url="imputation" :create="App\Models\Imputation::class">
         <x-slot name="header">
             <div class="card-header">
                 <h3 class="card-title">
                     <br> NB: La suppression d'une imputation entrainera la suppression de tous les elements lié
                 </h3>
             </div>
-            <div class="card-body">
-                <x-filter url="imputation" :create="App\Models\Imputation::class">
-                    <div class="mb-3  col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Courrier arrivé" wire:model.live='courrier'>
-                                @foreach ($arriver as $row)
-                                <option value="{{ $row->id }}">N/A {{ $row->reference }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Priorite" wire:model.live='priority'>
-                                <option value="Urgent">Urgent</option>
-                                <option value="Normal">Normal</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Etat" wire:model.live='etat'>
-                                @foreach (App\Enum\ImputationEnum::cases() as $row)
-                                <option value="{{ $row }}">{{ $row }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <x-input type="date" label="Delai de traitement" wire:model.live='delai' />
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <x-input type="date" label="Date de fin traitement" wire:model.live='fin' />
-                        <x-input type="date" label="Delai de traitement" wire:model.live='delai' />
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <x-input type="date" label="Date de fin traitement" wire:model.live='fin' />
-                    </div>
-                    <x-slot name="btn">
-                        <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="ti ti-database-export"></i>
-                            Exporté
-                        </button>
-                        <div class="dropdown-menu" style="">
-                            <button wire:click='export' class="dropdown-item">Excel</button>
-                        </div>
-                    </x-slot>
-                </x-filter>
+        </x-slot>
+        <x-slot name="filter">
+            <div class="col-sm-4 col-md-3">
+                <div wire:ignore>
+                    <x-select label="Courrier arrivé" wire:model.live='courrier'>
+                        @foreach ($arriver as $row)
+                        <option value="{{ $row->id }}">N/A {{ $row->reference }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
             </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Priorite" wire:model.live='priority'>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Normal">Normal</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Etat" wire:model.live='etat'>
+                        @foreach (App\Enum\ImputationEnum::cases() as $row)
+                        <option value="{{ $row }}">{{ $row }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <x-input type="date" label="Delai de traitement" wire:model.live='delai' />
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <x-input type="date" label="Date de fin traitement" wire:model.live='fin' />
+            </div>
+            <x-slot name="btn">
+                <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="ti ti-database-export"></i>
+                    Exporté
+                </button>
+                <div class="dropdown-menu" style="">
+                    <button wire:click='export' class="dropdown-item">Excel</button>
+                </div>
+            </x-slot>
         </x-slot>
         <thead>
             <tr>
@@ -322,17 +316,3 @@
         </div>
     </x-modal>
 </div>
-@script
-<script>
-    $(document).on('livewire:init', function() {
-        $('.select-tags').each(function() {
-            var select = new TomSelect(this, {
-                onChange: function(value) {
-                    var modelName = $(this.input).attr('wire:model.live');
-                    @this.set(modelName, value);
-                }
-            });
-        });
-    });
-</script>
-@endscript

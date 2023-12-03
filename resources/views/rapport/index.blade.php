@@ -13,20 +13,16 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-body">
-            <x-filter url="rapport" :create="false" :btn_filter="false">
-                <x-slot name="btn">
-                    @can('create',App\Models\Rapport::class)
-                    <a href="{{ route('rapport.create') }}" class="btn btn-primary mx-2" role="button">
-                        <i class="ti ti-plus"></i>
-                        Nouveau
-                    </a>
-                    @endcan
-                </x-slot>
-            </x-filter>
-        </div>
+<x-table :rows="$rows" url="rapport" :create="false">
+    <x-slot name="filter">
+        <x-slot name="btn">
+            @can('create',App\Models\Rapport::class)
+            <a href="{{ route('rapport.create') }}" class="btn btn-primary mx-2" role="button">
+                <i class="ti ti-plus"></i>
+                Nouveau
+            </a>
+            @endcan
+        </x-slot>
     </x-slot>
     <thead>
         <tr>

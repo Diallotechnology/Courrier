@@ -14,11 +14,6 @@
 @endsection
 @section('content')
 <x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-body">
-            <x-filter :create="false" />
-        </div>
-    </x-slot>
     <thead>
         <tr>
             <th>ID</th>

@@ -135,7 +135,6 @@
             <button class="btn btn-primary" type="submit">Envoyé</button>
         </div>
     </form>
-
 </div>
 @endcan
 @endsection

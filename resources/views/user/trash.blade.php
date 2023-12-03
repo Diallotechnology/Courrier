@@ -14,12 +14,7 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-body">
-            <x-filter trash="user" :create="false" />
-        </div>
-    </x-slot>
+<x-table :rows="$rows" trash="user" :create="false">
     <thead>
         <tr>
             <th>ID</th>
@@ -38,7 +33,8 @@
             <td>{{ $row->id }}</td>
             <td>
                 <div class="d-flex py-1 align-items-center">
-                    <span class="avatar me-2" style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')">
+                    <span class="avatar me-2"
+                        style="background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $row->name }}')">
                         <span @class(['badge me-1', 'bg-danger'=> $row->etat == false, 'bg-success'=> $row->etat ==
                             true])></span>
                     </span>

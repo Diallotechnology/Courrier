@@ -1,73 +1,69 @@
 <div>
-    <x-table :rows="$rows">
-        <x-slot name="header">
-            <div class="card-body">
-                <x-filter url="depart" :create="App\Models\Depart::class">
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Nature de courrier" wire:model.live='nature'>
-                                @foreach ($type as $row)
-                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Initiateur" wire:model.live='initiateur'>
-                                @foreach ($user as $key => $row)
-                                <optgroup label="Departement {{ $key }}">
-                                    @foreach ($row as $item)
-                                    <option
-                                        data-custom-properties="&lt;span class=&quot;avatar avatar-xs&quot;  style=&quot;background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $item->name }}')&quot;&gt;&lt;/span&gt;"
-                                        value="{{ $item->id }}">{{ $item->email }}</option>
-                                    @endforeach
-                                </optgroup>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Correspondant" wire:model.live='expediteur'>
-                                @foreach ($correspondant as $row)
-                                <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Priorite" wire:model.live='priority'>
-                                <option value="Urgent">Urgent</option>
-                                <option value="Normal">Normal</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Confidentialité" wire:model.live='privacy'>
-                                <option value="OUI">OUI</option>
-                                <option value="NON">NON</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <x-input type="date" label="Date depart" wire:model.live='date' />
-                    </div>
-
-                    <x-slot name="btn">
-                        <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="ti ti-database-export"></i>
-                            Exporté
-                        </button>
-                        <div class="dropdown-menu" style="">
-                            <button wire:click='export' class="dropdown-item">Excel</button>
-                        </div>
-                    </x-slot>
-                </x-filter>
+    <x-table :rows="$rows" url="depart" :create="App\Models\Depart::class">
+        <x-slot name="filter">
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Nature de courrier" wire:model.live='nature'>
+                        @foreach ($type as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
             </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Initiateur" wire:model.live='initiateur'>
+                        @foreach ($user as $key => $row)
+                        <optgroup label="Departement {{ $key }}">
+                            @foreach ($row as $item)
+                            <option
+                                data-custom-properties="&lt;span class=&quot;avatar avatar-xs&quot;  style=&quot;background-image: url('https://ui-avatars.com/api/?background=random&bold=true&name={{ $item->name }}')&quot;&gt;&lt;/span&gt;"
+                                value="{{ $item->id }}">{{ $item->email }}</option>
+                            @endforeach
+                        </optgroup>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Correspondant" wire:model.live='expediteur'>
+                        @foreach ($correspondant as $row)
+                        <option value="{{ $row->id }}">{{ $row->prenom }} {{ $row->nom }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Priorite" wire:model.live='priority'>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Normal">Normal</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Confidentialité" wire:model.live='privacy'>
+                        <option value="OUI">OUI</option>
+                        <option value="NON">NON</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <x-input type="date" label="Date depart" wire:model.live='date' />
+            </div>
+
+            <x-slot name="btn">
+                <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="ti ti-database-export"></i>
+                    Exporté
+                </button>
+                <div class="dropdown-menu" style="">
+                    <button wire:click='export' class="dropdown-item">Excel</button>
+                </div>
+            </x-slot>
         </x-slot>
         <thead>
             <tr>
@@ -222,17 +218,3 @@
         </div>
     </x-modal>
 </div>
-@script
-<script>
-    $(document).on('livewire:init', function() {
-        $('.select-tags').each(function() {
-            var select = new TomSelect(this, {
-                onChange: function(value) {
-                    var modelName = $(this.input).attr('wire:model.live');
-                    @this.set(modelName, value);
-                }
-            });
-        });
-    });
-</script>
-@endscript

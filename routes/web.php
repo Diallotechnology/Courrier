@@ -1,7 +1,6 @@
 <?php
 
 use App\Enum\RoleEnum;
-use App\Events\RealTimeNotification;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnnotationController;
 use App\Http\Controllers\CorrespondantController;
@@ -22,7 +21,6 @@ use App\Http\Controllers\SubDepartementController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::middleware(['role:'.RoleEnum::ADMIN->value, 'auth'])->group(function () {
     Route::controller(LicenceController::class)->group(function () {
@@ -142,6 +140,7 @@ Route::middleware(['auth', 'licence'])->group(function () {
 
         Route::resource('departement', DepartementController::class)->except('index', 'create');
         Route::resource('subdepartement', SubDepartementController::class)->except('index', 'create');
+
     });
 
     Route::middleware('role:'.RoleEnum::SUPERUSER->value)->group(function () {
@@ -257,5 +256,4 @@ Route::middleware(['auth', 'licence'])->group(function () {
         Route::resource('user', UserController::class)->only('show');
     });
 });
-
 require __DIR__.'/auth.php';

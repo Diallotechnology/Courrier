@@ -7,12 +7,13 @@
                 <div class="col-md-4">
                     <div class="text-center">
                         <div class="mb-3">
-                            <span class="avatar avatar-lg rounded"
-                            @if ($user->sexe === "Homme")
-                            style="background-image: url('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown')"
-                            @elseif ($user->sexe === "Femme")
-                            style="background-image: url('https://avataaars.io/?avatarStyle=Transparent&topType=LongHairCurly&accessoriesType=Round&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Blue02&eyeType=Surprised&eyebrowType=Default&mouthType=Default&skinColor=DarkBrown')"
-                            @endif
+                            <span class="avatar avatar-lg rounded" @if ($user->sexe === "Homme")
+                                style="background-image:
+                                url('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown')"
+                                @elseif ($user->sexe === "Femme")
+                                style="background-image:
+                                url('https://avataaars.io/?avatarStyle=Transparent&topType=LongHairCurly&accessoriesType=Round&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Blue02&eyeType=Surprised&eyebrowType=Default&mouthType=Default&skinColor=DarkBrown')"
+                                @endif
                                 ></span>
                         </div>
                         <div class="card-title mb-1"> {{ $user->name }}</div>
@@ -394,12 +395,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active show" id="tabs-home-9">
                         <h4>Historique des courriers arrivé</h4>
-                        <x-table :rows="$courrier">
-                            <x-slot name="header">
-                                <div class="card-body">
-                                    <x-filter url="arriver" />
-                                </div>
-                            </x-slot>
+                        <x-table :rows="$courrier" url="arriver">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -424,10 +420,10 @@
                                     <td>
                                         <x-user-avatar :row="$row" />
                                     </td>
-                                    <td>{{ $row->structure ? $row->structure->nom : 'inexistant' }}</td>
-                                    <td>{{ $row->nature ? $row->nature->nom : 'inexistant' }}</td>
+                                    <td>{{ $row->structure_view() }}</td>
+                                    <td>{{ $row->nature_view() }}</td>
                                     <td>
-                                        {{ $row->correspondant ? $row->correspondant->nom : 'inexistant' }}
+                                        {{ $row->correspondant_view() }}
                                     </td>
                                     <td>{{ $row->reference }}</td>
                                     <td>
@@ -471,12 +467,7 @@
                     </div>
                     <div class="tab-pane" id="tabs-profile-9">
                         <h4>Historique des imputations</h4>
-                        <x-table :rows="$imputation">
-                            <x-slot name="header">
-                                <div class="card-body">
-                                    <x-filter url="imputation" />
-                                </div>
-                            </x-slot>
+                        <x-table :rows="$imputation" url="imputation">
                             <thead>
                                 <tr>
                                     <th>ID</th>

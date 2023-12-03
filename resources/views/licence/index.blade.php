@@ -13,12 +13,8 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-body">
-            <x-filter :create="App\Models\Licence::class" />
-        </div>
-    </x-slot>
+<x-table :rows="$rows" :create="App\Models\Licence::class">
+
     <thead>
         <tr>
             <th>ID</th>
@@ -48,7 +44,8 @@
             </td>
             <td>{{ $row->created_at }}</td>
             <td>
-                {{-- <x-button-show :row="$row" href="{{ route('licence.show', ['licence' => $row]) }}" /> --}}
+                {{--
+                <x-button-show :row="$row" href="{{ route('licence.show', ['licence' => $row]) }}" /> --}}
                 <x-button-edit :row="$row" href="{{ route('licence.edit', ['licence' => $row]) }}" />
                 <x-button-delete :row="$row" url="{{ url('licence/'.$row->id) }}" />
             </td>

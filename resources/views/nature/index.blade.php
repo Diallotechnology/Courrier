@@ -14,11 +14,6 @@
 @endsection
 @section('content')
 <x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-body">
-            <x-filter url="nature" :create="App\Models\Nature::class" />
-        </div>
-    </x-slot>
     <thead>
         <tr>
             <th>ID</th>

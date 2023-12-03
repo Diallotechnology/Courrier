@@ -14,14 +14,10 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
+<x-table :rows="$rows" trash="annotation" :create="false">
     <x-slot name="header">
         <div class="card-header">
             <h3 class="card-title">Corbeille des annotations</h3>
-        </div>
-        <div class="card-body">
-
-            <x-filter trash="annotation" :create="false" />
         </div>
     </x-slot>
     <thead>
@@ -45,7 +41,6 @@
                 <x-button-delete :row="$row" url="{{ url('annotation/delete/'.$row->id) }}" />
                 @endcan
             </td>
-
         </tr>
         @empty
         <tr>

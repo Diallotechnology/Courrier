@@ -82,7 +82,7 @@
             </div>
         </div>
     </div>
-    <x-table :rows="$rows">
+    <x-table :rows="$rows" :create="false">
         <x-slot name="header">
             <div class="card-header">
                 <h3 class="card-title">
@@ -90,9 +90,6 @@
                     {{ $rows->total() }} resultats trouvés
                     @endif
                 </h3>
-            </div>
-            <div class="card-body">
-                <x-filter :create="false" />
             </div>
         </x-slot>
         <thead>
@@ -172,16 +169,3 @@
 
     </x-table>
 </div>
-@script
-<script>
-    $('.select-tags').each(function() {
-                var select = new TomSelect(this, {
-                    onChange: function(value) {
-                        var modelName = $(this.input).attr('wire:model.live');
-                        @this.set(modelName, value);
-                        console.log(value);
-                    }
-                });
-            });
-</script>
-@endscript

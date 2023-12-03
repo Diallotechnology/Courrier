@@ -129,47 +129,41 @@
             </div>
         </div>
     </div>
-    <x-table :rows="$rows">
-        <x-slot name="header">
-            <div class="card-body">
-                <x-filter url="task" :create="App\Models\Task::class">
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select label="imputation" wire:model.live='imputation'>
-                                @foreach ($imp as $row)
-                                <option value="{{ $row->id }}">Reference {{ $row->numero }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select wire:ignore label="Type de tache" wire:model.live='type'>
-                                <option value="utilisateur">Utilisateur</option>
-                                <option value="imputation">Imputation</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <x-input type="date" label="Date de debut" wire:model.live='debut' />
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <x-input type="date" label="Date de fin" wire:model.live='fin' />
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Etat" wire:model.live='etat'>
-                                @foreach (App\Enum\TaskEnum::cases() as $row)
-                                <option value="{{ $row }}">{{ $row }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <x-slot name="btn">
-
-                    </x-slot>
-                </x-filter>
+    <x-table :rows="$rows" url="task" :create="App\Models\Task::class">
+        <x-slot name="filter">
+            <div class="col-sm-4 col-md-3">
+                <div wire:ignore>
+                    <x-select label="imputation" wire:model.live='imputation'>
+                        @foreach ($imp as $row)
+                        <option value="{{ $row->id }}">Reference {{ $row->numero }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
             </div>
+            <div class="col-sm-4 col-md-3">
+                <div wire:ignore>
+                    <x-select wire:ignore label="Type de tache" wire:model.live='type'>
+                        <option value="utilisateur">Utilisateur</option>
+                        <option value="imputation">Imputation</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Etat" wire:model.live='etat'>
+                        @foreach (App\Enum\TaskEnum::cases() as $row)
+                        <option value="{{ $row }}">{{ $row }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <x-input type="date" label="Date de debut" wire:model.live='debut' />
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <x-input type="date" label="Date de fin" wire:model.live='fin' />
+            </div>
+
         </x-slot>
         <thead>
             <tr>
@@ -301,18 +295,3 @@
         </div>
     </x-modal>
 </div>
-@script
-<script>
-    $(document).on('livewire:init', function() {
-        $('.select-tags').each(function() {
-            var select = new TomSelect(this, {
-                onChange: function(value) {
-                    var modelName = $(this.input).attr('wire:model.live');
-                    @this.set(modelName, value);
-
-                }
-            });
-        });
-    });
-</script>
-@endscript

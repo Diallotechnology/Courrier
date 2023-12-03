@@ -22,4 +22,5 @@ $disabled ? 'disabled' : '' }}
     @endforeach
 </ul>
 @endif
+
 {{ $slot }}

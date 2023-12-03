@@ -127,73 +127,59 @@
             </div>
         </div>
     </div>
-    <x-table :rows="$rows">
-        <x-slot name="header">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <br> NB: La suppression d'un courrier entrainera la suppression de ses imputations
-                </h3>
-            </div>
-            <div class="card-body">
-                <x-filter url="arriver" :create="App\Models\Courrier::class">
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Nature de courrier" wire:model.live='nature'>
-                                @foreach ($type as $row)
-                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                                @endforeach
-                            </x-select>
 
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Correspondant" wire:model.live='expediteur'>
-                                @foreach ($correspondant as $row)
-                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Priorite" wire:model.live='priority'>
-                                <option value="Urgent">Urgent</option>
-                                <option value="Normal">Normal</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Confidentialité" wire:model.live='privacy'>
-                                <option value="OUI">OUI</option>
-                                <option value="NON">NON</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Etat" wire:model.live='etat'>
-                                @foreach (App\Enum\CourrierEnum::cases() as $row)
-                                <option value="{{ $row }}">{{ $row }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <x-input type="date" label="Date d'arriver" wire:model.live='date' />
-                    </div>
-                    <x-slot name="btn">
-                        <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="ti ti-database-export"></i>
-                            Exporté
-                        </button>
-                        <div class="dropdown-menu" style="">
-                            <button wire:click='export' class="dropdown-item">Excel</button>
-                        </div>
-                    </x-slot>
-                </x-filter>
+    <x-table url="arriver" :btn="true" :rows="$rows" :create="App\Models\Courrier::class">
+        <x-slot name="header">
+            <h3 class="card-title">
+                <br> NB: La suppression d'un courrier entrainera la suppression de ses imputations
+            </h3>
+        </x-slot>
+        <x-slot name="filter">
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Nature de courrier" wire:model.live='nature'>
+                        @foreach ($type as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Correspondant" wire:model.live='expediteur'>
+                        @foreach ($correspondant as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Priorite" wire:model.live='priority'>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Normal">Normal</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Confidentialité" wire:model.live='privacy'>
+                        <option value="OUI">OUI</option>
+                        <option value="NON">NON</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Etat" wire:model.live='etat'>
+                        @foreach (App\Enum\CourrierEnum::cases() as $row)
+                        <option value="{{ $row }}">{{ $row }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <x-input type="date" label="Date d'arriver" wire:model.live='date' />
             </div>
         </x-slot>
         <thead>

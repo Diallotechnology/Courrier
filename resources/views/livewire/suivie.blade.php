@@ -1,58 +1,54 @@
 <div>
-    <x-table :rows="$rows">
-        <x-slot name="header">
-            <div class="card-body">
-                <x-filter url="arriver">
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Nature de courrier" wire:model.live='nature'>
-                                @foreach ($type as $row)
-                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                                @endforeach
-                            </x-select>
+    <x-table :rows="$rows" url="arriver">
+        <x-slot name="filter">
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Nature de courrier" wire:model.live='nature'>
+                        @foreach ($type as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        @endforeach
+                    </x-select>
 
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Correspondant" wire:model.live='expediteur'>
-                                @foreach ($correspondant as $row)
-                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Priorite" wire:model.live='priority'>
-                                <option value="Urgent">Urgent</option>
-                                <option value="Normal">Normal</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Confidentialité" wire:model.live='privacy'>
-                                <option value="OUI">OUI</option>
-                                <option value="NON">NON</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <div wire:ignore>
-                            <x-select label="Etat" wire:model.live='etat'>
-                                @foreach (App\Enum\CourrierEnum::cases() as $row)
-                                <option value="{{ $row }}">{{ $row }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-sm-4 col-md-2">
-                        <x-input type="date" label="Date d'arriver" wire:model.live='date' />
-                    </div>
-                    <x-slot name="btn"></x-slot>
-                </x-filter>
+                </div>
             </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Correspondant" wire:model.live='expediteur'>
+                        @foreach ($correspondant as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Priorite" wire:model.live='priority'>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Normal">Normal</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Confidentialité" wire:model.live='privacy'>
+                        <option value="OUI">OUI</option>
+                        <option value="NON">NON</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Etat" wire:model.live='etat'>
+                        @foreach (App\Enum\CourrierEnum::cases() as $row)
+                        <option value="{{ $row }}">{{ $row }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="mb-3 col-sm-4 col-md-2">
+                <x-input type="date" label="Date d'arriver" wire:model.live='date' />
+            </div>
+
         </x-slot>
         <thead>
             <tr>
@@ -118,17 +114,3 @@
 
     </x-table>
 </div>
-@script
-<script>
-    $(document).on('livewire:init', function() {
-                $('.select-tags').each(function() {
-                    var select = new TomSelect(this, {
-                        onChange: function(value) {
-                            var modelName = $(this.input).attr('wire:model.live');
-                            @this.set(modelName, value);
-                        }
-                    });
-                });
-            });
-</script>
-@endscript

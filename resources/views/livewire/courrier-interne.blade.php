@@ -1,57 +1,52 @@
 <div>
-    <x-table :rows="$rows">
-        <x-slot name="header">
-            <div class="card-body">
-                <x-filter url="interne" :create="false">
-                    <div class="mb-3  col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Nature de courrier" wire:model.live='nature'>
-                                @foreach ($type as $row)
-                                <option value="{{ $row->id }}">{{ $row->nom }}</option>
-                                @endforeach
-                            </x-select>
-
-                        </div>
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Priorite" wire:model.live='priority'>
-                                <option value="Urgent">Urgent</option>
-                                <option value="Normal">Normal</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Confidentialité" wire:model.live='privacy'>
-                                <option value="OUI">OUI</option>
-                                <option value="NON">NON</option>
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <div wire:ignore>
-                            <x-select label="Etat" wire:model.live='etat'>
-                                @foreach (App\Enum\CourrierInterneEnum::cases() as $row)
-                                <option value="{{ $row }}">{{ $row }}</option>
-                                @endforeach
-                            </x-select>
-                        </div>
-                    </div>
-                    <div class="mb-3  col-md-3">
-                        <x-input type="date" label="Date d'envoi" wire:model.live='date' />
-                    </div>
-
-                    <x-slot name="btn">
-                        @can('create',App\Models\Interne::class)
-                        <a href="{{ route('interne.create') }}" class="btn btn-primary mx-2" role="button">
-                            <i class="ti ti-plus"></i>
-                            Nouveau
-                        </a>
-                        @endcan
-                    </x-slot>
-                </x-filter>
+    <x-table :rows="$rows" url="interne" :create="false">
+        <x-slot name="filter">
+            <div class="col-sm-4 col-md-3">
+                <div wire:ignore>
+                    <x-select label="Nature de courrier" wire:model.live='nature'>
+                        @foreach ($type as $row)
+                        <option value="{{ $row->id }}">{{ $row->nom }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
             </div>
+            <div class="col-sm-4 col-md-3">
+                <div wire:ignore>
+                    <x-select label="Priorite" wire:model.live='priority'>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Normal">Normal</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Confidentialité" wire:model.live='privacy'>
+                        <option value="OUI">OUI</option>
+                        <option value="NON">NON</option>
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <div wire:ignore>
+                    <x-select label="Etat" wire:model.live='etat'>
+                        @foreach (App\Enum\CourrierInterneEnum::cases() as $row)
+                        <option value="{{ $row }}">{{ $row }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <x-input type="date" label="Date d'envoi" wire:model.live='date' />
+            </div>
+            <x-slot name="btn">
+                @can('create',App\Models\Interne::class)
+                <a href="{{ route('interne.create') }}" class="btn btn-primary mx-2" role="button">
+                    <i class="ti ti-plus"></i>
+                    Nouveau
+                </a>
+                @endcan
+            </x-slot>
+
         </x-slot>
         <thead>
             <tr>
@@ -124,20 +119,5 @@
             </tr>
             @endforelse
         </tbody>
-
     </x-table>
 </div>
-@script
-<script>
-    $(document).on('livewire:init', function() {
-            $('.select-tags').each(function() {
-                var select = new TomSelect(this, {
-                    onChange: function(value) {
-                        var modelName = $(this.input).attr('wire:model.live');
-                        @this.set(modelName, value);
-                    }
-                });
-            });
-    });
-</script>
-@endscript

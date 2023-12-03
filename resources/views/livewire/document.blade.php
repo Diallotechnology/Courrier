@@ -1,31 +1,25 @@
 <div>
-    <x-table>
-        <x-slot name="header">
-            <div class="card-body">
-                <x-filter url="document" :create="App\Models\Document::class">
-                    <div class="col-md-4 mb-3">
-                        <div wire:ignore>
-                            <select class="form-select select-tags" wire:model.live='type'>
-                                <option selected disabled value="">Trier par type</option>
-                                <option value="pdf">pdf</option>
-                                <option value="png">png</option>
-                                <option value="jpg">jpg</option>
-                                <option value="doc">doc</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div wire:ignore>
-                            <select class="form-select select-tags" wire:model.live='date'>
-                                <option selected disabled value="">Trier par date</option>
-                                <option value="desc">le plus recent</option>
-                                <option value="asc">le plus ancien</option>
-                            </select>
-                        </div>
-                    </div>
-                    <x-slot name="btn">
-                    </x-slot>
-                </x-filter>
+    <x-table url="document" :create="App\Models\Document::class">
+        <x-slot name="filter">
+            <div class="col-md-4 mb-3">
+                <div wire:ignore>
+                    <select class="form-select select-tags" wire:model.live='type'>
+                        <option selected disabled value="">Trier par type</option>
+                        <option value="pdf">pdf</option>
+                        <option value="png">png</option>
+                        <option value="jpg">jpg</option>
+                        <option value="doc">doc</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div wire:ignore>
+                    <select class="form-select select-tags" wire:model.live='date'>
+                        <option selected disabled value="">Trier par date</option>
+                        <option value="desc">le plus recent</option>
+                        <option value="asc">le plus ancien</option>
+                    </select>
+                </div>
             </div>
         </x-slot>
         <thead>

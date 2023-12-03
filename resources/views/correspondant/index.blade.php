@@ -13,12 +13,7 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-body">
-            <x-filter url="correspondant" :create="App\Models\Correspondant::class" />
-        </div>
-    </x-slot>
+<x-table :rows="$rows" url="correspondant" :create="App\Models\Correspondant::class">
     <thead>
         <tr>
             <th>ID</th>

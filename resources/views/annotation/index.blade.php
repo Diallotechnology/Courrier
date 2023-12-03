@@ -13,12 +13,7 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
-    <x-slot name="header">
-        <div class="card-body">
-            <x-filter url="annotation" :create="App\Models\Annotation::class" />
-        </div>
-    </x-slot>
+<x-table :rows="$rows" url="annotation" :create="App\Models\Annotation::class">
     <thead>
         <tr>
             <th>ID</th>

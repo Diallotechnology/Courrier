@@ -26,7 +26,7 @@
                 <path d="M3 7l9 6l9 -6"></path>
             </svg>
             <x-slot name="link">
-                <a wire:navigate class="dropdown-item" href="{{ route('arriver') }}">Arriver</a>
+                <a class="dropdown-item" href="{{ route('arriver') }}">Arriver</a>
                 <a wire:navigate class="dropdown-item" href="{{ route('depart') }}">Depart</a>
                 <a wire:navigate class="dropdown-item" href="{{ route('interne') }}">Interne</a>
                 <a wire:navigate class="dropdown-item" href="{{ route('suivie') }}">Suivie</a>

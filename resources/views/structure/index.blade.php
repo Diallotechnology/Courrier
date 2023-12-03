@@ -13,15 +13,12 @@
 </div>
 @endsection
 @section('content')
-<x-table :rows="$rows">
+<x-table :rows="$rows" url="structure" :create="App\Models\Structure::class">
     <x-slot name="header">
         <div class="card-header">
             <h3 class="card-title">
                 <br> NB: La suppression d'une structure entrainera la suppression de ses departements et utlisateurs
             </h3>
-        </div>
-        <div class="card-body">
-            <x-filter url="structure" :create="App\Models\Structure::class" />
         </div>
     </x-slot>
     <thead>

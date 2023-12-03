@@ -1,5 +1,5 @@
 @props(['row'])
 @can('update', $row)
-<a aria-label="Button" {{ $attributes->merge(['class' => 'btn btn-primary btn-icon']) }}>
+<a wire:navigate aria-label="Button" {{ $attributes->merge(['class' => 'btn btn-primary btn-icon']) }}>
     <i class="ti ti-edit"></i></a>
 @endcan

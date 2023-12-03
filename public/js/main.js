@@ -19,48 +19,50 @@
 });
 
 function deleteConfirmation(url) {
-    swal.fire({
+    Swal.fire({
         title: "Supprimer?",
         icon: "question",
-        text: "Etes vous sur de vouloir supprimer cet element!",
+        text: "Etes-vous sûr de vouloir supprimer cet élément?",
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "Oui, Supprimer!",
         cancelButtonText: "Non, Annuler!",
         reverseButtons: true,
-    }).then(
-        function (e) {
-            if (e.value === true) {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
-                $.ajax({
-                    type: "DELETE",
-                    url: url,
-                    data: { _token: CSRF_TOKEN },
-                    dataType: "JSON",
-                    success: function (results) {
-                        if (results.success === true) {
-                            swal.fire("Done!", results.message, "success");
-                            // refresh page after 2 seco nds
-                            setTimeout(function () {
-                                location.reload();
-                            }, 2000);
-                        } else {
-                            swal.fire("Error!", results.message, "error");
-                        }
-                    },
-                });
-            } else {
-                e.dismiss;
-            }
-        },
-        function (dismiss) {
-            return false;
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("DELETE", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-CSRF-Token", csrfToken);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var results = JSON.parse(xhr.responseText);
+                    if (results.success === true) {
+                        Swal.fire("Done!", results.message, "success");
+                        // refresh page after 2 seconds
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        Swal.fire("Error!", results.message, "error");
+                    }
+                }
+            };
+
+            xhr.send();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            // User clicked on cancel
         }
-    );
+    });
 }
 
 function restore(url) {
-    swal.fire({
+    var swalOptions = {
         title: "Restaurer?",
         icon: "question",
         text: "Etes vous sur de vouloir restauré cet element!",
@@ -69,16 +71,23 @@ function restore(url) {
         confirmButtonText: "Oui, Restauré!",
         cancelButtonText: "Non, Annuler!",
         reverseButtons: true,
-    }).then(
-        function (e) {
-            if (e.value === true) {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    data: { _token: CSRF_TOKEN },
-                    dataType: "JSON",
-                    success: function (results) {
+    };
+
+    swal(swalOptions).then(function (value) {
+        if (value.isConfirmed) {
+            var csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-CSRF-Token", csrfToken);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var results = JSON.parse(xhr.responseText);
+
                         if (results.success === true) {
                             swal.fire("Done!", results.message, "success");
                             // refresh page after 2 seconds
@@ -88,16 +97,21 @@ function restore(url) {
                         } else {
                             swal.fire("Error!", results.message, "error");
                         }
-                    },
-                });
-            } else {
-                e.dismiss;
-            }
-        },
-        function (dismiss) {
-            return false;
+                    } else {
+                        swal.fire(
+                            "Error!",
+                            "Request failed with status: " + xhr.status,
+                            "error"
+                        );
+                    }
+                }
+            };
+
+            xhr.send();
+        } else {
+            swal.dismiss;
         }
-    );
+    });
 }
 
 (() => {
@@ -163,21 +177,21 @@ function restore(url) {
 // });
 
 // datatable search function
-$(document).ready(function () {
-    $("#search-input").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        var matchedRows = $("#datatable tbody tr").filter(function () {
-            return $(this).text().toLowerCase().indexOf(value) > -1;
-        });
-        $("#datatable tbody tr").not(matchedRows).hide();
-        matchedRows.show();
-        if (matchedRows.length == 0) {
-            $("#no-results").show();
-        } else {
-            $("#no-results").hide();
-        }
-    });
-});
+// $(document).ready(function () {
+//     $("#search-input").on("keyup", function () {
+//         var value = $(this).val().toLowerCase();
+//         var matchedRows = $("#datatable tbody tr").filter(function () {
+//             return $(this).text().toLowerCase().indexOf(value) > -1;
+//         });
+//         $("#datatable tbody tr").not(matchedRows).hide();
+//         matchedRows.show();
+//         if (matchedRows.length == 0) {
+//             $("#no-results").show();
+//         } else {
+//             $("#no-results").hide();
+//         }
+//     });
+// });
 
 document.addEventListener("DOMContentLoaded", function () {
     let options = {
