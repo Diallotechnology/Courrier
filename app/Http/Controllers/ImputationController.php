@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Task;
-use App\Models\User;
+use App\Enum\CourrierEnum;
 use App\Enum\RoleEnum;
 use App\Enum\TaskEnum;
-use App\Models\Courrier;
-use App\Enum\CourrierEnum;
-use App\Models\Annotation;
-use App\Models\Imputation;
-use App\Models\Departement;
 use App\Helper\DeleteAction;
-use App\Mail\ImputationMail;
-use App\Models\SubDepartement;
-use App\Jobs\ImputationMailJob;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\StoreImputationRequest;
-use App\Notifications\ImputationNotification;
 use App\Http\Requests\UpdateImputationRequest;
+use App\Jobs\ImputationMailJob;
+use App\Mail\ImputationMail;
+use App\Models\Annotation;
+use App\Models\Courrier;
+use App\Models\Departement;
+use App\Models\Imputation;
+use App\Models\SubDepartement;
+use App\Models\Task;
+use App\Models\User;
+use App\Notifications\ImputationNotification;
+use Auth;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class ImputationController extends Controller
 {

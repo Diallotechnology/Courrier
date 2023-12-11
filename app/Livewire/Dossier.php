@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\Folder;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Auth;
 
 class Dossier extends Component
 {
     use WithPagination;
+
     protected string $paginationTheme = 'bootstrap';
+
     public string $search = '';
 
     public string $type = '';

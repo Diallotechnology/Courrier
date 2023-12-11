@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Models\Task;
-use App\Models\User;
-use App\Models\Price;
-use App\Enum\TaskEnum;
-use App\Models\Nature;
+use App\Models\Annotation;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Departement;
 use App\Models\Journal;
 use App\Models\Licence;
+use App\Models\Nature;
+use App\Models\Price;
 use App\Models\Rapport;
-use App\Models\Courrier;
 use App\Models\Structure;
-use App\Models\Annotation;
-use App\Models\Imputation;
-use App\Models\Departement;
-use App\Enum\ImputationEnum;
-use App\Models\Correspondant;
 use App\Models\SubDepartement;
-use App\Events\RealTimeMessage;
+use App\Models\Task;
+use App\Models\User;
+use Auth;
 use Illuminate\Contracts\View\View;
-use App\Events\RealTimeNotification;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\Paginator;
 
 class AdminController extends Controller
 {
@@ -68,6 +63,7 @@ class AdminController extends Controller
             ->selectRaw('COUNT(id) as total_arrriver, DATE(created_at) as day')
             ->orderBy('day')->groupBy('day')->pluck('total_arrriver', 'day');
         $tasks = Task::where('createur_id', Auth::user()->id)->latest()->take(6)->get();
+
         return view('dashboard', compact('arriver', 'tasks'));
     }
 
@@ -138,14 +134,14 @@ class AdminController extends Controller
     public function rapport(): View
     {
         $user = Auth::user();
-        $rows = Rapport::with('structure','user','utilisateurs')
-        ->when(!$user->isSuperadmin(), function ($query) {
-            $query->ByStructure();
-         })
-         ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id', $user->id)
-         ->orWhereHas('utilisateurs', fn ($query) => $query->where('user_id', $user->id))
-         )
-         ->latest()->paginate(15);
+        $rows = Rapport::with('structure', 'user', 'utilisateurs')
+            ->when(! $user->isSuperadmin(), function ($query) {
+                $query->ByStructure();
+            })
+            ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id', $user->id)
+               ->orWhereHas('utilisateurs', fn ($query) => $query->where('user_id', $user->id))
+            )
+            ->latest()->paginate(15);
 
         return view('rapport.index', compact('rows'));
     }

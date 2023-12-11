@@ -45,6 +45,16 @@
                 <i class="ti ti-rotate-clockwise"></i>Tout restaure
             </button>
             @endempty
+            @if ($btn)
+            <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="ti ti-database-export"></i>
+                Exporter
+            </button>
+            <div class="dropdown-menu">
+                <button wire:click='export' class="dropdown-item">Excel</button>
+            </div>
+            @endif
             @empty(!$url)
             @can('trash',$create)
             <a wire:navigate aria-label="Button" href="{{ route($url.'.trash') }}" {{ $attributes->merge(['class' =>
@@ -54,16 +64,7 @@
                 <i class="ti ti-trash-x"></i>Corbeille</a>
             @endcan
             @endempty
-            @if ($btn)
-            <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <i class="ti ti-database-export"></i>
-                Exporté
-            </button>
-            <div class="dropdown-menu">
-                <button wire:click='export' class="dropdown-item">Excel</button>
-            </div>
-            @endif
+
         </div>
     </div>
     @if ($btn_filter)
@@ -91,7 +92,7 @@
                 </div>
             </div>
             @empty(!$filter)
-            <div {{ $attributes->merge(['class' => 'row row-cards my-3']) }} >
+            <div {{ $attributes->merge(['class' => 'row row-cards mt-3']) }} >
                 {{ $filter }}
             </div>
             <button wire:click='ResetFilter' {{ $attributes->merge(['class' => 'btn btn-danger mx-2']) }}

@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Helper\DateFormat;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * App\Models\Rapport
@@ -101,7 +100,7 @@ class Rapport extends Model
      *
      * @var array
      */
-    protected $fillable = ['objet', 'user_id', 'type', 'contenu', 'courrier_id', 'structure_id','numero'];
+    protected $fillable = ['objet', 'user_id', 'type', 'contenu', 'courrier_id', 'structure_id', 'numero'];
 
     /**
      * Get the user that owns the Rapport
@@ -137,8 +136,6 @@ class Rapport extends Model
 
     /**
      * The utilisateurs that belong to the Rapport
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function utilisateurs(): BelongsToMany
     {

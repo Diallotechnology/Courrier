@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Enum\CourrierEnum;
-use App\Models\Nature;
-use Livewire\Component;
-use App\Models\Courrier;
-use App\Helper\WithFilter;
-use Livewire\WithPagination;
-use App\Models\Correspondant;
-use Livewire\Attributes\Lazy;
 use App\Exports\CourrierExport;
+use App\Helper\WithFilter;
+use App\Models\Correspondant;
+use App\Models\Courrier;
+use App\Models\Nature;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
-
 
 class CourrierArriver extends Component
 {
@@ -58,17 +56,16 @@ class CourrierArriver extends Component
                 $query->where('etat', $this->etat);
             });
 
-            $counts = Courrier::selectRaw('etat, COUNT(*) as count')->where('etat','!=',CourrierEnum::SAVE)
+        $counts = Courrier::selectRaw('etat, COUNT(*) as count')->where('etat', '!=', CourrierEnum::SAVE)
             ->groupBy('etat')->pluck('count', 'etat');
-            $archive = $counts->get('Archivé');
-            $termine = $counts->get('Terminé');
-            $impute = $counts->get('Imputé');
+        $archive = $counts->get('Archivé');
+        $termine = $counts->get('Terminé');
+        $impute = $counts->get('Imputé');
 
         $rows = $query->latest('id')->paginate(15);
         $correspondant = Correspondant::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
         $type = Nature::when(! $isSuperadmin, fn ($query) => $query->ByStructure())->orderBy('nom')->get();
 
-
-        return view('livewire.courrier-arriver', compact('rows', 'correspondant', 'type','archive','termine','impute'));
+        return view('livewire.courrier-arriver', compact('rows', 'correspondant', 'type', 'archive', 'termine', 'impute'));
     }
 }

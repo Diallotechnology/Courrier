@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Rapport;
-use App\Models\Courrier;
-use Illuminate\Support\Arr;
 use App\Helper\DeleteAction;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreRapportRequest;
 use App\Http\Requests\UpdateRapportRequest;
+use App\Models\Courrier;
+use App\Models\Rapport;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RapportController extends Controller
 {
@@ -32,8 +32,9 @@ class RapportController extends Controller
         $courrier = $courrierQuery->latest()->get();
         $type = Rapport::TYPE;
         $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())
-        ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
-        return view('rapport.create', \compact('courrier', 'type','user'));
+            ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
+
+        return view('rapport.create', \compact('courrier', 'type', 'user'));
     }
 
     /**
@@ -42,17 +43,18 @@ class RapportController extends Controller
     public function store(StoreRapportRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
-        $data = Arr::except($request->validated(), ['files','personne_id']);
-        $rapport = Rapport::create($data);
-        if(!empty($request->input('personne_id'))) {
-            $rapport->utilisateurs()->attach($request->input('personne_id'));
-        }
-        $rapport->generateId('RA');
-        $ref = $rapport->numero;
-        $this->file_uplode($request, $rapport);
-        $this->journal("Ajout du rapport REF N°$ref");
-        toastr()->success('Rapport ajouter avec success!');
+            $data = Arr::except($request->validated(), ['files', 'personne_id']);
+            $rapport = Rapport::create($data);
+            if (! empty($request->input('personne_id'))) {
+                $rapport->utilisateurs()->attach($request->input('personne_id'));
+            }
+            $rapport->generateId('RA');
+            $ref = $rapport->numero;
+            $this->file_uplode($request, $rapport);
+            $this->journal("Ajout du rapport REF N°$ref");
+            toastr()->success('Rapport ajouter avec success!');
         });
+
         return back();
     }
 
@@ -76,8 +78,9 @@ class RapportController extends Controller
         $courrier = Courrier::all();
         $type = Rapport::TYPE;
         $user = User::with('userable')->when(! $auth->isSuperadmin(), fn ($query) => $query->StructureUser())
-        ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
-        return view('rapport.update', compact('rapport', 'courrier', 'type','user'));
+            ->whereNot('id', $auth->id)->get()->groupBy('userable.nom');
+
+        return view('rapport.update', compact('rapport', 'courrier', 'type', 'user'));
     }
 
     /**
@@ -86,14 +89,15 @@ class RapportController extends Controller
     public function update(UpdateRapportRequest $request, Rapport $rapport): RedirectResponse
     {
         DB::transaction(function () use ($request, $rapport) {
-        $data = Arr::except($request->validated(), ['files','personne_id']);
-        $rapport->update($data);
-        if(!empty($request->input('personne_id'))) {
-            $rapport->utilisateurs()->sync($request->input('personne_id'));
-        }
-        $this->file_uplode($request, $rapport);
-        toastr()->success('Rapport mise à jour avec success!');
+            $data = Arr::except($request->validated(), ['files', 'personne_id']);
+            $rapport->update($data);
+            if (! empty($request->input('personne_id'))) {
+                $rapport->utilisateurs()->sync($request->input('personne_id'));
+            }
+            $this->file_uplode($request, $rapport);
+            toastr()->success('Rapport mise à jour avec success!');
         });
+
         return back();
     }
 

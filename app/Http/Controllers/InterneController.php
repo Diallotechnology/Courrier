@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Nature;
-use App\Models\Interne;
-use App\Helper\DeleteAction;
 use App\Enum\CourrierInterneEnum;
+use App\Helper\DeleteAction;
 use App\Http\Requests\StoreInterneRequest;
 use App\Http\Requests\UpdateInterneRequest;
+use App\Models\Interne;
+use App\Models\Nature;
+use App\Models\User;
 use App\Notifications\CourrierNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;

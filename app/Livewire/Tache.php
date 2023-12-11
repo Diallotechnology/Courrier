@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Enum\CourrierEnum;
+use App\Enum\ImputationEnum;
+use App\Enum\TaskEnum;
+use App\Helper\DeleteAction;
+use App\Models\Imputation;
 use App\Models\Task;
 use App\Models\User;
-use App\Enum\TaskEnum;
-use Livewire\Component;
-use App\Enum\CourrierEnum;
-use App\Models\Imputation;
-use App\Enum\ImputationEnum;
-use App\Helper\DeleteAction;
-use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
+use App\Notifications\ImputationNotification;
+use App\Notifications\TaskNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\TaskNotification;
-use App\Notifications\ImputationNotification;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class Tache extends Component
 {
-    use WithPagination, DeleteAction;
+    use DeleteAction, WithPagination;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -43,47 +43,47 @@ class Tache extends Component
 
     public function ValidTask(int $id): void
     {
-        DB::transaction(function () use($id) {
-        // get task
-        $task = Task::with('imputation', 'users')->findOrFail($id);
-        // update user pivot etat
-        $task->users()->updateExistingPivot(Auth::user()->id, ['etat' => 1]);
-        // Verify if all tasks for the imputation are completed
-        $incompleteTasksUserCount = $task->users()->wherePivot('etat', 0)->exists();
-        if (! $incompleteTasksUserCount) {
-            // update task to terminie
-            $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
-        }
-        if ($task->type === 'imputation' && $task->imputation && $task->imputation->courrier) {
-            $courrier = $task->imputation->courrier;
-            // update imputation courrier etat
-            $courrier->impute() ?: $courrier->update(['etat' => CourrierEnum::PROCESS]);
-            // update imputation etat
-            $task->imputation->Pending() ?: $task->imputation->update(['etat' => ImputationEnum::EN_COURS]);
-
-            $id = $courrier->id;
-            $num = $courrier->numero;
-            // Send notification
-            $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
-            $task->createur->notify($notification);
-            $this->history($id, 'validation de tache', "La tache N°$task->numero du courrier arrivé N°$num a été validé");
+        DB::transaction(function () use ($id) {
+            // get task
+            $task = Task::with('imputation', 'users')->findOrFail($id);
+            // update user pivot etat
+            $task->users()->updateExistingPivot(Auth::user()->id, ['etat' => 1]);
             // Verify if all tasks for the imputation are completed
-            $incompleteTasksCount = Task::where('imputation_id', $task->imputation_id)->whereEtat('!=', TaskEnum::TERMINE)->exists();
-            if (! $incompleteTasksCount) {
-                $task->imputation->updateOrFail(['fin_traitement' => today(), 'etat' => ImputationEnum::TERMINE]);
-                $notification = new ImputationNotification($task->imputation, "l'imputation N°".$task->imputation->numero.'terminé avec success');
-                $task->imputation->user->notify($notification);
-                $courrier->updateOrFail(['etat' => CourrierEnum::TERMINE]);
-                $this->history($id, 'tache terminé', "Toute les taches du courrier arrivé N°$num sont terminés");
+            $incompleteTasksUserCount = $task->users()->wherePivot('etat', 0)->exists();
+            if (! $incompleteTasksUserCount) {
+                // update task to terminie
+                $task->updateOrFail(['etat' => TaskEnum::TERMINE]);
             }
-        } else {
-            // Send notification
-            $notification = new TaskNotification($task, 'Une tache que vous avez assigné a été effectuer');
-            $task->createur->notify($notification);
-        }
-        toastr()->success('Tache validé avec succès!');
+            if ($task->type === 'imputation' && $task->imputation && $task->imputation->courrier) {
+                $courrier = $task->imputation->courrier;
+                // update imputation courrier etat
+                $courrier->impute() ?: $courrier->update(['etat' => CourrierEnum::PROCESS]);
+                // update imputation etat
+                $task->imputation->Pending() ?: $task->imputation->update(['etat' => ImputationEnum::EN_COURS]);
 
-    });
+                $id = $courrier->id;
+                $num = $courrier->numero;
+                // Send notification
+                $notification = new TaskNotification($task, "Une tache d'imputation que vous avez assigné a été effectuer");
+                $task->createur->notify($notification);
+                $this->history($id, 'validation de tache', "La tache N°$task->numero du courrier arrivé N°$num a été validé");
+                // Verify if all tasks for the imputation are completed
+                $incompleteTasksCount = Task::where('imputation_id', $task->imputation_id)->whereEtat('!=', TaskEnum::TERMINE)->exists();
+                if (! $incompleteTasksCount) {
+                    $task->imputation->updateOrFail(['fin_traitement' => today(), 'etat' => ImputationEnum::TERMINE]);
+                    $notification = new ImputationNotification($task->imputation, "l'imputation N°".$task->imputation->numero.'terminé avec success');
+                    $task->imputation->user->notify($notification);
+                    $courrier->updateOrFail(['etat' => CourrierEnum::TERMINE]);
+                    $this->history($id, 'tache terminé', "Toute les taches du courrier arrivé N°$num sont terminés");
+                }
+            } else {
+                // Send notification
+                $notification = new TaskNotification($task, 'Une tache que vous avez assigné a été effectuer');
+                $task->createur->notify($notification);
+            }
+            toastr()->success('Tache validé avec succès!');
+
+        });
     }
 
     public function render(): View

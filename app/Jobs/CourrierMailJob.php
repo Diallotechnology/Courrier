@@ -2,16 +2,14 @@
 
 namespace App\Jobs;
 
-
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\CourrierNotification;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class CourrierMailJob implements ShouldQueue

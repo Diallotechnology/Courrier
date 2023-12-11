@@ -135,7 +135,7 @@
             </h3>
         </x-slot>
         <x-slot name="filter">
-            <div class="mb-3 col-sm-4 col-md-2">
+            <div class="col-sm-4 col-md-2">
                 <div wire:ignore>
                     <x-select label="Nature de courrier" wire:model.live='nature'>
                         @foreach ($type as $row)
@@ -144,7 +144,7 @@
                     </x-select>
                 </div>
             </div>
-            <div class="mb-3 col-sm-4 col-md-2">
+            <div class="col-sm-4 col-md-2">
                 <div wire:ignore>
                     <x-select label="Correspondant" wire:model.live='expediteur'>
                         @foreach ($correspondant as $row)
@@ -153,7 +153,7 @@
                     </x-select>
                 </div>
             </div>
-            <div class="mb-3 col-sm-4 col-md-2">
+            <div class="col-sm-4 col-md-2">
                 <div wire:ignore>
                     <x-select label="Priorite" wire:model.live='priority'>
                         <option value="Urgent">Urgent</option>
@@ -161,7 +161,7 @@
                     </x-select>
                 </div>
             </div>
-            <div class="mb-3 col-sm-4 col-md-2">
+            <div class="col-sm-4 col-md-2">
                 <div wire:ignore>
                     <x-select label="Confidentialité" wire:model.live='privacy'>
                         <option value="OUI">OUI</option>
@@ -169,7 +169,7 @@
                     </x-select>
                 </div>
             </div>
-            <div class="mb-3 col-sm-4 col-md-2">
+            <div class="col-sm-4 col-md-2">
                 <div wire:ignore>
                     <x-select label="Etat" wire:model.live='etat'>
                         @foreach (App\Enum\CourrierEnum::cases() as $row)
@@ -178,7 +178,7 @@
                     </x-select>
                 </div>
             </div>
-            <div class="mb-3 col-sm-4 col-md-2">
+            <div class="col-sm-4 col-md-2">
                 <x-input type="date" label="Date d'arriver" wire:model.live='date' />
             </div>
         </x-slot>

@@ -44,7 +44,7 @@ class Imputation extends Component
     {
 
         $user = Auth::user();
-        $query = ModelsImputation::with('user', 'departements', 'subdepartements', 'courrier','structure')
+        $query = ModelsImputation::with('user', 'departements', 'subdepartements', 'courrier', 'structure')
             ->when(! $user->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->when(! $user->isAdmin(), fn ($query) => $query->where('user_id', $user->id))
             ->when($this->priority, function ($query) {
@@ -84,12 +84,12 @@ class Imputation extends Component
         }
         $sub_division = $sub_divisionQuery->get();
 
-        $counts = ModelsImputation::selectRaw('etat, COUNT(*) as count')->where('etat','!=',CourrierEnum::SAVE)
-        ->groupBy('etat')->pluck('count', 'etat');
+        $counts = ModelsImputation::selectRaw('etat, COUNT(*) as count')->where('etat', '!=', CourrierEnum::SAVE)
+            ->groupBy('etat')->pluck('count', 'etat');
         $process = $counts->get('En cours');
         $termine = $counts->get('Traitée');
         $expire = $counts->get('Expiré');
 
-        return view('livewire.imputation', compact('rows', 'arriver', 'division', 'sub_division','expire','termine','process'));
+        return view('livewire.imputation', compact('rows', 'arriver', 'division', 'sub_division', 'expire', 'termine', 'process'));
     }
 }

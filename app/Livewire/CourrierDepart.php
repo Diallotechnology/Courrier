@@ -38,7 +38,7 @@ class CourrierDepart extends Component
     {
         $structureId = Auth::user()->structure();
         $auth = Auth::user();
-        $query = Depart::with('user', 'initiateur', 'nature', 'correspondants', 'folder','structure')
+        $query = Depart::with('user', 'initiateur', 'nature', 'correspondants', 'folder', 'structure')
             ->when(! $auth->isSuperadmin(), fn ($query) => $query->ByStructure())
             ->when($this->privacy, function ($query) {
                 $query->where('confidentiel', $this->privacy);

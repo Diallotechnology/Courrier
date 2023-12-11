@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\User;
 use App\Enum\RoleEnum;
-use App\Models\Nature;
-use App\Models\Courrier;
 use App\Helper\DeleteAction;
+use App\Http\Requests\StoreCourrierRequest;
+use App\Http\Requests\UpdateCourrierRequest;
 use App\Jobs\CourrierMailJob;
 use App\Models\Correspondant;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\StoreCourrierRequest;
+use App\Models\Courrier;
+use App\Models\Nature;
+use App\Models\Task;
+use App\Models\User;
 use App\Notifications\CourrierNotification;
-use App\Http\Requests\UpdateCourrierRequest;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CourrierController extends Controller
 {
