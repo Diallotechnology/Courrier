@@ -14,15 +14,13 @@
 @endsection
 @section('content')
 <x-table :rows="$rows" url="rapport" :create="false">
-    <x-slot name="filter">
-        <x-slot name="btn">
-            @can('create',App\Models\Rapport::class)
-            <a href="{{ route('rapport.create') }}" class="btn btn-primary mx-2" role="button">
-                <i class="ti ti-plus"></i>
-                Nouveau
-            </a>
-            @endcan
-        </x-slot>
+    <x-slot name="btn">
+        @can('create',App\Models\Rapport::class)
+        <a wire:navigate href="{{ route('rapport.create') }}" class="btn btn-primary mx-2" role="button">
+            <i class="ti ti-plus"></i>
+            Nouveau
+        </a>
+        @endcan
     </x-slot>
     <thead>
         <tr>

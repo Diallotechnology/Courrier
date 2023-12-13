@@ -20,6 +20,15 @@ use App\Http\Controllers\StructureController;
 use App\Http\Controllers\SubDepartementController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Livewire\AdvandcedSearch;
+use App\Livewire\Archive;
+use App\Livewire\CourrierArriver;
+use App\Livewire\CourrierDepart;
+use App\Livewire\CourrierInterne;
+use App\Livewire\Document;
+use App\Livewire\Imputation;
+use App\Livewire\Suivie;
+use App\Livewire\Tache;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['role:'.RoleEnum::ADMIN->value, 'auth'])->group(function () {
@@ -206,16 +215,16 @@ Route::middleware(['auth', 'licence'])->group(function () {
             Route::get('correspondant', 'correspondant')->name('correspondant');
         });
 
-        Route::view('courrier/arriver', 'arriver.index')->name('arriver');
-        Route::view('courrier/depart', 'depart.index')->name('depart');
-        Route::view('courrier/interne', 'interne.index')->name('interne');
-        Route::view('courrier/suivie', 'suivie')->name('suivie');
-        Route::view('courrier/archive', 'archive')->name('archive');
-        Route::view('imputation', 'imputation.index')->name('imputation');
+        Route::get('courrier/arriver', CourrierArriver::class)->name('arriver');
+        Route::get('courrier/depart', CourrierDepart::class)->name('depart');
+        Route::get('courrier/interne', CourrierInterne::class)->name('interne');
+        Route::get('courrier/suivie', Suivie::class)->name('suivie');
+        Route::get('courrier/archive', Archive::class)->name('archive');
+        Route::get('imputation', Imputation::class)->name('imputation');
         Route::view('dossier', 'folder.index')->name('folder');
-        Route::view('document', 'document.index')->name('document');
-        Route::view('tache', 'task.index')->name('task');
-        Route::view('search', 'search')->name('search');
+        Route::get('document', Document::class)->name('document');
+        Route::get('tache', Tache::class)->name('task');
+        Route::get('search', AdvandcedSearch::class)->name('search');
         Route::view('licence_expire', 'licence_expire')->name('licence_expire');
         Route::post('user/active/two_factor', [UserController::class, 'active_2fa'])->name('user.active_2fa');
         Route::delete('rapport/delete/{id}', [RapportController::class, 'force_delete'])->whereNumber('id');

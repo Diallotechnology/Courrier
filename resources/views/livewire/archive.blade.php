@@ -1,4 +1,18 @@
 <div>
+    @section('header')
+    <div class="col">
+        <div class="mb-1">
+            <ol class="breadcrumb" aria-label="breadcrumbs">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="#">Archive</a></li>
+            </ol>
+        </div>
+        <h2 class="page-title">
+            <span class="text-truncate">Liste des courriers archivés</span>
+        </h2>
+    </div>
+    @endsection
+    @section('content')
     <x-table :rows="$rows" url="arriver">
         <x-slot name="filter">
             <div class="mb-3 col-sm-4 col-md-2">
@@ -104,4 +118,6 @@
         </tbody>
 
     </x-table>
+    @endsection
+
 </div>

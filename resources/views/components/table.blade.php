@@ -1,4 +1,5 @@
-@props(['header' => '', 'filter' => '', 'rows' => '', 'btn'=> false,'btn_filter'=> true, 'url' => '', 'trash'=>'',
+@props(['header' => '', 'filter' => '', 'rows' => '', 'btn'=> false,'btn_filter'=> true, 'btn_export' => false, 'url' =>
+'', 'trash'=>'',
 'create' =>
 ""])
 <div class="col-12">
@@ -17,7 +18,11 @@
                 Utilisateur
             </button>
             @endif
+
             @endcan
+            @if ($btn)
+            {{ $btn }}
+            @endif
             @empty(!$trash)
             <a wire:navigate href="{{ route($trash) }}" {{ $attributes->merge(['class' => 'btn btn-primary']) }}
                 aria-label="Button">
@@ -45,7 +50,7 @@
                 <i class="ti ti-rotate-clockwise"></i>Tout restaure
             </button>
             @endempty
-            @if ($btn)
+            @if ($btn_export)
             <button type="button" class="btn btn-indigo dropdown-toggle mx-2" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="ti ti-database-export"></i>
