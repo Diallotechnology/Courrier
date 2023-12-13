@@ -15,19 +15,19 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from "laravel-echo";
+// import Echo from "laravel-echo";
 
-import Pusher from "pusher-js";
-window.Pusher = Pusher;
+// import Pusher from "pusher-js";
+// window.Pusher = Pusher;
 
-window.Echo = new Echo({
-    broadcaster: "pusher",
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: false,
-    wsPort: 6001,
-    wsHost: window.location.hostname,
-});
+// window.Echo = new Echo({
+//     broadcaster: "pusher",
+//     key: import.meta.env.VITE_PUSHER_APP_KEY,
+//     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+//     forceTLS: false,
+//     wsPort: 6001,
+//     wsHost: window.location.hostname,
+// });
 
 // window.Echo = new Echo({
 //     broadcaster: "pusher",
@@ -41,12 +41,3 @@ window.Echo = new Echo({
 //         console.log(notification.type);
 //     }
 // );
-
-window.Echo.private("App.Models.User." + User.id).notification(
-    (notification) => {
-        console.log(notification.type);
-        window.dispatchEvent(
-            new CustomEvent("flash", { detail: notification.type })
-        );
-    }
-);

@@ -7,17 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Authentification') }}</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.17.0/tabler-icons.min.css" />
-
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        @import url('https://rsms.me/inter/inter.css');
-
         :root {
             --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
         }
@@ -36,31 +28,6 @@
         </div>
         <!-- Libs JS -->
     </body>
-    {{-- <script>
-        // boostrap validation js function
-(() => {
-    "use strict";
-
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll(".needs-validation");
-
-    // Loop over them and prevent submission
-    Array.from(forms).forEach((form) => {
-        form.addEventListener(
-            "submit",
-            (event) => {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-
-                form.classList.add("was-validated");
-            },
-            false
-        );
-    });
-})();
-    </script> --}}
 </body>
 
 </html>

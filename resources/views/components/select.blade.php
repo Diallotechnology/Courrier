@@ -1,4 +1,4 @@
-{{-- @props(['name'=>'','label'=>'','required' =>true])
+@props(['name'=>'','label'=>'','required' =>true])
 <div {{ $attributes->merge(['class' => 'mb-3']) }}>
     <label {{ $attributes->merge(['class' => 'form-label text-uppercase']) }} >{{ $label }}</label>
     <select name="{{ $name }}" type="text" {{ $attributes->merge(['class' => 'form-select select-tags']) }}
@@ -14,9 +14,9 @@
         <li>{{ $message }}</li>
         @enderror
     </ul>
-</div> --}}
+</div>
 
-@props(['name' => '', 'label' => '', 'required' => true])
+{{-- @props(['name' => '', 'label' => '', 'required' => true])
 
 <div x-data="{ selectedValue: '' }" {{ $attributes->merge(['class' => 'mb-3']) }}>
     <label {{ $attributes->merge(['class' => 'form-label text-uppercase']) }}>{{ $label }}</label>
@@ -47,4 +47,4 @@
         <li>{{ $message }}</li>
         @enderror
     </ul>
-</div>
+</div> --}}

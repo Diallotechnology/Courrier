@@ -46,8 +46,8 @@
             </button>
             @endempty
             @if ($btn)
-            <button type="button" class="btn btn-indigo dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+            <button type="button" class="btn btn-indigo dropdown-toggle mx-2" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
                 <i class="ti ti-database-export"></i>
                 Exporter
             </button>
